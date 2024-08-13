@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "tailwind": "^4.0.0",
+    "tailwindcss": "^3.4.9"
+  },
+  "scripts": {
+    "build:admin": "tailwindcss -i ./public/admin/input.css -o ./public/admin/output.css --watch",
+    "build:officer": "tailwindcss -i ./public/officer/input.css -o ./public/officer/output.css --watch",
+    "build:student": "tailwindcss -i ./public/student/input.css -o ./public/student/output.css --watch",
+    "build:sign_in": "tailwindcss -i ./public/sign_in/css/input.css -o ./public/sign_in/css/output.css --watch",
+    "build:global": "tailwindcss -i ./public/__assets__/css/input.css -o ./public/__assets__/css/output.css --watch",
+    "dev": "npm-run-all --parallel build:*"
+  }
+}
