@@ -6,6 +6,7 @@ module.exports = {
     './public/student/**/*.{html,js,php}',
     './public/sign_in/**/*.{html,js,php}',
     './public/__assets__/**/*.{html,js,php}',
+    './public/__includes__/**/*.{html,js,php}',
   ],
   theme: {
     extend: {},

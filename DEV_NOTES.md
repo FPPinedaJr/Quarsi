@@ -46,4 +46,16 @@ npm run build:global
 <link rel="stylesheet" href="../__assets__/css/fontawesome/fontawesome.min.css">
 ```
 
+## FAVICON
+- Link favicon image
+```html
+<link rel="icon" href="../__assets__/images/favicon.ico" type="image/x-icon">
+```
+
+## GLOBAL CSS
+- Link global output.css
+```html
+<link rel="stylesheet" href="../__assets__/css/output.css">
+```
+
 
