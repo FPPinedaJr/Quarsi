@@ -13,14 +13,13 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="./css/output.css">
-    <link rel="stylesheet" href="../__assets__/css/fontawesome/all.min.css">
-    <link rel="stylesheet" href="../__assets__/css/fontawesome/fontawesome.min.css">
-    <link rel="stylesheet" href="../__assets__/css/output.css">
-    <script src="../__assets__/js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
+    <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
+    <link rel="stylesheet" href="./assets/css/output.css">
+    <script src="./assets/js/jquery-3.7.1.min.js"></script>
 </head>
 <?php
-include_once ("../__includes__/partial/sidebar.php");
+include_once ("./includes/partial/sidebar.php");
 
 ?>
 

@@ -1,10 +1,12 @@
 <div id="sidebar" class="fixed inset-0 z-50 invisible w-full h-full">
   <div id="sidebar-overlay"
     class="fixed top-0 left-0 grid w-full min-h-screen p-4 place-items-center backdrop-blur-sm backdrop-opacity-10 backdrop-invert bg-black/30">
-    <div id="sidebar-content" class="flex flex-col bg-[#f5f5f5] h-full w-9/12 md:w-72 fixed left-0 duration-300 ease-out transition-all transform -translate-x-full">
+    <div id="sidebar-content"
+      class="flex flex-col bg-[#f5f5f5] h-full w-9/12 md:w-72 fixed left-0 duration-300 ease-out transition-all transform -translate-x-full">
       <div class="flex items-center justify-between px-5 h-16 text-4xl bg-[#ecd894] ">
         <a href="home.php" class="font-['cookie'] text-[#000000d5] font-bold text-5xl my-auto">Plushie Card</a>
-        <a onclick="toggleSidebar()" class="hover:text-[#6a6b3a] text-2xl cursor-pointer"><i class="fa-solid fa-angles-left"></i></a>
+        <a onclick="toggleSidebar()" class="hover:text-[#6a6b3a] text-2xl cursor-pointer"><i
+            class="fa-solid fa-angles-left"></i></a>
       </div>
       <!-- profile -->
       <div class="flex flex-col items-center my-3">
@@ -41,7 +43,7 @@
           <i class="text-2xl fa-solid fa-circle-info"></i>
           <span class="font-['merriweather_sans'] ml-5">About</span>
         </a>
-        <a href="../__includes__/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+        <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <i class="text-2xl text-black fa-solid fa-arrow-right-from-bracket"></i>
           <span class=" text-black font-['merriweather_sans'] ml-5">Log Out</span>
         </a>
@@ -60,6 +62,13 @@
   }
 
   $(document).ready(function () {
+    function toggleSidebar() {
+      $('#sidebar').toggleClass('invisible');
+      $('#sidebar-content').toggleClass('-translate-x-full');
+      $('body').toggleClass('overflow-y-hidden'); // Toggle overflow-y-hidden on the body
+      console.log('here')
+    }
+
     $('#sidebar-overlay').on('click', function (event) {
       if (event.target === this) {
         toggleSidebar();
