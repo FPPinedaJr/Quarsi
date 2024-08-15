@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 if (isset($_SESSION['logged_in'])) {
   if ($_SESSION['logged_in'] == true) {
-    header('location: ../index.php');
+    header('location: ./home.php');
   }
 }
 ?>
