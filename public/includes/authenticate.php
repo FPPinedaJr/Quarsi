@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); } 
-include_once("../../__includes__/connect_db.php");
+include_once("./connect_db.php");
 
 
 
@@ -30,13 +30,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['logged_in'] = true;
         $_SESSION['userid'] = $row['iduser'];
         $_SESSION['username'] = $row['f_name'] . ' ' . $row['l_name'];
+
+        $_SESSION['is_admin'] = 0;
+        $_SESSION['is_superuser'] = 0;
+        $_SESSION['is_officer'] = 0;
+        
+
+
         if ($row['is_admin'] == 1){
-            $_SESSION['usertype'] = 3;
-        } else if ($row['is_officer'] == 1) {
-            $_SESSION['usertype'] = 2;
-        } else {
-            $_SESSION['usertype'] =1;
-        }
+            $_SESSION['is_admin'] = 1;
+        } 
+        
+        if ($row['is_superuser'] == 1) {
+            $_SESSION['usertype'] = 1;
+        } 
+        
+        if ($row['is_officer'] == 1) {
+            $_SESSION['usertype'] = 1;
+        } 
+        
+
         echo "success";
         exit();
         } 
