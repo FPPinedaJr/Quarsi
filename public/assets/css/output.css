@@ -648,6 +648,10 @@ video {
   margin-bottom: 0.75rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .ml-5 {
   margin-left: 1.25rem;
 }
@@ -684,24 +688,12 @@ video {
   margin-top: 1.5rem;
 }
 
-.ml-10 {
-  margin-left: 2.5rem;
+.ml-3 {
+  margin-left: 0.75rem;
 }
 
-.ml-8 {
-  margin-left: 2rem;
-}
-
-.ml-7 {
-  margin-left: 1.75rem;
-}
-
-.ml-9 {
-  margin-left: 2.25rem;
-}
-
-.ml-6 {
-  margin-left: 1.5rem;
+.ml-2 {
+  margin-left: 0.5rem;
 }
 
 .block {
@@ -802,6 +794,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-2\/3 {
+  width: 66.666667%;
 }
 
 .min-w-40 {
@@ -1038,6 +1034,10 @@ video {
 
 .font-\[\'merriweather_sans\'\] {
   font-family: 'merriweather sans';
+}
+
+.font-\[\\\'merriweather_sans\\\'\] {
+  font-family: \'merriweather sans\';
 }
 
 .text-2xl {

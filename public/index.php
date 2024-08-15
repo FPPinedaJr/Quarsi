@@ -34,15 +34,10 @@ if (isset($_SESSION['logged_in'])) {
   <main class="flex justify-center w-11/12 text-black bg-transparent">
     <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
       <div class="w-full p-2">
-        <div class="flex items-center justify-center w-full my-5 ">
-          <img src="./assets/images/logo.png" alt="Logo" class="w-3/5 h-auto rounded-full ">
-        </div>
-        <h1 class="mt-5 text-4xl font-bold">SIGN IN</h1>
-
-        <div class="w-full h-10">
-          <div id="alert" role="alert" class="hidden">
+        <div class="flex justify-center h-10 mt-2 ">
+          <div id="alert" role="alert" class="hidden w-3/5 ">
             <div
-              class="bottom-0 flex items-center px-3 py-1 text-red-800 bg-red-100 border-2 border-red-700 rounded-full ">
+              class="bottom-0 flex items-center px-3 py-2 text-red-800 bg-red-100 border-2 border-red-700 rounded-lg ">
               <i class="fa-solid fa-circle-exclamation"></i>
               <div class="pr-1 text-sm font-medium ms-3">
                 <p id="err_msg"></p>
@@ -54,6 +49,12 @@ if (isset($_SESSION['logged_in'])) {
             </div>
           </div>
         </div>
+        <div class="flex items-center justify-center w-full my-5 ">
+          <img src="./assets/images/logo.png" alt="Logo" class="w-3/5 h-auto rounded-full ">
+        </div>
+        <h1 class="mt-5 text-4xl font-bold">SIGN IN</h1>
+
+
 
         <form id="loginForm" action="./includes/authenticate.php" type="button" method="POST" class="w-full px-10">
           <div class="flex "><label for="email">Email: </label></div>

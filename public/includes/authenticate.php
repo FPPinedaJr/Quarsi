@@ -31,22 +31,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['userid'] = $row['iduser'];
         $_SESSION['username'] = $row['f_name'] . ' ' . $row['l_name'];
 
-        $_SESSION['is_admin'] = 0;
-        $_SESSION['is_superuser'] = 0;
         $_SESSION['is_officer'] = 0;
+        $_SESSION['is_superuser'] = 0;
+        $_SESSION['is_admin'] = 0;
         
 
-
-        if ($row['is_admin'] == 1){
-            $_SESSION['is_admin'] = 1;
+        
+        if ($row['is_officer'] == 1) {
+            $_SESSION['is_officer'] = 1;
         } 
         
         if ($row['is_superuser'] == 1) {
-            $_SESSION['usertype'] = 1;
+            $_SESSION['is_superuser'] = 1;
         } 
         
-        if ($row['is_officer'] == 1) {
-            $_SESSION['usertype'] = 1;
+        if ($row['is_admin'] == 1){
+            $_SESSION['is_admin'] = 1;
         } 
         
 

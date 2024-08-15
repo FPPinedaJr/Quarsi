@@ -20,9 +20,9 @@
             <?php
             if ($_SESSION['is_admin'] == 1) {
               echo 'administrator';
-            } else if ($_SESSION['is_admin'] == 1) {
+            } else if ($_SESSION['is_superuser'] == 1) {
               echo 'superuser';
-            } else if ($_SESSION['is_admin'] == 1) {
+            } else if ($_SESSION['is_officer'] == 1) {
               echo 'officer';
             } else {
               echo 'student';
@@ -37,31 +37,48 @@
       <div class="flex flex-col flex-grow mb-3 space-y-1 font-semibold">
         <a href="home.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <i class="text-2xl fa-solid fa-qrcode"></i>
-          <span class="font-['merriweather_sans'] ml-7">My QR code</span>
+          <span class="font-['merriweather_sans'] ml-5">My QR code</span>
         </a>
-        <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-solid fa-expand"></i>
-          <span class="font-['merriweather_sans'] ml-7">QR scanner</span>
-        </a>
-        <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="2xl fa-solid fa-calendar"></i>
-          <span class="font-['merriweather_sans'] ml-9">Events</span>
-        </a>
-        <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="2xl fa-solid fa-user"></i>
-          <span class="font-['merriweather_sans'] ml-9">Students</span>
-        </a>
-        <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-solid fa-users-rays"></i>
-          <span class="font-['merriweather_sans'] ml-5">Officers</span>
-        </a>
-        <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-solid fa-user-secret"></i>
-          <span class="font-['merriweather_sans'] ml-7">Superusers</span>
-        </a>
+        
+        <?php
+        if ($_SESSION['is_officer'] == 1) {
+          echo '
+          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-expand"></i>
+            <span class="font-[\'merriweather_sans\'] ml-5">QR scanner</span>
+          </a>
+          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-user"></i>
+            <span class="font-[\'merriweather_sans\'] ml-5">Students</span>
+          </a>
+          ';
+        }
+        if ($_SESSION['is_superuser'] == 1) {
+          echo '
+          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-calendar"></i>
+            <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
+          </a>
+          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-users-rays"></i>
+            <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
+          </a>
+          ';
+        }
+        if ($_SESSION['is_admin'] == 1) {
+          echo '
+          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-user-secret"></i>
+            <span class="font-[\'merriweather_sans\'] ml-5">Superusers</span>
+          </a>
+          ';
+        }
+        ?>
+
+
         <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <i class="text-2xl text-black fa-solid fa-arrow-right-from-bracket"></i>
-          <span class=" text-black font-['merriweather_sans'] ml-7">Log Out</span>
+          <span class=" text-black font-['merriweather_sans'] ml-5">Log Out</span>
         </a>
       </div>
     </div>
