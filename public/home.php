@@ -28,6 +28,7 @@ include_once ("./includes/partial/sidebar.php");
     <div class="flex items-center w-full min-h-full px-2 py-1 my-auto md:w-3/12 md:px-4 md:text-center">
         <a onclick="toggleSidebar()"
             class="md:mr-5 text-2xl md:text-4xl md:text-center hover:text-[#6a6b3a] cursor-pointer">
+           
             <i class="fa fa-bars" aria-hidden="true"></i></a>
         <div class="flex justify-start pl-4 text-center min-w-40 md:w-96 md:ml-8 md:mr-2">
             <h1 class="font-['merriweather_sans'] text-[#000000d5] font-bold text-xl md:text-3xl my-auto">Manage Cards
@@ -35,11 +36,7 @@ include_once ("./includes/partial/sidebar.php");
         </div>
     </div>
 
-    <div
-        class="md:hover:bg-[#e9dcb3] w-20 md:w-32 h-8 flex mr-3 md:mr-8  md:text-xl text-lg bg-[#ffed9edc]  rounded-full  my-auto p-2 justify-center items-center cursor-pointer">
-        <p class="font-['mulish'] font-bold">Save<i class="mt-1 ml-1 text-lg md:ml-2 fa-solid fa-floppy-disk"></i>
-        </p>
-    </div>
+
 
 </header>
 
