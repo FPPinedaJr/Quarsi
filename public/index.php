@@ -32,24 +32,44 @@ if (isset($_SESSION['logged_in'])) {
 
 <body class="flex items-center justify-center h-screen text-black bg-orange-200">
   <main class="flex justify-center w-11/12 text-black bg-transparent">
-    <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96 h-72">
+    <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
       <div class="w-full p-2">
-        <h1 class="mb-2 text-2xl font-bold">SIGN IN</h1>
-        <form id="loginForm" action="./includes/authenticate.php" type="button" method="POST" class="w-full">
+        <div class="flex items-center justify-center w-full my-5 ">
+          <img src="./assets/images/logo.png" alt="Logo" class="w-3/5 h-auto rounded-full ">
+        </div>
+        <h1 class="mt-5 text-4xl font-bold">SIGN IN</h1>
+
+        <div class="w-full h-10">
+          <div id="alert" role="alert" class="hidden">
+            <div
+              class="bottom-0 flex items-center px-3 py-1 text-red-800 bg-red-100 border-2 border-red-700 rounded-full ">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <div class="pr-1 text-sm font-medium ms-3">
+                <p id="err_msg"></p>
+              </div>
+              <button type="button"
+                class="ms-auto -mx-1.5 -my-1.5  text-red-600 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8  aria-label=Close">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <form id="loginForm" action="./includes/authenticate.php" type="button" method="POST" class="w-full px-10">
           <div class="flex "><label for="email">Email: </label></div>
           <input id="email" type="text" name="email" placeholder="Enter your email..."
-            class="block w-full px-4 py-2 pr-12 mx-auto mt-1 text-black bg-white border-b-2 border-gray-300 focus:text-emerald-600 focus:border-b-2 focus focus:border-emerald-500 focus:outline-none focus:ring-0 input--main">
+            class="block w-full px-4 py-2 pr-12 mx-auto mt-1 text-black bg-white border-b-2 border-gray-300 focus:text-green-800 focus:border-b-2 focus focus:border-green-800 focus:outline-none focus:ring-0 input--main">
           <div class="relative">
             <div class="flex mt-3"><label for="password">Password: </label></div>
             <input id="password" type="password" name="password" placeholder="Enter your password..."
-              class="block w-full px-4 py-2 pr-12 mx-auto mt-1 text-black border-b-2 border-gray-300 focus:text-emerald-600 focus:border-b-2 focus focus:border-emerald-500 focus:outline-none focus:ring-0 input--main">
+              class="block w-full px-4 py-2 pr-12 mx-auto mt-1 text-black border-b-2 border-gray-300 focus:text-green-800 focus:border-b-2 focus focus:border-green-800 focus:outline-none focus:ring-0 input--main">
             <button type="button" id="show" class="absolute top-8 right-3"><i id="eyeIcon"
                 class="fas fa-eye"></i></button>
           </div>
 
           <div class="h-10 mt-6">
             <button type="submit" id="loginBtn"
-              class="w-4/5 px-4 py-2 font-bold text-white rounded-lg bg-emerald-500 focus:outline-none focus:shadow-outline hover:bg-emerald-600">LOG
+              class="w-3/5 px-4 py-2 font-bold text-white bg-green-900 rounded-lg focus:outline-none focus:shadow-outline md:hover:bg-green-950">LOG
               IN</button>
             <div id="spinner" class="hidden mt-4 text-3xl text-orange-800"><i class="fas fa-spinner fa-spin"></i>
             </div>
@@ -58,19 +78,6 @@ if (isset($_SESSION['logged_in'])) {
       </div>
     </div>
   </main>
-
-  <div id="alert" role="alert" class="absolute hidden top-6">
-    <div class="bottom-0 flex items-center px-3 py-3 text-red-800 bg-red-100 border-2 border-red-700 rounded-lg ">
-      <i class="fa-solid fa-circle-exclamation"></i>
-      <div class="pr-1 text-sm font-medium ms-3">
-        <p id="err_msg"></p>
-      </div>
-      <button type="button"
-        class="ms-auto -mx-1.5 -my-1.5  text-red-600 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8  aria-label=Close">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-  </div>
 
 
 
@@ -91,7 +98,7 @@ if (isset($_SESSION['logged_in'])) {
       $("#spinnerReg").addClass("hidden");
 
     }
- 
+
     $(document).ready(function () {
       $('#show-password').change(function () {
         const passwordInput1 = $('#pass1Reg');
