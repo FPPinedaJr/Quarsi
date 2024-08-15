@@ -69,7 +69,7 @@ if (isset($_SESSION['logged_in'])) {
 
           <div class="h-10 mt-6">
             <button type="submit" id="loginBtn"
-              class="w-3/5 px-4 py-2 font-bold text-white bg-green-900 rounded-lg focus:outline-none focus:shadow-outline md:hover:bg-green-950">LOG
+              class="w-3/5 px-4 py-2 font-bold text-white bg-green-900 rounded-full focus:outline-none focus:shadow-outline md:hover:bg-green-950">LOG
               IN</button>
             <div id="spinner" class="hidden mt-4 text-3xl text-orange-800"><i class="fas fa-spinner fa-spin"></i>
             </div>
