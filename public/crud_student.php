@@ -48,56 +48,23 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <div class="my-2 border-t-2 border-zinc-500"></div>
         <!-- Students List -->
-        <div class="flex flex-col w-full gap-2 mt-2 bg-white h-fit">
-            <div class="relative flex flex-col w-full p-1 bg-teal-200 h-fit">
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem]">
-                        Student Name
-                    </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600">
-                        2022-X-XXXX
-                    </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm">
-                        BSCS X Block X
-                    </div>
-                    <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 align-center right-1 w-fit">
-                        <p class="text-lg">000</p>
-                        <p class="text-xs">Points</p>
-                    </div>
+        <div class="flex flex-col w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center">
+            <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 border border-[#b7b9b9] bg-[#EDF4F2] h-fit cursor-pointer hover:bg-[#dde4e2]">
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem]">
+                    Student Name
                 </div>
-                
-                <div class="relative flex flex-col w-full p-1 bg-teal-200 h-fit">
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem]">
-                        Student Name
-                    </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600">
-                        2022-X-XXXX
-                    </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm">
-                        BSCS X Block X
-                    </div>
-                    <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 align-center right-1 w-fit">
-                        <p class="text-lg">000</p>
-                        <p class="text-xs">Points</p>
-                    </div>
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600">
+                    2022-X-XXXX
                 </div>
-                
-                <div class="relative flex flex-col w-full p-1 bg-teal-200 h-fit">
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem]">
-                        Student Name
-                    </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600">
-                        2022-X-XXXX
-                    </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm">
-                        BSCS X Block X
-                    </div>
-                    <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 align-center right-1 w-fit">
-                        <p class="text-lg">000</p>
-                        <p class="text-xs">Points</p>
-                    </div>
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm">
+                    BSCS X Block X
                 </div>
+                <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 align-center right-1 w-fit">
+                    <p class="text-lg">000</p>
+                    <p class="text-xs">Points</p>
+                </div>
+            </div> 
 
-            </div>
         </div>
     </main>
 
