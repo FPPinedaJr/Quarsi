@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 if (isset($_SESSION['logged_in'])) {
   if ($_SESSION['logged_in'] == true) {
-    header('location: ../index.php');
+    header('location: ./home.php');
   }
 }
 ?>
@@ -32,6 +32,7 @@ if (isset($_SESSION['logged_in'])) {
 
 <body class="flex items-center justify-center h-screen text-black bg-orange-200">
   <main class="flex justify-center w-11/12 text-black bg-transparent">
+    <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
     <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
       <div class="w-full p-2">
         <div class="flex items-center justify-center w-full my-5 ">
@@ -98,6 +99,7 @@ if (isset($_SESSION['logged_in'])) {
       $("#spinnerReg").addClass("hidden");
 
     }
+
 
     $(document).ready(function () {
       $('#show-password').change(function () {
