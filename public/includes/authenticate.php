@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 u.student_no, 
                 u.f_name, 
                 u.l_name, 
+                p.name AS program, 
                 p.name AS program_name, 
                 p.short_name AS program_short_name, 
                 u.year, 
