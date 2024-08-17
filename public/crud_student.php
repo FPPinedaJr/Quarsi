@@ -1,8 +1,35 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
 } 
+
+include_once ("./includes/connect_db.php");
+
+if ($_SESSION["logged_in"] == !true) {
+    header("Location: index.php");
+  } else {
+    $stmt = $pdo->prepare("
+      SELECT 
+        user.iduser as 'iduser',
+        user.student_no as 'student_no',
+        user.f_name as 'f_name',
+        user.l_name as 'l_name',
+        program.short_name as 'program',
+        user.year as 'year',
+        user.block as 'block',
+        user.email as 'email',
+        user.is_officer as 'is_officer',
+        user.is_superuser as 'is_superuser',
+        user.is_admin as 'is_admin',
+        user.total_points as 'points'
+      FROM user
+      INNER JOIN program
+      ON user.program = program.idprogram
+    ");
+
+    $stmt->execute();
+    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }  
 ?>
 
 <!DOCTYPE html>
@@ -69,26 +96,29 @@ include_once ("./includes/partial/sidebar.php");
                     <p class="">Points</p>
                 </div>
             </div> 
-
         </div>
-        <div class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-            <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2] h-fit cursor-pointer md:flex-row md:h-10">
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                    Roronoa Zoro
-                </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                    2022-X-XXXX
-                </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                    BSCS X Block X
-                </div>
-                <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                    <p class="text-lg">0</p>
-                    <p class="text-xs md:hidden">Points</p>
-                </div>
-            </div> 
 
-        </div>  
+        <?php foreach ($students as $student): ?>
+            <div class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
+                <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2] h-fit cursor-pointer md:flex-row md:h-10">
+                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                        <?= $student['f_name'] ?> <?= $student['l_name'] ?>
+                    </div>
+                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                        <?= $student['student_no'] ?>
+                    </div>
+                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                        <?= $student['program'] ?> <?= $student['year'] ?> Block <?= $student['block'] ?>
+                    </div>
+                    <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                        <p class="text-lg">0</p>
+                        <p class="text-xs md:hidden">Points</p>
+                    </div>
+                </div> 
+
+            </div>  
+
+        <?php endforeach; ?>
 
     </main>
 
