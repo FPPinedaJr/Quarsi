@@ -19,6 +19,11 @@ if (session_status() === PHP_SESSION_NONE) {
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
 </head>
 
+<?php
+include_once ("./includes/partial/sidebar.php");
+
+?>
+
 <header
     class="w-full h-16 bg-gradient-to-r from-[#ecd894] via-[#ffffff] to-[#499667] fixed top-0 left-0 right-0 p-2 flex justify-between align-center shadow-md z-20">
     <div class="flex items-center w-full min-h-full px-2 py-1 my-auto md:w-3/12 md:px-4 md:text-center">
@@ -36,7 +41,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body class="flex justify-center w-screen min-h-screen mt-20 overflow-hidden">
     <main class="flex flex-col justify-center w-full h-full px-3 py-2">
         <!-- Search bar -->
-        <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md">
+        <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
             <input class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find student..."> 
         </div>
 
@@ -48,24 +53,43 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <div class="my-2 border-t-2 border-zinc-500"></div>
         <!-- Students List -->
-        <div class="flex flex-col w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center">
-            <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 border border-[#b7b9b9] bg-[#EDF4F2] h-fit cursor-pointer hover:bg-[#dde4e2]">
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem]">
+        
+        <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
+            <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
                     Student Name
                 </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600">
-                    2022-X-XXXX
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
+                    Student ID
                 </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm">
-                    BSCS X Block X
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
+                    Program, Year & Block
                 </div>
-                <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 align-center right-1 w-fit">
-                    <p class="text-lg">000</p>
-                    <p class="text-xs">Points</p>
+                <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                    <p class="">Points</p>
                 </div>
             </div> 
 
         </div>
+        <div class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
+            <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2] h-fit cursor-pointer md:flex-row md:h-10">
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                    Roronoa Zoro
+                </div>
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                    2022-X-XXXX
+                </div>
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                    BSCS X Block X
+                </div>
+                <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                    <p class="text-lg">0</p>
+                    <p class="text-xs md:hidden">Points</p>
+                </div>
+            </div> 
+
+        </div>  
+
     </main>
 
 </body>
