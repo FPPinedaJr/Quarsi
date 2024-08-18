@@ -8,27 +8,40 @@ include_once ("./includes/connect_db.php");
 if ($_SESSION["logged_in"] == !true) {
     header("Location: index.php");
   } else {
-    $stmt = $pdo->prepare("
+    $stmt1 = $pdo->prepare("
       SELECT 
         user.iduser as 'iduser',
         user.student_no as 'student_no',
         user.f_name as 'f_name',
         user.l_name as 'l_name',
         program.short_name as 'program',
+        user.program as 'idprogram_user',
         user.year as 'year',
         user.block as 'block',
         user.email as 'email',
         user.is_officer as 'is_officer',
         user.is_superuser as 'is_superuser',
         user.is_admin as 'is_admin',
-        user.total_points as 'points'
+        user.total_points as 'total_points'
       FROM user
       INNER JOIN program
       ON user.program = program.idprogram
     ");
 
-    $stmt->execute();
-    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt1->execute();
+    $students = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt2 = $pdo->prepare("
+        SELECT 
+            program.idprogram as 'idprogram',
+            program.name as 'name',
+            program.short_name as 'short_name'
+        FROM program
+        ORDER BY program.name
+    ");
+
+    $stmt2->execute();
+    $programs = $stmt2->fetchAll(PDO::FETCH_ASSOC);
   }  
 ?>
 
@@ -65,11 +78,12 @@ include_once ("./includes/partial/sidebar.php");
     </div>
 </header>
 
-<body class="flex justify-center w-screen min-h-screen mt-20 overflow-hidden">
-    <main class="flex flex-col justify-center w-full h-full px-3 py-2">
+<body class="flex justify-center w-screen min-h-screen mt-20 overflow-x-hidden">
+    <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
         <!-- Search bar -->
         <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
-            <input class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find student..."> 
+            <input id="search_student" name="search_student"
+                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find student..."> 
         </div>
 
         <!-- Filter -->
@@ -99,7 +113,20 @@ include_once ("./includes/partial/sidebar.php");
         </div>
 
         <?php foreach ($students as $student): ?>
-            <div class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
+            <div id="student-<?php echo $student['iduser'] ?>" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
+            data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
+            data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
+            data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>" data-is_officer="<?php echo $student['is_officer'] ?>"
+            data-user_type="<?php if($student['is_officer'] == 1){
+                                echo "1";
+                            } else if($student['is_superuser'] == 1) {
+                                echo "2";
+                            } else if($student['is_admin'] == 1) {
+                                echo "3";
+                            } else {
+                                echo"0";
+                            }?>" data-total_points="<?php echo $student['total_points'] ?>"
+            class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                 <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2] h-fit cursor-pointer md:flex-row md:h-10">
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                         <?= $student['f_name'] ?> <?= $student['l_name'] ?>
@@ -110,8 +137,8 @@ include_once ("./includes/partial/sidebar.php");
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
                         <?= $student['program'] ?> <?= $student['year'] ?> Block <?= $student['block'] ?>
                     </div>
-                    <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                        <p class="text-lg">0</p>
+                    <div class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                        <p class="text-lg"><?= $student['total_points']?></p>
                         <p class="text-xs md:hidden">Points</p>
                     </div>
                 </div> 
@@ -122,5 +149,145 @@ include_once ("./includes/partial/sidebar.php");
 
     </main>
 
+    <!-- Edit students modal -->
+    <div onclick="" id="edit_student_modal"
+        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
+        <div id="edit_student_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+            <div class="flex items-center justify-center w-full h-10 text-center bg-teal-700">
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Students</p>
+            </div>
+
+            <div onclick="hideEditStudentModal()" class="absolute flex items-center justify-center w-5 h-5 p-1 rounded-full cursor-pointer -right-2 -top-2 bg-amber-300 hover:bg-amber-200">
+                <i class="text-xs fa-solid fa-x"></i>
+            </div>
+            
+            <!-- fieldset -->
+            <div class="w-full h-fit flex bg-[#fbfcf8] p-1">    
+                <form id="edit_student_form" action="./php/process_student.php" type="button" method="POST"
+                    class="flex flex-col justify-center w-full h-full px-3">
+
+                    <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] my-2 md:flex-row md:gap-2 ">
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <input id="iduser" name="iduser" type="hidden">
+                            <input id="f_name" name="f_name" type="text" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="f_name"  class="pl-1 text-base text-zinc-600">First Name</label>
+                        </div>
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <input id="l_name" name="l_name" type="text" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="l_name"  class="pl-1 text-base text-zinc-600">Last Name</label>
+                        </div>
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <input id="student_no" name="student_no" type="text" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="student_no"  class="pl-1 text-base text-zinc-600">Student No.</label>
+                        </div>
+                    </div>
+
+                    <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] my-2 md:flex-row md:gap-2">
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <select id="program" name="program" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                                <?php foreach ($programs as $program): ?>
+                                    <option value="<?= $program['idprogram']?>"
+                                        class="font-['mulish'] text-black text-base w-full"><?= $program['name']?></option>
+                                <?php endforeach?>
+                            </select>
+                            <label for="program"  class="pl-1 text-base text-zinc-600">Program</label>
+                        </div>
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <input id="year" name="year" type="text" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="year"  class="pl-1 text-base text-zinc-600">Year</label>
+                        </div>
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <input id="block" name="block" type="text" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="block"  class="pl-1 text-base text-zinc-600">Block</label>
+                        </div>
+                    </div>
+                    
+                    <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] my-2 md:flex-row md:gap-2">
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3">
+                            <input id="email" name="email" type="email" required autocomplete="email"
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="email"  class="pl-1 text-base text-zinc-600">Corp. Email</label>
+                        </div>
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3">
+                            <select id="user_type" name="user_type" type="text" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                                <option value="0" class="font-['mulish'] text-black text-base">None</option>
+                                <option value="1" class="font-['mulish'] text-black text-base">Officer</option>
+                                <option value="2" class="font-['mulish'] text-black text-base">Superuser</option>
+                                <option value="3" class="font-['mulish'] text-black text-base">Admin</option>
+                            </select>
+                            <label for="user_type"  class="pl-1 text-base text-zinc-600">User Type</label>
+                        </div>
+
+                        <div class="flex-col w-full my-2 h-fit md:w-1/3">
+                            <input id="total_points" name="total_points" type="total_points" required
+                            class="w-full flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="total_points"  class="pl-1 text-base text-zinc-600">Total Points</label>
+                        </div>
+                        
+                    </div>
+
+                    <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
+                        <button id="save_student_btn" type="submit" value="submit"
+                            class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Submit
+                        </button>
+                        <button id="delete_student_btn" type="submit" value="delete"
+                            class="w-full h-10 text-['mulish'] bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg md:w-20">Delete
+                        </button>
+                    </div>
+
+                </form> 
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
+
+<script src="./assets/js/jquery-3.7.1.min.js"></script>
+<script>
+    function showEditStudentModal(id) {
+        $('#edit_student_modal').removeClass('invisible');
+
+        var $student_no = $('#student-'+id).data('student_no');
+        var $f_name = $('#student-'+id).data('f_name');
+        var $l_name = $('#student-'+id).data('l_name');
+        var $idprogram = $('#student-'+id).data('idprogram');
+        var $year = $('#student-'+id).data('year');
+        var $block = $('#student-'+id).data('block');
+        var $email = $('#student-'+id).data('email');
+        var $user_type = $('#student-'+id).data('user_type');
+        var $total_points = $('#student-'+id).data('total_points');
+
+        $('#iduser').val(id);
+        $('#f_name').val($f_name);
+        $('#l_name').val($l_name);
+        $('#idprogram').val($idprogram);
+        $('#student_no').val($student_no);
+        $('#year').val($year);
+        $('#block').val($block);
+        $('#email').val($email);
+        $('#user_type').val($user_type);
+        $('#total_points').val($total_points);
+
+    }
+
+    function hideEditStudentModal() {
+        $('#edit_student_modal').addClass('invisible');
+    }
+
+    $(document).ready(function() {
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('#edit_student_modal_main').length && $(event.target).closest('#edit_student_modal').length) {
+                hideEditStudentModal();
+            }
+        })
+    })
+
+</script>
