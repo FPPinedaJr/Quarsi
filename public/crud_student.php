@@ -234,10 +234,10 @@ include_once ("./includes/partial/sidebar.php");
                     </div>
 
                     <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                        <button id="save_student_btn" type="submit" value="submit"
+                        <button id="save_student_btn" type="submit" value="submit" name="action"
                             class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Submit
                         </button>
-                        <button id="delete_student_btn" type="submit" value="delete"
+                        <button id="delete_student_btn" type="submit" value="delete" name="action"
                             class="w-full h-10 text-['mulish'] bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg md:w-20">Delete
                         </button>
                     </div>
