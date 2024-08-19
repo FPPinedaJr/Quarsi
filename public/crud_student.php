@@ -237,12 +237,34 @@ include_once ("./includes/partial/sidebar.php");
                         <button id="save_student_btn" type="submit" value="submit" name="action"
                             class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Submit
                         </button>
-                        <button id="delete_student_btn" type="submit" value="delete" name="action"
+                        <button id="delete_student_btn" onclick="showDeleteStudentModal(<?= $student['iduser']?>)"
                             class="w-full h-10 text-['mulish'] bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg md:w-20">Delete
                         </button>
                     </div>
 
                 </form> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div id="delete_student_modal"
+        class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center invisible w-full h-full overflow-y-hidden backdrop-blur-sm bg-gray-500/30">
+        <div id="delete_student_modal_main"
+            class="flex-col w-10/12 md:w-96 h-fit p-2 bg-[#fffddf] rounded-lg items-center justify-content">
+            <div class="flex items-center w-full h-16 px-2 border-b border-emerald-700">
+                <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Student</p>
+            </div>
+            <div class="flex flex-col w-full h-auto p-2 text-md">
+                <p class="font-semibold text-emerald-700">This will delete "<span id="student_to_delete"></span>."</p>
+                <p class="text-emerald-700">Are you sure?</p>
+            </div>
+            <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
+            <button id="deleteStudentCancel" onclick="hideDeleteStudentkModal()"
+                class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
+            <button type="submit" value="delete" name="action" href="./php/process_student.php"
+                class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
+            <input id="id_delete_student" type="hidden" name="iduser" class="">
             </div>
         </div>
     </div>
@@ -254,6 +276,7 @@ include_once ("./includes/partial/sidebar.php");
 <script>
     function showEditStudentModal(id) {
         $('#edit_student_modal').removeClass('invisible');
+        $('body').addClass('overflow-hidden')
 
         var $student_no = $('#student-'+id).data('student_no');
         var $f_name = $('#student-'+id).data('f_name');
@@ -280,12 +303,31 @@ include_once ("./includes/partial/sidebar.php");
 
     function hideEditStudentModal() {
         $('#edit_student_modal').addClass('invisible');
+        $('body').removeClass('overflow-hidden');
+    }
+
+    function showDeleteStudentModal(id) {
+        $('#delete_student_modal').removeClass('invisible');
+        $('body').addClass('overflow-hidden');
+        $('#student_to_delete').text($('#student-'+id).data('f_name') + " " + $('#student-'+id).data('l_name'));
+        $('#id_delete_student').val(id);
+    }
+
+    function hideDeleteStudentkModal() {
+        $('#delete_student_modal').addClass('invisible');
+        $('body').removeClass('overflow-hidden');
     }
 
     $(document).ready(function() {
         $(document).on('click', function(event) {
             if (!$(event.target).closest('#edit_student_modal_main').length && $(event.target).closest('#edit_student_modal').length) {
                 hideEditStudentModal();
+            }
+        })
+
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('#delete_student_modal_main').length && $(event.target).closest('#delete_student_modal').length) {
+                hideDeleteStudentModal();
             }
         })
     })
