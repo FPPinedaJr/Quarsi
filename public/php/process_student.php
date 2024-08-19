@@ -94,11 +94,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
         } else if ($_POST['action'] == 'delete') {
+            $iduser = $_POST['iduser'];
+
             $stmt = $pdo->prepare("
                 DELETE FROM user
                 WHERE iduser=:iduser
             ");
-            $stmt->bindParam(':iduser', $iduser, PDO::PARAM_STR);
+            $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
             if ($stmt->execute()) {
                 header("Location: ../crud_student.php");
                 exit(); 
