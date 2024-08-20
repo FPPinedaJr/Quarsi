@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->bindParam(':user', $user, PDO::PARAM_INT);
             }
             if ($stmt->execute()) {
-                header("Location: ../crud_student.php");
+                header("Location: ../student.php");
                 exit(); 
             } else {
                 echo "Error updating deck. Please try again.";
@@ -102,11 +102,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ");
             $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
             if ($stmt->execute()) {
-                header("Location: ../crud_student.php");
+                header("Location: ../student.php");
                 exit(); 
             } else {
                 echo "Error updating deck. Please try again.";
             }
-        }
+        } else if ($_POST['action'] == 'add') {
+            $iduser = $_POST['iduser'];
+            $f_name = $_POST['f_name'];
+            $l_name = $_POST['l_name'];
+            $program = $_POST['program'];
+            $student_no = $_POST['student_no'];
+            $year = $_POST['year'];
+            $block = $_POST['block'];
+            $email = $_POST['email'];
+            $password = $_POST['student_no'];
+            
+            $stmt = $pdo->prepare("
+                INSERT INTO user (student_no, f_name, l_name, program, year, block, email, password)
+                VALUES (:student_no, :f_name, :l_name, :program, :year, :block, :email, SHA2(:password, 256))
+            ");
+            $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
+            $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
+            $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
+            $stmt->bindParam(':program', $program, PDO::PARAM_INT);
+            $stmt->bindParam(':year', $year, PDO::PARAM_INT);
+            $stmt->bindParam(':block', $block, PDO::PARAM_INT);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+            }
+
+            if ($stmt->execute()) {
+                header("Location: ../student.php");
+                exit(); 
+            } else {
+                echo "Error updating deck. Please try again.";
+            }
     }
 }
