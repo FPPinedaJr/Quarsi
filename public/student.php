@@ -26,6 +26,7 @@ if ($_SESSION["logged_in"] == !true) {
       FROM user
       INNER JOIN program
       ON user.program = program.idprogram
+      WHERE (user.is_officer <> 1) AND (user.is_superuser <> 1) and (user.is_admin <> 1)
     ");
 
     $stmt1->execute();
@@ -93,8 +94,8 @@ include_once ("./includes/partial/sidebar.php");
 
         <!-- Filter -->
         <div class="flex w-full gap-2 mb-2 h-fit">
-            <div class="flex items-start justify-center w-20 p-1 text-lg text-white bg-teal-700 rounded-sm h-fit">Year</div>
-            <div class="flex items-center justify-center w-20 p-1 text-lg text-white bg-teal-700 rounded-sm h-fit">Block</div>
+            <div class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Year</div>
+            <div class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Block</div>
         </div>
 
         <div class="my-2 border-t-2 border-zinc-500"></div>
@@ -102,17 +103,17 @@ include_once ("./includes/partial/sidebar.php");
         
         <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
             <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
+                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
                     Student Name
                 </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
+                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                     Student ID
                 </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
+                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
                     Program, Year & Block
                 </div>
                 <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                    <p class="">Points</p>
+                    <p class="text-center">Points</p>
                 </div>
             </div> 
         </div>
@@ -173,7 +174,6 @@ include_once ("./includes/partial/sidebar.php");
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="add_iduser" name="iduser" type="hidden">
                             <input id="add_f_name" name="f_name" type="text" required
                             class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="f_name"  class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
@@ -193,7 +193,7 @@ include_once ("./includes/partial/sidebar.php");
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="add_program" name="program" required
-                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <?php foreach ($programs as $program): ?>
                                     <option value="<?= $program['idprogram']?>"
                                         class="font-['mulish'] text-black text-base w-full"><?= $program['name']?></option>
@@ -203,10 +203,10 @@ include_once ("./includes/partial/sidebar.php");
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="add_year" name="year" type="number" required
-                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <option value="">Select</option>
                                 <option value="1">First Year</option>
-                                <option value="2">Second Year Year</option>
+                                <option value="2">Second Year</option>
                                 <option value="3">Third Year</option>
                                 <option value="4">Fourth Year</option>
                             </select>
@@ -214,7 +214,7 @@ include_once ("./includes/partial/sidebar.php");
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="add_block" name="block" type="number" required
-                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <option value="">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -295,7 +295,7 @@ include_once ("./includes/partial/sidebar.php");
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="year" name="year" type="text" required
-                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <option value="" class="font-['mulish'] text-black text-base">Select</option>
                                 <option value="1" class="font-['mulish'] text-black text-base">First Year</option>
                                 <option value="2" class="font-['mulish'] text-black text-base">Second Year</option>
@@ -306,7 +306,7 @@ include_once ("./includes/partial/sidebar.php");
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="block" name="block" type="text" required
-                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <option value="" class="font-['mulish'] text-black text-base">Select</option>
                                 <option value="1" class="font-['mulish'] text-black text-base">1</option>
                                 <option value="2" class="font-['mulish'] text-black text-base">2</option>
@@ -324,7 +324,7 @@ include_once ("./includes/partial/sidebar.php");
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
                             <select id="user_type" name="user_type" type="text" required
-                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <option value="" class="font-['mulish'] text-black text-base">Select</option>
                                 <option value="0" class="font-['mulish'] text-black text-base">Student</option>
                                 <option value="1" class="font-['mulish'] text-black text-base">Officer</option>
@@ -333,7 +333,11 @@ include_once ("./includes/partial/sidebar.php");
                             </select>
                             <label for="user_type"  class="pl-1 text-base md:text-lg text-zinc-600">User Type</label>
                         </div>
-                        <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
+                        <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
+                            <input id="total_points" name="total_points" type="number" required 
+                            class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="total_points"  class="pl-1 text-base md:text-lg text-zinc-600">Total Points</label>
+                        </div>
 
                     </div>
 
@@ -341,7 +345,7 @@ include_once ("./includes/partial/sidebar.php");
                         <button id="save_student_btn" type="submit" value="submit" name="action"
                             class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
                         </button>
-                        <button id="delete_student_btn" type="button" onclick="showDeleteStudentModal(<?= $student['iduser']?>)"
+                        <button id="delete_student_btn" type="button" onclick="showDeleteStudentModal()"
                             class="w-full h-10 text-['mulish'] bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg md:w-20">Delete
                         </button>
                     </div>
@@ -410,6 +414,7 @@ include_once ("./includes/partial/sidebar.php");
         var $block = $('#student-'+id).data('block');
         var $email = $('#student-'+id).data('email');
         var $user_type = $('#student-'+id).data('user_type');
+        var $total_points = $('#student-'+id).data('total_points');
 
         $('#iduser').val(id);
         $('#f_name').val($f_name);
@@ -420,6 +425,7 @@ include_once ("./includes/partial/sidebar.php");
         $('#block').val($block);
         $('#email').val($email);
         $('#user_type').val($user_type);
+        $('#total_points').val($total_points);
 
     }
 
@@ -428,11 +434,12 @@ include_once ("./includes/partial/sidebar.php");
         $('body').removeClass('overflow-hidden');
     }
 
-    function showDeleteStudentModal(id) {
+    function showDeleteStudentModal() {
+        var $id = $('#iduser').val()
         $('#delete_student_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
-        $('#student_to_delete').text($('#student-'+id).data('f_name') + " " + $('#student-'+id).data('l_name'));
-        $('#id_delete_student').val(id);
+        $('#student_to_delete').text($('#student-'+$id).data('f_name') + " " + $('#student-'+$id).data('l_name'));
+        $('#id_delete_student').val($id);
     }
 
     function hideDeleteStudentModal() {
