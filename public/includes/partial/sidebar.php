@@ -43,7 +43,7 @@
         <?php
         if ($_SESSION['is_officer'] == 1) {
           echo '
-          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="scanner.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-expand"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">QR scanner</span>
           </a>
