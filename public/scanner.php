@@ -45,7 +45,7 @@ include_once("./includes/partial/sidebar.php");
 
 
 <body class="flex justify-center w-screen min-h-screen mt-24 overflow-hidden">
-    <main class="w-full h-full ">
+    <main class="flex justify-center w-full h-full ">
         <div class="w-full max-w-sm p-5 ">
             <h1 class="mb-4 text-2xl font-bold text-center">QR Scanner</h1>
             <div id="qr-reader" class="border border-gray-300 rounded-lg "></div>
@@ -61,7 +61,7 @@ include_once("./includes/partial/sidebar.php");
 
         function onScanSuccess(decodedText, decodedResult) {
             qrResult.append(`<p>Scanned Code: ${decodedText}</p>`);
-            console.log(decodedText);
+            alert(decodedText);
             $('#qr-reader-results').text(decodedText);
         }
 
