@@ -169,7 +169,7 @@ include_once ("./includes/partial/sidebar.php");
             
             <!-- fieldset -->
             <div class="w-full h-fit flex bg-[#fbfcf8] p-1">    
-                <form id="add_student_form" action="./php/crud_student.php" type="button" method="POST"
+                <form id="add_student_form" action="./includes/crud_student.php" type="button" method="POST"
                     class="flex flex-col justify-center w-full h-full px-3">
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
@@ -260,7 +260,7 @@ include_once ("./includes/partial/sidebar.php");
             
             <!-- fieldset -->
             <div class="w-full h-fit flex bg-[#fbfcf8] p-1">    
-                <form id="edit_student_form" action="./php/crud_student.php" type="button" method="POST"
+                <form id="edit_student_form" action="./includes/crud_student.php" type="button" method="POST"
                     class="flex flex-col justify-center w-full h-full px-3">
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
@@ -370,7 +370,7 @@ include_once ("./includes/partial/sidebar.php");
             <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
                 <button id="deleteStudentCancel" onclick="hideDeleteStudentModal()"
                     class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
-                <form action="./php/crud_student.php" type="button" method="POST">
+                <form action="./includes/crud_student.php" type="button" method="POST">
                     <button type="submit" value="delete" name="action" 
                         class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
                     <input id="id_delete_student" type="hidden" name="iduser" class="">
