@@ -6,7 +6,13 @@ module.exports = {
     './public/includes/**/*.{html,js,php}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "merriweather_sans": ["Merriweather Sans", "sans-serif"],
+        "mulish": ["Mulish", "sans-serif"],
+        "cookie": ["Cookie", "cursive"]
+      },
+    },
   },
   plugins: [],
 }
