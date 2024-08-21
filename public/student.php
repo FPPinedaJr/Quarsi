@@ -315,22 +315,33 @@ include_once("./includes/partial/sidebar.php");
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
                         </div>
-                        <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
-                            <select id="user_type" name="user_type" type="text" required
-                                class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="" class="font-['mulish'] text-black text-base">Select</option>
-                                <option value="0" class="font-['mulish'] text-black text-base">Student</option>
-                                <option value="1" class="font-['mulish'] text-black text-base">Officer</option>
-                                <option value="2" class="font-['mulish'] text-black text-base">Superuser</option>
-                                <option value="3" class="font-['mulish'] text-black text-base">Admin</option>
-                            </select>
-                            <label for="user_type" class="pl-1 text-base md:text-lg text-zinc-600">User Type</label>
-                        </div>
-                        <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
-                            <input id="total_points" name="total_points" type="number" required
-                                class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                            <label for="total_points" class="pl-1 text-base md:text-lg text-zinc-600">Total Points</label>
-                        </div>
+
+                        <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
+                            echo "
+                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                                <select id='user_type' name='user_type' type='text' required
+                                    class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
+                                    <option value='' class='text-base text-black font-mulish'>Select</option>
+                                    <option value='0' class='text-base text-black font-mulish'>Student</option>
+                                    <option value='1' class='text-base text-black font-mulish'>Officer</option>
+                                    <option value='2' class='text-base text-black font-mulish'>Superuser</option>
+                                    <option value='3' class='text-base text-black font-mulish'>Admin</option>
+                                </select>
+                                <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
+                            </div>
+                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                                <input id='total_points' name='total_points' type='number' required
+                                    class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
+                                <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
+                            </div>
+                                ";
+                        } else {
+                            echo '
+                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
+                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
+                            ';
+                        } ?>
+
 
                     </div>
 
@@ -373,6 +384,7 @@ include_once("./includes/partial/sidebar.php");
     </div>
 
 </body>
+
 
 </html>
 
