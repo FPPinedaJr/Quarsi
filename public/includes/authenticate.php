@@ -26,9 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 u.student_no, 
                 u.f_name, 
                 u.l_name, 
-                p.name AS program, 
-                p.name AS program_name, 
-                p.short_name AS program_short_name, 
+                o.abbreviation AS program, 
+                o.abbreviation AS program_short_name, 
                 u.year, 
                 u.block, 
                 u.email, 
@@ -39,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             FROM 
                 user u
             INNER JOIN 
-                program p ON u.program = p.idprogram
+                organization o ON u.organization = o.idorganization
             WHERE 
                 u.email = ?;
         ");

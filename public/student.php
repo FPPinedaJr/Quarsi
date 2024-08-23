@@ -14,8 +14,8 @@ if ($_SESSION["logged_in"] == !true) {
         user.student_no as 'student_no',
         user.f_name as 'f_name',
         user.l_name as 'l_name',
-        program.short_name as 'program',
-        user.program as 'idprogram_user',
+        organization.abbreviation as 'program',
+        user.organization as 'idprogram_user',
         user.year as 'year',
         user.block as 'block',
         user.email as 'email',
@@ -24,8 +24,8 @@ if ($_SESSION["logged_in"] == !true) {
         user.is_admin as 'is_admin',
         user.total_points as 'total_points'
       FROM user
-      INNER JOIN program
-      ON user.program = program.idprogram
+      INNER JOIN organization
+      ON user.organization = organization.idorganization
       WHERE (user.is_officer <> 1) AND (user.is_superuser <> 1) and (user.is_admin <> 1)
     ");
 
@@ -34,11 +34,11 @@ if ($_SESSION["logged_in"] == !true) {
 
     $stmt2 = $pdo->prepare("
         SELECT 
-            program.idprogram as 'idprogram',
-            program.name as 'name',
-            program.short_name as 'short_name'
-        FROM program
-        ORDER BY program.name
+            organization.idorganization as 'idprogram',
+            organization.program as 'name',
+            organization.abbreviation as 'short_name'
+        FROM organization
+        ORDER BY organization.name
     ");
 
     $stmt2->execute();
