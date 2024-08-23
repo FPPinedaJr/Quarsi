@@ -52,7 +52,7 @@ if ($_SESSION["logged_in"] == !true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student - <?php echo $_SESSION['username']; ?></title>
+    <title>Officer - <?php echo $_SESSION['username']; ?></title>
 
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
@@ -442,13 +442,7 @@ include_once("./includes/partial/header.php");
         $('body').removeClass('overflow-hidden');
     }
 
-    function changeHeaderTitle() {
-        $('#header_title').text('Students');
-    }
-
     $(document).ready(function() {
-        changeHeaderTitle();
-        
         $(document).on('click', function(event) {
             if (!$(event.target).closest('#edit_student_modal_main').length && $(event.target).closest('#edit_student_modal').length) {
                 hideEditStudentModal();
