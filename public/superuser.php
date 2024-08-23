@@ -94,7 +94,7 @@ include_once("./includes/partial/header.php");
         <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
             <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
                 <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
-                    superuser Name
+                    Superuser Name
                 </div>
                 <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                     Student ID
@@ -150,7 +150,7 @@ include_once("./includes/partial/header.php");
         class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
         <div id="add_superuser_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
             <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Add superuser</p>
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Add Superuser</p>
             </div>
 
             <!-- fieldset -->
@@ -190,7 +190,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="add_year" name="year" type="number" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="">Select</option>
+                                <option disabled value="">Select</option>
                                 <option value="1">First Year</option>
                                 <option value="2">Second Year</option>
                                 <option value="3">Third Year</option>
@@ -201,7 +201,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="add_block" name="block" type="number" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="">Select</option>
+                                <option disabled value="">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -237,7 +237,7 @@ include_once("./includes/partial/header.php");
         class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
         <div id="edit_superuser_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
             <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit superuser</p>
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Superuser</p>
             </div>
 
             <!-- fieldset -->
@@ -278,7 +278,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="year" name="year" type="text" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="" class="font-['mulish'] text-black text-base">Select</option>
+                                <option disabled value="" class="font-['mulish'] text-black text-base">Select</option>
                                 <option value="1" class="font-['mulish'] text-black text-base">First Year</option>
                                 <option value="2" class="font-['mulish'] text-black text-base">Second Year</option>
                                 <option value="3" class="font-['mulish'] text-black text-base">Third Year</option>
@@ -289,7 +289,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="block" name="block" type="text" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="" class="font-['mulish'] text-black text-base">Select</option>
+                                <option disabled value="" class="font-['mulish'] text-black text-base">Select</option>
                                 <option value="1" class="font-['mulish'] text-black text-base">1</option>
                                 <option value="2" class="font-['mulish'] text-black text-base">2</option>
                                 <option value="3" class="font-['mulish'] text-black text-base">3</option>
@@ -305,32 +305,22 @@ include_once("./includes/partial/header.php");
                             <label for="email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
                         </div>
 
-                        <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
-                            echo "
-                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
-                                <select id='user_type' name='user_type' type='text' required
-                                    class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
-                                    <option value='' class='text-base text-black font-mulish'>Select</option>
-                                    <option value='0' class='text-base text-black font-mulish'>Student</option>
-                                    <option value='1' class='text-base text-black font-mulish'>superuser</option>
-                                    <option value='2' class='text-base text-black font-mulish'>Superuser</option>
-                                    <option value='3' class='text-base text-black font-mulish'>Admin</option>
-                                </select>
-                                <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
-                            </div>
-                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
-                                <input id='total_points' name='total_points' type='number' required
-                                    class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
-                                <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
-                            </div>
-                                ";
-                        } else {
-                            echo '
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-                            ';
-                        } ?>
-
+                        <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                            <select id='user_type' name='user_type' type='text' required
+                                class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
+                                <option disabled value='' class='text-base text-black font-mulish'>Select</option>
+                                <option value='0' class='text-base text-black font-mulish'>Student</option>
+                                <option value='1' class='text-base text-black font-mulish'>superuser</option>
+                                <option value='2' class='text-base text-black font-mulish'>Superuser</option>
+                                <option value='3' class='text-base text-black font-mulish'>Admin</option>
+                            </select>
+                            <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
+                        </div>
+                        <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                            <input id='total_points' name='total_points' type='number' required
+                                class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
+                            <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
+                        </div>
 
                     </div>
 
@@ -354,7 +344,7 @@ include_once("./includes/partial/header.php");
         <div id="delete_superuser_modal_main"
             class="flex-col w-10/12 md:w-96 h-fit p-2 rounded-lg items-center justify-content bg-[#fbfcf8]">
             <div class="flex items-center w-full h-16 px-2 border-b border-emerald-700">
-                <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete superuser</p>
+                <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Superuser</p>
             </div>
             <div class="flex flex-col w-full h-auto p-2 text-md">
                 <p class="font-semibold text-emerald-700">This will delete "<span id="superuser_to_delete"></span>."</p>
