@@ -26,11 +26,11 @@ if ($_SESSION["logged_in"] == !true) {
       FROM user
       INNER JOIN organization
       ON user.organization = organization.idorganization
-      WHERE (user.is_officer <> 1) AND (user.is_superuser <> 1) and (user.is_admin <> 1)
+      WHERE user.is_officer = 1
     ");
 
     $stmt1->execute();
-    $students = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+    $officers = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
     $stmt2 = $pdo->prepare("
         SELECT 
@@ -52,7 +52,7 @@ if ($_SESSION["logged_in"] == !true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Officer - <?php echo $_SESSION['username']; ?></title>
+    <title>Student - <?php echo $_SESSION['username']; ?></title>
 
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
@@ -72,8 +72,8 @@ include_once("./includes/partial/header.php");
     <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
         <!-- Search bar -->
         <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
-            <input id="search_student" name="search_student"
-                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find student...">
+            <input id="search_officer" name="search_officer"
+                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find officer...">
         </div>
 
         <!-- Filter -->
@@ -83,8 +83,8 @@ include_once("./includes/partial/header.php");
         </div>
 
         <!-- Add Button -->
-        <div id="add_student_modal_btn" onclick="showAddStudentModal()"
-            class="absolute z-20 flex items-center justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
+        <div id="add_officer_modal_btn" onclick="showAddOfficerModal()"
+            class="fixed z-20 flex items-center justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
             <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
         </div>
 
@@ -94,7 +94,7 @@ include_once("./includes/partial/header.php");
         <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
             <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
                 <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
-                    Student Name
+                    Officer Name
                 </div>
                 <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                     Student ID
@@ -108,33 +108,33 @@ include_once("./includes/partial/header.php");
             </div>
         </div>
 
-        <?php foreach ($students as $student): ?>
-            <div id="student-<?php echo $student['iduser'] ?>" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
-                data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
-                data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
-                data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>" data-is_officer="<?php echo $student['is_officer'] ?>"
-                data-user_type="<?php if ($student['is_officer'] == 1) {
+        <?php foreach ($officers as $officer): ?>
+            <div id="officer-<?php echo $officer['iduser'] ?>" onclick="showEditOfficerModal(<?php echo $officer['iduser'] ?>)"
+                data-student_no="<?php echo $officer['student_no'] ?>" data-f_name="<?php echo $officer['f_name'] ?>" data-l_name="<?php echo $officer['l_name'] ?>"
+                data-idprogram="<?php echo $officer['idprogram_user'] ?>" data-year="<?php echo $officer['year'] ?>"
+                data-block="<?php echo $officer['block'] ?>" data-email="<?php echo $officer['email'] ?>" data-is_officer="<?php echo $officer['is_officer'] ?>"
+                data-user_type="<?php if ($officer['is_officer'] == 1) {
                                     echo "1";
-                                } else if ($student['is_superuser'] == 1) {
+                                } else if ($officer['is_superuser'] == 1) {
                                     echo "2";
-                                } else if ($student['is_admin'] == 1) {
+                                } else if ($officer['is_admin'] == 1) {
                                     echo "3";
                                 } else {
                                     echo "0";
-                                } ?>" data-total_points="<?php echo $student['total_points'] ?>"
+                                } ?>" data-total_points="<?php echo $officer['total_points'] ?>"
                 class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                 <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                        <?= $student['f_name'] ?> <?= $student['l_name'] ?>
+                        <?= $officer['f_name'] ?> <?= $officer['l_name'] ?>
                     </div>
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                        <?= $student['student_no'] ?>
+                        <?= $officer['student_no'] ?>
                     </div>
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                        <?= $student['program'] ?> <?= $student['year'] ?> Block <?= $student['block'] ?>
+                        <?= $officer['program'] ?> <?= $officer['year'] ?> Block <?= $officer['block'] ?>
                     </div>
                     <div class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                        <p class="text-lg"><?= $student['total_points'] ?></p>
+                        <p class="text-lg"><?= $officer['total_points'] ?></p>
                         <p class="text-xs md:hidden">Points</p>
                     </div>
                 </div>
@@ -145,17 +145,17 @@ include_once("./includes/partial/header.php");
 
     </main>
 
-    <!-- Add student modal -->
-    <div id="add_student_modal"
+    <!-- Add officer modal -->
+    <div id="add_officer_modal"
         class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-        <div id="add_student_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+        <div id="add_officer_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
             <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Add Student</p>
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Add Officer</p>
             </div>
 
             <!-- fieldset -->
             <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
-                <form id="add_student_form" action="./includes/crud_student.php" type="button" method="POST"
+                <form id="add_officer_form" action="./includes/crud_officer.php" type="button" method="POST"
                     class="flex flex-col justify-center w-full h-full px-3">
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
@@ -170,7 +170,7 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="2000-1-0001" required
+                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
                                 class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -222,7 +222,7 @@ include_once("./includes/partial/header.php");
                     </div>
 
                     <div class="flex items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                        <button id="add_student_btn" type="submit" name="action" value="add"
+                        <button id="add_officer_btn" type="submit" name="action" value="add"
                             class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-28">Add
                         </button>
                     </div>
@@ -233,16 +233,16 @@ include_once("./includes/partial/header.php");
     </div>
 
     <!-- Edit students modal -->
-    <div id="edit_student_modal"
+    <div id="edit_officer_modal"
         class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-        <div id="edit_student_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+        <div id="edit_officer_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
             <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Students</p>
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Officer</p>
             </div>
 
             <!-- fieldset -->
             <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
-                <form id="edit_student_form" action="./includes/crud_student.php" type="button" method="POST"
+                <form id="edit_officer_form" action="./includes/crud_officer.php" type="button" method="POST"
                     class="flex flex-col justify-center w-full h-full px-3">
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
@@ -258,7 +258,7 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="2000-1-0001" required
+                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -338,7 +338,7 @@ include_once("./includes/partial/header.php");
                         <button id="save_student_btn" type="submit" value="submit" name="action"
                             class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
                         </button>
-                        <button id="delete_student_btn" type="button" onclick="showDeleteStudentModal()"
+                        <button id="delete_officer_btn" type="button" onclick="showDeleteOfficerModal()"
                             class="w-full h-10 text-['mulish'] bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg md:w-20">Delete
                         </button>
                     </div>
@@ -349,24 +349,24 @@ include_once("./includes/partial/header.php");
     </div>
 
     <!-- Delete Modal -->
-    <div id="delete_student_modal"
+    <div id="delete_officer_modal"
         class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center invisible w-full h-full overflow-y-hidden backdrop-blur-sm bg-gray-500/30">
-        <div id="delete_student_modal_main"
+        <div id="delete_officer_modal_main"
             class="flex-col w-10/12 md:w-96 h-fit p-2 rounded-lg items-center justify-content bg-[#fbfcf8]">
             <div class="flex items-center w-full h-16 px-2 border-b border-emerald-700">
-                <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Student</p>
+                <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Officer</p>
             </div>
             <div class="flex flex-col w-full h-auto p-2 text-md">
-                <p class="font-semibold text-emerald-700">This will delete "<span id="student_to_delete"></span>."</p>
+                <p class="font-semibold text-emerald-700">This will delete "<span id="officer_to_delete"></span>."</p>
                 <p class="text-emerald-700">Are you sure?</p>
             </div>
             <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
-                <button id="deleteStudentCancel" onclick="hideDeleteStudentModal()"
+                <button id="deleteOfficerCancel" onclick="hideDeleteOfficerModal()"
                     class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
-                <form action="./includes/crud_student.php" type="button" method="POST">
+                <form action="./includes/crud_officer.php" type="button" method="POST">
                     <button type="submit" value="delete" name="action"
                         class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
-                    <input id="id_delete_student" type="hidden" name="iduser" class="">
+                    <input id="id_delete_officer" type="hidden" name="iduser" class="">
                 </form>
             </div>
         </div>
@@ -379,8 +379,8 @@ include_once("./includes/partial/header.php");
 
 <script src="./assets/js/jquery-3.7.1.min.js"></script>
 <script>
-    function showAddStudentModal(id) {
-        $('#add_student_modal').removeClass('invisible');
+    function showAddOfficerModal(id) {
+        $('#add_officer_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
         $('#add_iduser').val('');
         $('#add_f_name').val('');
@@ -392,24 +392,24 @@ include_once("./includes/partial/header.php");
         $('#add_email').val('');
     }
 
-    function hideAddStudentModal() {
-        $('#add_student_modal').addClass('invisible');
+    function hideAddOfficerModal() {
+        $('#add_officer_modal').addClass('invisible');
         $('body').removeClass('overflow-hidden');
     }
 
-    function showEditStudentModal(id) {
-        $('#edit_student_modal').removeClass('invisible');
+    function showEditOfficerModal(id) {
+        $('#edit_officer_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden')
 
-        var $student_no = $('#student-' + id).data('student_no');
-        var $f_name = $('#student-' + id).data('f_name');
-        var $l_name = $('#student-' + id).data('l_name');
-        var $idprogram = $('#student-' + id).data('idprogram');
-        var $year = $('#student-' + id).data('year');
-        var $block = $('#student-' + id).data('block');
-        var $email = $('#student-' + id).data('email');
-        var $user_type = $('#student-' + id).data('user_type');
-        var $total_points = $('#student-' + id).data('total_points');
+        var $student_no = $('#officer-' + id).data('student_no');
+        var $f_name = $('#officer-' + id).data('f_name');
+        var $l_name = $('#officer-' + id).data('l_name');
+        var $idprogram = $('#officer-' + id).data('idprogram');
+        var $year = $('#officer-' + id).data('year');
+        var $block = $('#officer-' + id).data('block');
+        var $email = $('#officer-' + id).data('email');
+        var $user_type = $('#officer-' + id).data('user_type');
+        var $total_points = $('#officer-' + id).data('total_points');
 
         $('#iduser').val(id);
         $('#f_name').val($f_name);
@@ -424,40 +424,46 @@ include_once("./includes/partial/header.php");
 
     }
 
-    function hideEditStudentModal() {
-        $('#edit_student_modal').addClass('invisible');
+    function hideEditOfficerModal() {
+        $('#edit_officer_modal').addClass('invisible');
         $('body').removeClass('overflow-hidden');
     }
 
-    function showDeleteStudentModal() {
+    function showDeleteOfficerModal() {
         var $id = $('#iduser').val()
-        $('#delete_student_modal').removeClass('invisible');
+        $('#delete_officer_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
-        $('#student_to_delete').text($('#student-' + $id).data('f_name') + " " + $('#student-' + $id).data('l_name'));
-        $('#id_delete_student').val($id);
+        $('#officer_to_delete').text($('#officer-' + $id).data('f_name') + " " + $('#officer-' + $id).data('l_name'));
+        $('#id_delete_officer').val($id);
     }
 
-    function hideDeleteStudentModal() {
-        $('#delete_student_modal').addClass('invisible');
+    function hideDeleteOfficerModal() {
+        $('#delete_officer_modal').addClass('invisible');
         $('body').removeClass('overflow-hidden');
+    }
+
+    function changeHeaderTitle() {
+        $('#header_title').text('Officers');
     }
 
     $(document).ready(function() {
+        changeHeaderTitle();
+        
         $(document).on('click', function(event) {
-            if (!$(event.target).closest('#edit_student_modal_main').length && $(event.target).closest('#edit_student_modal').length) {
-                hideEditStudentModal();
+            if (!$(event.target).closest('#edit_officer_modal_main').length && $(event.target).closest('#edit_officer_modal').length) {
+                hideEditOfficerModal();
             }
         })
 
         $(document).on('click', function(event) {
-            if (!$(event.target).closest('#delete_student_modal_main').length && $(event.target).closest('#delete_student_modal').length) {
-                hideDeleteStudentModal();
+            if (!$(event.target).closest('#delete_officer_modal_main').length && $(event.target).closest('#delete_officer_modal').length) {
+                hideDeleteOfficerModal();
             }
         })
 
         $(document).on('click', function(event) {
-            if (!$(event.target).closest('#add_student_modal_main').length && $(event.target).closest('#add_student_modal').length) {
-                hideAddStudentModal();
+            if (!$(event.target).closest('#add_officer_modal_main').length && $(event.target).closest('#add_officer_modal').length) {
+                hideAddOfficerModal();
             }
         })
     })
