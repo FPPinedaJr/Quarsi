@@ -53,13 +53,13 @@
           </a>
           ';
         }
-        if ($_SESSION['is_superuser'] == 1) {
+        if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
           <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-calendar"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
           </a>
-          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="././officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-users-rays"></i>
             <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
           </a>
