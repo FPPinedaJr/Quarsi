@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->bindParam(':user', $user, PDO::PARAM_INT);
             }
             if ($stmt->execute()) {
-                header("Location: ../student.php");
+                header("Location: ../officer.php");
                 exit(); 
             } else {
                 echo "Error updating deck. Please try again.";
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ");
             $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
             if ($stmt->execute()) {
-                header("Location: ../student.php");
+                header("Location: ../officer.php");
                 exit(); 
             } else {
                 echo "Error updating deck. Please try again.";
@@ -117,10 +117,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $block = $_POST['block'];
             $email = $_POST['email'];
             $password = $_POST['student_no'];
+            $user = 1;
             
             $stmt = $pdo->prepare("
-                INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password)
-                VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256))
+                INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, is_officer)
+                VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :user)
             ");
             $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
             $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
@@ -130,10 +131,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindParam(':block', $block, PDO::PARAM_INT);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+            $stmt->bindParam(':user', $user, PDO::PARAM_INT);
             }
 
             if ($stmt->execute()) {
-                header("Location: ../student.php");
+                header("Location: ../officer.php");
                 exit(); 
             } else {
                 echo "Error updating deck. Please try again.";
