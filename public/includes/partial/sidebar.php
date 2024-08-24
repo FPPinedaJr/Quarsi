@@ -71,6 +71,10 @@
             <i class="text-2xl fa-solid fa-user-secret"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Superusers</span>
           </a>
+          <a href="././admin.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-user-tie"></i>
+            <span class="font-[\'merriweather_sans\'] ml-5">Administrators</span>
+          </a>
           ';
         }
         ?>

@@ -26,11 +26,11 @@ if ($_SESSION["logged_in"] == !true) {
       FROM user
       INNER JOIN organization
       ON user.organization = organization.idorganization
-      WHERE (user.is_officer <> 1) AND (user.is_superuser <> 1) and (user.is_admin <> 1)
+      WHERE user.is_admin = 1
     ");
 
     $stmt1->execute();
-    $students = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+    $admins = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
     $stmt2 = $pdo->prepare("
         SELECT 
@@ -72,8 +72,8 @@ include_once("./includes/partial/header.php");
     <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
         <!-- Search bar -->
         <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
-            <input id="search_student" name="search_student"
-                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find student...">
+            <input id="search_admin" name="search_admin"
+                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find admin...">
         </div>
 
         <!-- Filter -->
@@ -83,7 +83,7 @@ include_once("./includes/partial/header.php");
         </div>
 
         <!-- Add Button -->
-        <div id="add_student_modal_btn" onclick="showAddStudentModal()"
+        <div id="add_admin_modal_btn" onclick="showAddAdminModal()"
             class="fixed z-20 flex items-center justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
             <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
         </div>
@@ -94,7 +94,7 @@ include_once("./includes/partial/header.php");
         <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
             <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
                 <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
-                    Student Name
+                    Admin Name
                 </div>
                 <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                     Student ID
@@ -108,33 +108,33 @@ include_once("./includes/partial/header.php");
             </div>
         </div>
 
-        <?php foreach ($students as $student): ?>
-            <div id="student-<?php echo $student['iduser'] ?>" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
-                data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
-                data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
-                data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>" 
-                data-user_type="<?php if ($student['is_officer'] == 1) {
+        <?php foreach ($admins as $admin): ?>
+            <div id="admin-<?php echo $admin['iduser'] ?>" onclick="showEditAdminModal(<?php echo $admin['iduser'] ?>)"
+                data-student_no="<?php echo $admin['student_no'] ?>" data-f_name="<?php echo $admin['f_name'] ?>" data-l_name="<?php echo $admin['l_name'] ?>"
+                data-idprogram="<?php echo $admin['idprogram_user'] ?>" data-year="<?php echo $admin['year'] ?>"
+                data-block="<?php echo $admin['block'] ?>" data-email="<?php echo $admin['email'] ?>" 
+                data-user_type="<?php if ($admin['is_officer'] == 1) {
                                     echo "1";
-                                } else if ($student['is_superuser'] == 1) {
+                                } else if ($admin['is_superuser'] == 1) {
                                     echo "2";
-                                } else if ($student['is_admin'] == 1) {
+                                } else if ($admin['is_admin'] == 1) {
                                     echo "3";
                                 } else {
                                     echo "0";
-                                } ?>" data-total_points="<?php echo $student['total_points'] ?>"
+                                } ?>" data-total_points="<?php echo $admin['total_points'] ?>"
                 class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                 <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                        <?= $student['f_name'] ?> <?= $student['l_name'] ?>
+                        <?= $admin['f_name'] ?> <?= $admin['l_name'] ?>
                     </div>
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                        <?= $student['student_no'] ?>
+                        <?= $admin['student_no'] ?>
                     </div>
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                        <?= $student['program'] ?> <?= $student['year'] ?> Block <?= $student['block'] ?>
+                        <?= $admin['program'] ?> <?= $admin['year'] ?> Block <?= $admin['block'] ?>
                     </div>
                     <div class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                        <p class="text-lg"><?= $student['total_points'] ?></p>
+                        <p class="text-lg"><?= $admin['total_points'] ?></p>
                         <p class="text-xs md:hidden">Points</p>
                     </div>
                 </div>
@@ -145,17 +145,17 @@ include_once("./includes/partial/header.php");
 
     </main>
 
-    <!-- Add student modal -->
-    <div id="add_student_modal"
+    <!-- Add officer modal -->
+    <div id="add_admin_modal"
         class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-        <div id="add_student_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+        <div id="add_admin_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
             <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Add Student</p>
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Add Admin</p>
             </div>
 
             <!-- fieldset -->
             <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
-                <form id="add_student_form" action="./includes/crud_student.php" type="button" method="POST"
+                <form id="add_admin_form" action="./includes/crud_admin.php" type="button" method="POST"
                     class="flex flex-col justify-center w-full h-full px-3">
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
@@ -170,7 +170,7 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="2000-1-0001" required
+                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
                                 class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -190,7 +190,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="add_year" name="year" type="number" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="">Select</option>
+                                <option disabled value="">Select</option>
                                 <option value="1">First Year</option>
                                 <option value="2">Second Year</option>
                                 <option value="3">Third Year</option>
@@ -201,7 +201,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="add_block" name="block" type="number" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="">Select</option>
+                                <option disabled value="">Select</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -222,7 +222,7 @@ include_once("./includes/partial/header.php");
                     </div>
 
                     <div class="flex items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                        <button id="add_student_btn" type="submit" name="action" value="add"
+                        <button id="add_admin_btn" type="submit" name="action" value="add"
                             class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-28">Add
                         </button>
                     </div>
@@ -233,16 +233,16 @@ include_once("./includes/partial/header.php");
     </div>
 
     <!-- Edit students modal -->
-    <div id="edit_student_modal"
+    <div id="edit_admin_modal"
         class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-        <div id="edit_student_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+        <div id="edit_admin_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
             <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Students</p>
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Admin</p>
             </div>
 
             <!-- fieldset -->
             <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
-                <form id="edit_student_form" action="./includes/crud_student.php" type="button" method="POST"
+                <form id="edit_admin_form" action="./includes/crud_admin.php" type="button" method="POST"
                     class="flex flex-col justify-center w-full h-full px-3">
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
@@ -258,7 +258,7 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="2000-1-0001" required
+                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -278,7 +278,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="year" name="year" type="text" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="" class="font-['mulish'] text-black text-base">Select</option>
+                                <option disabled value="" class="font-['mulish'] text-black text-base">Select</option>
                                 <option value="1" class="font-['mulish'] text-black text-base">First Year</option>
                                 <option value="2" class="font-['mulish'] text-black text-base">Second Year</option>
                                 <option value="3" class="font-['mulish'] text-black text-base">Third Year</option>
@@ -289,7 +289,7 @@ include_once("./includes/partial/header.php");
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                             <select id="block" name="block" type="text" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                <option value="" class="font-['mulish'] text-black text-base">Select</option>
+                                <option disabled value="" class="font-['mulish'] text-black text-base">Select</option>
                                 <option value="1" class="font-['mulish'] text-black text-base">1</option>
                                 <option value="2" class="font-['mulish'] text-black text-base">2</option>
                                 <option value="3" class="font-['mulish'] text-black text-base">3</option>
@@ -305,32 +305,22 @@ include_once("./includes/partial/header.php");
                             <label for="email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
                         </div>
 
-                        <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
-                            echo "
-                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
-                                <select id='user_type' name='user_type' type='text' required
-                                    class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
-                                    <option value='' class='text-base text-black font-mulish'>Select</option>
-                                    <option value='0' class='text-base text-black font-mulish'>Student</option>
-                                    <option value='1' class='text-base text-black font-mulish'>Officer</option>
-                                    <option value='2' class='text-base text-black font-mulish'>Superuser</option>
-                                    <option value='3' class='text-base text-black font-mulish'>Admin</option>
-                                </select>
-                                <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
-                            </div>
-                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
-                                <input id='total_points' name='total_points' type='number' required
-                                    class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
-                                <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
-                            </div>
-                                ";
-                        } else {
-                            echo '
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-                            ';
-                        } ?>
-
+                        <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                            <select id='user_type' name='user_type' type='text' required
+                                class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
+                                <option value='' class='text-base text-black font-mulish'>Select</option>
+                                <option value='0' class='text-base text-black font-mulish'>Student</option>
+                                <option value='1' class='text-base text-black font-mulish'>Officer</option>
+                                <option value='2' class='text-base text-black font-mulish'>Superuser</option>
+                                <option value='3' class='text-base text-black font-mulish'>Admin</option>
+                            </select>
+                            <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
+                        </div>
+                        <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                            <input id='total_points' name='total_points' type='number' required
+                                class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
+                            <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
+                        </div>
 
                     </div>
 
@@ -338,7 +328,7 @@ include_once("./includes/partial/header.php");
                         <button id="save_student_btn" type="submit" value="submit" name="action"
                             class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
                         </button>
-                        <button id="delete_student_btn" type="button" onclick="showDeleteStudentModal()"
+                        <button id="delete_admin_btn" type="button" onclick="showDeleteAdminModal()"
                             class="w-full h-10 text-['mulish'] bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg md:w-20">Delete
                         </button>
                     </div>
@@ -349,24 +339,24 @@ include_once("./includes/partial/header.php");
     </div>
 
     <!-- Delete Modal -->
-    <div id="delete_student_modal"
+    <div id="delete_admin_modal"
         class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center invisible w-full h-full overflow-y-hidden backdrop-blur-sm bg-gray-500/30">
-        <div id="delete_student_modal_main"
+        <div id="delete_admin_modal_main"
             class="flex-col w-10/12 md:w-96 h-fit p-2 rounded-lg items-center justify-content bg-[#fbfcf8]">
             <div class="flex items-center w-full h-16 px-2 border-b border-emerald-700">
-                <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Student</p>
+                <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Admin</p>
             </div>
             <div class="flex flex-col w-full h-auto p-2 text-md">
-                <p class="font-semibold text-emerald-700">This will delete "<span id="student_to_delete"></span>."</p>
+                <p class="font-semibold text-emerald-700">This will delete "<span id="admin_to_delete"></span>."</p>
                 <p class="text-emerald-700">Are you sure?</p>
             </div>
             <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
-                <button id="deleteStudentCancel" onclick="hideDeleteStudentModal()"
+                <button id="deleteAdminCancel" onclick="hideDeleteAdminModal()"
                     class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
-                <form action="./includes/crud_student.php" type="button" method="POST">
+                <form action="./includes/crud_admin.php" type="button" method="POST">
                     <button type="submit" value="delete" name="action"
                         class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
-                    <input id="id_delete_student" type="hidden" name="iduser" class="">
+                    <input id="id_delete_admin" type="hidden" name="iduser" class="">
                 </form>
             </div>
         </div>
@@ -379,8 +369,8 @@ include_once("./includes/partial/header.php");
 
 <script src="./assets/js/jquery-3.7.1.min.js"></script>
 <script>
-    function showAddStudentModal(id) {
-        $('#add_student_modal').removeClass('invisible');
+    function showAddAdminModal(id) {
+        $('#add_admin_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
         $('#add_iduser').val('');
         $('#add_f_name').val('');
@@ -392,24 +382,24 @@ include_once("./includes/partial/header.php");
         $('#add_email').val('');
     }
 
-    function hideAddStudentModal() {
-        $('#add_student_modal').addClass('invisible');
+    function hideAddAdminModal() {
+        $('#add_admin_modal').addClass('invisible');
         $('body').removeClass('overflow-hidden');
     }
 
-    function showEditStudentModal(id) {
-        $('#edit_student_modal').removeClass('invisible');
+    function showEditAdminModal(id) {
+        $('#edit_admin_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden')
 
-        var $student_no = $('#student-' + id).data('student_no');
-        var $f_name = $('#student-' + id).data('f_name');
-        var $l_name = $('#student-' + id).data('l_name');
-        var $idprogram = $('#student-' + id).data('idprogram');
-        var $year = $('#student-' + id).data('year');
-        var $block = $('#student-' + id).data('block');
-        var $email = $('#student-' + id).data('email');
-        var $user_type = $('#student-' + id).data('user_type');
-        var $total_points = $('#student-' + id).data('total_points');
+        var $student_no = $('#admin-' + id).data('student_no');
+        var $f_name = $('#admin-' + id).data('f_name');
+        var $l_name = $('#admin-' + id).data('l_name');
+        var $idprogram = $('#admin-' + id).data('idprogram');
+        var $year = $('#admin-' + id).data('year');
+        var $block = $('#admin-' + id).data('block');
+        var $email = $('#admin-' + id).data('email');
+        var $user_type = $('#admin-' + id).data('user_type');
+        var $total_points = $('#admin-' + id).data('total_points');
 
         $('#iduser').val(id);
         $('#f_name').val($f_name);
@@ -424,46 +414,46 @@ include_once("./includes/partial/header.php");
 
     }
 
-    function hideEditStudentModal() {
-        $('#edit_student_modal').addClass('invisible');
+    function hideEditAdminModal() {
+        $('#edit_admin_modal').addClass('invisible');
         $('body').removeClass('overflow-hidden');
     }
 
-    function showDeleteStudentModal() {
+    function showDeleteAdminModal() {
         var $id = $('#iduser').val()
-        $('#delete_student_modal').removeClass('invisible');
+        $('#delete_admin_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
-        $('#student_to_delete').text($('#student-' + $id).data('f_name') + " " + $('#student-' + $id).data('l_name'));
-        $('#id_delete_student').val($id);
+        $('#admin_to_delete').text($('#admin-' + $id).data('f_name') + " " + $('#admin-' + $id).data('l_name'));
+        $('#id_delete_admin').val($id);
     }
 
-    function hideDeleteStudentModal() {
-        $('#delete_student_modal').addClass('invisible');
+    function hideDeleteAdminModal() {
+        $('#delete_admin_modal').addClass('invisible');
         $('body').removeClass('overflow-hidden');
     }
 
     function changeHeaderTitle() {
-        $('#header_title').text('Students');
+        $('#header_title').text('Administrators');
     }
 
     $(document).ready(function() {
         changeHeaderTitle();
         
         $(document).on('click', function(event) {
-            if (!$(event.target).closest('#edit_student_modal_main').length && $(event.target).closest('#edit_student_modal').length) {
-                hideEditStudentModal();
+            if (!$(event.target).closest('#edit_admin_modal_main').length && $(event.target).closest('#edit_admin_modal').length) {
+                hideEditAdminModal();
             }
         })
 
         $(document).on('click', function(event) {
-            if (!$(event.target).closest('#delete_student_modal_main').length && $(event.target).closest('#delete_student_modal').length) {
-                hideDeleteStudentModal();
+            if (!$(event.target).closest('#delete_admin_modal_main').length && $(event.target).closest('#delete_admin_modal').length) {
+                hideDeleteAdminModal();
             }
         })
 
         $(document).on('click', function(event) {
-            if (!$(event.target).closest('#add_student_modal_main').length && $(event.target).closest('#add_student_modal').length) {
-                hideAddStudentModal();
+            if (!$(event.target).closest('#add_admin_modal_main').length && $(event.target).closest('#add_admin_modal').length) {
+                hideAddAdminModal();
             }
         })
     })
