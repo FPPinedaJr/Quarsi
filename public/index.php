@@ -150,7 +150,7 @@ if (isset($_SESSION['logged_in'])) {
             console.log(response);
 
             if (response === "success") {
-              window.location.href = "./home.php";
+              window.location.href = "./dashboard.php";
               resetComponent();
             }
             else if (response === "err_empty_email") {

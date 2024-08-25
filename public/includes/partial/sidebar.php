@@ -2,7 +2,7 @@
   <div id="sidebar-overlay"
     class="fixed top-0 left-0 grid w-full min-h-screen p-4 place-items-center backdrop-blur-sm backdrop-opacity-10 backdrop-invert bg-black/30">
     <div id="sidebar-content"
-      class="flex flex-col bg-[#f5f5f5] h-full w-9/12 md:w-72 fixed left-0 duration-300 ease-out transition-all transform -translate-x-full">
+      class="flex flex-col overflow-y-auto  bg-[#f5f5f5] h-full w-9/12 md:w-72 fixed left-0 duration-300 ease-out transition-all transform -translate-x-full">
       <div class="flex items-center justify-between h-16 px-5 text-4xl bg-[#ecd894] ">
         <a href="home.php" class="font-['cookie'] text-[#000000d5] font-bold text-5xl my-auto">Tot-tot</a>
       </div>
@@ -35,11 +35,15 @@
       <h2 class="px-3 py-1 mt-3 font-bold">Navigation</h2>
       <!-- navigation -->
       <div class="flex flex-col flex-grow mb-3 space-y-1 font-semibold">
-        <a href="home.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-solid fa-qrcode"></i>
-          <span class="font-['merriweather_sans'] ml-5">My QR code</span>
+        <a href="dashboard.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <i class="2xl fa-solid fa-house"></i>
+          <span class="font-['merriweather_sans'] ml-5">Dashboard</span>
         </a>
-        
+        <a href="qr.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <i class="text-2xl fa-solid fa-qrcode"></i>
+          <span class="font-['merriweather_sans'] ml-5">Generate QR</span>
+        </a>
+
         <?php
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
@@ -84,6 +88,9 @@
           <i class="text-2xl text-black fa-solid fa-arrow-right-from-bracket"></i>
           <span class=" text-black font-['merriweather_sans'] ml-5">Log Out</span>
         </a>
+        <div class="h-10">
+        </div>
+
       </div>
     </div>
   </div>
