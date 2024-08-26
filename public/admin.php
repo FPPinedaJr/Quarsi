@@ -57,6 +57,11 @@ if ($_SESSION["logged_in"] == !true) {
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
     <link rel="stylesheet" href="./assets/css/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cookie&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
 </head>
 
@@ -73,13 +78,18 @@ include_once("./includes/partial/header.php");
         <!-- Search bar -->
         <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
             <input id="search_admin" name="search_admin"
-                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find admin...">
+                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none"
+                placeholder="Find admin...">
         </div>
 
         <!-- Filter -->
         <div class="flex w-full gap-2 mb-2 h-fit">
-            <div class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Year</div>
-            <div class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Block</div>
+            <div
+                class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
+                Year</div>
+            <div
+                class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
+                Block</div>
         </div>
 
         <!-- Add Button -->
@@ -92,17 +102,22 @@ include_once("./includes/partial/header.php");
         <!-- Students List -->
 
         <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
-            <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
-                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
+            <div id=""
+                class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
+                <div
+                    class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
                     Admin Name
                 </div>
-                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
+                <div
+                    class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                     Student ID
                 </div>
-                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
+                <div
+                    class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
                     Program, Year & Block
                 </div>
-                <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                <div
+                    class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
                     <p class="text-center">Points</p>
                 </div>
             </div>
@@ -110,30 +125,35 @@ include_once("./includes/partial/header.php");
 
         <?php foreach ($admins as $admin): ?>
             <div id="admin-<?php echo $admin['iduser'] ?>" onclick="showEditAdminModal(<?php echo $admin['iduser'] ?>)"
-                data-student_no="<?php echo $admin['student_no'] ?>" data-f_name="<?php echo $admin['f_name'] ?>" data-l_name="<?php echo $admin['l_name'] ?>"
-                data-idprogram="<?php echo $admin['idprogram_user'] ?>" data-year="<?php echo $admin['year'] ?>"
-                data-block="<?php echo $admin['block'] ?>" data-email="<?php echo $admin['email'] ?>" 
-                data-user_type="<?php if ($admin['is_officer'] == 1) {
-                                    echo "1";
-                                } else if ($admin['is_superuser'] == 1) {
-                                    echo "2";
-                                } else if ($admin['is_admin'] == 1) {
-                                    echo "3";
-                                } else {
-                                    echo "0";
-                                } ?>" data-total_points="<?php echo $admin['total_points'] ?>"
+                data-student_no="<?php echo $admin['student_no'] ?>" data-f_name="<?php echo $admin['f_name'] ?>"
+                data-l_name="<?php echo $admin['l_name'] ?>" data-idprogram="<?php echo $admin['idprogram_user'] ?>"
+                data-year="<?php echo $admin['year'] ?>" data-block="<?php echo $admin['block'] ?>"
+                data-email="<?php echo $admin['email'] ?>" data-user_type="<?php if ($admin['is_officer'] == 1) {
+                       echo "1";
+                   } else if ($admin['is_superuser'] == 1) {
+                       echo "2";
+                   } else if ($admin['is_admin'] == 1) {
+                       echo "3";
+                   } else {
+                       echo "0";
+                   } ?>" data-total_points="<?php echo $admin['total_points'] ?>"
                 class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                        <?= $admin['f_name'] ?> <?= $admin['l_name'] ?>
+                <div id=""
+                    class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
+                    <div
+                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                        <?= $admin['f_name'] ?>     <?= $admin['l_name'] ?>
                     </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                    <div
+                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                         <?= $admin['student_no'] ?>
                     </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                        <?= $admin['program'] ?> <?= $admin['year'] ?> Block <?= $admin['block'] ?>
+                    <div
+                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                        <?= $admin['program'] ?>     <?= $admin['year'] ?> Block <?= $admin['block'] ?>
                     </div>
-                    <div class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                    <div
+                        class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
                         <p class="text-lg"><?= $admin['total_points'] ?></p>
                         <p class="text-xs md:hidden">Points</p>
                     </div>
@@ -170,7 +190,8 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
+                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}"
+                                placeholder="ex. 2000-1-0001" required
                                 class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -258,7 +279,8 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
+                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}"
+                                placeholder="ex. 2000-1-0001" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -319,7 +341,8 @@ include_once("./includes/partial/header.php");
                         <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
                             <input id='total_points' name='total_points' type='number' required
                                 class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
-                            <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
+                            <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total
+                                Points</label>
                         </div>
 
                     </div>
@@ -436,22 +459,22 @@ include_once("./includes/partial/header.php");
         $('#header_title').text('Administrators');
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         changeHeaderTitle();
-        
-        $(document).on('click', function(event) {
+
+        $(document).on('click', function (event) {
             if (!$(event.target).closest('#edit_admin_modal_main').length && $(event.target).closest('#edit_admin_modal').length) {
                 hideEditAdminModal();
             }
         })
 
-        $(document).on('click', function(event) {
+        $(document).on('click', function (event) {
             if (!$(event.target).closest('#delete_admin_modal_main').length && $(event.target).closest('#delete_admin_modal').length) {
                 hideDeleteAdminModal();
             }
         })
 
-        $(document).on('click', function(event) {
+        $(document).on('click', function (event) {
             if (!$(event.target).closest('#add_admin_modal_main').length && $(event.target).closest('#add_admin_modal').length) {
                 hideAddAdminModal();
             }
