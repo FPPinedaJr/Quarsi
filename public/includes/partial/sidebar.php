@@ -36,7 +36,7 @@
       <!-- navigation -->
       <div class="flex flex-col flex-grow mb-3 space-y-1 font-semibold">
         <a href="dashboard.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-        <i class="text-2xl fa-solid fa-table-columns"></i>
+          <i class="text-2xl fa-solid fa-table-columns"></i>
           <span class="font-['merriweather_sans'] ml-4">Dashboard</span>
         </a>
         <a href="qr.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
@@ -51,7 +51,19 @@
             <i class="text-2xl fa-solid fa-expand"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">QR scanner</span>
           </a>
-          <a href="././student.php"  class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          ';
+        }
+
+        if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
+          echo '
+          <a href="././events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-calendar"></i>
+            <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
+          </a>';
+        }
+        if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
+          echo '
+           <a href="././student.php"  class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-user"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Students</span>
           </a>
@@ -59,7 +71,7 @@
         }
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-          <a href="././events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-calendar"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
           </a>

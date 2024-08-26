@@ -11,10 +11,10 @@ if ($_SESSION["logged_in"] == !true) {
     <!DOCTYPE html>
     <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Student - <?php echo $_SESSION['username']; ?></title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - <?php echo $_SESSION['username']; ?></title>
 
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
@@ -114,7 +114,15 @@ if ($_SESSION["logged_in"] == !true) {
         </main>
     </body>
 
+<script>
+    function changeHeaderTitle() {
+        $('#header_title').text('Dashboard');
+    }
 
+    $(document).ready(function () {
+        changeHeaderTitle();
+    });
+</script>
 
 
 

@@ -52,7 +52,7 @@ if ($_SESSION["logged_in"] == !true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student - <?php echo $_SESSION['username']; ?></title>
+    <title>Officers - <?php echo $_SESSION['username']; ?></title>
 
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
