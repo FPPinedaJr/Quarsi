@@ -78,13 +78,18 @@ include_once("./includes/partial/header.php");
         <!-- Search bar -->
         <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
             <input id="search_superuser" name="search_superuser"
-                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find superuser...">
+                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none"
+                placeholder="Find superuser...">
         </div>
 
         <!-- Filter -->
         <div class="flex w-full gap-2 mb-2 h-fit">
-            <div class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Year</div>
-            <div class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Block</div>
+            <div
+                class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
+                Year</div>
+            <div
+                class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
+                Block</div>
         </div>
 
         <!-- Add Button -->
@@ -97,48 +102,60 @@ include_once("./includes/partial/header.php");
         <!-- Students List -->
 
         <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
-            <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
-                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
+            <div id=""
+                class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
+                <div
+                    class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
                     Superuser Name
                 </div>
-                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
+                <div
+                    class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                     Student ID
                 </div>
-                <div class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
+                <div
+                    class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
                     Program, Year & Block
                 </div>
-                <div class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                <div
+                    class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
                     <p class="text-center">Points</p>
                 </div>
             </div>
         </div>
 
         <?php foreach ($superusers as $superuser): ?>
-            <div id="superuser-<?php echo $superuser['iduser'] ?>" onclick="showEditSuperuserModal(<?php echo $superuser['iduser'] ?>)"
-                data-student_no="<?php echo $superuser['student_no'] ?>" data-f_name="<?php echo $superuser['f_name'] ?>" data-l_name="<?php echo $superuser['l_name'] ?>"
-                data-idprogram="<?php echo $superuser['idprogram_user'] ?>" data-year="<?php echo $superuser['year'] ?>"
-                data-block="<?php echo $superuser['block'] ?>" data-email="<?php echo $superuser['email'] ?>" data-is_superuser="<?php echo $superuser['is_superuser'] ?>"
+            <div id="superuser-<?php echo $superuser['iduser'] ?>"
+                onclick="showEditSuperuserModal(<?php echo $superuser['iduser'] ?>)"
+                data-student_no="<?php echo $superuser['student_no'] ?>" data-f_name="<?php echo $superuser['f_name'] ?>"
+                data-l_name="<?php echo $superuser['l_name'] ?>" data-idprogram="<?php echo $superuser['idprogram_user'] ?>"
+                data-year="<?php echo $superuser['year'] ?>" data-block="<?php echo $superuser['block'] ?>"
+                data-email="<?php echo $superuser['email'] ?>" data-is_superuser="<?php echo $superuser['is_superuser'] ?>"
                 data-user_type="<?php if ($superuser['is_superuser'] == 1) {
-                                    echo "1";
-                                } else if ($superuser['is_superuser'] == 1) {
-                                    echo "2";
-                                } else if ($superuser['is_admin'] == 1) {
-                                    echo "3";
-                                } else {
-                                    echo "0";
-                                } ?>" data-total_points="<?php echo $superuser['total_points'] ?>"
+                    echo "1";
+                } else if ($superuser['is_superuser'] == 1) {
+                    echo "2";
+                } else if ($superuser['is_admin'] == 1) {
+                    echo "3";
+                } else {
+                    echo "0";
+                } ?>" data-total_points="<?php echo $superuser['total_points'] ?>"
                 class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                <div id="" class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                        <?= $superuser['f_name'] ?> <?= $superuser['l_name'] ?>
+                <div id=""
+                    class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
+                    <div
+                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                        <?= $superuser['f_name'] ?>     <?= $superuser['l_name'] ?>
                     </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                    <div
+                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                         <?= $superuser['student_no'] ?>
                     </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                        <?= $superuser['program'] ?> <?= $superuser['year'] ?> Block <?= $superuser['block'] ?>
+                    <div
+                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                        <?= $superuser['program'] ?>     <?= $superuser['year'] ?> Block <?= $superuser['block'] ?>
                     </div>
-                    <div class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                    <div
+                        class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
                         <p class="text-lg"><?= $superuser['total_points'] ?></p>
                         <p class="text-xs md:hidden">Points</p>
                     </div>
@@ -175,7 +192,8 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
+                            <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}"
+                                placeholder="ex. 2000-1-0001" required
                                 class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -263,7 +281,8 @@ include_once("./includes/partial/header.php");
                             <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}" placeholder="ex. 2000-1-0001" required
+                            <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}"
+                                placeholder="ex. 2000-1-0001" required
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                             <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
@@ -324,7 +343,8 @@ include_once("./includes/partial/header.php");
                         <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
                             <input id='total_points' name='total_points' type='number' required
                                 class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
-                            <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
+                            <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total
+                                Points</label>
                         </div>
 
                     </div>
@@ -441,22 +461,22 @@ include_once("./includes/partial/header.php");
         $('#header_title').text('Superusers');
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         changeHeaderTitle();
-        
-        $(document).on('click', function(event) {
+
+        $(document).on('click', function (event) {
             if (!$(event.target).closest('#edit_superuser_modal_main').length && $(event.target).closest('#edit_superuser_modal').length) {
                 hideEditSuperuserModal();
             }
         })
 
-        $(document).on('click', function(event) {
+        $(document).on('click', function (event) {
             if (!$(event.target).closest('#delete_superuser_modal_main').length && $(event.target).closest('#delete_superuser_modal').length) {
                 hideDeleteSuperuserModal();
             }
         })
 
-        $(document).on('click', function(event) {
+        $(document).on('click', function (event) {
             if (!$(event.target).closest('#add_superuser_modal_main').length && $(event.target).closest('#add_superuser_modal').length) {
                 hideAddSuperuserModal();
             }
