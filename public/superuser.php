@@ -26,7 +26,7 @@ if ($_SESSION["logged_in"] == !true) {
       FROM user
       INNER JOIN organization
       ON user.organization = organization.idorganization
-      WHERE user.is_superuser = 1
+      WHERE user.is_superuser = 1 
     ");
 
     $stmt1->execute();
@@ -334,7 +334,7 @@ include_once("./includes/partial/header.php");
                                 class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
                                 <option disabled value='' class='text-base text-black font-mulish'>Select</option>
                                 <option value='0' class='text-base text-black font-mulish'>Student</option>
-                                <option value='1' class='text-base text-black font-mulish'>superuser</option>
+                                <option value='1' class='text-base text-black font-mulish'>Officer</option>
                                 <option value='2' class='text-base text-black font-mulish'>Superuser</option>
                                 <option value='3' class='text-base text-black font-mulish'>Admin</option>
                             </select>
