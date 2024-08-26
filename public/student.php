@@ -402,7 +402,7 @@ include_once("./includes/partial/header.php");
 
 <script src="./assets/js/jquery-3.7.1.min.js"></script>
 <script>
-    function showAddStudentModal(id) {
+    function showAddStudentModal() {
         $('#add_student_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
         $('#add_iduser').val('');
