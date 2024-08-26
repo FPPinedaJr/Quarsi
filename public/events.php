@@ -51,6 +51,11 @@ if ($_SESSION["logged_in"] == !true) {
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
     <link rel="stylesheet" href="./assets/css/output.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cookie&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
 </head>
 
@@ -87,20 +92,23 @@ include_once("./includes/partial/header.php");
         <div id=""
             class="flex-col hidden w-full gap-2 mt-2 bg-white md:flex md:mt-0 h-fit md:justify-center md:items-center">
             <div id="" class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/5 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
                     Event Name
                 </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/5 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/6 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                     Date
                 </div>
-                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/5 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium">
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:border-r-2 md:border-[#b7b9b9]">
                     Organization
                 </div>
-                <div class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/5 md:h-full md:px-1">
+                <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:border-r-2 md:border-[#b7b9b9]">
+                    Set Points
+                </div>
+                <div class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/6 md:h-full md:px-1">
                     <div class="text-white font-['mulish'] text-lg md:text-[1.3rem] ">Status</div>
                     <div class="text-emerald-100 font-['mulish'] text-xs md:hidden">Log Time</div>
                 </div>
-                <div class="hidden md:flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/5 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:bg-zinc-600 md:border-r-2 md:border-[#b7b9b9] text-white">
+                <div class="hidden md:flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:bg-zinc-600 md:border-r-2 md:border-[#b7b9b9] text-white">
                     Log Time
                 </div>
             </div>
@@ -113,16 +121,19 @@ include_once("./includes/partial/header.php");
                 data-log_time="<?= $event['log_time']?>" data-status="<?= $event['is_active']?>" data-set_points="<?= $event['set_points']?>"
                 class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                 <div id="" class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/5 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
+                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
                         <?= $event['name']?>
                     </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/5 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/6 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                         <?= $event['date']?>
                     </div>
-                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/5 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium">
+                    <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:border-r-2 md:border-[#b7b9b9]">
                         <?= $event['organization']?>
                     </div>
-                    <div class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full font-['mulish'] p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/5 md:h-full md:px-1">
+                    <div class="flex items-center md:border-r-2 md:border-[#b7b9b9] w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium">
+                        <?= $event['set_points']?>
+                    </div>
+                    <div class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full font-['mulish'] p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/6 md:h-full md:px-1">
                         <?php if ($event['is_active'] == 0) {
                             echo '<div class="text-white text-lg md:text-[1.3rem] ">
                                     Inactive
@@ -133,7 +144,6 @@ include_once("./includes/partial/header.php");
                                 </div>';
                         }
                         ?>
-                        
                         <div class="text-emerald-100 font-['mulish'] text-xs md:hidden">
                             <?php if ($event['log_time'] == 1) {
                                 echo "Morning In";  
@@ -147,7 +157,7 @@ include_once("./includes/partial/header.php");
                             ?>
                         </div>
                     </div>
-                    <div class="hidden md:flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/5 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:bg-zinc-600 md:border-r-2 md:border-[#b7b9b9] text-white">
+                    <div class="hidden md:flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:bg-zinc-600 md:border-r-2 md:border-[#b7b9b9] text-white">
                         <?php if ($event['log_time'] == 1) {
                                 echo "Morning In";  
                             } else if ($event['log_time'] == 2) {

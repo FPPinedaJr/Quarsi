@@ -590,6 +590,10 @@ video {
   left: 0px;
 }
 
+.left-10 {
+  left: 2.5rem;
+}
+
 .right-0 {
   right: 0px;
 }
@@ -850,6 +854,10 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-16 {
+  min-height: 4rem;
 }
 
 .w-1\/2 {
@@ -1384,6 +1392,10 @@ video {
   font-family: Mulish, sans-serif;
 }
 
+.font-\[\'merriweather-sans\'\] {
+  font-family: 'merriweather-sans';
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1799,6 +1811,10 @@ video {
 
   .md\:w-full {
     width: 100%;
+  }
+
+  .md\:w-1\/6 {
+    width: 16.666667%;
   }
 
   .md\:flex-row {
