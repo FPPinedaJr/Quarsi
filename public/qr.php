@@ -11,10 +11,10 @@ if ($_SESSION["logged_in"] == !true) {
     <!DOCTYPE html>
     <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Student - <?php echo $_SESSION['username']; ?></title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate QR - <?php echo $_SESSION['username']; ?></title>
 
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
@@ -58,11 +58,11 @@ if ($_SESSION["logged_in"] == !true) {
         </main>
     </body>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-        function changeHeaderTitle() {
-            $('#header_title').text('Home');
-        }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+    function changeHeaderTitle() {
+        $('#header_title').text('Generate QR');
+    }
 
         $(document).ready(function () {
             changeHeaderTitle();
