@@ -1,8 +1,10 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-
 }
+if ($_SESSION["logged_in"] == !true) {
+    header("Location: index.php");
+} else {
 ?>
 
 
@@ -78,3 +80,4 @@ include_once("./includes/partial/header.php");
 
 
 </html>
+<?php } ?>

@@ -63,7 +63,7 @@
             <i class="text-2xl fa-solid fa-calendar"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
           </a>
-          <a href="././officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="././officers.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-users-rays"></i>
             <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
           </a>
