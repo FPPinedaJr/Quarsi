@@ -6,6 +6,7 @@
       <div class="flex items-center justify-between min-h-16 px-5 text-4xl bg-[#ecd894] ">
         <a href="home.php" class="font-['merriweather_sans'] text-[#000000d5] font-bold text-5xl my-auto">Tot-tot</a>
       </div>
+      
       <!-- profile -->
       <div class="flex flex-col items-center my-3">
         <div class="w-32 h-32 overflow-hidden border border-gray-400 rounded-full">
@@ -33,6 +34,7 @@
         </div>
       </div>
       <h2 class="px-3 py-1 mt-3 font-bold">Navigation</h2>
+
       <!-- navigation -->
       <div class="flex flex-col flex-grow mb-3 space-y-1 font-semibold">
         <a href="dashboard.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
@@ -71,10 +73,6 @@
         }
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-          <a href="" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-            <i class="text-2xl fa-solid fa-calendar"></i>
-            <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
-          </a>
           <a href="././officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-users-rays"></i>
             <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
@@ -117,7 +115,7 @@
   function toggleSidebar() {
     $('#sidebar').toggleClass('invisible');
     $('#sidebar-content').toggleClass('-translate-x-full');
-    $('body').toggleClass('overflow-y-hidden'); // Toggle overflow-y-hidden on the body
+    $('body').toggleClass('overflow-y-hidden'); 
     console.log('here')
   }
 
@@ -125,7 +123,7 @@
     function toggleSidebar() {
       $('#sidebar').toggleClass('invisible');
       $('#sidebar-content').toggleClass('-translate-x-full');
-      $('body').toggleClass('overflow-y-hidden'); // Toggle overflow-y-hidden on the body
+      $('body').toggleClass('overflow-y-hidden'); 
       console.log('here')
     }
 
