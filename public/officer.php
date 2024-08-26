@@ -26,7 +26,7 @@ if ($_SESSION["logged_in"] == !true) {
       FROM user
       INNER JOIN organization
       ON user.organization = organization.idorganization
-      WHERE user.is_officer = 1
+      WHERE user.is_officer = 1 OR user.is_superuser = 1 
     ");
 
     $stmt1->execute();

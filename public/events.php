@@ -67,12 +67,12 @@ include_once("./includes/partial/header.php");
         <!-- Search bar -->
         <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
             <input id="search_student" name="search_student"
-                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find student...">
+                class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none" placeholder="Find event...">
         </div>
 
         <!-- Filter -->
-        <div class="flex w-full gap-2 mb-2 h-fit">
-            <div class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Date</div>
+        <div class="flex w-full mb-2 h-fit">
+            <div class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">Date</div>
         </div>
 
         <!-- Add Button -->
@@ -122,15 +122,18 @@ include_once("./includes/partial/header.php");
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/5 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium">
                         <?= $event['organization']?>
                     </div>
-                    <div class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/5 md:h-full md:px-1">
-                        <div class="text-white font-['mulish'] text-lg md:text-[1.3rem] ">
-                            <?php if ($event['is_active'] == 0) {
-                                echo "Inactive";
-                            } else if ($event['is_active'] == 1) {
-                                echo "Active";
-                            }
-                            ?>
-                        </div>
+                    <div class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full font-['mulish'] p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/5 md:h-full md:px-1">
+                        <?php if ($event['is_active'] == 0) {
+                            echo '<div class="text-white text-lg md:text-[1.3rem] ">
+                                    Inactive
+                                </div>';
+                        } else if ($event['is_active'] == 1) {
+                            echo '<div class="text-emerald-100 text-lg md:text-[1.3rem] ">
+                                    Active
+                                </div>';
+                        }
+                        ?>
+                        
                         <div class="text-emerald-100 font-['mulish'] text-xs md:hidden">
                             <?php if ($event['log_time'] == 1) {
                                 echo "Morning In";  
@@ -195,7 +198,7 @@ include_once("./includes/partial/header.php");
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <select id="add_organization" name="organization" required
+                            <select id="add_organization" name="organization" required autocomplete="off"
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <?php foreach ($organizations as $organization): ?>
                                     <option value="<?= $organization['idorganization'] ?>"
@@ -270,7 +273,7 @@ include_once("./includes/partial/header.php");
 
                     <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                            <select id="organization" name="organization" required
+                            <select id="organization" name="organization" required autocomplete="off"
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                 <?php foreach ($organizations as $organization): ?>
                                     <option value="<?= $organization['idorganization'] ?>"
