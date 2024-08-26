@@ -84,6 +84,10 @@
         ?>
 
 
+        <a href="profile.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <i class="text-2xl fa-regular fa-user"></i>
+          <span class=" text-black font-['merriweather_sans'] ml-5">Profile</span>
+        </a>
         <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <i class="text-2xl text-black fa-solid fa-arrow-right-from-bracket"></i>
           <span class=" text-black font-['merriweather_sans'] ml-5">Log Out</span>
