@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student - <?php echo $_SESSION['username']; ?></title>
+    <title>Generate QR - <?php echo $_SESSION['username']; ?></title>
 
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
@@ -54,7 +54,7 @@ include_once("./includes/partial/header.php");
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
     function changeHeaderTitle() {
-        $('#header_title').text('Home');
+        $('#header_title').text('Generate QR');
     }
 
     $(document).ready(function () {

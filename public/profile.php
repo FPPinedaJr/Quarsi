@@ -52,10 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student - <?php echo htmlspecialchars($_SESSION['username']); ?></title>
+    <title>Profile - <?php echo htmlspecialchars($_SESSION['username']); ?></title>
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
     <link rel="stylesheet" href="./assets/css/output.css">
@@ -85,7 +86,8 @@ $user = $stmt->fetch();
     <main class="flex flex-col items-center w-full h-full py-8">
         <!-- Profile Picture -->
         <div class="w-48 h-48 overflow-hidden bg-gray-200 rounded-full">
-            <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture" class="object-cover w-full h-full">
+            <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
+                class="object-cover w-full h-full">
         </div>
 
         <!-- User Details -->
@@ -108,19 +110,33 @@ $user = $stmt->fetch();
             <form method="POST" class="space-y-4">
                 <div>
                     <label class="block text-gray-700">Current Password</label>
-                    <input type="password" name="current_password" class="w-full p-2 border border-gray-300 rounded" >
+                    <input type="password" name="current_password" class="w-full p-2 border border-gray-300 rounded">
                 </div>
                 <div>
                     <label class="block text-gray-700">New Password</label>
-                    <input type="password" name="new_password" class="w-full p-2 border border-gray-300 rounded" >
+                    <input type="password" name="new_password" class="w-full p-2 border border-gray-300 rounded">
                 </div>
                 <div>
                     <label class="block text-gray-700">Confirm New Password</label>
-                    <input type="password" name="confirm_new_password" class="w-full p-2 border border-gray-300 rounded" >
+                    <input type="password" name="confirm_new_password"
+                        class="w-full p-2 border border-gray-300 rounded">
                 </div>
-                <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-teal-500 rounded hover:bg-teal-600">Update Password</button>
+                <button type="submit"
+                    class="w-full px-4 py-2 font-bold text-white bg-teal-500 rounded hover:bg-teal-600">Update
+                    Password</button>
             </form>
         </div>
     </main>
 </body>
+
+<script>
+    function changeHeaderTitle() {
+        $('#header_title').text('Profile');
+    }
+
+    $(document).ready(function () {
+        changeHeaderTitle();
+    });
+</script>
+
 </html>
