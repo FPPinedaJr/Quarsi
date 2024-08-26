@@ -97,7 +97,7 @@ $user = $stmt->fetch();
         </div>
 
         <!-- Display Error or Success Message -->
-        <div class="w-full max-w-sm mt-8">
+        <div class="w-11/12 max-w-sm mt-8 md:w-full">
             <?php if (isset($_GET['error'])) { ?>
                 <div class="p-2 mb-4 text-red-600 bg-red-100 rounded"><?= htmlspecialchars($_GET['error']) ?></div>
             <?php } elseif (isset($_GET['success'])) { ?>
