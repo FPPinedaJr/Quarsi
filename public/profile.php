@@ -2,73 +2,82 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+if ($_SESSION["logged_in"] == !true) {
+    header("Location: index.php");
+} else {
 
-include_once("./includes/connect_db.php");
+    include_once("./includes/connect_db.php");
 
-// Handle password update
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $current_password = $_POST['current_password'];
-    $new_password = $_POST['new_password'];
-    $confirm_new_password = $_POST['confirm_new_password'];
+    // Handle password update
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $current_password = $_POST['current_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_new_password = $_POST['confirm_new_password'];
 
-    // Fetch the current hashed password from the database
-    $stmt = $pdo->prepare("SELECT password FROM user WHERE iduser = ?");
-    $stmt->execute([$_SESSION['userid']]);
-    $user_password = $stmt->fetchColumn();
+        // Fetch the current hashed password from the database
+        $stmt = $pdo->prepare("SELECT password FROM user WHERE iduser = ?");
+        $stmt->execute([$_SESSION['userid']]);
+        $user_password = $stmt->fetchColumn();
 
-    // Validate passwords
-    if (empty($current_password)) {
-        $error_message = "Current password cannot be empty.";
-    } elseif (empty($new_password)) {
-        $error_message = "New password cannot be empty.";
-    } elseif (empty($confirm_new_password)) {
-        $error_message = "Confirm new password cannot be empty.";
-    } elseif (strlen($new_password) < 8) {
-        $error_message = "New password must be at least 8 characters.";
-    } elseif (hash('sha256', $current_password) !== $user_password) {
-        $error_message = "Current password is incorrect.";
-    } elseif ($new_password !== $confirm_new_password) {
-        $error_message = "New passwords do not match.";
-    } else {
-        // Update the password
-        $new_password_hashed = hash('sha256', $new_password);
-        $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE iduser = ?");
-        if ($stmt->execute([$new_password_hashed, $_SESSION['userid']])) {
-            $success_message = "Password updated successfully.";
+        // Validate passwords
+        if (empty($current_password)) {
+            $error_message = "Current password cannot be empty.";
+        } elseif (empty($new_password)) {
+            $error_message = "New password cannot be empty.";
+        } elseif (empty($confirm_new_password)) {
+            $error_message = "Confirm new password cannot be empty.";
+        } elseif (strlen($new_password) < 8) {
+            $error_message = "New password must be at least 8 characters.";
+        } elseif (hash('sha256', $current_password) !== $user_password) {
+            $error_message = "Current password is incorrect.";
+        } elseif ($new_password !== $confirm_new_password) {
+            $error_message = "New passwords do not match.";
         } else {
-            $error_message = "Failed to update password.";
+            // Update the password
+            $new_password_hashed = hash('sha256', $new_password);
+            $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE iduser = ?");
+            if ($stmt->execute([$new_password_hashed, $_SESSION['userid']])) {
+                $success_message = "Password updated successfully.";
+            } else {
+                $error_message = "Failed to update password.";
+            }
         }
+
+        // Redirect to avoid form resubmission
+        if (isset($error_message)) {
+            header("Location: profile.php?error=" . urlencode($error_message));
+        } elseif (isset($success_message)) {
+            header("Location: profile.php?success=" . urlencode($success_message));
+        }
+        exit;
     }
+    ?>
 
-    // Redirect to avoid form resubmission
-    if (isset($error_message)) {
-        header("Location: profile.php?error=" . urlencode($error_message));
-    } elseif (isset($success_message)) {
-        header("Location: profile.php?success=" . urlencode($success_message));
-    }
-    exit;
-}
-?>
+    <!DOCTYPE html>
+    <html lang="en">
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - <?php echo htmlspecialchars($_SESSION['username']); ?></title>
-    <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
-    <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-    <link rel="stylesheet" href="./assets/css/output.css">
-    <script src="./assets/js/jquery-3.7.1.min.js"></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profile - <?php echo htmlspecialchars($_SESSION['username']); ?></title>
+        <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
+        <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
+        <link rel="stylesheet" href="./assets/css/output.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cookie&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+            rel="stylesheet">
+        <script src="./assets/js/jquery-3.7.1.min.js"></script>
+    </head>
 
-<?php
-include_once("./includes/partial/sidebar.php");
-include_once("./includes/partial/header.php");
+    <?php
+    include_once("./includes/partial/sidebar.php");
+    include_once("./includes/partial/header.php");
 
-// Fetch user details
-$stmt = $pdo->prepare("
+    // Fetch user details
+    $stmt = $pdo->prepare("
     SELECT 
         profile_pic,
         CONCAT(f_name, ' ', l_name) AS full_name,
@@ -78,9 +87,9 @@ $stmt = $pdo->prepare("
     FROM user
     WHERE iduser = ?;
 ");
-$stmt->execute([$_SESSION['userid']]);
-$user = $stmt->fetch();
-?>
+    $stmt->execute([$_SESSION['userid']]);
+    $user = $stmt->fetch();
+    ?>
 
 <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
     <main class="flex flex-col items-center w-full h-full py-8">
@@ -90,21 +99,21 @@ $user = $stmt->fetch();
                 class="object-cover w-full h-full">
         </div>
 
-        <!-- User Details -->
-        <div class="mt-6 text-center">
-            <h2 class="text-2xl font-bold"><?= htmlspecialchars($user['full_name']) ?></h2>
-            <p class="text-gray-600">Student No: <?= htmlspecialchars($user['student_no']) ?></p>
-            <p class="text-gray-600"><?= htmlspecialchars($user['section']) ?></p>
-            <p class="text-gray-600"><?= htmlspecialchars($user['email']) ?></p>
-        </div>
+            <!-- User Details -->
+            <div class="mt-6 text-center">
+                <h2 class="text-2xl font-bold"><?= htmlspecialchars($user['full_name']) ?></h2>
+                <p class="text-gray-600">Student No: <?= htmlspecialchars($user['student_no']) ?></p>
+                <p class="text-gray-600"><?= htmlspecialchars($user['section']) ?></p>
+                <p class="text-gray-600"><?= htmlspecialchars($user['email']) ?></p>
+            </div>
 
-        <!-- Display Error or Success Message -->
-        <div class="w-11/12 max-w-sm mt-8 md:w-full">
-            <?php if (isset($_GET['error'])) { ?>
-                <div class="p-2 mb-4 text-red-600 bg-red-100 rounded"><?= htmlspecialchars($_GET['error']) ?></div>
-            <?php } elseif (isset($_GET['success'])) { ?>
-                <div class="p-2 mb-4 text-green-600 bg-green-100 rounded"><?= htmlspecialchars($_GET['success']) ?></div>
-            <?php } ?>
+            <!-- Display Error or Success Message -->
+            <div class="w-11/12 max-w-sm mt-8 md:w-full">
+                <?php if (isset($_GET['error'])) { ?>
+                    <div class="p-2 mb-4 text-red-600 bg-red-100 rounded"><?= htmlspecialchars($_GET['error']) ?></div>
+                <?php } elseif (isset($_GET['success'])) { ?>
+                    <div class="p-2 mb-4 text-green-600 bg-green-100 rounded"><?= htmlspecialchars($_GET['success']) ?></div>
+                <?php } ?>
 
             <!-- Password Update Form -->
             <form method="POST" class="space-y-4">
@@ -140,3 +149,4 @@ $user = $stmt->fetch();
 </script>
 
 </html>
+<?php } ?>
