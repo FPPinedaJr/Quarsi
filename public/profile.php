@@ -1,52 +1,91 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 
+include_once("./includes/connect_db.php");
+
+// Handle password update
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $current_password = $_POST['current_password'];
+    $new_password = $_POST['new_password'];
+    $confirm_new_password = $_POST['confirm_new_password'];
+
+    // Fetch the current hashed password from the database
+    $stmt = $pdo->prepare("SELECT password FROM user WHERE iduser = ?");
+    $stmt->execute([$_SESSION['userid']]);
+    $user_password = $stmt->fetchColumn();
+
+    // Validate passwords
+    if (empty($current_password)) {
+        $error_message = "Current password cannot be empty.";
+    } elseif (empty($new_password)) {
+        $error_message = "New password cannot be empty.";
+    } elseif (empty($confirm_new_password)) {
+        $error_message = "Confirm new password cannot be empty.";
+    } elseif (strlen($new_password) < 8) {
+        $error_message = "New password must be at least 8 characters.";
+    } elseif (hash('sha256', $current_password) !== $user_password) {
+        $error_message = "Current password is incorrect.";
+    } elseif ($new_password !== $confirm_new_password) {
+        $error_message = "New passwords do not match.";
+    } else {
+        // Update the password
+        $new_password_hashed = hash('sha256', $new_password);
+        $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE iduser = ?");
+        if ($stmt->execute([$new_password_hashed, $_SESSION['userid']])) {
+            $success_message = "Password updated successfully.";
+        } else {
+            $error_message = "Failed to update password.";
+        }
+    }
+
+    // Redirect to avoid form resubmission
+    if (isset($error_message)) {
+        header("Location: profile.php?error=" . urlencode($error_message));
+    } elseif (isset($success_message)) {
+        header("Location: profile.php?success=" . urlencode($success_message));
+    }
+    exit;
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student - <?php echo $_SESSION['username']; ?></title>
-
+    <title>Student - <?php echo htmlspecialchars($_SESSION['username']); ?></title>
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
     <link rel="stylesheet" href="./assets/css/output.css">
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
 </head>
+
 <?php
 include_once("./includes/partial/sidebar.php");
-include_once("./includes/connect_db.php");
 include_once("./includes/partial/header.php");
+
+// Fetch user details
+$stmt = $pdo->prepare("
+    SELECT 
+        profile_pic,
+        CONCAT(f_name, ' ', l_name) AS full_name,
+        student_no,
+        CONCAT('Year ', year, ' Block ', block) AS section,
+        email
+    FROM user
+    WHERE iduser = ?;
+");
+$stmt->execute([$_SESSION['userid']]);
+$user = $stmt->fetch();
 ?>
 
 <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
     <main class="flex flex-col items-center w-full h-full py-8">
-        <?php
-        // Fetch user details
-        $stmt = $pdo->prepare("
-        SELECT 
-            profile_pic,
-            CONCAT(f_name, ' ', l_name) AS full_name,
-            student_no,
-            CONCAT('Year ', year, ' Block ', block) AS section,
-            email
-        FROM user
-        WHERE iduser = ?;
-    ");
-        $stmt->execute([$_SESSION['userid']]);
-        $user = $stmt->fetch();
-        ?>
-
         <!-- Profile Picture -->
         <div class="w-48 h-48 overflow-hidden bg-gray-200 rounded-full">
-            <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
-                class="object-cover w-full h-full">
+            <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture" class="object-cover w-full h-full">
         </div>
 
         <!-- User Details -->
@@ -57,81 +96,31 @@ include_once("./includes/partial/header.php");
             <p class="text-gray-600"><?= htmlspecialchars($user['email']) ?></p>
         </div>
 
-        <!-- Password Update Form -->
+        <!-- Display Error or Success Message -->
         <div class="w-full max-w-sm mt-8">
-            <?php
-            // Handle password update
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $current_password = $_POST['current_password'];
-                $new_password = $_POST['new_password'];
-                $confirm_new_password = $_POST['confirm_new_password'];
-
-                // Fetch the current hashed password from the database
-                $stmt = $pdo->prepare("SELECT password FROM user WHERE iduser = ?");
-                $stmt->execute([$_SESSION['userid']]);
-                $user_password = $stmt->fetchColumn();
-
-                // Validate current password
-                if (empty($current_password)) {
-                    $error_message = "Current password cannot be empty.";
-                } elseif (empty($new_password)) {
-                    $error_message = "New password cannot be empty.";
-                } elseif (empty($confirm_new_password)) {
-                    $error_message = "Confirm new password cannot be empty.";
-                } elseif (strlen($current_password) < 8) {
-                    $error_message = "New password must be atleast 8 charcters.";
-                } else if (hash('sha256', $current_password) !== $user_password) {
-                    $error_message = "Current password is incorrect.";
-                } elseif ($new_password !== $confirm_new_password) {
-                    $error_message = "New passwords do not match.";
-                } else {
-                    // Update the password
-                    $new_password_hashed = hash('sha256', $new_password);
-                    $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE iduser = ?");
-                    if ($stmt->execute([$new_password_hashed, $_SESSION['userid']])) {
-                        $success_message = "Password updated successfully.";
-                    } else {
-                        $error_message = "Failed to update password.";
-                    }
-                }
-            }
-            ?>
-
-            <!-- Display Error or Success Message -->
-            <?php if (isset($error_message)) { ?>
-                <div class="p-2 mb-4 text-red-600 bg-red-100 rounded"><?= htmlspecialchars($error_message) ?></div>
-            <?php } elseif (isset($success_message)) { ?>
-                <div class="p-2 mb-4 text-green-600 bg-green-100 rounded"><?= htmlspecialchars($success_message) ?></div>
+            <?php if (isset($_GET['error'])) { ?>
+                <div class="p-2 mb-4 text-red-600 bg-red-100 rounded"><?= htmlspecialchars($_GET['error']) ?></div>
+            <?php } elseif (isset($_GET['success'])) { ?>
+                <div class="p-2 mb-4 text-green-600 bg-green-100 rounded"><?= htmlspecialchars($_GET['success']) ?></div>
             <?php } ?>
 
             <!-- Password Update Form -->
             <form method="POST" class="space-y-4">
                 <div>
                     <label class="block text-gray-700">Current Password</label>
-                    <input type="password" name="current_password" class="w-full p-2 border border-gray-300 rounded">
+                    <input type="password" name="current_password" class="w-full p-2 border border-gray-300 rounded" >
                 </div>
                 <div>
                     <label class="block text-gray-700">New Password</label>
-                    <input type="password" name="new_password" class="w-full p-2 border border-gray-300 rounded">
+                    <input type="password" name="new_password" class="w-full p-2 border border-gray-300 rounded" >
                 </div>
                 <div>
                     <label class="block text-gray-700">Confirm New Password</label>
-                    <input type="password" name="confirm_new_password"
-                        class="w-full p-2 border border-gray-300 rounded">
+                    <input type="password" name="confirm_new_password" class="w-full p-2 border border-gray-300 rounded" >
                 </div>
-                <button type="submit"
-                    class="w-full px-4 py-2 font-bold text-white bg-teal-500 rounded hover:bg-teal-600">Update
-                    Password</button>
+                <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-teal-500 rounded hover:bg-teal-600">Update Password</button>
             </form>
         </div>
     </main>
-
-
-
 </body>
-
-
-
-
-
 </html>
