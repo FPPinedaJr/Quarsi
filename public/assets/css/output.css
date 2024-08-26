@@ -974,6 +974,14 @@ video {
   flex-direction: column;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
 .place-items-center {
   place-items: center;
 }
@@ -1018,6 +1026,10 @@ video {
   overflow: hidden;
 }
 
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 .overflow-y-auto {
   overflow-y: auto;
 }
@@ -1028,6 +1040,18 @@ video {
 
 .overflow-y-hidden {
   overflow-y: hidden;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+
+.whitespace-normal {
+  white-space: normal;
+}
+
+.break-words {
+  overflow-wrap: break-word;
 }
 
 .rounded {
@@ -1755,6 +1779,14 @@ video {
 
   .md\:h-full {
     height: 100%;
+  }
+
+  .md\:min-h-10 {
+    min-height: 2.5rem;
+  }
+
+  .md\:min-h-full {
+    min-height: 100%;
   }
 
   .md\:w-1\/3 {
