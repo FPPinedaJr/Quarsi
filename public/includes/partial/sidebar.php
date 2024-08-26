@@ -36,8 +36,8 @@
       <!-- navigation -->
       <div class="flex flex-col flex-grow mb-3 space-y-1 font-semibold">
         <a href="dashboard.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="2xl fa-solid fa-house"></i>
-          <span class="font-['merriweather_sans'] ml-5">Dashboard</span>
+        <i class="text-2xl fa-solid fa-table-columns"></i>
+          <span class="font-['merriweather_sans'] ml-4">Dashboard</span>
         </a>
         <a href="qr.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <i class="text-2xl fa-solid fa-qrcode"></i>
