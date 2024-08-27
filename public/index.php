@@ -35,7 +35,7 @@ if (isset($_SESSION['logged_in'])) {
 
 
 
-<body class="flex items-center justify-center h-screen text-black md:bg-gradient-to-tr from-green-800 to-slate-200 ">
+<body class="flex items-center justify-center h-screen overflow-hidden text-black md:bg-gradient-to-tr from-green-800 to-slate-200 ">
   <main class="flex justify-center w-4/6 text-black bg-transparent">
     <div class="flex justify-center p-2 text-center bg-white rounded-lg md:shadow-lg md:shadow-zinc-700/50 ">
       <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
