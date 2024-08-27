@@ -1824,9 +1824,9 @@ video {
     border-color: rgb(183 185 185 / var(--tw-border-opacity));
   }
 
-  .md\:bg-teal-600 {
+  .md\:bg-emerald-600 {
     --tw-bg-opacity: 1;
-    background-color: rgb(13 148 136 / var(--tw-bg-opacity));
+    background-color: rgb(5 150 105 / var(--tw-bg-opacity));
   }
 
   .md\:bg-zinc-600 {
@@ -1895,8 +1895,8 @@ video {
     --tw-shadow: var(--tw-shadow-colored);
   }
 
-  .md\:hover\:bg-green-950:hover {
+  .md\:hover\:bg-emerald-700:hover {
     --tw-bg-opacity: 1;
-    background-color: rgb(5 46 22 / var(--tw-bg-opacity));
+    background-color: rgb(4 120 87 / var(--tw-bg-opacity));
   }
 }
