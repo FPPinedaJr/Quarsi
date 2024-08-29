@@ -35,9 +35,9 @@ if (isset($_SESSION['logged_in'])) {
 
 
 
-<body class="flex items-center justify-center h-screen text-black bg-orange-200">
-  <main class="flex justify-center w-11/12 text-black bg-transparent">
-    <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
+<body class="flex items-center justify-center h-screen overflow-hidden text-black md:bg-gradient-to-tr from-green-800 to-slate-200 ">
+  <main class="flex justify-center w-4/6 text-black bg-transparent">
+    <div class="flex justify-center p-2 text-center bg-white rounded-lg md:shadow-lg md:shadow-zinc-700/50 ">
       <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
         <div class="w-full p-2">
           <div class="flex items-center justify-center w-full my-5 ">
@@ -45,8 +45,8 @@ if (isset($_SESSION['logged_in'])) {
           </div>
           <h1 class="mt-5 text-4xl font-bold">SIGN IN</h1>
 
-          <div class="w-full h-10">
-            <div id="alert" role="alert" class="hidden">
+          <div class="flex justify-center w-full h-10">
+            <div id="alert" role="alert" class="hidden w-2/3 mt-2">
               <div
                 class="bottom-0 flex items-center px-3 py-1 text-red-800 bg-red-100 border-2 border-red-700 rounded-full ">
                 <i class="fa-solid fa-circle-exclamation"></i>
@@ -62,22 +62,20 @@ if (isset($_SESSION['logged_in'])) {
           </div>
 
           <form id="loginForm" action="./includes/authenticate.php" type="button" method="POST" class="w-full px-10">
-            <div class="flex "><label for="email">Email: </label></div>
             <input id="email" type="text" name="email" placeholder="Enter your email..."
               class="block w-full px-4 py-2 pr-12 mx-auto mt-1 text-black bg-white border-b-2 border-gray-300 focus:text-green-800 focus:border-b-2 focus focus:border-green-800 focus:outline-none focus:ring-0 input--main">
-            <div class="relative">
-              <div class="flex mt-3"><label for="password">Password: </label></div>
+            <div class="relative mt-5">
               <input id="password" type="password" name="password" placeholder="Enter your password..."
                 class="block w-full px-4 py-2 pr-12 mx-auto mt-1 text-black border-b-2 border-gray-300 focus:text-green-800 focus:border-b-2 focus focus:border-green-800 focus:outline-none focus:ring-0 input--main">
-              <button type="button" id="show" class="absolute top-8 right-3"><i id="eyeIcon"
+              <button type="button" id="show" class="absolute top-2 right-3"><i id="eyeIcon"
                   class="fas fa-eye"></i></button>
             </div>
 
-            <div class="h-10 mt-6">
+            <div class="h-10 mt-10 mb-3">
               <button type="submit" id="loginBtn"
-                class="w-3/5 px-4 py-2 font-bold text-white bg-green-900 rounded-full focus:outline-none focus:shadow-outline md:hover:bg-green-950">LOG
+                class="w-3/5 px-4 py-2 font-bold text-white bg-green-900 rounded-full md:bg-emerald-600 focus:outline-none focus:shadow-outline md:hover:bg-emerald-700">LOG
                 IN</button>
-              <div id="spinner" class="hidden mt-4 text-3xl text-orange-800"><i class="fas fa-spinner fa-spin"></i>
+              <div id="spinner" class="hidden mt-4 text-3xl text-emerald-700"><i class="fas fa-spinner fa-spin"></i>
               </div>
             </div>
           </form>
