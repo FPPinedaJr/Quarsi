@@ -1,3 +1,25 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+include_once("./includes/connect_db.php");
+
+$stmt = $pdo->prepare("
+SELECT 
+    profile_pic,
+    CONCAT(f_name, ' ', l_name) AS full_name,
+    student_no,
+    CONCAT('Year ', year, ' Block ', block) AS section,
+    email
+FROM user
+WHERE iduser = ?;
+");
+$stmt->execute([$_SESSION['userid']]);
+$side_profile = $stmt->fetch();
+?>
+
+
+
 <div id="sidebar" class="fixed inset-0 z-50 invisible w-full h-full">
   <div id="sidebar-overlay"
     class="fixed top-0 left-0 grid w-full min-h-screen p-4 place-items-center backdrop-blur-sm backdrop-opacity-10 backdrop-invert bg-black/30">
@@ -6,11 +28,12 @@
       <div class="flex items-center justify-between min-h-16 px-5 text-4xl bg-[#ecd894] ">
         <a href="home.php" class="font-['merriweather_sans'] text-[#000000d5] font-bold text-5xl my-auto">Tot-tot</a>
       </div>
-      
+
       <!-- profile -->
       <div class="flex flex-col items-center my-3">
         <div class="w-32 h-32 overflow-hidden border border-gray-400 rounded-full">
-          <img class="object-cover w-full h-full" src="./assets/images/logo.png" alt="profile">
+          <img src="data:image/jpeg;base64,<?= base64_encode($side_profile['profile_pic']) ?>" alt="Profile Picture"
+            class="object-cover w-full h-full">
         </div>
         <div class="mt-2">
           <h3 class="font-semibold font-['merriweather_sans'] text-2xl text-center"><?php echo $_SESSION['username'] ?>
@@ -115,7 +138,7 @@
   function toggleSidebar() {
     $('#sidebar').toggleClass('invisible');
     $('#sidebar-content').toggleClass('-translate-x-full');
-    $('body').toggleClass('overflow-y-hidden'); 
+    $('body').toggleClass('overflow-y-hidden');
     console.log('here')
   }
 
@@ -123,7 +146,7 @@
     function toggleSidebar() {
       $('#sidebar').toggleClass('invisible');
       $('#sidebar-content').toggleClass('-translate-x-full');
-      $('body').toggleClass('overflow-y-hidden'); 
+      $('body').toggleClass('overflow-y-hidden');
       console.log('here')
     }
 
