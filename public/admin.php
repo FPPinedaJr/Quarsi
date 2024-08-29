@@ -22,7 +22,8 @@ if ($_SESSION["logged_in"] == !true) {
         user.is_officer as 'is_officer',
         user.is_superuser as 'is_superuser',
         user.is_admin as 'is_admin',
-        user.total_points as 'total_points'
+        user.total_points as 'total_points',
+        user.profile_pic as 'profile_pic'
       FROM user
       INNER JOIN organization
       ON user.organization = organization.idorganization
@@ -128,6 +129,7 @@ include_once("./includes/partial/header.php");
                 data-student_no="<?php echo $admin['student_no'] ?>" data-f_name="<?php echo $admin['f_name'] ?>"
                 data-l_name="<?php echo $admin['l_name'] ?>" data-idprogram="<?php echo $admin['idprogram_user'] ?>"
                 data-year="<?php echo $admin['year'] ?>" data-block="<?php echo $admin['block'] ?>"
+                data-profile_pic="<?= base64_encode($admin['profile_pic']) ?>"
                 data-email="<?php echo $admin['email'] ?>" data-user_type="<?php if ($admin['is_officer'] == 1) {
                        echo "1";
                    } else if ($admin['is_superuser'] == 1) {
@@ -237,7 +239,12 @@ include_once("./includes/partial/header.php");
                                 class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500 flex-grow-0">
                             <label for="email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
                         </div>
-                        <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
+                        <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
+                            <input id="add_profile_pic" name="profile_pic" type="file" 
+                                class="w-full bg-white md:h-9 flex items-center font-['mulish'] text-black focus:outline-teal-500 border border-gray-500 flex-grow-0
+                                        file:h-full file:border-none file:bg-teal-700 file:text-white">
+                            <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile Picture</label>
+                        </div>
                         <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
 
                     </div>
@@ -320,7 +327,7 @@ include_once("./includes/partial/header.php");
                         </div>
                     </div>
 
-                    <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mb-4">
+                    <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mb-1">
                         <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
                             <input id="email" name="email" type="email" required autocomplete="email"
                                 class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
@@ -346,6 +353,21 @@ include_once("./includes/partial/header.php");
                         </div>
 
                     </div>
+
+                    <?php if ($_SESSION['is_admin'] == 1 ) {
+                        echo '
+                        <div class="flex w-full h-fit flex-col bg-[#fbfcf8] md:flex-row md:gap-2 mb-2">
+                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
+                                <input id="add_profile_pic" name="profile_pic" type="file" 
+                                    class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
+                                <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile Picture</label>
+                            </div>
+                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
+                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
+                        </div>
+
+                        ';
+                    } ?>
 
                     <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
                         <button id="save_student_btn" type="submit" value="submit" name="action"

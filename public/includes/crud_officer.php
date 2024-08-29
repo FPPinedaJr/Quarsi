@@ -15,13 +15,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $_POST['email'];
             $user_type = $_POST['user_type'];
             $total_points = $_POST['total_points'];
+            $profile_pic = $_FILES['profile_pic'];
             $user = 1;
             
             if ($user_type == 0) {
+                $img_content = "";
+
+                if (!empty($profile_pic["tmp_name"])) {
+                    $img_content = file_get_contents($profile_pic["tmp_name"]);
+                } else {
+                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
+                }
+
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, total_points=:total_points
+                        year=:year, block=:block, email=:email, total_points=:total_points, profile_pic=:profile_pic
                     WHERE iduser=:iduser
                 ");
                 $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
@@ -33,12 +42,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt->bindParam(':block', $block, PDO::PARAM_INT);
                 $stmt->bindParam(':email', $email, PDO::PARAM_STR);
                 $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
+                $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
 
             } else if ($user_type == 1){
+                $img_content = "";
+
+                if (!empty($profile_pic["tmp_name"])) {
+                    $img_content = file_get_contents($profile_pic["tmp_name"]);
+                } else {
+                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
+                }
+
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, is_officer=:user, total_points=:total_points
+                        year=:year, block=:block, email=:email, is_officer=:user, total_points=:total_points, profile_pic=:profile_pic
                     WHERE iduser=:iduser
                     ");
                     $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
@@ -51,11 +69,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
                     $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
                     $stmt->bindParam(':user', $user, PDO::PARAM_INT);
+                    $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
+
             } else if ($user_type == 2) {
+                $img_content = "";
+
+                if (!empty($profile_pic["tmp_name"])) {
+                    $img_content = file_get_contents($profile_pic["tmp_name"]);
+                } else {
+                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
+                }
+
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, is_superuser=:user, total_points=:total_points
+                        year=:year, block=:block, email=:email, is_superuser=:user, total_points=:total_points, profile_pic=:profile_pic
                     WHERE iduser=:iduser
                     ");
                     $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
@@ -68,11 +96,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
                     $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
                     $stmt->bindParam(':user', $user, PDO::PARAM_INT);
+                    $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
             } else if ($user_type == 3) {
+                $img_content = "";
+
+                if (!empty($profile_pic["tmp_name"])) {
+                    $img_content = file_get_contents($profile_pic["tmp_name"]);
+                } else {
+                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
+                }
+
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, is_admin=:user, total_points=:total_points
+                        year=:year, block=:block, email=:email, is_admin=:user, total_points=:total_points, profile_pic=:profile_pic
                     WHERE iduser=:iduser
                     ");
                     $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
@@ -85,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
                     $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
                     $stmt->bindParam(':user', $user, PDO::PARAM_INT);
+                    $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
             }
             if ($stmt->execute()) {
                 header("Location: ../officer.php");
@@ -118,10 +156,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $_POST['email'];
             $password = $_POST['student_no'];
             $user = 1;
+            $profile_pic = $_POST['profile_pic'];
+
+            $img_content = "";
+
+            if (!empty($profile_pic["tmp_name"])) {
+                $img_content = file_get_contents($profile_pic["tmp_name"]);
+            } else {
+                $img_content = file_get_contents("../assets/images/default_pic.jpg");
+            }
             
             $stmt = $pdo->prepare("
-                INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, is_officer)
-                VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :user)
+                INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, is_officer, profile_pic)
+                VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :user, :profile_pic)
             ");
             $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
             $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
@@ -132,6 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->bindParam(':password', $password, PDO::PARAM_STR);
             $stmt->bindParam(':user', $user, PDO::PARAM_INT);
+            $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
             }
 
             if ($stmt->execute()) {
