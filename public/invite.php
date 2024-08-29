@@ -12,7 +12,9 @@ if ($_SESSION["logged_in"] == !true) {
         SELECT o.short_name as organization, year, block, f_name, l_name, iduser
         FROM user u
         INNER JOIN organization o ON u.organization = o.idorganization
+        WHERE is_admin != 1 AND is_superuser != 1 AND is_officer != 1
         ORDER BY organization, year, block, l_name, f_name
+
     ");
     $stmt->execute();
     $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
