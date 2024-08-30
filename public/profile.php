@@ -8,18 +8,15 @@ if ($_SESSION["logged_in"] == !true) {
 
     include_once("./includes/connect_db.php");
 
-    // Handle password update
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $current_password = $_POST['current_password'];
         $new_password = $_POST['new_password'];
         $confirm_new_password = $_POST['confirm_new_password'];
 
-        // Fetch the current hashed password from the database
         $stmt = $pdo->prepare("SELECT password FROM user WHERE iduser = ?");
         $stmt->execute([$_SESSION['userid']]);
         $user_password = $stmt->fetchColumn();
 
-        // Validate passwords
         if (empty($current_password)) {
             $error_message = "Current password cannot be empty.";
         } elseif (empty($new_password)) {
@@ -33,7 +30,6 @@ if ($_SESSION["logged_in"] == !true) {
         } elseif ($new_password !== $confirm_new_password) {
             $error_message = "New passwords do not match.";
         } else {
-            // Update the password
             $new_password_hashed = hash('sha256', $new_password);
             $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE iduser = ?");
             if ($stmt->execute([$new_password_hashed, $_SESSION['userid']])) {
@@ -43,7 +39,6 @@ if ($_SESSION["logged_in"] == !true) {
             }
         }
 
-        // Redirect to avoid form resubmission
         if (isset($error_message)) {
             header("Location: profile.php?error=" . urlencode($error_message));
         } elseif (isset($success_message)) {
@@ -76,30 +71,27 @@ if ($_SESSION["logged_in"] == !true) {
     include_once("./includes/partial/sidebar.php");
     include_once("./includes/partial/header.php");
 
-    // Fetch user details
     $stmt = $pdo->prepare("
-    SELECT 
-        profile_pic,
-        CONCAT(f_name, ' ', l_name) AS full_name,
-        student_no,
-        CONCAT('Year ', year, ' Block ', block) AS section,
-        email
-    FROM user
-    WHERE iduser = ?;
-");
+        SELECT 
+            profile_pic,
+            CONCAT(f_name, ' ', l_name) AS full_name,
+            student_no,
+            CONCAT('Year ', year, ' Block ', block) AS section,
+            email
+        FROM user
+        WHERE iduser = ?;
+    ");
     $stmt->execute([$_SESSION['userid']]);
     $user = $stmt->fetch();
     ?>
 
 <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
     <main class="flex flex-col items-center w-full h-full py-8">
-        <!-- Profile Picture -->
-        <div class="w-48 h-48 overflow-hidden bg-gray-200 rounded-full">
+        <div class="relative w-48 h-48 overflow-hidden bg-gray-200 rounded-full">
             <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
                 class="object-cover w-full h-full">
         </div>
 
-            <!-- User Details -->
             <div class="mt-6 text-center">
                 <h2 class="text-2xl font-bold"><?= htmlspecialchars($user['full_name']) ?></h2>
                 <p class="text-gray-600">Student No: <?= htmlspecialchars($user['student_no']) ?></p>
@@ -107,7 +99,6 @@ if ($_SESSION["logged_in"] == !true) {
                 <p class="text-gray-600"><?= htmlspecialchars($user['email']) ?></p>
             </div>
 
-            <!-- Display Error or Success Message -->
             <div class="w-11/12 max-w-sm mt-8 md:w-full">
                 <?php if (isset($_GET['error'])) { ?>
                     <div class="p-2 mb-4 text-red-600 bg-red-100 rounded"><?= htmlspecialchars($_GET['error']) ?></div>
@@ -115,7 +106,6 @@ if ($_SESSION["logged_in"] == !true) {
                     <div class="p-2 mb-4 text-green-600 bg-green-100 rounded"><?= htmlspecialchars($_GET['success']) ?></div>
                 <?php } ?>
 
-            <!-- Password Update Form -->
             <form method="POST" class="space-y-4">
                 <div>
                     <label class="block text-gray-700">Current Password</label>
