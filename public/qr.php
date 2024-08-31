@@ -54,14 +54,14 @@ if ($_SESSION["logged_in"] == !true) {
 
                     $profile_pic_base64 = base64_encode($user['profile_pic']);
                     echo "
-                          <div class='w-20 h-20 overflow-hidden border border-gray-400 rounded-full'>
+                          <div class='w-20 h-20 mt-3 overflow-hidden border border-gray-400 rounded-full'>
                               <img src='data:image/jpeg;base64,$profile_pic_base64' alt='Profile Picture' class='object-cover w-full h-full'>
                           </div>
                     ";
 
-                    echo "</div><div class='ml-4'>";
-                    echo "<p class='text-sm text-green-800'>" . $user['student_number'] . "</p>";
+                    echo "</div><div class='ml-4 text-left'>";
                     echo "<p class='text-lg font-bold text-green-800'>" . strtoupper($user['full_name']) . "</p>";
+                    echo "<p class='text-sm text-green-800'>" . $user['student_number'] . "</p>";
                     echo "<p class='text-green-800 '>" . $user['section'] . "</p>";
                     echo "</div></div>";
                 } else {
