@@ -433,6 +433,11 @@ include_once("./includes/partial/header.php");
                 echo '</div>'; 
             }
             ?>
+
+        </div>
+        <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
+            <div 
+            class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center">Add Invite</div>
         </div>
 
 
