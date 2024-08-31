@@ -27,7 +27,17 @@ if ($_SESSION["logged_in"] == !true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students - <?php echo $_SESSION['username']; ?></title>
+    <title>Students -         <?php  
+            if ($_SESSION['is_officer'] == 1) {
+                echo "Officer";
+            } elseif ($_SESSION['is_superuser'] == 1) {
+                echo "President";
+            } elseif ($_SESSION['is_admin'] == 1) {
+                echo "Administrator";
+            } else {
+                echo "Student";
+            }
+        ?></title>
 
     <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
