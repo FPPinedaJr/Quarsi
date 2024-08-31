@@ -37,6 +37,17 @@ if ($_SESSION["logged_in"] == !true) {
 
     $stmt2->execute();
     $organizations = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt3 = $pdo->prepare("
+        SELECT o.short_name as organization, year, block, f_name, l_name, iduser
+        FROM user u
+        INNER JOIN organization o ON u.organization = o.idorganization
+        WHERE is_admin != 1 
+        ORDER BY organization, year, block, l_name, f_name
+
+    ");
+    $stmt3->execute();
+    $students = $stmt3->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -116,11 +127,15 @@ include_once("./includes/partial/header.php");
 
         <?php foreach($events as $event): ?>
 
-            <div id="event-<?= $event['idevent']?>" onclick="showEditEventModal(<?= $event['idevent']?>)"
+            <div id="event-<?= $event['idevent']?>"
                 data-name="<?= $event['name']?>" data-date="<?= $event['date']?>" data-organization="<?= $event['idorganization']?>"
                 data-log_time="<?= $event['log_time']?>" data-status="<?= $event['is_active']?>" data-set_points="<?= $event['set_points']?>"
                 class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                <div id="" class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
+                <div class="absolute flex items-center h-fit invite left-[11rem] invite_btn" onclick="showInviteModal(<?= $event['idevent']?>)">
+                    <i class="cursor-pointer fa-solid fa-user-plus text-zinc-600 text-md hover:text-zinc-500"></i>
+                </div>
+                <div id="" onclick="showEditEventModal(<?= $event['idevent']?>)" 
+                    class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
                         <?= $event['name']?>
                     </div>
@@ -349,8 +364,79 @@ include_once("./includes/partial/header.php");
             </div>
         </div>
     </div>
-        
 
+    <!-- Invite Modal -->
+    <div id="invite_modal" class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-gray-500/30">
+        <div id="invite_modal_main" class="w-1/3 overflow-y-auto text-lg bg-white h-2/3">
+            <div class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
+                Invite Students
+            </div>
+            <?php
+            $currentProgram = '';
+            $currentYear = '';
+            $currentBlock = '';
+
+            foreach ($students as $student) {
+                if ($student['organization'] !== $currentProgram) {
+                    if ($currentProgram !== '') {
+                        echo '</div></div></div>';
+                    }
+                    $currentProgram = $student['organization'];
+                    $currentYear = '';  
+                    $currentBlock = '';
+                    echo '<div class="m-4 program-group">';
+                    echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
+                    echo '<div class="ml-4">';
+                }
+
+                if ($student['year'] !== $currentYear) {
+                    if ($currentYear !== '') {
+                        echo '</div></div></div></div>';
+                    }
+                    $currentYear = $student['year'];
+                    $currentBlock = ''; 
+                    echo '<div class="mb-2 ml-4 year">';
+                    echo '<label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("YEAR " . $currentYear) . '</span></label>
+                        <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i>';
+                    echo '<div class="ml-8">';
+                }
+
+                if ($student['block'] !== $currentBlock) {
+                    if ($currentBlock !== '') {
+                        echo '</div></div>';
+                    }
+                    $currentBlock = $student['block'];
+                    echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
+                    echo '<label class="px-2 py-1 text-xs text-white rounded-full cursor-pointer md:hover:bg-emerald-700 bg-emerald-800"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("BLOCK " . $currentBlock) . '</label>
+                        <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i>';
+                    echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
+                }
+
+                echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
+                echo '<label>';
+                echo '<input type="checkbox" name="students[]" value="' . htmlspecialchars($student['iduser']) . '" class="student-checkbox">';
+                echo '<span class="ml-1">';
+                echo htmlspecialchars($student['l_name'] . ', ' . $student['f_name']);
+                echo '</span>';
+                echo '</label>';
+                echo '</div>';
+            }
+
+            // Close the last block, year, and program
+            if ($currentBlock !== '') {
+                echo '</div>'; 
+            }
+            if ($currentYear !== '') {
+                echo '</div>'; 
+            }
+            if ($currentProgram !== '') {
+                echo '</div>'; 
+            }
+            ?>
+        </div>
+
+
+    </div>
     
 </body>
 
@@ -419,6 +505,16 @@ include_once("./includes/partial/header.php");
         $('#header_title').text('Events');
     }
 
+    function showInviteModal(idevent) {
+        $('#invite_modal').removeClass('invisible');
+        $('body').addClass('overflow-hidden');
+    }
+
+    function hideInviteModal() {
+        $('#invite_modal').addClass('invisible');
+        $('body').removeClass('overflow-hidden');
+    }
+
     $(document).ready(function() {
         changeHeaderTitle();
 
@@ -426,19 +522,73 @@ include_once("./includes/partial/header.php");
             if (!$(event.target).closest('#edit_event_modal_main').length && $(event.target).closest('#edit_event_modal').length) {
                 hideEditEventModal();
             }
-        })
+        });
 
         $(document).on('click', function(event) {
             if (!$(event.target).closest('#add_event_modal_main').length && $(event.target).closest('#add_event_modal').length) {
                 hideAddEventModal();
             }
-        })
+        });
 
         $(document).on('click', function(event) {
             if (!$(event.target).closest('#delete_event_modal_main').length && $(event.target).closest('#delete_event_modal').length) {
                 hideDeleteEventModal();
             }
+        });
+
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('#invite_modal_main').length && $(event.target).closest('#invite_modal').length) {
+                hideInviteModal();
+            }
         })
+
+        // Select/deselect all students within a block when the block checkbox is clicked
+        $('.block-checkbox').click(function () {
+            var $blockCheckboxes = $(this).closest('.block-container').find('.student-checkbox');
+            var $dropdown = $(this).closest('.block-container').find('.block-dropdown');
+            var $container = $(this).closest('.block-container').find('.student-container');
+            $blockCheckboxes.prop('checked', this.checked);
+            if ($dropdown.hasClass('fa-caret-right')) {
+                $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
+                $container.removeClass('hidden');
+            }
+        });
+
+        $('.block-dropdown').click(function() {
+            var $dropdown = $(this);
+            var $container = $(this).closest('.block-container').find('.student-container');
+            if ($dropdown.hasClass('fa-caret-right')) {
+                $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
+                $container.removeClass('hidden');
+            } else {
+                $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
+                $container.addClass('hidden');
+            }
+        });
+
+        // Select/deselect all students within a year when the year checkbox is clicked
+        $('.year-checkbox').click(function () {
+            var $yearCheckboxes = $(this).closest('.year').find('.student-checkbox, .block-checkbox');
+            $yearCheckboxes.prop('checked', this.checked);
+        });
+
+        $('.year-dropdown').click(function() {
+            var $dropdown = $(this).closest('.year').find('.year-dropdown');;
+            var $container = $(this).closest('.year').find('.block-container');
+            if ($dropdown.hasClass('fa-caret-right')) {
+                $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
+                $container.removeClass('hidden');
+            } else {
+                $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
+                $container.addClass('hidden');
+            }
+        });
+
+        // Select/deselect all students within a program when the program checkbox is clicked
+        $('.program-checkbox').click(function () {
+            var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
+            $programCheckboxes.prop('checked', this.checked);
+        });
         
     })
 </script>
