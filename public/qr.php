@@ -50,12 +50,24 @@ if ($_SESSION["logged_in"] == !true) {
                     $student_name = urlencode($user['full_name']);
                     $qr_code_url = "https://api.qrserver.com/v1/create-qr-code/?data=$student_name&size=300x300";
                     echo "<img id='qrImage' src='$qr_code_url' alt='QR Code' class='mx-auto mb-4'>";
-                    echo "<p class='mt-5 text-sm text-green-800'>" . $user['student_number'] . "</p>";
+                    echo "<div class='flex items-center justify-center mt-5 mb-10'><div>";
+
+                    $profile_pic_base64 = base64_encode($user['profile_pic']);
+                    echo "
+                          <div class='w-20 h-20 overflow-hidden border border-gray-400 rounded-full'>
+                              <img src='data:image/jpeg;base64,$profile_pic_base64' alt='Profile Picture' class='object-cover w-full h-full'>
+                          </div>
+                    ";
+
+                    echo "</div><div class='ml-4'>";
+                    echo "<p class='text-sm text-green-800'>" . $user['student_number'] . "</p>";
                     echo "<p class='text-lg font-bold text-green-800'>" . strtoupper($user['full_name']) . "</p>";
-                    echo "<p class='mb-10 text-green-800'>" . $user['section'] . "</p>";
+                    echo "<p class='text-green-800 '>" . $user['section'] . "</p>";
+                    echo "</div></div>";
                 } else {
                     echo "<p class='text-red-500'>No student number found.</p>";
                 }
+
                 ?>
                 <button id="downloadQR" class="px-4 py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600">
                     <i class="mr-2 text-xl fa-solid fa-download"></i>Download
