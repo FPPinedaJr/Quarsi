@@ -74,45 +74,45 @@ if ($_SESSION["logged_in"] == !true) {
                 WHERE user = ?;
             ");
                 $stmt->execute([$_SESSION['userid']]);
-                $row = $stmt->fetch();
+                $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
-                if ($row) {
+                if ($rows) {
+                    
                     ?>
                     <table class="w-full text-center border-collapse">
-                        <thead>
-                            <tr>
-                                <th class="p-2 text-left">Event</th>
-                                <th class="p-2">Morning In</th>
-                                <th class="p-2">Morning Out</th>
-                                <th class="p-2">Afternoon In</th>
-                                <th class="p-2">Afternoon Out</th>
-                                <th class="p-2">Points</th>
+                        <thead class="sticky top-0 bg-white">
+                            <tr class="border border-gray-300">
+                                <th class="p-2 text-left" rowspan="2">Event</th>
+                                <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
+                                <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
+                                <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th>
+                            </tr>
+                            <tr class="border border-gray-300">
+                                <th class="p-2 border-l border-r border-gray-300">In</th>
+                                <th class="p-2 border-l border-r border-gray-300">Out</th>
+                                <th class="p-2 border-l border-r border-gray-300">In</th>
+                                <th class="p-2 border-l border-r border-gray-300">Out</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody class="divide-y divide-gray-200">
+                        <?php foreach ($rows as $row): ?>
+                            <tr class="border bg-gray-50">
                                 <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
-                                <td class="p-2">
-                                    <span
-                                        class="<?= $row['morning_in'] === '00:00:00' ? 'bg-red-500' : ($row['morning_in'] ? 'bg-green-500' : 'bg-gray-300') ?> block w-6 h-6 rounded"></span>
-                                </td>
-                                <td class="p-2">
-                                    <span
-                                        class="<?= $row['morning_out'] === '00:00:00' ? 'bg-red-500' : ($row['morning_out'] ? 'bg-green-500' : 'bg-gray-300') ?> block w-6 h-6 rounded"></span>
-                                </td>
-                                <td class="p-2">
-                                    <span
-                                        class="<?= $row['afternoon_in'] === '00:00:00' ? 'bg-red-500' : ($row['afternoon_in'] ? 'bg-green-500' : 'bg-gray-300') ?> block w-6 h-6 rounded"></span>
-                                </td>
-                                <td class="p-2">
-                                    <span
-                                        class="<?= $row['afternoon_out'] === '00:00:00' ? 'bg-red-500' : ($row['afternoon_out'] ? 'bg-green-500' : 'bg-gray-300') ?> block w-6 h-6 rounded"></span>
-                                </td>
+                                <td class="p-2 text-center">
+                                    <?= $row['morning_in'] === '00:00:00' ? '❌' : ($row['morning_in'] ? '✅' : '➖') ?></td>
+                                <td class="p-2 text-center">
+                                    <?= $row['morning_out'] === '00:00:00' ? '❌' : ($row['morning_out'] ? '✅' : '➖') ?></td>
+                                <td class="p-2 text-center">
+                                    <?= $row['afternoon_in'] === '00:00:00' ? '❌' : ($row['afternoon_in'] ? '✅' : '➖') ?></td>
+                                <td class="p-2 text-center">
+                                    <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?></td>
                                 <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
                                 </td>
                             </tr>
+                            <?php endforeach ?>
                         </tbody>
                     </table>
+
                 <?php } else { ?>
                     <div class="w-full h-full mt-10 text-center text-gray-500">No attendance recorded</div>
                 <?php } ?>
