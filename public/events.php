@@ -367,80 +367,81 @@ include_once("./includes/partial/header.php");
 
     <!-- Invite Modal -->
     <div id="invite_modal" class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-gray-500/30">
-        <div id="invite_modal_main" class="w-1/3 overflow-y-auto text-lg bg-white h-2/3">
-            <div class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
-                Invite Students
+        <form id="invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
+            class="w-1/3 h-2/3">
+            <input id="invite_event" type="hidden" name="idevent">
+            <div id="invite_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white">
+                <div class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
+                    Invite Students
+                </div>
+                <?php
+                $currentProgram = '';
+                $currentYear = '';
+                $currentBlock = '';
+
+                foreach ($students as $student) {
+                    if ($student['organization'] !== $currentProgram) {
+                        if ($currentProgram !== '') {
+                            echo '</div></div></div>';
+                        }
+                        $currentProgram = $student['organization'];
+                        $currentYear = '';  
+                        $currentBlock = '';
+                        echo '<div class="m-4 program-group">';
+                        echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
+                        echo '<div class="ml-4">';
+                    }
+
+                    if ($student['year'] !== $currentYear) {
+                        if ($currentYear !== '') {
+                            echo '</div></div></div></div>';
+                        }
+                        $currentYear = $student['year'];
+                        $currentBlock = ''; 
+                        echo '<div class="mb-2 ml-4 year">';
+                        echo '<label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("YEAR " . $currentYear) . '</span></label>
+                            <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i>';
+                        echo '<div class="ml-8">';
+                    }
+
+                    if ($student['block'] !== $currentBlock) {
+                        if ($currentBlock !== '') {
+                            echo '</div></div>';
+                        }
+                        $currentBlock = $student['block'];
+                        echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
+                        echo '<label class="px-2 py-1 text-xs text-white rounded-full cursor-pointer md:hover:bg-emerald-700 bg-emerald-800"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("BLOCK " . $currentBlock) . '</label>
+                            <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i>';
+                        echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
+                    }
+
+                    echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
+                    echo '<label>';
+                    echo '<input type="checkbox" name="students[]" value="' . htmlspecialchars($student['iduser']) . '" class="student-checkbox">';
+                    echo '<span class="ml-1">';
+                    echo htmlspecialchars($student['l_name'] . ', ' . $student['f_name']);
+                    echo '</span>';
+                    echo '</label>';
+                    echo '</div>';
+                }
+
+                if ($currentBlock !== '') {
+                    echo '</div>'; 
+                }
+                if ($currentYear !== '') {
+                    echo '</div>'; 
+                }
+                if ($currentProgram !== '') {
+                    echo '</div>'; 
+                }
+                ?>
+
             </div>
-            <?php
-            $currentProgram = '';
-            $currentYear = '';
-            $currentBlock = '';
-
-            foreach ($students as $student) {
-                if ($student['organization'] !== $currentProgram) {
-                    if ($currentProgram !== '') {
-                        echo '</div></div></div>';
-                    }
-                    $currentProgram = $student['organization'];
-                    $currentYear = '';  
-                    $currentBlock = '';
-                    echo '<div class="m-4 program-group">';
-                    echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
-                    echo '<div class="ml-4">';
-                }
-
-                if ($student['year'] !== $currentYear) {
-                    if ($currentYear !== '') {
-                        echo '</div></div></div></div>';
-                    }
-                    $currentYear = $student['year'];
-                    $currentBlock = ''; 
-                    echo '<div class="mb-2 ml-4 year">';
-                    echo '<label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("YEAR " . $currentYear) . '</span></label>
-                        <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i>';
-                    echo '<div class="ml-8">';
-                }
-
-                if ($student['block'] !== $currentBlock) {
-                    if ($currentBlock !== '') {
-                        echo '</div></div>';
-                    }
-                    $currentBlock = $student['block'];
-                    echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
-                    echo '<label class="px-2 py-1 text-xs text-white rounded-full cursor-pointer md:hover:bg-emerald-700 bg-emerald-800"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("BLOCK " . $currentBlock) . '</label>
-                        <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i>';
-                    echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
-                }
-
-                echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
-                echo '<label>';
-                echo '<input type="checkbox" name="students[]" value="' . htmlspecialchars($student['iduser']) . '" class="student-checkbox">';
-                echo '<span class="ml-1">';
-                echo htmlspecialchars($student['l_name'] . ', ' . $student['f_name']);
-                echo '</span>';
-                echo '</label>';
-                echo '</div>';
-            }
-
-            // Close the last block, year, and program
-            if ($currentBlock !== '') {
-                echo '</div>'; 
-            }
-            if ($currentYear !== '') {
-                echo '</div>'; 
-            }
-            if ($currentProgram !== '') {
-                echo '</div>'; 
-            }
-            ?>
-
-        </div>
-        <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
-            <div 
-            class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center">Add Invite</div>
-        </div>
-
-
+            <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
+                <button type="submit"
+                class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add Invite</button>
+            </div>
+        </form>
     </div>
     
 </body>
@@ -513,6 +514,7 @@ include_once("./includes/partial/header.php");
     function showInviteModal(idevent) {
         $('#invite_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
+        $('#invite_event').val(idevent);
     }
 
     function hideInviteModal() {
@@ -592,8 +594,9 @@ include_once("./includes/partial/header.php");
         // Select/deselect all students within a program when the program checkbox is clicked
         $('.program-checkbox').click(function () {
             var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
+            var $idevent = $
             $programCheckboxes.prop('checked', this.checked);
         });
-        
+
     })
 </script>
