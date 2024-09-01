@@ -91,35 +91,58 @@ include_once("./includes/partial/sidebar.php");
             </div>
             <div id="qr-reader" class="border border-gray-300 rounded-lg "></div>
 
-            <div class="flex items-center justify-center mt-5 mb-10">
-                <div class="w-20 h-20 mt-3 overflow-hidden border border-gray-400 rounded-full">
-                    <img id="profile-pic" src="path/to/default-image.jpg" alt="Profile Picture"
-                        class="object-cover w-full h-full">
-                </div>
-                <div class="ml-4 text-left">
-                    <p id="full-name" class="text-lg font-bold text-green-800" contenteditable="true">John Doe</p>
-                    <p id="student-number" class="text-sm text-green-800" contenteditable="true">12345678</p>
-                    <p id="section" class="text-green-800" contenteditable="true">Section A</p>
-                </div>
+            <div id="scan-result"
+                class="flex items-center justify-center invisible py-4 mt-8 mb-10 border-4 border-green-400 rounded-lg bg-slate-200">
+                <!-- load scanned profile here -->
             </div>
+
+            <!-- <button onclick="updateAttendance('2022-8-0110', 1 ,'afternoon_out')">test</button> -->
+
 
         </div>
     </main>
 </body>
 
 <script>
+    function updateAttendance(number, event, time) {
+        $.ajax({
+            url: './includes/update_attendance.php',
+            method: 'POST',
+            data: {
+                student_no: number,
+                eventid: event,
+                log_time: time
+            },
+            success: function (response) {
+                if (response == 'error:update') {
+                    $('#scan-result').html('<p class="text-lg font-bold">Error: unable to update this student.</p>');
+                } else if (response == 'error:retrieve') {
+                    $('#scan-result').html('<p class="text-lg font-bold">Error: cannot retrieve student data.</p>');
+                } else {
+                    $('#scan-result').html(response);
+                }
+                $('#scan-result').removeClass('invisible');
+                $('#scan-result').addClass('visible');
+            }
+        });
+
+    }
+
     $(document).ready(function () {
-        const qrResult = $("#qr-reader-results");
+
 
         function onScanSuccess(decodedText, decodedResult) {
-            qrResult.append(`<p>Scanned Code: ${decodedText}</p>`);
-            alert(decodedText);
-            $('#qr-reader-results').text(decodedText);
+            if (decodedText.length > 15) {
+                decodedText = decodedText.split('~')[0].trim();
+            }
+
+            let eventid = $('#event').val();
+            let log_time = $('#event option:selected').data('log-time');
+
+            updateAttendance(decodedText, eventid, log_time);
+
         }
 
-        function onScanError(errorMessage) {
-            console.warn(`QR Scan error: ${errorMessage}`);
-        }
 
         const config = {
             fps: 30,
@@ -138,14 +161,13 @@ include_once("./includes/partial/sidebar.php");
                 qrScanner.start(
                     cameraId,
                     config,
-                    onScanSuccess,
-                    onScanError
+                    onScanSuccess
                 );
             } else {
-                qrResult.text("No camera found.");
+                alert("No camera found.");
             }
         }).catch(err => {
-            qrResult.text(`Error getting cameras: ${err}`);
+            alert(`Error getting cameras: ${err}`);
         });
 
 

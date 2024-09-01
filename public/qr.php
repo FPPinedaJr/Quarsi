@@ -47,8 +47,8 @@ if ($_SESSION["logged_in"] == !true) {
                 <h1 class="mt-5 mb-10 text-2xl font-bold">Your QR Code</h1>
                 <?php
                 if (isset($user['student_number'])) {
-                    $student_name = urlencode($user['full_name']);
-                    $qr_code_url = "https://api.qrserver.com/v1/create-qr-code/?data=$student_name&size=300x300";
+                    $student_num = urlencode($user['student_number']);
+                    $qr_code_url = "https://api.qrserver.com/v1/create-qr-code/?data=$student_num&size=300x300";
                     echo "<img id='qrImage' src='$qr_code_url' alt='QR Code' class='mx-auto mb-4'>";
                     echo "<div class='flex items-center justify-center mt-5 mb-10'><div>";
 
