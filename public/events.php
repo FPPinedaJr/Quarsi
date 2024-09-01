@@ -409,8 +409,8 @@ include_once("./includes/partial/header.php");
                         $currentYear = $student['year'];
                         $currentBlock = ''; 
                         echo '<div class="mb-2 ml-1 md:ml-4 year">';
-                        echo '<label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("YEAR " . $currentYear) . '</span></label>
-                            <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i>';
+                        echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("Year " . $currentYear) . '</span></label>
+                            ';
                         echo '<div class="ml-4 md:ml-8">';
                     }
 
@@ -420,8 +420,8 @@ include_once("./includes/partial/header.php");
                         }
                         $currentBlock = $student['block'];
                         echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
-                        echo '<label class="relative py-1 pl-5 pr-2 text-xs text-white rounded-full cursor-pointer md:hover:bg-emerald-700 bg-emerald-800"><input type="checkbox" class="block-checkbox absolute top-[6px] left-[5px]"> ' . htmlspecialchars("BLOCK " . $currentBlock) . '</label>
-                            <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i>';
+                        echo ' <i class="ml-2 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i><label class="relative py-1 pl-5"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("block " . $currentBlock) . '</label>
+                           ';
                         echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
                     }
 
