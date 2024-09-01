@@ -55,7 +55,17 @@ if ($_SESSION["logged_in"] == !true) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Profile - <?php echo htmlspecialchars($_SESSION['username']); ?></title>
+        <title>Profile - <?php
+        if ($_SESSION['is_officer'] == 1) {
+            echo "Officer";
+        } elseif ($_SESSION['is_superuser'] == 1) {
+            echo "President";
+        } elseif ($_SESSION['is_admin'] == 1) {
+            echo "Administrator";
+        } else {
+            echo "Student";
+        }
+        ?></title>
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">
@@ -70,31 +80,18 @@ if ($_SESSION["logged_in"] == !true) {
     <?php
     include_once("./includes/partial/sidebar.php");
     include_once("./includes/partial/header.php");
-
-    $stmt = $pdo->prepare("
-        SELECT 
-            profile_pic,
-            CONCAT(f_name, ' ', l_name) AS full_name,
-            student_no,
-            CONCAT('Year ', year, ' Block ', block) AS section,
-            email
-        FROM user
-        WHERE iduser = ?;
-    ");
-    $stmt->execute([$_SESSION['userid']]);
-    $user = $stmt->fetch();
     ?>
 
-<body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
-    <main class="flex flex-col items-center w-full h-full py-8">
-        <div class="relative w-48 h-48 overflow-hidden bg-gray-200 rounded-full">
-            <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
-                class="object-cover w-full h-full">
-        </div>
+    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
+        <main class="flex flex-col items-center w-full h-full py-8">
+            <div class="relative w-48 h-48 overflow-hidden bg-gray-200 rounded-full">
+                <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
+                    class="object-cover w-full h-full">
+            </div>
 
             <div class="mt-6 text-center">
+                <p class="text-gray-600"> <?= htmlspecialchars($user['student_number']) ?></p>
                 <h2 class="text-2xl font-bold"><?= htmlspecialchars($user['full_name']) ?></h2>
-                <p class="text-gray-600">Student No: <?= htmlspecialchars($user['student_no']) ?></p>
                 <p class="text-gray-600"><?= htmlspecialchars($user['section']) ?></p>
                 <p class="text-gray-600"><?= htmlspecialchars($user['email']) ?></p>
             </div>
@@ -106,37 +103,37 @@ if ($_SESSION["logged_in"] == !true) {
                     <div class="p-2 mb-4 text-green-600 bg-green-100 rounded"><?= htmlspecialchars($_GET['success']) ?></div>
                 <?php } ?>
 
-            <form method="POST" class="space-y-4">
-                <div>
-                    <label class="block text-gray-700">Current Password</label>
-                    <input type="password" name="current_password" class="w-full p-2 border border-gray-300 rounded">
-                </div>
-                <div>
-                    <label class="block text-gray-700">New Password</label>
-                    <input type="password" name="new_password" class="w-full p-2 border border-gray-300 rounded">
-                </div>
-                <div>
-                    <label class="block text-gray-700">Confirm New Password</label>
-                    <input type="password" name="confirm_new_password"
-                        class="w-full p-2 border border-gray-300 rounded">
-                </div>
-                <button type="submit"
-                    class="w-full px-4 py-2 font-bold text-white bg-teal-500 rounded hover:bg-teal-600">Update
-                    Password</button>
-            </form>
-        </div>
-    </main>
-</body>
+                <form method="POST" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700">Current Password</label>
+                        <input type="password" name="current_password" class="w-full p-2 border border-gray-300 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">New Password</label>
+                        <input type="password" name="new_password" class="w-full p-2 border border-gray-300 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Confirm New Password</label>
+                        <input type="password" name="confirm_new_password"
+                            class="w-full p-2 border border-gray-300 rounded">
+                    </div>
+                    <button type="submit"
+                        class="w-full px-4 py-2 font-bold text-white bg-teal-500 rounded hover:bg-teal-600">Update
+                        Password</button>
+                </form>
+            </div>
+        </main>
+    </body>
 
-<script>
-    function changeHeaderTitle() {
-        $('#header_title').text('Profile');
-    }
+    <script>
+        function changeHeaderTitle() {
+            $('#header_title').text('Profile');
+        }
 
-    $(document).ready(function () {
-        changeHeaderTitle();
-    });
-</script>
+        $(document).ready(function () {
+            changeHeaderTitle();
+        });
+    </script>
 
-</html>
+    </html>
 <?php } ?>

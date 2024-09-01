@@ -11,10 +11,22 @@ if ($_SESSION["logged_in"] == !true) {
     <!DOCTYPE html>
     <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - <?php echo $_SESSION['username']; ?></title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard -
+            <?php
+            if ($_SESSION['is_officer'] == 1) {
+                echo "Officer";
+            } elseif ($_SESSION['is_superuser'] == 1) {
+                echo "President";
+            } elseif ($_SESSION['is_admin'] == 1) {
+                echo "Administrator";
+            } else {
+                echo "Student";
+            }
+            ?>
+        </title>
 
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
@@ -25,11 +37,11 @@ if ($_SESSION["logged_in"] == !true) {
             href="https://fonts.googleapis.com/css2?family=Cookie&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
             rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cookie&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
-        rel="stylesheet">
-    <script src="./assets/js/jquery-3.7.1.min.js"></script>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cookie&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+            rel="stylesheet">
+        <script src="./assets/js/jquery-3.7.1.min.js"></script>
     </head>
     <?php
     include_once("./includes/partial/sidebar.php");
@@ -39,17 +51,11 @@ if ($_SESSION["logged_in"] == !true) {
 
     <body class="flex justify-center w-screen min-h-screen mt-24 overflow-hidden">
         <main class="flex flex-col items-center w-full h-full ">
-            <?php
-            $stmt = $pdo->prepare("
-            SELECT total_points FROM user WHERE iduser = ?;
-        ");
-            $stmt->execute([$_SESSION['userid']]);
-            $row = $stmt->fetch();
-            ?>
 
             <!-- Points Div -->
             <div class="absolute top-0 w-full py-16 pt-32 text-2xl text-center bg-teal-300/50">
-                <h1><span class="text-5xl font-bold"><?= $row['total_points'] ?><span> <span class="text-sm">pts</span></h1>
+                <h1><span class="text-5xl font-bold"><?= $user['total_points'] ?><span> <span class="text-sm">pts</span>
+                </h1>
             </div>
 
             <!-- Table Div -->
@@ -114,15 +120,15 @@ if ($_SESSION["logged_in"] == !true) {
         </main>
     </body>
 
-<script>
-    function changeHeaderTitle() {
-        $('#header_title').text('Dashboard');
-    }
+    <script>
+        function changeHeaderTitle() {
+            $('#header_title').text('Dashboard');
+        }
 
-    $(document).ready(function () {
-        changeHeaderTitle();
-    });
-</script>
+        $(document).ready(function () {
+            changeHeaderTitle();
+        });
+    </script>
 
 
 
