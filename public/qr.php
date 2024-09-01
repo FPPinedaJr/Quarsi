@@ -11,10 +11,20 @@ if ($_SESSION["logged_in"] == !true) {
     <!DOCTYPE html>
     <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate QR - <?php echo $_SESSION['username']; ?></title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Generate QR - <?php
+        if ($_SESSION['is_officer'] == 1) {
+            echo "Officer";
+        } elseif ($_SESSION['is_superuser'] == 1) {
+            echo "President";
+        } elseif ($_SESSION['is_admin'] == 1) {
+            echo "Administrator";
+        } else {
+            echo "Student";
+        }
+        ?></title>
 
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
@@ -28,10 +38,6 @@ if ($_SESSION["logged_in"] == !true) {
     </head>
     <?php
     include_once("./includes/partial/sidebar.php");
-
-    ?>
-
-    <?php
     include_once("./includes/partial/header.php");
     ?>
 
@@ -40,16 +46,28 @@ if ($_SESSION["logged_in"] == !true) {
             <div id="qr-code" class="h-full p-6 text-center w-96">
                 <h1 class="mt-5 mb-10 text-2xl font-bold">Your QR Code</h1>
                 <?php
-                if (isset($_SESSION['student_number'])) {
-                    $student_number = urlencode($_SESSION['student_number']);
-                    $qr_code_url = "https://api.qrserver.com/v1/create-qr-code/?data=$student_number&size=300x300";
+                if (isset($user['student_number'])) {
+                    $student_name = urlencode($user['full_name']);
+                    $qr_code_url = "https://api.qrserver.com/v1/create-qr-code/?data=$student_name&size=300x300";
                     echo "<img id='qrImage' src='$qr_code_url' alt='QR Code' class='mx-auto mb-4'>";
-                    echo "<p class='mt-5 text-sm text-green-800'>$student_number</p>";
-                    echo "<p class='text-lg font-bold text-green-800'>" . strtoupper($_SESSION['username']) . "</p>";
-                    echo "<p class='mb-10 text-green-800'>" . $_SESSION['section'] . "</p>";
+                    echo "<div class='flex items-center justify-center mt-5 mb-10'><div>";
+
+                    $profile_pic_base64 = base64_encode($user['profile_pic']);
+                    echo "
+                          <div class='w-20 h-20 mt-3 overflow-hidden border border-gray-400 rounded-full'>
+                              <img src='data:image/jpeg;base64,$profile_pic_base64' alt='Profile Picture' class='object-cover w-full h-full'>
+                          </div>
+                    ";
+
+                    echo "</div><div class='ml-4 text-left'>";
+                    echo "<p class='text-lg font-bold text-green-800'>" . strtoupper($user['full_name']) . "</p>";
+                    echo "<p class='text-sm text-green-800'>" . $user['student_number'] . "</p>";
+                    echo "<p class='text-green-800 '>" . $user['section'] . "</p>";
+                    echo "</div></div>";
                 } else {
                     echo "<p class='text-red-500'>No student number found.</p>";
                 }
+
                 ?>
                 <button id="downloadQR" class="px-4 py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600">
                     <i class="mr-2 text-xl fa-solid fa-download"></i>Download
@@ -58,11 +76,11 @@ if ($_SESSION["logged_in"] == !true) {
         </main>
     </body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script>
-    function changeHeaderTitle() {
-        $('#header_title').text('Generate QR');
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function changeHeaderTitle() {
+            $('#header_title').text('Generate QR');
+        }
 
         $(document).ready(function () {
             changeHeaderTitle();
