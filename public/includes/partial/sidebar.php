@@ -8,14 +8,15 @@ $stmt = $pdo->prepare("
 SELECT 
     profile_pic,
     CONCAT(f_name, ' ', l_name) AS full_name,
-    student_no,
+    student_no AS student_number,
     CONCAT('Year ', year, ' Block ', block) AS section,
-    email
+    email,
+    total_points
 FROM user
 WHERE iduser = ?;
 ");
 $stmt->execute([$_SESSION['userid']]);
-$side_profile = $stmt->fetch();
+$user = $stmt->fetch();
 ?>
 
 
@@ -32,11 +33,11 @@ $side_profile = $stmt->fetch();
       <!-- profile -->
       <div class="flex flex-col items-center my-3">
         <div class="w-32 h-32 overflow-hidden border border-gray-400 rounded-full">
-          <img src="data:image/jpeg;base64,<?= base64_encode($side_profile['profile_pic']) ?>" alt="Profile Picture"
+          <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
             class="object-cover w-full h-full">
         </div>
         <div class="mt-2">
-          <h3 class="font-semibold font-['merriweather_sans'] text-2xl text-center"><?php echo $_SESSION['username'] ?>
+          <h3 class="font-semibold font-['merriweather_sans'] text-2xl text-center"><?php echo $user['full_name'] ?>
           </h3>
         </div>
         <div class="">
