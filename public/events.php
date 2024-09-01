@@ -130,10 +130,7 @@ include_once("./includes/partial/header.php");
             <div id="event-<?= $event['idevent']?>"
                 data-name="<?= $event['name']?>" data-date="<?= $event['date']?>" data-organization="<?= $event['idorganization']?>"
                 data-log_time="<?= $event['log_time']?>" data-status="<?= $event['is_active']?>" data-set_points="<?= $event['set_points']?>"
-                class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                <div class="absolute flex items-center h-fit invite left-[11rem] invite_btn" onclick="showInviteModal(<?= $event['idevent']?>)">
-                    <i class="cursor-pointer fa-solid fa-user-plus text-zinc-600 text-md hover:text-zinc-500"></i>
-                </div>
+                class="flex flex-col flex-shrink-0 w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                 <div id="" onclick="showEditEventModal(<?= $event['idevent']?>)" 
                     class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
                     <div class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
@@ -268,8 +265,11 @@ include_once("./includes/partial/header.php");
     <div id="edit_event_modal"
         class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
         <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
-            <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
+            <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                 <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
+                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-3 invite_btn" onclick="showInviteModal(<?= $event['idevent']?>)">
+                    <i class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
+                </div>
             </div>
 
             <!-- fieldset -->
@@ -366,9 +366,9 @@ include_once("./includes/partial/header.php");
     </div>
 
     <!-- Invite Modal -->
-    <div id="invite_modal" class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-gray-500/30">
+    <div id="invite_modal" class="fixed top-0 left-0 z-50 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
         <form id="invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
-            class="w-1/3 h-2/3">
+            class="w-10/12 md:w-1/3 h-2/3">
             <input id="invite_event" type="hidden" name="idevent">
             <div id="invite_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white">
                 <div class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
@@ -398,10 +398,10 @@ include_once("./includes/partial/header.php");
                         }
                         $currentYear = $student['year'];
                         $currentBlock = ''; 
-                        echo '<div class="mb-2 ml-4 year">';
+                        echo '<div class="mb-2 ml-1 md:ml-4 year">';
                         echo '<label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("YEAR " . $currentYear) . '</span></label>
                             <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i>';
-                        echo '<div class="ml-8">';
+                        echo '<div class="ml-4 md:ml-8">';
                     }
 
                     if ($student['block'] !== $currentBlock) {
@@ -410,7 +410,7 @@ include_once("./includes/partial/header.php");
                         }
                         $currentBlock = $student['block'];
                         echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
-                        echo '<label class="px-2 py-1 text-xs text-white rounded-full cursor-pointer md:hover:bg-emerald-700 bg-emerald-800"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("BLOCK " . $currentBlock) . '</label>
+                        echo '<label class="relative py-1 pl-5 pr-2 text-xs text-white rounded-full cursor-pointer md:hover:bg-emerald-700 bg-emerald-800"><input type="checkbox" class="block-checkbox absolute top-[6px] left-[5px]"> ' . htmlspecialchars("BLOCK " . $currentBlock) . '</label>
                             <i class="ml-1 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i>';
                         echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
                     }
@@ -418,7 +418,7 @@ include_once("./includes/partial/header.php");
                     echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
                     echo '<label>';
                     echo '<input type="checkbox" name="students[]" value="' . htmlspecialchars($student['iduser']) . '" class="student-checkbox">';
-                    echo '<span class="ml-1">';
+                    echo '<span class="md:ml-1">';
                     echo htmlspecialchars($student['l_name'] . ', ' . $student['f_name']);
                     echo '</span>';
                     echo '</label>';
@@ -470,7 +470,7 @@ include_once("./includes/partial/header.php");
 
     function showEditEventModal(id) {
         $('#edit_event_modal').removeClass('invisible');
-        $('body').addClass('overflow-hidden')
+        $('body').addClass('overflow-hidden');
 
         var $name = $('#event-' + id).data('name');
         var $date = $('#event-' + id).data('date');
@@ -515,6 +515,8 @@ include_once("./includes/partial/header.php");
         $('#invite_modal').removeClass('invisible');
         $('body').addClass('overflow-hidden');
         $('#invite_event').val(idevent);
+        $('#edit_event_modal').addClass('invisible');
+        $('input[type="checkbox"]').prop('checked', false);
     }
 
     function hideInviteModal() {
@@ -580,7 +582,7 @@ include_once("./includes/partial/header.php");
         });
 
         $('.year-dropdown').click(function() {
-            var $dropdown = $(this).closest('.year').find('.year-dropdown');;
+            var $dropdown = $(this).closest('.year').find('.year-dropdown');
             var $container = $(this).closest('.year').find('.block-container');
             if ($dropdown.hasClass('fa-caret-right')) {
                 $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
