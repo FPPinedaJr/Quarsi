@@ -8,7 +8,7 @@ if  ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "</pre>";
     $students = $_POST['students'];
     $idevent = $_POST['idevent']; 
-    $def_time = "00:00:00";
+    $null = NULL;
 
     $stmt = $pdo->prepare("SELECT log_time FROM event WHERE idevent=:idevent"); 
     $stmt->bindParam(':idevent', $idevent, PDO::PARAM_INT); 

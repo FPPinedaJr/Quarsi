@@ -295,6 +295,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
             <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                 <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
+                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-12 show_invite_btn" onclick="showInvitedStudents(<?= $event['idevent']?>)">
+                    <i class="text-base text-white cursor-pointer md:text-xl fa-solid fa-clipboard hover:text-emerald-400"></i>
+                </div>
                 <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-3 invite_btn" onclick="showInviteModal(<?= $event['idevent']?>)">
                     <i class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
                 </div>
@@ -477,6 +480,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </form>
         </div>
 
+        <!-- Invited Students Modal -->
+        <div id="invited_students_modal" class="fixed top-0 left-0 z-30 flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69] invisible">
+            <div id="invited_students_modal_main" class="flex flex-col w-10/12 overflow-y-auto bg-white h-5/6 md:w-1/3 md:h-2/3">
+                <div class="flex items-center justify-center w-full text-3xl text-white bg-teal-700 h-14 font-['mulish'] font-semibold">Invited Students</div>
+            </div>
+            <div class=""></div>
+        </div>
+
     </body>
 
 
@@ -557,6 +568,19 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').removeClass('overflow-hidden');
         }
 
+        function showInvitedStudents(idevent) {
+            $('#invited_students_modal').removeClass('invisible');
+            $('#invited_students_modal').addClass('visible');
+            $('#edit_event_modal').addClass('invisible');
+            $('body').addClass('overflow-hidden');
+        }
+
+        function hideInvitedStudents() {
+            $('#invited_students_modal').addClass('invisible');
+            $('#invited_students_modal').removeClass('visible');
+            $('body').removeClass('overflow-hidden');
+        }
+
         $(document).ready(function () {
             changeHeaderTitle();
 
@@ -582,7 +606,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 if (!$(event.target).closest('#invite_modal_main').length && $(event.target).closest('#invite_modal').length) {
                     hideInviteModal();
                 }
-            })
+            });
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#invited_students_modal_main').length && $(event.target).closest('#invited_students_modal').length) {
+                    hideInvitedStudents();
+                }
+            });
 
             // Select/deselect all students within a block when the block checkbox is clicked
             $('.block-checkbox').click(function () {
