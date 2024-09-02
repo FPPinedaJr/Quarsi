@@ -2,58 +2,54 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-?>
 
-<!DOCTYPE html>
-<html lang="en">
+include_once("./includes/connect_db.php");
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student - <?php
-    if ($_SESSION['is_officer'] == 1) {
-        echo "Officer";
-    } elseif ($_SESSION['is_superuser'] == 1) {
-        echo "President";
-    } elseif ($_SESSION['is_admin'] == 1) {
-        echo "Administrator";
-    } else {
-        echo "Student";
-    }
-    ?></title>
+if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1)) {
+    header("Location: index.php");
+} else {
+    ?>
 
-    <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
-    <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-    <link rel="stylesheet" href="./assets/css/output.css">
-    <script src="./assets/js/jquery-3.7.1.min.js"></script>
-    <script src="./assets/js/html5-qrcode.min.js"></script>
+    <!DOCTYPE html>
+    <html lang="en">
 
-</head>
-<?php
-include_once("./includes/partial/sidebar.php");
-?>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student - <?php
+        if ($_SESSION['is_officer'] == 1) {
+            echo "Officer";
+        } elseif ($_SESSION['is_superuser'] == 1) {
+            echo "President";
+        } elseif ($_SESSION['is_admin'] == 1) {
+            echo "Administrator";
+        } else {
+            echo "Student";
+        }
+        ?></title>
 
-<header
-    class="w-full h-16 bg-gradient-to-r from-[#ecd894] via-[#ffffff] to-[#499667] fixed top-0 left-0 right-0 p-2 flex justify-between align-center shadow-md z-20">
-    <div class="flex items-center w-full min-h-full px-2 py-1 my-auto md:w-3/12 md:px-4 md:text-center">
-        <a onclick="toggleSidebar()"
-            class="md:mr-5 text-2xl md:text-4xl md:text-center hover:text-[#6a6b3a] cursor-pointer">
+        <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
+        <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
+        <link rel="stylesheet" href="./assets/css/output.css">
+        <script src="./assets/js/jquery-3.7.1.min.js"></script>
+        <script src="./assets/js/html5-qrcode.min.js"></script>
 
-            <i class="fa fa-bars" aria-hidden="true"></i></a>
-        <div class="flex justify-start pl-4 text-center min-w-40 md:w-96 md:ml-8 md:mr-2">
-            <h1 class="font-['merriweather_sans'] text-[#000000d5] font-bold text-xl md:text-3xl my-auto">Manage Cards
-            </h1>
-        </div>
-    </div>
-</header>
+    </head>
 
-<body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
-    <main class="flex justify-center w-full h-full ">
-        <div class="w-full max-w-sm p-5 ">
-            <h1 class="mb-4 text-2xl font-bold text-center">QR Scanner</h1>
-            <div class="flex justify-center my-3">
-                <?php
-                $stmt = $pdo->prepare("
+
+    <?php
+    include_once("./includes/partial/sidebar.php");
+    include_once("./includes/partial/header.php");
+    ?>
+
+
+    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
+        <main class="flex justify-center w-full h-full ">
+            <div class="w-full max-w-sm p-5 ">
+                <h1 class="mb-4 text-2xl font-bold text-center">QR Scanner</h1>
+                <div class="flex justify-center my-3">
+                    <?php
+                    $stmt = $pdo->prepare("
                     SELECT 
                     e.idevent,
                     CONCAT(e.name, ' ', 
@@ -75,103 +71,108 @@ include_once("./includes/partial/sidebar.php");
                     e.is_active
                     FROM event e;
                 ");
-                $stmt->execute();
-                $events = $stmt->fetchall(PDO::FETCH_ASSOC);
-                ?>
-                <select id="event" name="event" type="number" required=""
-                    class="w-4/5 flex md:h-9 items-center pl-1 font-['mulish'] rounded-lg text-emerald-700  border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                    <?php
-                    if ($events) {
-                        foreach ($events as $event):
-                            echo '<option value="' . $event['idevent'] . '" data-log-time="' . $event['time'] . '">' . $event['name'] . '</option>';
-                        endforeach;
-                    }
+                    $stmt->execute();
+                    $events = $stmt->fetchall(PDO::FETCH_ASSOC);
                     ?>
-                </select>
+                    <select id="event" name="event" type="number" required=""
+                        class="w-4/5 flex md:h-9 items-center pl-1 font-['mulish'] rounded-lg text-emerald-700  border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                        <?php
+                        if ($events) {
+                            foreach ($events as $event):
+                                echo '<option value="' . $event['idevent'] . '" data-log-time="' . $event['time'] . '">' . $event['name'] . '</option>';
+                            endforeach;
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div id="qr-reader" class="border border-gray-300 rounded-lg "></div>
+
+                <div id="scan-result"
+                    class="flex items-center justify-center invisible py-4 mt-8 mb-10 border-4 border-green-400 rounded-lg bg-slate-200">
+                    <!-- load scanned profile here -->
+                </div>
+
+                <!-- <button onclick="updateAttendance('2022-8-0110', 1 ,'afternoon_out')">test</button> -->
+
+
             </div>
-            <div id="qr-reader" class="border border-gray-300 rounded-lg "></div>
+        </main>
+    </body>
 
-            <div id="scan-result"
-                class="flex items-center justify-center invisible py-4 mt-8 mb-10 border-4 border-green-400 rounded-lg bg-slate-200">
-                <!-- load scanned profile here -->
-            </div>
+    <script>
+        function changeHeaderTitle() {
+            $('#header_title').text('QR scanner');
+        }
 
-            <!-- <button onclick="updateAttendance('2022-8-0110', 1 ,'afternoon_out')">test</button> -->
-
-
-        </div>
-    </main>
-</body>
-
-<script>
-    function updateAttendance(number, event, time) {
-        $.ajax({
-            url: './includes/update_attendance.php',
-            method: 'POST',
-            data: {
-                student_no: number,
-                eventid: event,
-                log_time: time
-            },
-            success: function (response) {
-                if (response == 'error:update') {
-                    $('#scan-result').html('<p class="text-lg font-bold">Error: unable to update this student.</p>');
-                } else if (response == 'error:retrieve') {
-                    $('#scan-result').html('<p class="text-lg font-bold">Error: cannot retrieve student data.</p>');
-                } else {
-                    $('#scan-result').html(response);
+        function updateAttendance(number, event, time) {
+            $.ajax({
+                url: './includes/update_attendance.php',
+                method: 'POST',
+                data: {
+                    student_no: number,
+                    eventid: event,
+                    log_time: time
+                },
+                success: function (response) {
+                    if (response == 'error:update') {
+                        $('#scan-result').html('<p class="text-lg font-bold">Error: unable to update this student.</p>');
+                    } else if (response == 'error:retrieve') {
+                        $('#scan-result').html('<p class="text-lg font-bold">Error: cannot retrieve student data.</p>');
+                    } else {
+                        $('#scan-result').html(response);
+                    }
+                    $('#scan-result').removeClass('invisible');
+                    $('#scan-result').addClass('visible');
                 }
-                $('#scan-result').removeClass('invisible');
-                $('#scan-result').addClass('visible');
-            }
-        });
-
-    }
-
-    $(document).ready(function () {
-
-
-        function onScanSuccess(decodedText, decodedResult) {
-            if (decodedText.length > 15) {
-                decodedText = decodedText.split('~')[0].trim();
-            }
-
-            let eventid = $('#event').val();
-            let log_time = $('#event option:selected').data('log-time');
-
-            updateAttendance(decodedText, eventid, log_time);
+            });
 
         }
 
+        $(document).ready(function () {
+            changeHeaderTitle();
 
-        const config = {
-            fps: 30,
-            qrbox: { width: 250, height: 250 },
-            aspectRatio: 1.0,
-            disableFlip: false
-        };
+            function onScanSuccess(decodedText, decodedResult) {
+                if (decodedText.length > 15) {
+                    decodedText = decodedText.split('~')[0].trim();
+                }
 
-        const qrScanner = new Html5Qrcode("qr-reader");
+                let eventid = $('#event').val();
+                let log_time = $('#event option:selected').data('log-time');
 
-        Html5Qrcode.getCameras().then(cameras => {
-            if (cameras && cameras.length) {
-                const backCamera = cameras.find(camera => camera.label.toLowerCase().includes('back'));
-                const cameraId = backCamera ? backCamera.id : cameras[0].id;
+                updateAttendance(decodedText, eventid, log_time);
 
-                qrScanner.start(
-                    cameraId,
-                    config,
-                    onScanSuccess
-                );
-            } else {
-                alert("No camera found.");
             }
-        }).catch(err => {
-            alert(`Error getting cameras: ${err}`);
+
+
+            const config = {
+                fps: 30,
+                qrbox: { width: 250, height: 250 },
+                aspectRatio: 1.0,
+                disableFlip: false
+            };
+
+            const qrScanner = new Html5Qrcode("qr-reader");
+
+            Html5Qrcode.getCameras().then(cameras => {
+                if (cameras && cameras.length) {
+                    const backCamera = cameras.find(camera => camera.label.toLowerCase().includes('back'));
+                    const cameraId = backCamera ? backCamera.id : cameras[0].id;
+
+                    qrScanner.start(
+                        cameraId,
+                        config,
+                        onScanSuccess
+                    );
+                } else {
+                    alert("No camera found.");
+                }
+            }).catch(err => {
+                alert(`Error getting cameras: ${err}`);
+            });
+
+
         });
+    </script>
 
-
-    });
-</script>
-
-</html>
+    </html>
+<?php } ?>
