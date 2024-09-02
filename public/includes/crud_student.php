@@ -17,16 +17,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $total_points = $_POST['total_points'];
             $profile_pic = $_FILES['profile_pic'];
             $user = 1;
-            
-            if ($user_type == 0) {
-                $img_content = "";
+            $img_content = ""; 
 
-                if (!empty($profile_pic["tmp_name"])) {
-                    $img_content = file_get_contents($profile_pic["tmp_name"]);
+            if (!empty($profile_pic["tmp_name"])) {
+                $source = $profile_pic["tmp_name"];
+                list($width, $height) = getimagesize($source);
+
+                $max_dimension = 200; // max resolution 
+                $resize_ratio = min($max_dimension / $width, $max_dimension / $height);
+
+                $new_width = $width * $resize_ratio;
+                $new_height = $height * $resize_ratio;
+
+                $info = getimagesize($source);
+                if ($info['mime'] == 'image/jpeg') {
+                    $image = imagecreatefromjpeg($source);
+                } elseif ($info['mime'] == 'image/png') {
+                    $image = imagecreatefrompng($source);
+                }
+
+                $tn = imagecreatetruecolor($new_width, $new_height);
+                imagecopyresampled($tn, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+                ob_start();
+                imagejpeg($tn, NULL, 60); 
+                $img_content = ob_get_clean();
                 } else {
                     $img_content = file_get_contents("../assets/images/default_pic.jpg");
                 }
-
+            
+            if ($user_type == 0) {
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
@@ -45,14 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
 
             } else if ($user_type == 1){
-                $img_content = "";
-
-                if (!empty($profile_pic["tmp_name"])) {
-                    $img_content = file_get_contents($profile_pic["tmp_name"]);
-                } else {
-                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
-                }
-
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
@@ -72,14 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
 
             } else if ($user_type == 2) {
-                $img_content = "";
-
-                if (!empty($profile_pic["tmp_name"])) {
-                    $img_content = file_get_contents($profile_pic["tmp_name"]);
-                } else {
-                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
-                }
-
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
@@ -99,14 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
 
             } else if ($user_type == 3) {
-                $img_content = "";
-
-                if (!empty($profile_pic["tmp_name"])) {
-                    $img_content = file_get_contents($profile_pic["tmp_name"]);
-                } else {
-                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
-                }
-
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
@@ -129,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: ../student.php");
                 exit(); 
             } else {
-                echo "Error updating deck. Please try again.";
+                echo "Error updating user. Please try again.";
             }
 
         } else if ($_POST['action'] == 'delete') {
@@ -144,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: ../student.php");
                 exit(); 
             } else {
-                echo "Error updating deck. Please try again.";
+                echo "Error deleting user. Please try again.";
             }
         } else if ($_POST['action'] == 'add') {
             $iduser = $_POST['iduser'];
@@ -157,15 +153,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $_POST['email'];
             $password = $_POST['student_no'];
             $profile_pic = $_POST['profile_pic'];
-
-            $img_content = "";
+            $img_content = ""; 
 
             if (!empty($profile_pic["tmp_name"])) {
-                $img_content = file_get_contents($profile_pic["tmp_name"]);
-            } else {
-                $img_content = file_get_contents("../assets/images/default_pic.jpg");
-            }
-            
+                $source = $profile_pic["tmp_name"];
+                list($width, $height) = getimagesize($source);
+
+                $max_dimension = 200; // max resolution 
+                $resize_ratio = min($max_dimension / $width, $max_dimension / $height);
+
+                $new_width = $width * $resize_ratio;
+                $new_height = $height * $resize_ratio;
+
+                $info = getimagesize($source);
+                if ($info['mime'] == 'image/jpeg') {
+                    $image = imagecreatefromjpeg($source);
+                } elseif ($info['mime'] == 'image/png') {
+                    $image = imagecreatefrompng($source);
+                }
+
+                $tn = imagecreatetruecolor($new_width, $new_height);
+                imagecopyresampled($tn, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+                ob_start();
+                imagejpeg($tn, NULL, 60); 
+                $img_content = ob_get_clean();
+                } else {
+                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
+                }
+
             $stmt = $pdo->prepare("
                 INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, profile_pic)
                 VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :profile_pic)
@@ -185,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header("Location: ../student.php");
                 exit(); 
             } else {
-                echo "Error updating deck. Please try again.";
+                echo "Error adding user. Please try again.";
             }
     }
 }
