@@ -272,10 +272,10 @@ include_once("./includes/partial/header.php");
         </div>
     </div>
 
-    <!-- Edit students modal -->
+    <!-- Edit officers modal -->
     <div id="edit_officer_modal"
-        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-        <div id="edit_officer_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
+        <div id="edit_officer_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
             <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                 <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Officer</p>
             </div>
