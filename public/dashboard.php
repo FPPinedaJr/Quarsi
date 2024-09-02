@@ -53,8 +53,8 @@ if ($_SESSION["logged_in"] == !true) {
         <main class="flex flex-col items-center w-full h-full ">
 
             <!-- Points Div -->
-            <div class="absolute top-0 w-full py-16 pt-32 text-2xl text-center bg-teal-300/50">
-                <h1><span class="text-5xl font-bold"><?= $user['total_points'] ?><span> <span class="text-sm">pts</span>
+            <div class="absolute top-0 left-0 w-full py-16 pt-32 text-2xl text-center bg-teal-300/50">
+                <h1><span class="text-5xl font-bold"><?= $user['total_points'] ?><span> <span class="-ml-2 text-base">ali</span>
                 </h1>
             </div>
 
