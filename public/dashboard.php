@@ -49,7 +49,7 @@ if ($_SESSION["logged_in"] == !true) {
     include_once("./includes/partial/header.php");
     ?>
 
-    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-hidden">
+    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
         <main class="flex flex-col items-center w-full h-full ">
 
             <!-- Points Div -->
