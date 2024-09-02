@@ -6,7 +6,7 @@
 
             <i class="text-white fa fa-bars" aria-hidden="true"></i></a>
         <div class="flex justify-start pl-4 text-center min-w-40 md:w-96 md:ml-8 md:mr-2">
-            <h1 class="font-['merriweather_sans'] text-white font-bold text-xl md:text-3xl my-auto" id="header_title" onpageshow="changeHeaderTitle()">Home
+            <h1 class="font-['merriweather_sans'] text-white font-bold text-xl md:text-3xl my-auto" id="header_title" onpageshow="changeHeaderTitle()">
             </h1>
         </div>
     </div>
