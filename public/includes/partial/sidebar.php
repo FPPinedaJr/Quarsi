@@ -27,7 +27,7 @@ $user = $stmt->fetch();
     <div id="sidebar-content"
       class="flex flex-col overflow-y-auto  bg-[#f5f5f5] h-full w-9/12 md:w-72 fixed left-0 duration-300 ease-out transition-all transform -translate-x-full">
       <div class="flex items-center justify-between px-5 text-4xl bg-teal-700 min-h-16 ">
-        <a href="home.php" class="font-['merriweather_sans'] text-white font-bold text-5xl my-auto">Quarsi</a>
+        <a href="dashboard.php" class="font-['merriweather_sans'] text-white font-bold text-5xl my-auto">Quarsi</a>
       </div>
 
       <!-- profile -->
