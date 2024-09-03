@@ -297,12 +297,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
                     <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-11 invite_btn"
-                        onclick="showInviteModal(<?= $event['idevent'] ?>)">
+                        onclick="showInviteModal()">
                         <i
                             class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
                     </div>
                     <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-4 invite_btn"
-                        onclick="showEndModal(<?= $event['idevent'] ?>)">
+                        onclick="showEndModal()">
                         <i
                             class="text-xl text-white cursor-pointer md:text-xl fa-solid fa-calendar-xmark hover:text-emerald-400"></i>
                     </div>
@@ -396,7 +396,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
                     <form action="./includes/crud_event.php" type="button" method="POST">
                         <button type="submit" value="delete" name="action"
-                            class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
+                            class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md" >Delete</button>
                         <input id="id_delete_event" type="hidden" name="idevent" class="">
                     </form>
                 </div>
@@ -418,19 +418,20 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                 </div>
                 <div class="flex flex-col w-full h-auto p-5 bg-white text-md">
-                    <p class="font-semibold text-emerald-700">End event "<span id="event_to_end"></span>."</p>
-                    <p class="text-emerald-700">Are you sure?</p>
+                    <p class="text-emerald-700">Are you sure to end event "<span id="event_to_end" class="font-semibold"></span>"?</p>
                 </div>
-                <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
+                <div class="flex items-center justify-center w-full gap-3 py-3 bg-white h-fit">
+                    <button type="button" onclick="hideEndModal()"
+                    class="rounded-lg hover:bg-teal-600 hover:text-white w-20 p-1 text-base font-semibold text-teal-800 font-['mulish'] border bg-none border-teal-700 cursor-pointer flex justify-center add_invite_btn">Cancel</button>
                     <button type="submit"
-                        class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-red-700 cursor-pointer flex justify-center add_invite_btn">End</button>
+                            class="rounded-lg hover:bg-red-600 w-20 p-1 text-base font-semibold text-white font-['mulish'] bg-red-700 cursor-pointer flex justify-center add_invite_btn border border-red-700">End</button>
                 </div>
             </form>
         </div>
 
         <!-- Invite Modal -->
         <div id="invite_modal"
-            class="fixed top-0 left-0 z-50 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
+            class="fixed top-0 left-0 z-30 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
             <form id="invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
                 class="w-10/12 md:w-1/3 h-2/3">
                 <input id="invite_event" type="hidden" name="idevent">
@@ -502,10 +503,49 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     ?>
 
                 </div>
+                
+                <div class="flex justify-center w-full my-4 h-fit">
+                    <div class="flex flex-wrap gap-6 p-2 w-fit h-fit justify-evenly">
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=1>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Morning In</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=2>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Morning Out</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=3>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon In</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">   
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=4>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon Out</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                    
                 <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
-                    <button type="submit"
-                        class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
-                        Invite</button>
+                    <button type="submit" value="invite" name="action"
+                    class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
+                    Invite</button>
                 </div>
             </form>
         </div>
@@ -596,10 +636,27 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').removeClass('overflow-hidden');
         }
 
-        function showInviteModal(idevent) {
+        function showEndModal() {
+            var $idevent = $('#idevent').val();
+            $('#end_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+            $('#end_event').val($idevent); 
+            $('#event_to_end').text($('#event-' + $idevent).data('name'));
+            $('#edit_event_modal').addClass('invisible');
+            $('input[type="checkbox"]').prop('checked', false);
+        }
+
+
+        function hideEndModal() {
+            $('#end_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
+        function showInviteModal() {
+            var $id = $('#idevent').val();
             $('#invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
-            $('#invite_event').val(idevent);
+            $('#invite_event').val($id);
             $('#edit_event_modal').addClass('invisible');
             $('input[type="checkbox"]').prop('checked', false);
         }
@@ -634,7 +691,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 if (!$(event.target).closest('#invite_modal_main').length && $(event.target).closest('#invite_modal').length) {
                     hideInviteModal();
                 }
-            })
+            });
+
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#end_modal_main').length && $(event.target).closest('#end_modal').length) {
@@ -689,6 +747,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
                 var $idevent = $
                 $programCheckboxes.prop('checked', this.checked);
+            });
+
+            $('.checkbox-input').on('change', function() {
+                const tile = $(this).next('.checkbox-tile');
+
+                if (this.checked) {
+                    tile.addClass('border-teal-500 shadow-lg text-teal-500');
+                } else {
+                    tile.removeClass('border-teal-500 shadow-lg text-teal-500');
+                }
             });
 
         })
