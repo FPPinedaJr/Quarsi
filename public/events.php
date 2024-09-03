@@ -396,7 +396,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
                     <form action="./includes/crud_event.php" type="button" method="POST">
                         <button type="submit" value="delete" name="action"
-                            class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
+                            class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md" >Delete</button>
                         <input id="id_delete_event" type="hidden" name="idevent" class="">
                     </form>
                 </div>
@@ -418,12 +418,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                 </div>
                 <div class="flex flex-col w-full h-auto p-5 bg-white text-md">
-                    <p class="font-semibold text-emerald-700">End event "<span id="event_to_end"></span>."</p>
-                    <p class="text-emerald-700">Are you sure?</p>
+                    <p class="text-emerald-700">Are you sure to end event "<span id="event_to_end" class="font-semibold"></span>"?</p>
                 </div>
-                <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
+                <div class="flex items-center justify-center w-full gap-3 py-3 bg-white h-fit">
+                    <button type="button" onclick="hideEndModal()"
+                    class="rounded-lg hover:bg-teal-600 hover:text-white w-20 p-1 text-base font-semibold text-teal-800 font-['mulish'] border bg-none border-teal-700 cursor-pointer flex justify-center add_invite_btn">Cancel</button>
                     <button type="submit"
-                        class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-red-700 cursor-pointer flex justify-center add_invite_btn">End</button>
+                            class="rounded-lg hover:bg-red-600 w-20 p-1 text-base font-semibold text-white font-['mulish'] bg-red-700 cursor-pointer flex justify-center add_invite_btn border border-red-700">End</button>
                 </div>
             </form>
         </div>
