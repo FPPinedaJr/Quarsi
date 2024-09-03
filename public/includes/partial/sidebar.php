@@ -27,6 +27,9 @@ $user = $stmt->fetch();
     <div id="sidebar-content"
       class="flex flex-col overflow-y-auto  bg-[#f5f5f5] h-full w-9/12 md:w-72 fixed left-0 duration-300 ease-out transition-all transform -translate-x-full">
       <div class="flex items-center px-5 text-4xl bg-gray-700 min-h-16 ">
+        <div class="flex items-center justify-center w-full my-5 ">
+          <img src="./assets/images/logo.png" alt="Logo" class="w-3/5 h-auto rounded-full ">
+        </div>
         <a href="home.php" class="font-['merriweather_sans'] text-white font-bold text-4xl my-auto">Quarsi</a>
       </div>
 
