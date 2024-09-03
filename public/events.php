@@ -182,7 +182,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             }
                             ?>
                             <div class="text-emerald-100 font-['mulish'] text-xs md:hidden">
-                                <?php if ($event['log_time'] == 1) {
+                                <?php if ($event['log_time'] == 0) {
+                                    echo "Disabled";
+                                } else if ($event['log_time'] == 1) {
                                     echo "Morning In";
                                 } else if ($event['log_time'] == 2) {
                                     echo "Morning Out";
@@ -196,7 +198,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         </div>
                         <div
                             class="hidden md:flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:bg-zinc-600 md:border-r-2 md:border-[#b7b9b9] text-white">
-                            <?php if ($event['log_time'] == 1) {
+                            <?php if ($event['log_time'] == 0) {
+                                echo "Disabled";
+                            } elseif ($event['log_time'] == 1) {
                                 echo "Morning In";
                             } else if ($event['log_time'] == 2) {
                                 echo "Morning Out";
@@ -261,6 +265,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="add_log_time" name="log_time" type="number" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                                    <option value="0">Disabled</option>
                                     <option value="1">Morning In</option>
                                     <option value="2">Morning Out</option>
                                     <option value="3">Afternoon In</option>
@@ -348,6 +353,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="log_time" name="log_time" type="number" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                                    <option value="0">Disabled</option>
                                     <option value="1">Morning In</option>
                                     <option value="2">Morning Out</option>
                                     <option value="3">Afternoon In</option>
