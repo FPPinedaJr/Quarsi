@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = $_POST['email'];
             $password = $_POST['student_no'];
             $user = 1;
-            $profile_pic = $_POST['profile_pic'];
+            $profile_pic = $_FILES['profile_pic'];
             $img_content = ""; 
 
             if (!empty($profile_pic["tmp_name"])) {
