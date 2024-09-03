@@ -397,7 +397,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         <!-- Invite Modal -->
         <div id="invite_modal"
-            class="fixed top-0 left-0 z-50 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
+            class="fixed top-0 left-0 z-30 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
             <form id="invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
                 class="w-10/12 md:w-1/3 h-2/3">
                 <input id="invite_event" type="hidden" name="idevent">
@@ -469,10 +469,49 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     ?>
 
                 </div>
+                
+                <div class="flex justify-center w-full my-4 h-fit">
+                    <div class="flex flex-wrap gap-6 p-2 w-fit h-fit justify-evenly">
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=1>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Morning In</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=2>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Morning Out</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=3>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon In</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">   
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=4>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon Out</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                    
                 <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
                     <button type="submit" value="invite" name="action"
-                        class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
-                        Invite</button>
+                    class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
+                    Invite</button>
                 </div>
             </form>
         </div>
@@ -633,6 +672,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
                 var $idevent = $
                 $programCheckboxes.prop('checked', this.checked);
+            });
+
+            $('.checkbox-input').on('change', function() {
+                const tile = $(this).next('.checkbox-tile');
+
+                if (this.checked) {
+                    tile.addClass('border-teal-500 shadow-lg text-teal-500');
+                } else {
+                    tile.removeClass('border-teal-500 shadow-lg text-teal-500');
+                }
             });
 
         })
