@@ -28,6 +28,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
       INNER JOIN organization
       ON user.organization = organization.idorganization
       WHERE user.is_officer = 1 OR user.is_superuser = 1 
+      ORDER BY user.year, user.block, user.f_name;
     ");
 
     $stmt1->execute();
