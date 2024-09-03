@@ -28,6 +28,7 @@ if ($_SESSION["logged_in"] == !true) {
             ?>
         </title>
 
+        <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">

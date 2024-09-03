@@ -644,6 +644,10 @@ video {
   right: 1.25rem;
 }
 
+.right-6 {
+  right: 1.5rem;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -654,6 +658,30 @@ video {
 
 .top-4 {
   top: 1rem;
+}
+
+.right-10 {
+  right: 2.5rem;
+}
+
+.right-16 {
+  right: 4rem;
+}
+
+.right-12 {
+  right: 3rem;
+}
+
+.right-8 {
+  right: 2rem;
+}
+
+.right-4 {
+  right: 1rem;
+}
+
+.right-11 {
+  right: 2.75rem;
 }
 
 .z-20 {
@@ -1883,6 +1911,10 @@ video {
 
   .md\:top-4 {
     top: 1rem;
+  }
+
+  .md\:right-12 {
+    right: 3rem;
   }
 
   .md\:ml-1 {

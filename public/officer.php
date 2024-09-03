@@ -65,6 +65,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
         ?></title>
 
+        <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">
@@ -140,16 +141,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     data-student_no="<?php echo $officer['student_no'] ?>" data-f_name="<?php echo $officer['f_name'] ?>"
                     data-l_name="<?php echo $officer['l_name'] ?>" data-idprogram="<?php echo $officer['idprogram_user'] ?>"
                     data-year="<?php echo $officer['year'] ?>" data-block="<?php echo $officer['block'] ?>"
-                    data-profile_pic="<?= base64_encode($officer['profile_pic']) ?>" data-email="<?php echo $officer['email'] ?>"
-                    data-is_officer="<?php echo $officer['is_officer'] ?>" data-user_type="<?php if ($officer['is_officer'] == 1) {
-                           echo "1";
-                       } else if ($officer['is_superuser'] == 1) {
-                           echo "2";
-                       } else if ($officer['is_admin'] == 1) {
-                           echo "3";
-                       } else {
-                           echo "0";
-                       } ?>" data-total_points="<?php echo $officer['total_points'] ?>"
+                    data-profile_pic="<?= base64_encode($officer['profile_pic']) ?>"
+                    data-email="<?php echo $officer['email'] ?>" data-is_officer="<?php echo $officer['is_officer'] ?>"
+                    data-user_type="<?php if ($officer['is_officer'] == 1) {
+                        echo "1";
+                    } else if ($officer['is_superuser'] == 1) {
+                        echo "2";
+                    } else if ($officer['is_admin'] == 1) {
+                        echo "3";
+                    } else {
+                        echo "0";
+                    } ?>" data-total_points="<?php echo $officer['total_points'] ?>"
                     class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                     <div id=""
                         class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
@@ -271,13 +273,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </div>
         </div>
 
-    <!-- Edit officers modal -->
-    <div id="edit_officer_modal"
-        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
-        <div id="edit_officer_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
-            <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Officer</p>
-            </div>
+        <!-- Edit officers modal -->
+        <div id="edit_officer_modal"
+            class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
+            <div id="edit_officer_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
+                <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
+                    <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Officer</p>
+                </div>
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
