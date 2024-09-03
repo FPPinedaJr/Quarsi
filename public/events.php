@@ -68,6 +68,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
         ?></title>
 
+        <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">
@@ -289,16 +290,18 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </div>
         </div>
 
-    <!-- Events Edit Modal -->
-    <div id="edit_event_modal"
-        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
-        <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
-            <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
-                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-3 invite_btn" onclick="showInviteModal(<?= $event['idevent']?>)">
-                    <i class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
+        <!-- Events Edit Modal -->
+        <div id="edit_event_modal"
+            class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
+            <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
+                <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
+                    <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
+                    <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-3 invite_btn"
+                        onclick="showInviteModal(<?= $event['idevent'] ?>)">
+                        <i
+                            class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
+                    </div>
                 </div>
-            </div>
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
