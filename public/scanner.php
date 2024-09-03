@@ -115,10 +115,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     log_time: time
                 },
                 success: function (response) {
-                    if (response == 'error:update') {
-                        $('#scan-result').html('<p class="text-lg font-bold">Error: unable to update this student.</p>');
-                    } else if (response == 'error:retrieve') {
-                        $('#scan-result').html('<p class="text-lg font-bold">Error: cannot retrieve student data.</p>');
+                    if (response == 'error:unknown_user') {
+                        $('#scan-result').html('<p class="px-3 text-center">Error: This student is either not registered or invited.</p>');
                     } else {
                         $('#scan-result').html(response);
                     }
