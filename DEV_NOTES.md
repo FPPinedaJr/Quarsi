@@ -49,7 +49,7 @@ npm run build:global
 ## FAVICON
 - Link favicon image
 ```html
-<link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
 ```
 
 ## GLOBAL CSS
