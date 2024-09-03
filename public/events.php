@@ -68,6 +68,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
         ?></title>
 
+        <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">
@@ -289,16 +290,23 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </div>
         </div>
 
-    <!-- Events Edit Modal -->
-    <div id="edit_event_modal"
-        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
-        <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
-            <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
-                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-3 invite_btn" onclick="showInviteModal()">
-                    <i class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
+        <!-- Events Edit Modal -->
+        <div id="edit_event_modal"
+            class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
+            <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+                <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
+                    <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
+                    <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-11 invite_btn"
+                        onclick="showInviteModal()">
+                        <i
+                            class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
+                    </div>
+                    <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-4 invite_btn"
+                        onclick="showEndModal()">
+                        <i
+                            class="text-xl text-white cursor-pointer md:text-xl fa-solid fa-calendar-xmark hover:text-emerald-400"></i>
+                    </div>
                 </div>
-            </div>
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
@@ -393,6 +401,31 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     </form>
                 </div>
             </div>
+        </div>
+
+
+        <!-- End modal -->
+        <div id="end_modal"
+            class="fixed top-0 left-0 z-50 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
+            <form id="end_students_form" action="./includes/end_event.php" type="button" method="POST"
+                class="w-10/12 md:w-1/3 a-2/3">
+                <input id="end_event" type="hidden" name="idEndEvent">
+                <div id="end_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white">
+                    <div
+                        class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
+                        End Event
+                    </div>
+
+                </div>
+                <div class="flex flex-col w-full h-auto p-5 bg-white text-md">
+                    <p class="font-semibold text-emerald-700">End event "<span id="event_to_end"></span>."</p>
+                    <p class="text-emerald-700">Are you sure?</p>
+                </div>
+                <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
+                    <button type="submit"
+                        class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-red-700 cursor-pointer flex justify-center add_invite_btn">End</button>
+                </div>
+            </form>
         </div>
 
         <!-- Invite Modal -->
@@ -516,6 +549,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </form>
         </div>
 
+
+
+
     </body>
 
 
@@ -583,6 +619,38 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('#header_title').text('Events');
         }
 
+        function showEndModal() {
+            var $idevent = $('#idevent').val();
+            $('#end_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+            $('#end_event').val($idevent); 
+            $('#event_to_end').text($('#event-' + $idevent).data('name'));
+            $('#edit_event_modal').addClass('invisible');
+            $('input[type="checkbox"]').prop('checked', false);
+        }
+
+
+        function hideEndModal() {
+            $('#end_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
+        function showEndModal() {
+            var $idevent = $('#idevent').val();
+            $('#end_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+            $('#end_event').val($idevent); 
+            $('#event_to_end').text($('#event-' + $idevent).data('name'));
+            $('#edit_event_modal').addClass('invisible');
+            $('input[type="checkbox"]').prop('checked', false);
+        }
+
+
+        function hideEndModal() {
+            $('#end_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
         function showInviteModal() {
             var $id = $('#idevent').val();
             $('#invite_modal').removeClass('invisible');
@@ -624,6 +692,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#end_modal_main').length && $(event.target).closest('#end_modal').length) {
+                    hideEndModal();
+                }
+            })
 
             // Select/deselect all students within a block when the block checkbox is clicked
             $('.block-checkbox').click(function () {

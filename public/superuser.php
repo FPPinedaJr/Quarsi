@@ -64,6 +64,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
         }
         ?></title>
 
+        <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">
@@ -271,13 +272,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
             </div>
         </div>
 
-    <!-- Edit students modal -->
-    <div id="edit_superuser_modal"
-        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
-        <div id="edit_superuser_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
-            <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Superuser</p>
-            </div>
+        <!-- Edit students modal -->
+        <div id="edit_superuser_modal"
+            class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
+            <div id="edit_superuser_modal_main"
+                class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
+                <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
+                    <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Superuser</p>
+                </div>
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">

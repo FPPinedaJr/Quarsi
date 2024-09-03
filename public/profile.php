@@ -66,6 +66,8 @@ if ($_SESSION["logged_in"] == !true) {
             echo "Student";
         }
         ?></title>
+
+        <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">
@@ -84,7 +86,7 @@ if ($_SESSION["logged_in"] == !true) {
 
     <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
         <main class="flex flex-col items-center w-full h-full py-8">
-            <div class="relative w-48 h-48 overflow-hidden bg-gray-200 rounded-full">
+            <div class="relative w-48 h-48 overflow-hidden bg-gray-200 border border-teal-600 rounded-full">
                 <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
                     class="object-cover w-full h-full">
             </div>
