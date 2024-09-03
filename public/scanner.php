@@ -55,7 +55,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     e.idevent,
                     CONCAT(e.name, ' ', 
                         CASE
-                            WHEN e.log_time = 0 THEN '(none)'
+                            WHEN e.log_time = 0 THEN '(disabled)'
                             WHEN e.log_time = 1 THEN '(AM - in)'
                             WHEN e.log_time = 2 THEN '(AM - out)'
                             WHEN e.log_time = 3 THEN '(PM - in)'
@@ -70,7 +70,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         WHEN e.log_time = 4 THEN 'afternoon_out'
                     END AS time,
                     e.is_active
-                    FROM event e;
+                    FROM event e
+                    WHERE is_active = 1;
                 ");
                     $stmt->execute();
                     $events = $stmt->fetchall(PDO::FETCH_ASSOC);
@@ -137,6 +138,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
                 let eventid = $('#event').val();
                 let log_time = $('#event option:selected').data('log-time');
+
+                if (log_time == 0){
+                    return;
+                }
 
                 updateAttendance(decodedText, eventid, log_time);
 
