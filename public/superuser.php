@@ -64,7 +64,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
         }
         ?></title>
 
-        <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
         <link rel="stylesheet" href="./assets/css/output.css">
