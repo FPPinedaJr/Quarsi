@@ -943,6 +943,10 @@ video {
   height: 100vh;
 }
 
+.h-1\/4 {
+  height: 25%;
+}
+
 .min-h-16 {
   min-height: 4rem;
 }
@@ -1415,6 +1419,11 @@ video {
   background-color: rgb(82 82 91 / var(--tw-bg-opacity));
 }
 
+.bg-teal-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 246 228 / var(--tw-bg-opacity));
+}
+
 .bg-none {
   background-image: none;
 }
@@ -1624,6 +1633,11 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
 }
 
 .font-bold {
