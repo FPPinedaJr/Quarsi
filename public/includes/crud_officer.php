@@ -181,7 +181,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } else {
                     $img_content = file_get_contents("../assets/images/default_pic.jpg");
                 }
+                $stmt = $pdo->prepare("
+                SELECT * FROM user 
+                WHERE student_no=:student_no
+            ");
             
+            $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
+    
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($row) {
+                header("location: ../error_user.php");
+                exit();
+            }
+    
             $stmt = $pdo->prepare("
                 INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, is_officer, profile_pic)
                 VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :user, :profile_pic)
