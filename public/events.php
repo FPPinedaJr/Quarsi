@@ -295,13 +295,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
             <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                 <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
-                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-[1.07rem] right-[4.7rem] require_btn" onclick="requireEvent(<?= $event['idevent']?>)">
-                    <i class="text-base text-white cursor-pointer md:text-xl fa-regular fa-registered hover:text-emerald-400"></i>
-                </div>
-                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-12 show_invite_btn" onclick="showInvitedStudents(<?= $event['idevent']?>)">
-                    <i class="text-base text-white cursor-pointer md:text-xl fa-solid fa-clipboard hover:text-emerald-400"></i>
-                </div>
-                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-3 invite_btn" onclick="showInviteModal(<?= $event['idevent']?>)">
+                <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-3 invite_btn" onclick="showInviteModal()">
                     <i class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
                 </div>
             </div>
@@ -483,37 +477,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </form>
         </div>
 
-        <!-- Invited Students Modal -->
-        <div id="invited_students_modal" class="fixed top-0 left-0 z-30 flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69] invisible">
-            <div id="invited_students_modal_main" class="flex flex-col w-10/12 overflow-y-auto bg-white h-5/6 md:w-1/3 md:h-2/3">
-                <div class="flex items-center justify-center w-full text-3xl text-white bg-teal-700 h-14 font-['mulish'] font-semibold">Invited Students</div>
-            </div>
-            <div class=""></div>
-        </div>
-
-        <!-- Require Event Modal -->
-        <div id="require_event_modal"
-            class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center invisible w-full h-full overflow-y-hidden backdrop-blur-sm bg-gray-500/30">
-            <div id="require_event_modal_main"
-                class="flex-col w-10/12 md:w-96 h-fit p-2 rounded-lg items-center justify-content bg-[#fbfcf8]">
-                <div class="flex items-center w-full h-16 px-2 border-b border-emerald-700">
-                    <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Require Event</p>
-                </div>
-                <div class="flex flex-col w-full h-auto p-2 text-md">
-                    <p class="font-semibold text-emerald-700">Do you want to require this event"<span id="event_to_require"></span>?"</p>
-                </div>
-                <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
-                    <form action="./includes/crud_invite.php" type="button" method="POST">
-                        <button id="submit" value="require" name="action" 
-                            class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Yes</button>
-                        <button type="submit" value="unrequire" name="action"
-                            class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">No</button>
-                        <
-                    </form>
-                </div>
-            </div>
-        </div>
-
     </body>
 
 
@@ -581,44 +544,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('#header_title').text('Events');
         }
 
-        function showInviteModal(idevent) {
+        function showInviteModal() {
+            var $id = $('#idevent').val();
             $('#invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
-            $('#invite_event').val(idevent);
+            $('#invite_event').val($id);
             $('#edit_event_modal').addClass('invisible');
             $('input[type="checkbox"]').prop('checked', false);
         }
 
         function hideInviteModal() {
             $('#invite_modal').addClass('invisible');
-            $('body').removeClass('overflow-hidden');
-        }
-
-        function showInvitedStudents(idevent) {
-            $('#invited_students_modal').removeClass('invisible');
-            $('#invited_students_modal').addClass('visible');
-            $('#edit_event_modal').addClass('invisible');
-            $('body').addClass('overflow-hidden');
-        }
-
-        function hideInvitedStudents() {
-            $('#invited_students_modal').addClass('invisible');
-            $('#invited_students_modal').removeClass('visible');
-            $('body').removeClass('overflow-hidden');
-        }
-
-        function requireEvent(idevent) {
-            $('#require_event_modal').removeClass('invisible');
-            $('#require_event_modal').addClass('visible');
-            $('#edit_event_modal').addClass('invisible');
-            $('#event_to_require').text($('#event-' + $id).data('name'));
-            $('body').addClass('overflow-hidden');
-        }
-
-        function hideRequireEvent(idevent) {
-            $('#require_event_modal').addClass('invisible');
-            $('#require_event_modal').removeClass('visible');
-            $('#edit_event_modal').removeClass('invisible');
             $('body').removeClass('overflow-hidden');
         }
 
@@ -649,17 +585,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-            $(document).on('click', function (event) {
-                if (!$(event.target).closest('#invited_students_modal_main').length && $(event.target).closest('#invited_students_modal').length) {
-                    hideInvitedStudents();
-                }
-            });
-
-            $(document).on('click', function (event) {
-                if (!$(event.target).closest('#require_event_modal_main').length && $(event.target).closest('#require_event_modal').length) {
-                    hideRequireEvent();
-                }
-            });
 
             // Select/deselect all students within a block when the block checkbox is clicked
             $('.block-checkbox').click(function () {
