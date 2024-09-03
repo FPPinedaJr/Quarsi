@@ -143,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "Error deleting user. Please try again.";
             }
         } else if ($_POST['action'] == 'add') {
-            $iduser = $_POST['iduser'];
             $f_name = $_POST['f_name'];
             $l_name = $_POST['l_name'];
             $organization = $_POST['program'];
@@ -183,19 +182,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $img_content = file_get_contents("../assets/images/default_pic.jpg");
                 }            
             $stmt = $pdo->prepare("
-                INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, is_admin)
-                VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :user)
-            ");
-            $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
-            $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
-            $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
-            $stmt->bindParam(':organization', $organization, PDO::PARAM_INT);
-            $stmt->bindParam(':year', $year, PDO::PARAM_INT);
-            $stmt->bindParam(':block', $block, PDO::PARAM_INT);
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-            $stmt->bindParam(':user', $user, PDO::PARAM_INT);
-            $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
+                INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, is_admin, profile_pic)
+                VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :user, :profile_pic)");
+
+                $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
+                $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
+                $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
+                $stmt->bindParam(':organization', $organization, PDO::PARAM_INT);
+                $stmt->bindParam(':year', $year, PDO::PARAM_INT);
+                $stmt->bindParam(':block', $block, PDO::PARAM_INT);
+                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+                $stmt->bindParam(':user', $user, PDO::PARAM_INT);
+                $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
             }
 
             if ($stmt->execute()) {

@@ -177,7 +177,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
 
         </main>
 
-        <!-- Add officer modal -->
+        <!-- Add admin modal -->
         <div id="add_admin_modal"
             class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
             <div id="add_admin_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
@@ -187,7 +187,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
-                    <form id="add_admin_form" action="./includes/crud_admin.php" type="button" method="POST"
+                    <form id="add_admin_form" action="./includes/crud_admin.php" type="button" method="POST" enctype="multipart/form-data"
                         class="flex flex-col justify-center w-full h-full px-3">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
@@ -280,7 +280,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
-                    <form id="edit_admin_form" action="./includes/crud_admin.php" type="button" method="POST"
+                    <form id="edit_admin_form" action="./includes/crud_admin.php" type="button" method="POST" enctype="multipart/form-data"
                         class="flex flex-col justify-center w-full h-full px-3">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">

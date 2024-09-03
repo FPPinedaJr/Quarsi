@@ -143,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "Error deleting user. Please try again.";
             }
         } else if ($_POST['action'] == 'add') {
-            $iduser = $_POST['iduser'];
             $f_name = $_POST['f_name'];
             $l_name = $_POST['l_name'];
             $organization = $_POST['program'];
@@ -152,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $block = $_POST['block'];
             $email = $_POST['email'];
             $password = $_POST['student_no'];
-            $profile_pic = $_POST['profile_pic'];
+            $profile_pic = $_FILES['profile_pic'];
             $img_content = ""; 
 
             if (!empty($profile_pic["tmp_name"])) {
