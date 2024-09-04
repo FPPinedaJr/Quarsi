@@ -205,7 +205,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                             </div>
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{3}-[\dA-Za-z]{6}"
+                                <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}"
 
                                     placeholder="2000-1-0001" required
                                     class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
@@ -300,7 +300,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                             </div>
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{3}-[\dA-Za-z]{6}"
+                                <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}"
 
                                     placeholder="2000-1-0001" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">

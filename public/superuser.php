@@ -205,7 +205,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
                                 <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                             </div>
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1}-\d{4}"
+                                <input id="add_student_no" name="student_no" type="text" pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}"
                                     placeholder="ex. 2000-1-0001" required
                                     class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
