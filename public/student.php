@@ -28,6 +28,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
       INNER JOIN organization
       ON user.organization = organization.idorganization
       WHERE (user.is_officer <> 1) AND (user.is_superuser <> 1) and (user.is_admin <> 1)
+      ORDER BY user.year, user.block, user.f_name;
     ");
 
     $stmt1->execute();
@@ -106,7 +107,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
             <!-- Add Button -->
             <div id="add_student_modal_btn" onclick="showAddStudentModal()"
-                class="fixed z-20 flex items-center justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
+                class="fixed z-20 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 

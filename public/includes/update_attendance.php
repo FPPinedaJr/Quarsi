@@ -7,6 +7,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $log_time = $_POST['log_time'];
 
     $stmt = $pdo->prepare("
+        SELECT * FROM attendance 
+        WHERE user = (SELECT iduser FROM user WHERE student_no LIKE :stud_no)
+        AND event = :event
+        ;
+    ");
+    $stmt->bindParam(':stud_no', $student_no, PDO::PARAM_STR);
+    $stmt->bindParam(':event', $eventid, PDO::PARAM_INT);
+    $stmt->execute();
+    $row = $stmt -> fetch(PDO::FETCH_ASSOC);
+    if (!$row){
+        echo 'error:unknown_user';
+        exit();
+    }
+
+
+    $stmt = $pdo->prepare("
         UPDATE attendance 
         SET $log_time = ADDTIME(CURRENT_TIMESTAMP(), '08:00:00')
         WHERE user = (SELECT iduser FROM user WHERE student_no LIKE :stud_no)
@@ -15,12 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ");
     $stmt->bindParam(':stud_no', $student_no, PDO::PARAM_STR);
     $stmt->bindParam(':event', $eventid, PDO::PARAM_INT);
-
-    if (!($stmt->execute())) {
-        echo 'error:update';
-        exit();
-    }
-
+    $stmt->execute();
 
     $stmt = $pdo->prepare("
     SELECT 
@@ -33,11 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ");
     $stmt->bindParam(':stud_no', $student_no, PDO::PARAM_STR);
     $stmt->execute();
-
-    if (!($stmt->execute())) {
-        echo 'error:retrieve';
-        exit();
-    }
 
     $user_data = $stmt->fetch();
     $profile_pic_base64 = base64_encode($user_data['profile_pic']);
