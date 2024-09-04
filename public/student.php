@@ -375,8 +375,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
                                 <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile Picture</label>
                             </div>
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-                            ';
+                            <div class="flex-col hidden w-full my-2 h-fit md:w-1/3">
+                                <input id="total_points" name="total_points" type="number" required
+                                    class="flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500">
+                                <label for="total_points" class="pl-1 text-base md:text-lg text-zinc-600">Total Points</label>
+                            </div>';
                             } ?>
 
                         </div>
