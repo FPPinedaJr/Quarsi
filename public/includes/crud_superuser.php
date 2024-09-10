@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $total_points = $_POST['total_points'];
             $profile_pic = $_FILES['profile_pic'];
             $user = 1;
+            $hidden_profile = $_POST['hidden_profile'];
 
             $img_content = ""; 
 
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 imagejpeg($tn, NULL, 60); 
                 $img_content = ob_get_clean();
                 } else {
-                    $img_content = file_get_contents("../assets/images/default_pic.jpg");
+                    $img_content = base64_decode($hidden_profile);
                 }
             
             if ($user_type == 0) {
