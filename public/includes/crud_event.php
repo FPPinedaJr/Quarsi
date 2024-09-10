@@ -7,12 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_POST['action'] == 'submit') {
             $idevent = $_POST['idevent'];
             $name = $_POST['name'];
-            $organization = $_POST['organization'];            
+            $organization = $_POST['organization'];
             $date = $_POST['date'];
             $set_points = $_POST['set_points'];
             $status = $_POST['status'];
             $log_time = $_POST['log_time'];
-            
+
             $stmt = $pdo->prepare("
                 UPDATE event
                 SET name=:name, organization=:organization, date=:date, set_points=:set_points, 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($stmt->execute()) {
                 header("Location: ../events.php");
-                exit(); 
+                exit();
             } else {
                 echo "Error updating event. Please try again.";
             }
@@ -44,21 +44,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ");
 
             $stmt->bindParam(':idevent', $idevent, PDO::PARAM_INT);
-            if ($stmt->execute()) {
-                header("Location: ../events.php");
-                exit(); 
-            } else {
+
+            if (!($stmt->execute())) {
                 echo "Error updating event. Please try again.";
+                exit();
             }
+
+            $stmt = $pdo->prepare("
+                DELETE FROM attendance
+                WHERE event=:idevent
+            ");
+
+            $stmt->bindParam(':idevent', $idevent, PDO::PARAM_INT);
+
+            if (!($stmt->execute())) {
+                echo "Error updating attendance. Please try again.";
+                exit();
+            }
+
+            header("Location: ../events.php");
+            exit();
 
         } else if ($_POST['action'] == 'add') {
             $name = $_POST['name'];
-            $organization = $_POST['organization'];            
+            $organization = $_POST['organization'];
             $date = $_POST['date'];
             $set_points = $_POST['set_points'];
             $status = $_POST['status'];
             $log_time = $_POST['log_time'];
-            
+
             $stmt = $pdo->prepare("
                 INSERT INTO event (name, organization, date, set_points, is_active, log_time)
                 VALUES (:name, :organization, :date, :set_points, :status, :log_time)
@@ -73,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($stmt->execute()) {
                 header("Location: ../events.php");
-                exit(); 
+                exit();
             } else {
                 echo "Error adding event. Please try again.";
             }
