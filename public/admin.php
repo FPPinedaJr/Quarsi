@@ -371,6 +371,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
                                 <input id="add_profile_pic" name="profile_pic" type="file" 
                                     class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
+                                <input id="hidden_profile" name="hidden_profile" type="hidden"
                                 <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile Picture</label>
                             </div>
                             <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
@@ -456,6 +457,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
             var $email = $('#admin-' + id).data('email');
             var $user_type = $('#admin-' + id).data('user_type');
             var $total_points = $('#admin-' + id).data('total_points');
+            var $hidden_profile = $('#admin'- + id).data('profile_pic');
 
             $('#iduser').val(id);
             $('#f_name').val($f_name);
@@ -467,6 +469,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_admin'] == 1)) {
             $('#email').val($email);
             $('#user_type').val($user_type);
             $('#total_points').val($total_points);
+            $('#hidden_profile').val($hidden_profile);
 
         }
 
