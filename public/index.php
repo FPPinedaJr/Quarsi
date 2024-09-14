@@ -16,10 +16,10 @@ if (isset($_SESSION['logged_in'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:title" content="tot-tot">
-  <meta property="og:description" content="tot-tot [description]">
+  <meta property="og:title" content="Quarsi">
+  <meta property="og:description" content="ACS QR Attendance System">
 
-  <title>Sign in | tot-tot</title>
+  <title>Sign in | Quarsi</title>
 
   <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="./assets/css/output.css">
