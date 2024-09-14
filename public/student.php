@@ -138,7 +138,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
             <?php foreach ($students as $student): ?>
                 <div id="student-<?php echo $student['iduser'] ?>"
-                    onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
                     data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
                     data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
                     data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
@@ -154,23 +153,32 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                       } ?>" data-total_points="<?php echo $student['total_points'] ?>"
                     class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                     <div id=""
-                        class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
-                        <div
-                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                            <?= $student['f_name'] ?>         <?= $student['l_name'] ?>
+                        onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
+                        class="relative flex w-full md:w-3/4 md:h-auto md:items-stretch p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:h-10 items-center">
+                        <!-- Image -->
+                        <div class="flex block h-full min-w-16 w-16 mr-2 justify-center items-center px-1 md:absolute md:-left-[2.5rem] md:min-w-0 md:w-fit md:p-1 md:bg-emerald-700/20 md:rounded-l-lg cursor-default">
+                            <img class="w-full md:w-8 rounded-full border border-gray-300" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>">
                         </div>
-                        <div
-                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                            <?= $student['student_no'] ?>
-                        </div>
-                        <div
-                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                            <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
-                        </div>
-                        <div
-                            class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                            <p class="text-lg"><?= $student['total_points'] ?></p>
-                            <p class="text-xs md:hidden">Points</p>
+                        
+                        <!-- Information -->
+                        <div class="flex flex-col h-full w-auto md:w-full md:h-auto md:flex-row">
+                            <div
+                                class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                <p class="md:w-3/4"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
+                            </div>
+                            <div
+                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                <?= $student['student_no'] ?>
+                            </div>
+                            <div
+                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                                <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
+                            </div>
+                            <div
+                                class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                                <p class="text-lg"><?= $student['total_points'] ?></p>
+                                <p class="text-xs md:hidden">Points</p>
+                            </div>
                         </div>
                     </div>
 
