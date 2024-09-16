@@ -85,14 +85,14 @@ $user = $stmt->fetch();
 
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-          <a href="././events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-calendar"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
           </a>';
         }
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-           <a href="././student.php"  class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+           <a href="student.php"  class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-user"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Students</span>
           </a>
@@ -100,7 +100,7 @@ $user = $stmt->fetch();
         }
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-          <a href="././officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-users-rays"></i>
             <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
           </a>
@@ -108,15 +108,26 @@ $user = $stmt->fetch();
         }
         if ($_SESSION['is_admin'] == 1) {
           echo '
-          <a href="././superuser.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="superuser.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-user-secret"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Superusers</span>
           </a>
-          <a href="././admin.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <a href="admin.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
             <i class="text-2xl fa-solid fa-user-tie"></i>
             <span class="font-[\'merriweather_sans\'] ml-5">Administrators</span>
           </a>
           ';
+        }
+        ?>
+
+        <?php
+        if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
+          echo '
+          <a href="reset.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <i class="text-2xl fa-solid fa-key"></i>
+            <span class="font-[\'merriweather_sans\'] ml-4">Password Reset</span>
+          </a>
+        ';
         }
         ?>
 
@@ -125,6 +136,9 @@ $user = $stmt->fetch();
           <i class="text-2xl fa-regular fa-user"></i>
           <span class=" text-black font-['merriweather_sans'] ml-5">Profile</span>
         </a>
+
+
+
         <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <i class="text-2xl text-black fa-solid fa-arrow-right-from-bracket"></i>
           <span class=" text-black font-['merriweather_sans'] ml-5">Log Out</span>

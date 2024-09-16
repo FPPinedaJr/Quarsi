@@ -22,7 +22,7 @@ if (isset($_SESSION['logged_in'])) {
   <title>Sign in | Quarsi</title>
 
   <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="./assets/css/output.css?v=1.0">
+  <link rel="stylesheet" href="./assets/css/output.css?v=1.1">
   <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
   <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
