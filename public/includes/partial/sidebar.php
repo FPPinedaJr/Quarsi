@@ -141,22 +141,31 @@ $user = $stmt->fetch();
 <script>
   let touchStartX = 0;
   let touchEndX = 0;
+  let touchStartY = 0;
+  let touchEndY = 0;
   const swipeThreshold = 50;
 
   function handleGesture() {
-    if (touchEndX > touchStartX + swipeThreshold) {
-      openSidebar();
-    } else if (touchEndX < touchStartX - swipeThreshold) {
-      closeSidebar();
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > swipeThreshold) {
+        openSidebar();
+      } else if (deltaX < -swipeThreshold) {
+        closeSidebar();
+      }
     }
   }
 
   document.addEventListener('touchstart', function (event) {
     touchStartX = event.changedTouches[0].screenX;
+    touchStartY = event.changedTouches[0].screenY;
   });
 
   document.addEventListener('touchend', function (event) {
     touchEndX = event.changedTouches[0].screenX;
+    touchEndY = event.changedTouches[0].screenY;
     handleGesture();
   });
 
@@ -169,13 +178,13 @@ $user = $stmt->fetch();
   function openSidebar() {
     $('#sidebar').removeClass('invisible');
     $('#sidebar-content').removeClass('-translate-x-full');
-    $('body').addClass('overflow-y-hidden');  
+    $('body').addClass('overflow-y-hidden');
   }
 
   function closeSidebar() {
     $('#sidebar').addClass('invisible');
     $('#sidebar-content').addClass('-translate-x-full');
-    $('body').removeClass('overflow-y-hidden');  
+    $('body').removeClass('overflow-y-hidden');
   }
 
   $(document).ready(function () {
