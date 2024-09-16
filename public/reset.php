@@ -42,7 +42,7 @@ if ($_SESSION["logged_in"] == !true) {
     include_once("./includes/partial/header.php");
     ?>
 
-    <body class="flex items-center justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
+    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden md:items-center">
         <main class="flex flex-col items-center justify-center w-full h-full">
             <div class="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
                 <h2 class="mb-6 text-2xl font-bold text-center" id="header_title">Reset Password</h2>
