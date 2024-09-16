@@ -70,7 +70,7 @@ if ($_SESSION["logged_in"] == !true) {
         <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-        <link rel="stylesheet" href="./assets/css/output.css?v=1.0">
+        <link rel="stylesheet" href="./assets/css/output.css?v=1.1">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
