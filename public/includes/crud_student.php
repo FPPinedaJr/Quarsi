@@ -6,13 +6,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action'])) {
         if ($_POST['action'] == 'submit') {
             $iduser = $_POST['iduser'];
-            $f_name = $_POST['f_name'];
-            $l_name = $_POST['l_name'];
+            $f_name = mb_convert_case(trim($_POST['f_name']), MB_CASE_TITLE, "UTF-8");
+            $l_name = mb_convert_case(trim($_POST['l_name']), MB_CASE_TITLE, "UTF-8");            
             $organization = $_POST['program'];
-            $student_no = $_POST['student_no'];
+            $student_no = trim($_POST['student_no']);
             $year = $_POST['year'];
             $block = $_POST['block'];
-            $email = $_POST['email'];
+            $email = trim($_POST['email']);
             $user_type = $_POST['user_type'];
             $total_points = $_POST['total_points'];
             $profile_pic = $_FILES['profile_pic'];
