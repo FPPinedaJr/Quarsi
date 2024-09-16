@@ -55,7 +55,7 @@ npm run build:global
 ## GLOBAL CSS
 - Link global output.css
 ```html
-<link rel="stylesheet" href="../assets/css/output.css">
+<link rel="stylesheet" href="../assets/css/output.css?v=1.0">
 ```
 
 
