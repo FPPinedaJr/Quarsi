@@ -139,25 +139,51 @@ $user = $stmt->fetch();
 
 <script src="./assets/js/jquery-3.7.1.min.js"></script>
 <script>
+  let touchStartX = 0;
+  let touchEndX = 0;
+  const swipeThreshold = 50;
+
+  function handleGesture() {
+    if (touchEndX > touchStartX + swipeThreshold) {
+      openSidebar();
+    } else if (touchEndX < touchStartX - swipeThreshold) {
+      closeSidebar();
+    }
+  }
+
+  document.addEventListener('touchstart', function (event) {
+    touchStartX = event.changedTouches[0].screenX;
+  });
+
+  document.addEventListener('touchend', function (event) {
+    touchEndX = event.changedTouches[0].screenX;
+    handleGesture();
+  });
+
   function toggleSidebar() {
     $('#sidebar').toggleClass('invisible');
     $('#sidebar-content').toggleClass('-translate-x-full');
     $('body').toggleClass('overflow-y-hidden');
-    console.log('here')
+  }
+
+  function openSidebar() {
+    $('#sidebar').removeClass('invisible');
+    $('#sidebar-content').removeClass('-translate-x-full');
+    $('body').addClass('overflow-y-hidden');  
+  }
+
+  function closeSidebar() {
+    $('#sidebar').addClass('invisible');
+    $('#sidebar-content').addClass('-translate-x-full');
+    $('body').removeClass('overflow-y-hidden');  
   }
 
   $(document).ready(function () {
-    function toggleSidebar() {
-      $('#sidebar').toggleClass('invisible');
-      $('#sidebar-content').toggleClass('-translate-x-full');
-      $('body').toggleClass('overflow-y-hidden');
-      console.log('here')
-    }
-
     $('#sidebar-overlay').on('click', function (event) {
       if (event.target === this) {
-        toggleSidebar();
+        closeSidebar();
       }
     });
   });
+
 </script>
