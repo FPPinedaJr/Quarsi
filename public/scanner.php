@@ -31,7 +31,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-        <link rel="stylesheet" href="./assets/css/output.css">
+        <link rel="stylesheet" href="./assets/css/output.css?v=1.0">
         <script src="./assets/js/jquery-3.7.1.min.js"></script>
         <script src="./assets/js/html5-qrcode.min.js"></script>
 
