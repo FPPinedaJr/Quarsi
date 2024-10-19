@@ -88,22 +88,28 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
     <body class="flex justify-center w-screen min-h-screen mt-20 overflow-x-hidden">
         <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
-            <!-- Search bar -->
-            <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
-                <input id="search_student" name="search_student"
-                    class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none"
-                    placeholder="Find student...">
+            
+            <div class="flex items-center p-2 h-fit w-fit">
+                <div class="flex items-center justify-end h-fit w-52">
+                    <p class="text-3xl text-teal-700 font-['mulish'] font-semibold">Quarsi</p>
+                </div>
+
+                <div class="flex items-center w-full p-1 ml-5 rounded-lg bg-gray-200/70 h-fit">
+                    <!-- Search bar -->
+                    <div class="flex bg-none w-full h-10 md:w-[15rem]">
+                        <input id="search_student" name="search_student"
+                            class="flex h-full w-full align-center text-start pl-2 bg-transparent text-['mulish'] focus:outline-none"
+                            placeholder="Find student...">
+                    </div>
+                        
+                    <!-- Filter -->
+                    <div class="flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
+                        <i class="text-xl cursor-pointer fa-solid fa-sliders"></i>
+                    </div>
+                </div>
+                <div class="w-auto h-12"></div>
             </div>
 
-            <!-- Filter -->
-            <div class="flex w-full gap-2 mb-2 h-fit">
-                <div
-                    class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
-                    Year</div>
-                <div
-                    class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
-                    Block</div>
-            </div>
 
             <!-- Add Button -->
             <div id="add_student_modal_btn" onclick="showAddStudentModal()"
