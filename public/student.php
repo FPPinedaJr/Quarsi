@@ -94,7 +94,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     <p class="text-3xl text-teal-700 font-['mulish'] font-semibold">Quarsi</p>
                 </div>
 
-                <div class="flex items-center w-full p-1 ml-5 rounded-lg bg-gray-200/70 h-fit">
+                <div class="flex items-center p-1 ml-5 rounded-lg w-fit bg-gray-200/70 h-fit">
                     <!-- Search bar -->
                     <div class="flex bg-none w-full h-10 md:w-[15rem]">
                         <input id="search_student" name="search_student"
@@ -106,8 +106,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     <div class="flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
                         <i class="text-xl cursor-pointer fa-solid fa-sliders"></i>
                     </div>
+
                 </div>
-                <div class="w-auto h-12"></div>
             </div>
 
 
@@ -142,55 +142,60 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 </div>
             </div>
 
-            <?php foreach ($students as $student): ?>
-                <div id="student-<?php echo $student['iduser'] ?>"
-                    data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
-                    data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
-                    data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
-                    data-email="<?php echo $student['email'] ?>"
-                    data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
-                          echo "1";
-                      } else if ($student['is_superuser'] == 1) {
-                          echo "2";
-                      } else if ($student['is_admin'] == 1) {
-                          echo "3";
-                      } else {
-                          echo "0";
-                      } ?>" data-total_points="<?php echo $student['total_points'] ?>"
-                    class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                    <div id=""
-                        onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
-                        class="relative flex w-full md:w-3/4 md:h-auto md:items-stretch p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer items-center">
-                        <!-- Image -->
-                        <div class="flex h-full min-w-16 w-16 mr-2 justify-center items-center px-1 md:absolute md:-left-[2.5rem] md:min-w-0 md:w-fit md:p-1 md:bg-emerald-700/20 md:rounded-l-lg cursor-default">
-                            <img class="w-full border border-gray-300 rounded-full md:w-8" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>">
+            <!-- Found -->
+            <div id="found"></div>
+
+            <div id="students-list">
+                <?php foreach ($students as $student): ?>
+                    <div id="student-<?php echo $student['iduser'] ?>"
+                        data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
+                        data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
+                        data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
+                        data-email="<?php echo $student['email'] ?>"
+                        data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
+                              echo "1";
+                          } else if ($student['is_superuser'] == 1) {
+                              echo "2";
+                          } else if ($student['is_admin'] == 1) {
+                              echo "3";
+                          } else {
+                              echo "0";
+                          } ?>" data-total_points="<?php echo $student['total_points'] ?>"
+                        class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
+                        <div id=""
+                            onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
+                            class="relative flex w-full md:w-3/4 md:h-auto md:items-stretch p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer items-center">
+                            <!-- Image -->
+                            <div class="flex h-full min-w-16 w-16 mr-2 justify-center items-center px-1 md:absolute md:-left-[2.5rem] md:min-w-0 md:w-fit md:p-1 md:bg-emerald-700/20 md:rounded-l-lg cursor-default">
+                                <img class="w-full border border-gray-300 rounded-full md:w-8" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>">
+                            </div>
+                            
+                            <!-- Information -->
+                            <div class="flex flex-col w-auto h-full md:w-full md:h-auto md:flex-row">
+                                <div
+                                    class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                    <p class="md:w-3/4"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
+                                </div>
+                                <div
+                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                    <?= $student['student_no'] ?>
+                                </div>
+                                <div
+                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                                    <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
+                                </div>
+                                <div
+                                    class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                                    <p class="text-lg"><?= $student['total_points'] ?></p>
+                                    <p class="text-xs md:hidden">Points</p>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <!-- Information -->
-                        <div class="flex flex-col w-auto h-full md:w-full md:h-auto md:flex-row">
-                            <div
-                                class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                                <p class="md:w-3/4"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
-                            </div>
-                            <div
-                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                                <?= $student['student_no'] ?>
-                            </div>
-                            <div
-                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                                <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
-                            </div>
-                            <div
-                                class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                                <p class="text-lg"><?= $student['total_points'] ?></p>
-                                <p class="text-xs md:hidden">Points</p>
-                            </div>
-                        </div>
+    
                     </div>
-
-                </div>
-
-            <?php endforeach; ?>
+    
+                <?php endforeach; ?>
+            </div>
 
         </main>
 
@@ -460,6 +465,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
     </html>
 
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script>
         function showAddStudentModal() {
             $('#add_student_modal').removeClass('invisible');
@@ -548,6 +554,28 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#add_student_modal_main').length && $(event.target).closest('#add_student_modal').length) {
                     hideAddStudentModal();
+                }
+            })
+
+            $("#search_student").keyup(function(){
+                var $input = $(this).val();
+
+                if ($input != "") {
+                    $.ajax({
+                        url: "./find.php",
+                        method: "POST",
+                        data:{input:$input},
+
+                        success:function(data){
+                            console.log("AJAX success: " + data);
+                            $("#found").html(data);
+                            $("#found").css("display", "block");
+                            $("#students-list").css("display", "none");
+                        }
+                    })
+                } else {
+                    $("#found").css("display", "none");
+                    $("#students-list").css("display", "block");
                 }
             })
         })
