@@ -712,6 +712,10 @@ video {
   left: 14rem;
 }
 
+.top-10 {
+  top: 2.5rem;
+}
+
 .z-20 {
   z-index: 20;
 }
@@ -1588,6 +1592,11 @@ video {
 
 .bg-gray-200\/70 {
   background-color: rgb(229 231 235 / 0.7);
+}
+
+.bg-blue-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 219 254 / var(--tw-bg-opacity));
 }
 
 .bg-none {
