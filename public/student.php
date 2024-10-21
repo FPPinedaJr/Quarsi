@@ -103,8 +103,52 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     </div>
                         
                     <!-- Filter -->
-                    <div class="flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
+                    <div class="relative flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
                         <i class="text-xl cursor-pointer fa-solid fa-sliders"></i>
+
+                        <!-- Filters -->
+                        <div class="absolute flex flex-col bg-white border rounded-sm -top-2 -right-28 h-fit w-28 border-gray-200/50">
+                            <div class="relative w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70">Year<i class="text-sm fa-solid fa-angle-right"></i>
+                                <div class="absolute top-0 z-20 flex flex-col border border-gray-200 rounded-md -right-28 h-fit w-28">
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 1</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 2</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 3</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 4</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center">Block<i class="text-sm fa-solid fa-angle-right"></i>
+                                <div class="absolute z-20 flex flex-col border border-gray-200 rounded-md top-10 -right-28 h-fit w-28">
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 1</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 2</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 3</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 4</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
