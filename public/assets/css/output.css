@@ -624,8 +624,8 @@ video {
   right: -7rem;
 }
 
-.-right-32 {
-  right: -8rem;
+.-right-\[32\] {
+  right: -32;
 }
 
 .-top-2 {
@@ -668,32 +668,28 @@ video {
   top: 0px;
 }
 
-.top-2 {
-  top: 0.5rem;
+.top-10 {
+  top: 2.5rem;
 }
 
-.top-3 {
-  top: 0.75rem;
+.top-2 {
+  top: 0.5rem;
 }
 
 .top-4 {
   top: 1rem;
 }
 
-.top-1 {
-  top: 0.25rem;
+.-right-\[7rem\] {
+  right: -7rem;
 }
 
-.top-6 {
-  top: 1.5rem;
+.-right-\[8rem\] {
+  right: -8rem;
 }
 
-.top-12 {
-  top: 3rem;
-}
-
-.top-10 {
-  top: 2.5rem;
+.-right-\[7\.5rem\] {
+  right: -7.5rem;
 }
 
 .z-20 {
@@ -1329,10 +1325,6 @@ video {
 .border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
-}
-
-.border-gray-100\/50 {
-  border-color: rgb(243 244 246 / 0.5);
 }
 
 .border-gray-100\/70 {
@@ -2024,11 +2016,6 @@ video {
   background-color: rgb(15 118 110 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-gray-200:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-}
-
 .hover\:text-\[\#6a6b3a\]:hover {
   --tw-text-opacity: 1;
   color: rgb(106 107 58 / var(--tw-text-opacity));
@@ -2096,6 +2083,10 @@ video {
 
 .focus\:ring-offset-2:focus {
   --tw-ring-offset-width: 2px;
+}
+
+.group:hover .group-hover\:visible {
+  visibility: visible;
 }
 
 @media (min-width: 640px) {
