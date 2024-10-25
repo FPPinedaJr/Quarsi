@@ -582,6 +582,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
         $(document).ready(function () {
             changeHeaderTitle();
+            let debounceTimer;
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#edit_student_modal_main').length && $(event.target).closest('#edit_student_modal').length) {
@@ -601,27 +602,33 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 }
             })
 
-            $("#search_student").keyup(function(){
-                var $input = $(this).val();
+            $("#search_student").on("input", function() {
+                let input = $(this).val();
+                console.log(input);
 
-                if ($input != "") {
-                    $.ajax({
-                        url: "./find.php",
-                        method: "POST",
-                        data:{input:$input},
-
-                        success:function(data){
-                            console.log("AJAX success: " + data);
-                            $("#found").html(data);
-                            $("#found").css("display", "block");
-                            $("#students-list").css("display", "none");
-                        }
-                    })
+                if (input) {
+                    $("#students-list").hide();
+                    $("#found").show(); 
                 } else {
-                    $("#found").css("display", "none");
-                    $("#students-list").css("display", "block");
+                    $("#found").hide();
+                    $("#students-list").show();
                 }
-            })
+
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(() => {
+                    if (input) {
+                        $.ajax({
+                            url: "./find.php",
+                            method: "POST",
+                            data: { input: input },
+                            success: function(data) {
+                                $("#found").html(data);
+                            }
+                        });
+                    }
+                }, 300); 
+            });
         })
     </script>
 <?php } ?>

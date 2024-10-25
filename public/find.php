@@ -25,7 +25,7 @@
             ON user.organization = organization.idorganization
             WHERE (user.is_officer <> 1) AND (user.is_superuser <> 1) and (user.is_admin <> 1) AND
             (f_name LIKE :input1 OR l_name LIKE :input2)
-            ORDER BY user.year, user.block, user.f_name
+            ORDER BY user.year, user.block, user.f_name 
             "
         );
         
@@ -85,5 +85,7 @@
                 </div>
 
             <?php endforeach; 
-        }
+        } else { ?>
+            <div class="w-full h-fit p-2 text-xl flex justify-center text-['mulish'] text-zinc-600">Student not found</div>
+<?php   }
     } ?>
