@@ -104,32 +104,32 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         
                     <!-- Filter -->
                     <div class="relative flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
-                        <i class="text-xl cursor-pointer fa-solid fa-sliders"></i>
+                        <i id="filter" onclick="toggleFilter()" class="text-xl cursor-pointer fa-solid fa-sliders"></i>
 
                         <!-- Filters -->
-                        <div class="absolute flex flex-col bg-white border rounded-sm -top-2 -right-28 h-fit w-28 border-gray-200/50">
-                            <div class="relative w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70">Year<i class="text-sm fa-solid fa-angle-right"></i>
-                                <div class="absolute top-0 z-20 flex flex-col border border-gray-200 rounded-md -right-28 h-fit w-28">
+                        <div id="filter_dropdown" class="absolute flex flex-col bg-white border rounded-sm -top-2 -right-[7.5rem] h-fit w-28 border-gray-200/50 invisible">
+                            <div class="relative group w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70">Year<i class="text-sm fa-solid fa-angle-right"></i>
+                                <div id="year_filter" class="absolute top-0 z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible -right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <input type="checkbox" name="year" id="year-1" value="1">
                                         <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 1</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <input type="checkbox" name="year" id="year-1" value="1">
                                         <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 2</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <input type="checkbox" name="year" id="year-1" value="1">
                                         <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 3</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
+                                        <input type="checkbox" name="year" id="year-1" value="1">
                                         <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 4</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center">Block<i class="text-sm fa-solid fa-angle-right"></i>
-                                <div class="absolute z-20 flex flex-col border border-gray-200 rounded-md top-10 -right-28 h-fit w-28">
+                            <div class="group w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center">Block<i class="text-sm fa-solid fa-angle-right"></i>
+                                <div id="block_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-10 -right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
                                         <input type="checkbox" name="year-1" id="year-1" value="1">
                                         <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 1</label>
@@ -509,7 +509,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
     </html>
 
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script>
         function showAddStudentModal() {
             $('#add_student_modal').removeClass('invisible');
@@ -580,6 +579,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             $('#header_title').text('Students');
         }
 
+        function toggleFilter() {
+            $('#filter_dropdown').toggleClass('invisible');
+        }
+
+        function hideFilter() {
+            $('#filter_dropdown').addClass('invisible');
+        }
+
         $(document).ready(function () {
             changeHeaderTitle();
             let debounceTimer;
@@ -599,6 +606,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#add_student_modal_main').length && $(event.target).closest('#add_student_modal').length) {
                     hideAddStudentModal();
+                }
+            })
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#filter').length && !$(event.target).closest('#filter_dropdown').length) {
+                    hideFilter();
                 }
             })
 
