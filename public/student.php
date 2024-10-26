@@ -107,9 +107,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         <i id="filter" onclick="toggleFilter()" class="text-xl cursor-pointer fa-solid fa-sliders"></i>
 
                         <!-- Filters -->
-                        <div id="filter_dropdown" class="absolute flex flex-col bg-white border rounded-sm -top-2 -right-[7.5rem] h-fit w-28 border-gray-200/50 invisible">
-                            <div class="relative group w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70">Year<i class="text-sm fa-solid fa-angle-right"></i>
-                                <div id="year_filter" class="absolute top-0 z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible -right-28 h-fit w-28">
+                        <div id="filter_dropdown" class="absolute flex flex-col bg-white border rounded-sm z-20 top-[2rem] right-[0.20rem] md:-top-2 md:-right-[7.5rem] h-fit w-28 border-gray-200/50 invisible">
+                            <div class="relative group w-full h-fit md:px-2 pl-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70 text-center pr-5"><i class="ml-2 text-sm fa-solid fa-angle-left md:hidden"></i>Year<i class="hidden text-sm fa-solid fa-angle-right md:block"></i>
+                                <div id="year_filter" class="absolute top-0 z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible right-28 md:-right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
                                         <input type="checkbox" name="year[]" id="year-1" value="1">
                                         <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 1</label>
@@ -128,8 +128,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     </div>
                                 </div>
                             </div>
-                            <div class="group w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center">Block<i class="text-sm fa-solid fa-angle-right"></i>
-                                <div id="block_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-10 -right-28 h-fit w-28">
+                            <div class="group w-full h-fit md:px-2 pl-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5"><i class="ml-2 text-sm fa-solid fa-angle-left md:hidden"></i>Block<i class="hidden text-sm fa-solid fa-angle-right md:block"></i>
+                                <div id="block_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-10 right-28 md:-right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
                                         <input type="checkbox" name="block[]" id="block-0" value="0">
                                         <label for="block-0" class="ml-4 font-['mulish'] cursor-pointer">Block 0</label>
