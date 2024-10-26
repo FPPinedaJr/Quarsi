@@ -618,6 +618,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             })
             
             $("input[name='year[]'], input[name='block[]']").on('change', function () {
+                $("#search_student").val("");
+                $("#found").hide();
+                $("#students-list").show();
+
                 let year = $("input[name='year[]']:checked").map(function() {
                     return $(this).val();
                 }).get(); 
@@ -625,12 +629,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 let block = $("input[name='block[]']:checked").map(function() {
                     return $(this).val();
                 }).get(); 
-
-                console.log("Selected years:", year);
-                console.log("Selected blocks:", block);
-
-                console.log(year.includes(String(1)));
-                console.log(year.includes(String(2)));
 
                 $("#students-list > div").each(function() {
                     let student_block = $(this).data('block');
@@ -657,10 +655,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
 
             $("#search_student").on("input", function() {
+                $("input[name='year[]'], input[name='block[]']").prop("checked", false);
+                
                 let input = $(this).val();
-                console.log(input);
 
-                if (input) {
+                if (input.length > 0) {
                     $("#students-list").hide();
                     $("#found").show(); 
                 } else {
