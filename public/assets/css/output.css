@@ -624,8 +624,8 @@ video {
   right: -7rem;
 }
 
-.-right-\[32\] {
-  right: -32;
+.-right-\[7\.5rem\] {
+  right: -7.5rem;
 }
 
 .-top-2 {
@@ -678,18 +678,6 @@ video {
 
 .top-4 {
   top: 1rem;
-}
-
-.-right-\[7rem\] {
-  right: -7rem;
-}
-
-.-right-\[8rem\] {
-  right: -8rem;
-}
-
-.-right-\[7\.5rem\] {
-  right: -7.5rem;
 }
 
 .z-20 {

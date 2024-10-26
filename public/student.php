@@ -111,46 +111,49 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <div class="relative group w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70">Year<i class="text-sm fa-solid fa-angle-right"></i>
                                 <div id="year_filter" class="absolute top-0 z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible -right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year" id="year-1" value="1">
+                                        <input type="checkbox" name="year[]" id="year-1" value="1">
                                         <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 1</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 2</label>
+                                        <input type="checkbox" name="year[]" id="year-2" value="2">
+                                        <label for="year-2" class="ml-4 font-['mulish'] cursor-pointer">Year 2</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 3</label>
+                                        <input type="checkbox" name="year[]" id="year-3" value="3">
+                                        <label for="year-3" class="ml-4 font-['mulish'] cursor-pointer">Year 3</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 4</label>
+                                        <input type="checkbox" name="year[]" id="year-4" value="4">
+                                        <label for="year-4" class="ml-4 font-['mulish'] cursor-pointer">Year 4</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="group w-full h-fit px-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center">Block<i class="text-sm fa-solid fa-angle-right"></i>
                                 <div id="block_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-10 -right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 1</label>
+                                        <input type="checkbox" name="block[]" id="block-0" value="0">
+                                        <label for="block-0" class="ml-4 font-['mulish'] cursor-pointer">Block 0</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 2</label>
+                                        <input type="checkbox" name="block[]" id="block-1" value="1">
+                                        <label for="block-1" class="ml-4 font-['mulish'] cursor-pointer">Block 1</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 3</label>
+                                        <input type="checkbox" name="block[]" id="block-2" value="2">
+                                        <label for="block-2" class="ml-4 font-['mulish'] cursor-pointer">Block 2</label>
                                     </div>
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year-1" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Block 4</label>
+                                        <input type="checkbox" name="block[]" id="block-3" value="3">
+                                        <label for="block-3" class="ml-4 font-['mulish'] cursor-pointer">Block 3</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="block[]" id="block-4" value="4">
+                                        <label for="block-4" class="ml-4 font-['mulish'] cursor-pointer">Block 4</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -464,7 +467,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         ';
                         } ?>
 
-
                         <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
                             <button id="save_student_btn" type="submit" value="submit" name="action"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
@@ -614,6 +616,45 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     hideFilter();
                 }
             })
+            
+            $("input[name='year[]'], input[name='block[]']").on('change', function () {
+                let year = $("input[name='year[]']:checked").map(function() {
+                    return $(this).val();
+                }).get(); 
+                
+                let block = $("input[name='block[]']:checked").map(function() {
+                    return $(this).val();
+                }).get(); 
+
+                console.log("Selected years:", year);
+                console.log("Selected blocks:", block);
+
+                console.log(year.includes(String(1)));
+                console.log(year.includes(String(2)));
+
+                $("#students-list > div").each(function() {
+                    let student_block = $(this).data('block');
+                    let student_year = $(this).data('year');
+
+                    let isVisible = true;
+
+                    if (year.length > 0 && block.length > 0) {
+                        isVisible = year.includes(String(student_year)) && block.includes(String(student_block));
+                    } 
+                    else if (year.length > 0) {
+                        isVisible = year.includes(String(student_year));
+                    } 
+                    else if (block.length > 0) {
+                        isVisible = block.includes(String(student_block));
+                    } 
+                    else {
+                        isVisible = true;
+                    }
+
+                    $(this).toggle(isVisible);
+                })
+            });
+
 
             $("#search_student").on("input", function() {
                 let input = $(this).val();
