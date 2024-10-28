@@ -88,22 +88,75 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
     <body class="flex justify-center w-screen min-h-screen mt-20 overflow-x-hidden">
         <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
-            <!-- Search bar -->
-            <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
-                <input id="search_student" name="search_student"
-                    class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none"
-                    placeholder="Find student...">
+            
+            <div class="flex items-center w-full p-2 md:w-fit h-fit">
+                <div class="flex items-center justify-end h-fit md:w-[20rem] w-fit">
+                    <p class="text-3xl text-teal-700 font-['mulish'] font-semibold">Quarsi</p>
+                </div>
+
+                <div class="flex items-center w-full p-1 ml-5 rounded-lg md:w-fit bg-gray-200/70 h-fit">
+                    <!-- Search bar -->
+                    <div class="flex bg-none w-full h-10 md:w-[15rem]">
+                        <input id="search_student" name="search_student"
+                            class="flex h-full w-full align-center text-start pl-2 bg-transparent text-['mulish'] focus:outline-none"
+                            placeholder="Find student...">
+                    </div>
+                        
+                    <!-- Filter -->
+                    <div class="relative flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
+                        <i id="filter" onclick="toggleFilter()" class="text-xl cursor-pointer fa-solid fa-sliders"></i>
+
+                        <!-- Filters -->
+                        <div id="filter_dropdown" class="absolute flex flex-col bg-white border rounded-sm z-20 top-[2rem] right-[0.20rem] md:-top-2 md:-right-[7.5rem] h-fit w-28 border-gray-200/50 invisible">
+                            <div class="relative group w-full h-fit md:px-2 pl-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70 text-center pr-5"><i class="ml-2 text-sm fa-solid fa-angle-left md:hidden"></i>Year<i class="hidden text-sm fa-solid fa-angle-right md:block"></i>
+                                <div id="year_filter" class="absolute top-0 z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible right-28 md:-right-28 h-fit w-28">
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year[]" id="year-1" value="1">
+                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 1</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year[]" id="year-2" value="2">
+                                        <label for="year-2" class="ml-4 font-['mulish'] cursor-pointer">Year 2</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year[]" id="year-3" value="3">
+                                        <label for="year-3" class="ml-4 font-['mulish'] cursor-pointer">Year 3</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="year[]" id="year-4" value="4">
+                                        <label for="year-4" class="ml-4 font-['mulish'] cursor-pointer">Year 4</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="group w-full h-fit md:px-2 pl-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5"><i class="ml-2 text-sm fa-solid fa-angle-left md:hidden"></i>Block<i class="hidden text-sm fa-solid fa-angle-right md:block"></i>
+                                <div id="block_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-10 right-28 md:-right-28 h-fit w-28">
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="block[]" id="block-0" value="0">
+                                        <label for="block-0" class="ml-4 font-['mulish'] cursor-pointer">Block 0</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="block[]" id="block-1" value="1">
+                                        <label for="block-1" class="ml-4 font-['mulish'] cursor-pointer">Block 1</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="block[]" id="block-2" value="2">
+                                        <label for="block-2" class="ml-4 font-['mulish'] cursor-pointer">Block 2</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="block[]" id="block-3" value="3">
+                                        <label for="block-3" class="ml-4 font-['mulish'] cursor-pointer">Block 3</label>
+                                    </div>
+                                    <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                        <input type="checkbox" name="block[]" id="block-4" value="4">
+                                        <label for="block-4" class="ml-4 font-['mulish'] cursor-pointer">Block 4</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Filter -->
-            <div class="flex w-full gap-2 mb-2 h-fit">
-                <div
-                    class="flex items-start justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
-                    Year</div>
-                <div
-                    class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
-                    Block</div>
-            </div>
 
             <!-- Add Button -->
             <div id="add_student_modal_btn" onclick="showAddStudentModal()"
@@ -136,55 +189,60 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 </div>
             </div>
 
-            <?php foreach ($students as $student): ?>
-                <div id="student-<?php echo $student['iduser'] ?>"
-                    data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
-                    data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
-                    data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
-                    data-email="<?php echo $student['email'] ?>"
-                    data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
-                          echo "1";
-                      } else if ($student['is_superuser'] == 1) {
-                          echo "2";
-                      } else if ($student['is_admin'] == 1) {
-                          echo "3";
-                      } else {
-                          echo "0";
-                      } ?>" data-total_points="<?php echo $student['total_points'] ?>"
-                    class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                    <div id=""
-                        onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
-                        class="relative flex w-full md:w-3/4 md:h-auto md:items-stretch p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer items-center">
-                        <!-- Image -->
-                        <div class="flex h-full min-w-16 w-16 mr-2 justify-center items-center px-1 md:absolute md:-left-[2.5rem] md:min-w-0 md:w-fit md:p-1 md:bg-emerald-700/20 md:rounded-l-lg cursor-default">
-                            <img class="w-full border border-gray-300 rounded-full md:w-8" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>">
+            <!-- Found -->
+            <div id="found"></div>
+
+            <div id="students-list">
+                <?php foreach ($students as $student): ?>
+                    <div id="student-<?php echo $student['iduser'] ?>"
+                        data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
+                        data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
+                        data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
+                        data-email="<?php echo $student['email'] ?>"
+                        data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
+                              echo "1";
+                          } else if ($student['is_superuser'] == 1) {
+                              echo "2";
+                          } else if ($student['is_admin'] == 1) {
+                              echo "3";
+                          } else {
+                              echo "0";
+                          } ?>" data-total_points="<?php echo $student['total_points'] ?>"
+                        class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
+                        <div id=""
+                            onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
+                            class="relative flex w-full md:w-3/4 md:h-auto md:items-stretch p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer items-center">
+                            <!-- Image -->
+                            <div class="flex h-full min-w-16 w-16 mr-2 justify-center items-center px-1 md:absolute md:-left-[2.5rem] md:min-w-0 md:w-fit md:p-1 md:bg-emerald-700/20 md:rounded-l-lg cursor-default">
+                                <img class="w-full border border-gray-300 rounded-full md:w-8" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>">
+                            </div>
+                            
+                            <!-- Information -->
+                            <div class="flex flex-col w-auto h-full md:w-full md:h-auto md:flex-row">
+                                <div
+                                    class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                    <p class="md:w-3/4"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
+                                </div>
+                                <div
+                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                    <?= $student['student_no'] ?>
+                                </div>
+                                <div
+                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                                    <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
+                                </div>
+                                <div
+                                    class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
+                                    <p class="text-lg"><?= $student['total_points'] ?></p>
+                                    <p class="text-xs md:hidden">Points</p>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <!-- Information -->
-                        <div class="flex flex-col w-auto h-full md:w-full md:h-auto md:flex-row">
-                            <div
-                                class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                                <p class="md:w-3/4"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
-                            </div>
-                            <div
-                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                                <?= $student['student_no'] ?>
-                            </div>
-                            <div
-                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                                <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
-                            </div>
-                            <div
-                                class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                                <p class="text-lg"><?= $student['total_points'] ?></p>
-                                <p class="text-xs md:hidden">Points</p>
-                            </div>
-                        </div>
+    
                     </div>
-
-                </div>
-
-            <?php endforeach; ?>
+    
+                <?php endforeach; ?>
+            </div>
 
         </main>
 
@@ -409,7 +467,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         ';
                         } ?>
 
-
                         <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
                             <button id="save_student_btn" type="submit" value="submit" name="action"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
@@ -524,8 +581,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             $('#header_title').text('Students');
         }
 
+        function toggleFilter() {
+            $('#filter_dropdown').toggleClass('invisible');
+        }
+
+        function hideFilter() {
+            $('#filter_dropdown').addClass('invisible');
+        }
+
         $(document).ready(function () {
             changeHeaderTitle();
+            let debounceTimer;
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#edit_student_modal_main').length && $(event.target).closest('#edit_student_modal').length) {
@@ -544,6 +610,78 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     hideAddStudentModal();
                 }
             })
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#filter').length && !$(event.target).closest('#filter_dropdown').length) {
+                    hideFilter();
+                }
+            })
+            
+            $("input[name='year[]'], input[name='block[]']").on('change', function () {
+                $("#search_student").val("");
+                $("#found").hide();
+                $("#students-list").show();
+
+                let year = $("input[name='year[]']:checked").map(function() {
+                    return $(this).val();
+                }).get(); 
+                
+                let block = $("input[name='block[]']:checked").map(function() {
+                    return $(this).val();
+                }).get(); 
+
+                $("#students-list > div").each(function() {
+                    let student_block = $(this).data('block');
+                    let student_year = $(this).data('year');
+
+                    let isVisible = true;
+
+                    if (year.length > 0 && block.length > 0) {
+                        isVisible = year.includes(String(student_year)) && block.includes(String(student_block));
+                    } 
+                    else if (year.length > 0) {
+                        isVisible = year.includes(String(student_year));
+                    } 
+                    else if (block.length > 0) {
+                        isVisible = block.includes(String(student_block));
+                    } 
+                    else {
+                        isVisible = true;
+                    }
+
+                    $(this).toggle(isVisible);
+                })
+            });
+
+
+            $("#search_student").on("input", function() {
+                $("input[name='year[]'], input[name='block[]']").prop("checked", false);
+                
+                let input = $(this).val();
+
+                if (input.length > 0) {
+                    $("#students-list").hide();
+                    $("#found").show(); 
+                } else {
+                    $("#found").hide();
+                    $("#students-list").show();
+                }
+
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(() => {
+                    if (input) {
+                        $.ajax({
+                            url: "./find.php",
+                            method: "POST",
+                            data: { input: input },
+                            success: function(data) {
+                                $("#found").html(data);
+                            }
+                        });
+                    }
+                }, 300); 
+            });
         })
     </script>
 <?php } ?>
