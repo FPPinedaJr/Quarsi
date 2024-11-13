@@ -118,16 +118,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 <div id=""
                     class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
                     <div
-                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
+                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-2/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
                         Event Name
                     </div>
                     <div
                         class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/6 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                         Date
-                    </div>
-                    <div
-                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:border-r-2 md:border-[#b7b9b9]">
-                        Organization
                     </div>
                     <div
                         class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:border-r-2 md:border-[#b7b9b9]">
@@ -154,16 +150,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <div id="" onclick="showEditEventModal(<?= $event['idevent'] ?>)"
                         class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
                         <div
-                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
+                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-2/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
                             <?= $event['name'] ?>
                         </div>
                         <div
                             class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/6 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                             <?= $event['date'] ?>
-                        </div>
-                        <div
-                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:border-r-2 md:border-[#b7b9b9]">
-                            <?= $event['organization'] ?>
                         </div>
                         <div
                             class="flex items-center md:border-r-2 md:border-[#b7b9b9] w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium">
