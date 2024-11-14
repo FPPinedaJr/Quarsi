@@ -346,6 +346,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             <div id="edit_student_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
                 <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Students</p>
+                    <div class="block md:absolute md:right-5 text-white font-['mulish']">
+                        <a id="student_log" class="hover:underline">View Student's Log</a>
+                    </div>
                 </div>
 
                 <!-- fieldset -->
@@ -545,6 +548,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             var $total_points = $('#student-' + id).data('total_points');
             var $hidden_profile = $('#student-' + id).data('profile_pic');
 
+            $('#student_log').attr('href', 'attendance.php?student=' + id);
             $('#iduser').val(id);
             $('#f_name').val($f_name);
             $('#l_name').val($l_name);
