@@ -14,7 +14,7 @@ if ($_SESSION["logged_in"] == !true) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard -
+        <title>Attendance -
             <?php
             if ($_SESSION['is_officer'] == 1) {
                 echo "Officer";
@@ -53,9 +53,6 @@ if ($_SESSION["logged_in"] == !true) {
     <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
         <main class="flex flex-col items-center w-full h-full ">
 
-            <!-- Points Div -->
-
-
             <!-- Table Div -->
             <div class="w-full max-w-sm overflow-y-auto mt-36">
                 <?php
@@ -73,41 +70,25 @@ if ($_SESSION["logged_in"] == !true) {
                 INNER JOIN user on a.user = user.iduser
                 WHERE user = ?;
             ");
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $student = $_GET['student'];
-            }
-            $stmt->execute([$student]);
-            $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
-            
-            $stmt2 = $pdo->prepare("
-            SELECT 
-            CONCAT(user.f_name, ' ', user.l_name) AS fullname, 
-            
-            user.total_points
-            FROM user
-            WHERE iduser = ?;
-            ");
-            $stmt2->execute([$student]);
-            $result = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+                if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+                    $student = $_GET['student'];
+                }
+                $stmt->execute([$student]);
+                $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
                 if ($rows) {
-
+                    
                     ?>
-
-                    <div class="absolute top-0 left-0 w-full py-16 pt-32 text-2xl text-center bg-teal-300/50">
-                        <h1><span class="text-5xl font-bold"><?= $result['total_points'] ?><span> <span
-                                        class="-ml-2 text-base">ali</span>
-                        </h1>
-
-                        <h2 class="mt-4"><?= $result['fullname'] ?></h2>
-                    </div>
-                    <table class="w-full mt-12 text-center border-collapse">
-                        <thead class="sticky top-0 bg-white">
+                    <table class="w-full text-center border-collapse">
+                        <thead class="sticky top-0 text-white bg-gray-500/80">
+                            <tr class="text-2xl ">
+                                <th colspan="5"><?= $rows[0]['fullname'] ?></th>
+                            </tr>
                             <tr class="border border-gray-300">
-                                <th class="p-2 text-left" rowspan="2">Event</th>
+                                <th class="p-2 text-xl text-left" rowspan="2">Event</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
-                                <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th>
                             </tr>
                             <tr class="border border-gray-300">
                                 <th class="p-2 border-l border-r border-gray-300">In</th>
@@ -116,25 +97,20 @@ if ($_SESSION["logged_in"] == !true) {
                                 <th class="p-2 border-l border-r border-gray-300">Out</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <?php foreach ($rows as $row): ?>
-                                <tr class="border bg-gray-50">
-                                    <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['morning_in'] === '00:00:00' ? '❌' : ($row['morning_in'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['morning_out'] === '00:00:00' ? '❌' : ($row['morning_out'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['afternoon_in'] === '00:00:00' ? '❌' : ($row['afternoon_in'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
-                                    </td>
-                                </tr>
+                        <tbody class="border-b divide-y divide-gray-200">
+                        <?php foreach ($rows as $row): ?>
+                            <tr class="border bg-pink-50">
+                                <td class="p-2 text-left border-r border-gray-200"><?= htmlspecialchars($row['name']) ?></td>
+                                <td class="p-2 text-center border-r border-gray-200">
+                                    <?= $row['morning_in'] === '00:00:00' ? '❌' : ($row['morning_in'] ? '✅' : '➖') ?></td>
+                                <td class="p-2 text-center border-r border-gray-200">
+                                    <?= $row['morning_out'] === '00:00:00' ? '❌' : ($row['morning_out'] ? '✅' : '➖') ?></td>
+                                <td class="p-2 text-center border-r border-gray-200">
+                                    <?= $row['afternoon_in'] === '00:00:00' ? '❌' : ($row['afternoon_in'] ? '✅' : '➖') ?></td>
+                                <td class="p-2 text-center">
+                                    <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?></td>
+                                </td>
+                            </tr>
                             <?php endforeach ?>
                         </tbody>
                     </table>
@@ -148,7 +124,7 @@ if ($_SESSION["logged_in"] == !true) {
 
     <script>
         function changeHeaderTitle() {
-            $('#header_title').text('Dashboard');
+            $('#header_title').text('Attendance');
         }
 
         $(document).ready(function () {
