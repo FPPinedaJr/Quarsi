@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>I'm on Top!</title>
+    <link rel="stylesheet" type="text/css" href="styles.css?v=123" />
+    <script type="text/javascript" src="script.js"></script>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  </head>
+  <body>
+    
+    <article class="content">
+      <div id="stacker-game"></div>
+    </article>
+
+    <div id="game-over-overlay" style="display: none;">
+      <div class="game-over-content">
+        <h2>Game Over!</h2>
+        <button id="try-again-button">Try Again?</button>
+      </div>
+    </div>
+
+    <div id="congratulation-overlay" style="display: none;">
+      <div class="game-over-content">
+        <h2>Congratulations!</h2>
+        <button id="continue-button">Continue..</button>
+      </div>
+    </div>
+
+    <div id="instruction-overlay" style="display: none;">
+      <div class="game-over-content">
+        <h2>Tap or Hit [space]</h2>
+        <p >(sound on UwU)</p>
+      </div>
+    </div>
+
+    
+    <audio id="retro-music" loop>
+      <source src="./sound/bgm.mp3" type="audio/mp3">
+    </audio>
+    <audio id="fail-sfx">
+      <source src="./sound/fail.mp3" type="audio/mp3">
+    </audio>
+    <audio id="place-sfx">
+      <source src="./sound/place.mp3" type="audio/mp3">
+    </audio>
+    <audio id="gameover-sfx">
+      <source src="./sound/gameover.mp3" type="audio/mp3">
+    </audio>
+    <audio id="congratulation-sfx">
+      <source src="./sound/congratulation.mp3" type="audio/mp3">
+    </audio>
+
+  </body>
+</html>

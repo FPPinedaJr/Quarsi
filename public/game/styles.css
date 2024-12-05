@@ -1,0 +1,141 @@
+body {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  text-align: center;
+  overflow-y: hidden;
+}
+
+a {
+  color: white;
+}
+
+#stacker-game {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+
+
+#stacker-game table {
+  border: 1px solid rgb(0, 255, 42);
+  border-spacing: 0;
+  border-collapse: separate;
+  margin: 0 auto;
+  position: relative;
+  font-size: 0;
+  width: 320px; /* Maximum width for desktop */
+  height: 80vh;
+}
+#stacker-game table:before {
+  display: block;
+  position: absolute;
+  top: 0px;
+  line-height: calc(80vh / 15);
+  left: 0;
+  right: 0;
+  content: "M A J O R P R I Z E";
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid rgb(0, 255, 42);
+  color: rgb(0, 255, 42);
+  border-width: 1px 0;
+  
+}
+#stacker-game table:after {
+  display: block;
+  position: absolute;
+  top: calc((80vh / 15 ) * 4 + 8px);
+  line-height: calc(80vh / 15);
+  left: 0;
+  right: 0;
+  content: "M I N O R P R I Z E";
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid rgb(0, 255, 42);
+  color: rgb(0, 255, 42);
+  border-width: 1px 0;
+}
+#stacker-game td {
+  width: 32px;
+  height: calc(80vh / 15);
+  border: 1px solid black;
+  padding: 0;
+}
+.filled {
+  background-color: rgb(0, 255, 13);
+}
+
+
+#game-over-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.game-over-content {
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+#try-again-button, #continue-button {
+  padding: 10px 3px;
+  font-size: 14px;
+  cursor: pointer;
+  color: rgb(47, 144, 255);
+  text-decoration: none;
+  background-color: #12323100;
+  border: none;
+}
+
+
+#instruction-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(0px);
+}
+
+.instruction-content {
+  text-align: center;
+  color: white;
+}
+
+#congratulation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.congratulation-content {
+  text-align: center;
+  color: white;
+}
+
