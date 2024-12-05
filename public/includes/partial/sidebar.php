@@ -73,6 +73,7 @@ $user = $stmt->fetch();
           <span class="font-['merriweather_sans'] ml-5">Generate QR</span>
         </a>
 
+
         <?php
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
@@ -113,7 +114,7 @@ $user = $stmt->fetch();
             <span class="font-[\'merriweather_sans\'] ml-5">Superusers</span>
           </a>
           ';
-          
+
           // echo '
           // <a href="admin.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           //   <i class="text-2xl fa-solid fa-user-tie"></i>
@@ -140,7 +141,10 @@ $user = $stmt->fetch();
           <span class=" text-black font-['merriweather_sans'] ml-5">Profile</span>
         </a>
 
-
+        <a href="game" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <i class="text-2xl fa-solid fa-gamepad"></i>
+          <span class="font-['merriweather_sans'] ml-3">Have some fun!</span>
+        </a>
 
         <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <i class="text-2xl text-black fa-solid fa-arrow-right-from-bracket"></i>
