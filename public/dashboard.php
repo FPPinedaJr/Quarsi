@@ -55,13 +55,19 @@ if ($_SESSION["logged_in"] == !true) {
 
             <!-- Points Div -->
             <div class="absolute top-0 left-0 w-full py-16 pt-32 text-2xl text-center bg-teal-300/50">
-                <h1><span class="text-5xl font-bold"><?= $user['total_points'] ?><span> <span class="-ml-2 text-base">ali</span>
+                <h1>
+                    <span class="text-5xl font-bold points" id="totalPoints"></span>
+                    <span class="text-4xl font-bold points">%</span>
                 </h1>
+                <span class="mr-2 text-base">ali score</span>
             </div>
 
             <!-- Table Div -->
-            <div class="w-full max-w-sm overflow-y-auto mt-36">
+            <div class="w-full max-w-sm overflow-y-auto mt-44">
                 <?php
+                $LogIn = 0;
+                $TotalLog = 0;
+
                 $stmt = $pdo->prepare("
                SELECT 
                     e.name,
@@ -78,7 +84,7 @@ if ($_SESSION["logged_in"] == !true) {
                 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
                 if ($rows) {
-                    
+
                     ?>
                     <table class="w-full text-center border-collapse">
                         <thead class="sticky top-0 bg-white">
@@ -86,7 +92,7 @@ if ($_SESSION["logged_in"] == !true) {
                                 <th class="p-2 text-left" rowspan="2">Event</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
-                                <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th>
+                                <!-- <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th> -->
                             </tr>
                             <tr class="border border-gray-300">
                                 <th class="p-2 border-l border-r border-gray-300">In</th>
@@ -96,24 +102,38 @@ if ($_SESSION["logged_in"] == !true) {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                        <?php foreach ($rows as $row): ?>
-                            <tr class="border bg-gray-50">
-                                <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
-                                <td class="p-2 text-center">
-                                    <?= $row['morning_in'] === '00:00:00' ? '❌' : ($row['morning_in'] ? '✅' : '➖') ?></td>
-                                <td class="p-2 text-center">
-                                    <?= $row['morning_out'] === '00:00:00' ? '❌' : ($row['morning_out'] ? '✅' : '➖') ?></td>
-                                <td class="p-2 text-center">
-                                    <?= $row['afternoon_in'] === '00:00:00' ? '❌' : ($row['afternoon_in'] ? '✅' : '➖') ?></td>
-                                <td class="p-2 text-center">
-                                    <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?></td>
-                                <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
-                                </td>
-                            </tr>
+                            <?php foreach ($rows as $row): ?>
+                                <tr class="border bg-gray-50">
+                                    <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
+                                    <td class="p-2 text-center">
+                                        <?= $row['morning_in'] === '00:00:00' ? '❌' : ($row['morning_in'] ? '✅' : '➖') ?>
+                                    </td>
+                                    <td class="p-2 text-center">
+                                        <?= $row['morning_out'] === '00:00:00' ? '❌' : ($row['morning_out'] ? '✅' : '➖') ?>
+                                    </td>
+                                    <td class="p-2 text-center">
+                                        <?= $row['afternoon_in'] === '00:00:00' ? '❌' : ($row['afternoon_in'] ? '✅' : '➖') ?>
+                                    </td>
+                                    <td class="p-2 text-center">
+                                        <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?>
+                                    </td>
+                                    <!-- <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
+                                </td> -->
+                                </tr>
+                                <?php
+                                $TotalLog += $row['morning_in'] !== null ? 1 : 0;
+                                $TotalLog += $row['morning_out'] !== null ? 1 : 0;
+                                $TotalLog += $row['afternoon_in'] !== null ? 1 : 0;
+                                $TotalLog += $row['afternoon_out'] !== null ? 1 : 0;
+
+                                $LogIn += ($row['morning_in'] !== null && $row['morning_in'] !== '00:00:00') ? 1 : 0;
+                                $LogIn += ($row['morning_out'] !== null && $row['morning_out'] !== '00:00:00') ? 1 : 0;
+                                $LogIn += ($row['afternoon_in'] !== null && $row['afternoon_in'] !== '00:00:00') ? 1 : 0;
+                                $LogIn += ($row['afternoon_out'] !== null && $row['afternoon_out'] !== '00:00:00') ? 1 : 0;
+                                ?>
                             <?php endforeach ?>
                         </tbody>
                     </table>
-
                 <?php } else { ?>
                     <div class="w-full h-full mt-10 text-center text-gray-500">No attendance recorded</div>
                 <?php } ?>
@@ -122,12 +142,30 @@ if ($_SESSION["logged_in"] == !true) {
     </body>
 
     <script>
+        function getScorePercentage() {
+            var logIn = <?= $LogIn ?>;
+            var totalLog = <?= $TotalLog ?>;
+
+            var totalPoints = (logIn / totalLog * 100).toFixed(2);
+
+            $("#totalPoints").text(totalPoints);
+
+
+            if (totalPoints < 75) {
+                $(".points").removeClass("text-green-500").addClass("text-red-500");
+            } else {
+                $(".points").removeClass("text-red-500").addClass("text-green-500");
+            }
+        }
+
+
         function changeHeaderTitle() {
             $('#header_title').text('Dashboard');
         }
 
         $(document).ready(function () {
             changeHeaderTitle();
+            getScorePercentage();
         });
     </script>
 
