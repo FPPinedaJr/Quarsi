@@ -1,11 +1,11 @@
 <?php
 date_default_timezone_set("Asia/Manila");
-$hostname = 'main-db-fppinedajr.k.aivencloud.com';
-$defaultSchema = 'defaultdb';
-$username = 'avnadmin';
-$password = 'AVNS_PI2MbRYnkkwsIEKaXH5';
+$hostname = '77.37.35.51';
+$defaultSchema = 'u273960544_quarsi';
+$username = 'u273960544_fpjcm_quarsi';
+$password = 'iLove69*';
 $charset = 'utf8mb4';
-$port = 28414 ;
+$port = 3306 ;
 
 $dsn = "mysql:host=$hostname;dbname=$defaultSchema;charset=$charset;port=$port";
 
