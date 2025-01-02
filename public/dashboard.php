@@ -151,7 +151,7 @@ if ($_SESSION["logged_in"] == !true) {
             $("#totalPoints").text(totalPoints);
 
 
-            if (totalPoints < 75) {
+            if (totalPoints < 100) {
                 $(".points").removeClass("text-green-500").addClass("text-red-500");
             } else {
                 $(".points").removeClass("text-red-500").addClass("text-green-500");
