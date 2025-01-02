@@ -71,15 +71,15 @@ if ($_SESSION["logged_in"] == !true) {
                 FROM attendance a 
                 INNER JOIN event e on a.event = e.idevent
                 INNER JOIN user on a.user = user.iduser
-                WHERE user = ?;
+                WHERE user = ? OR student_no = ?;
             ");
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $student = $_GET['student'];
-            }
-            $stmt->execute([$student]);
-            $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
-            
-            $stmt2 = $pdo->prepare("
+                if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                    $student = $_GET['student'];
+                }
+                $stmt->execute([$student, $student]);
+                $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
+
+                $stmt2 = $pdo->prepare("
             SELECT 
             CONCAT(user.f_name, ' ', user.l_name) AS fullname, 
             
@@ -87,27 +87,32 @@ if ($_SESSION["logged_in"] == !true) {
             FROM user
             WHERE iduser = ?;
             ");
-            $stmt2->execute([$student]);
-            $result = $stmt2->fetch(PDO::FETCH_ASSOC);
+                $stmt2->execute([$student]);
+                $result = $stmt2->fetch(PDO::FETCH_ASSOC);
 
                 if ($rows) {
+                    $LogIn = 0;
+                    $TotalLog = 0;
+
 
                     ?>
 
+                    <h1 class="absolute top-0 left-0 w-full pt-16 pl-4 text-xl text-gray-500"><?= $rows[0]['fullname'] ?>'s
+                        attendance</h1>
                     <div class="absolute top-0 left-0 w-full py-16 pt-32 text-2xl text-center bg-teal-300/50">
-                        <h1><span class="text-5xl font-bold"><?= $result['total_points'] ?><span> <span
-                                        class="-ml-2 text-base">ali</span>
+                        <h1>
+                            <span class="text-5xl font-bold points" id="totalPoints"></span>
+                            <span class="text-4xl font-bold points">%</span>
                         </h1>
-
-                        <h2 class="mt-4"><?= $result['fullname'] ?></h2>
+                        <span class="mr-2 text-base">ali score</span>
                     </div>
-                    <table class="w-full mt-12 text-center border-collapse">
+                    <table class="w-full mt-8 text-center border-collapse">
                         <thead class="sticky top-0 bg-white">
                             <tr class="border border-gray-300">
                                 <th class="p-2 text-left" rowspan="2">Event</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
-                                <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th>
+                                <!-- <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th> -->
                             </tr>
                             <tr class="border border-gray-300">
                                 <th class="p-2 border-l border-r border-gray-300">In</th>
@@ -132,9 +137,20 @@ if ($_SESSION["logged_in"] == !true) {
                                     <td class="p-2 text-center">
                                         <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?>
                                     </td>
-                                    <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
-                                    </td>
+                                    <!-- <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
+                                    </td> -->
                                 </tr>
+                                <?php
+                                $TotalLog += $row['morning_in'] !== null ? 1 : 0;
+                                $TotalLog += $row['morning_out'] !== null ? 1 : 0;
+                                $TotalLog += $row['afternoon_in'] !== null ? 1 : 0;
+                                $TotalLog += $row['afternoon_out'] !== null ? 1 : 0;
+
+                                $LogIn += ($row['morning_in'] !== null && $row['morning_in'] !== '00:00:00') ? 1 : 0;
+                                $LogIn += ($row['morning_out'] !== null && $row['morning_out'] !== '00:00:00') ? 1 : 0;
+                                $LogIn += ($row['afternoon_in'] !== null && $row['afternoon_in'] !== '00:00:00') ? 1 : 0;
+                                $LogIn += ($row['afternoon_out'] !== null && $row['afternoon_out'] !== '00:00:00') ? 1 : 0;
+                                ?>
                             <?php endforeach ?>
                         </tbody>
                     </table>
@@ -147,12 +163,29 @@ if ($_SESSION["logged_in"] == !true) {
     </body>
 
     <script>
+        function getScorePercentage() {
+            var logIn = <?= $LogIn ?>;
+            var totalLog = <?= $TotalLog ?>;
+
+            var totalPoints = (logIn / totalLog * 100).toFixed(2);
+
+            $("#totalPoints").text(totalPoints);
+
+            if (totalPoints < 75) {
+                $(".points").removeClass("text-green-500").addClass("text-red-500");
+            } else {
+                $(".points").removeClass("text-red-500").addClass("text-green-500");
+            }
+        }
+
         function changeHeaderTitle() {
             $('#header_title').text('Dashboard');
         }
 
         $(document).ready(function () {
             changeHeaderTitle();
+            getScorePercentage();
+
         });
     </script>
 
