@@ -78,7 +78,8 @@ if ($_SESSION["logged_in"] == !true) {
                     a.points
                 FROM attendance a 
                 INNER JOIN event e on a.event = e.idevent
-                WHERE user = ?;
+                WHERE user = ?
+                ORDER BY e.date;
             ");
                 $stmt->execute([$_SESSION['userid']]);
                 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);

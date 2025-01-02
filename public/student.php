@@ -27,7 +27,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
       FROM user
       INNER JOIN organization
       ON user.organization = organization.idorganization
-      WHERE (user.is_officer <> 1) AND (user.is_superuser <> 1) and (user.is_admin <> 1)
+      WHERE user.is_admin <> 1
       ORDER BY user.year, user.block, user.f_name;
     ");
 
@@ -214,7 +214,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             class="relative flex w-full md:w-3/4 md:h-auto md:items-stretch p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer items-center">
                             <!-- Image -->
                             <div class="flex h-full min-w-16 w-16 mr-2 justify-center items-center px-1 md:absolute md:-left-[2.5rem] md:min-w-0 md:w-fit md:p-1 md:bg-emerald-700/20 md:rounded-l-lg cursor-default">
-                                <img class="w-full border border-gray-300 rounded-full md:w-8" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>">
+                                <h1><?= $student['iduser']  ?></h1>
+                                <!-- <img class="w-full border border-gray-300 rounded-full md:w-8" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>"> -->
                             </div>
                             
                             <!-- Information -->

@@ -3,6 +3,7 @@ session_start();
 include_once "../includes/connect_db.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    ini_set('max_execution_time', '900'); 
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
