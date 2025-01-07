@@ -79,6 +79,7 @@ if (isset($_SESSION['logged_in'])) {
               </div>
             </div>
           </form>
+          <div class="w-full flex justify-center text-sm mt-3"><p class="text-green-600 cursor-pointer hover:text-green-500">Forgot Password?</p></div>
         </div>
       </div>
   </main>
