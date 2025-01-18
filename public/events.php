@@ -290,7 +290,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         <!-- Events Edit Modal -->
         <div id="edit_event_modal"
             class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-            <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+            <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-1/4">
                 <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
                     <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-11 invite_btn"
@@ -310,39 +310,19 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <form id="edit_event_form" action="./includes/crud_event.php" type="button" method="POST"
                         class="flex flex-col justify-center w-full h-full px-3">
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
+                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <input id="idevent" name="idevent" type="hidden">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col w-full my-2 h-fit md:w-full ">
                                 <input id="name" name="name" type="text" required autocomplete="name"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col w-full my-2 h-fit md:w-full ">
                                 <input id="date" name="date" type="date" required
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="date" class="pl-1 text-base md:text-lg text-zinc-600">Date</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="set_points" name="set_points" type="number" required
-                                    class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="set_points" class="pl-1 text-base md:text-lg text-zinc-600">Set Points</label>
-                            </div>
-                        </div>
-
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="organization" name="organization" required autocomplete="off"
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <?php foreach ($organizations as $organization): ?>
-                                        <option value="<?= $organization['idorganization'] ?>"
-                                            class="font-['mulish'] text-black text-base w-full"><?= $organization['name'] ?>
-                                        </option>
-                                    <?php endforeach ?>
-                                </select>
-                                <label for="organization"
-                                    class="pl-1 text-base md:text-lg text-zinc-600">Organization</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col w-full my-2 h-fit md:w-full ">
                                 <select id="log_time" name="log_time" type="number" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                     <option value="0">Disabled</option>
@@ -352,14 +332,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                                     <option value="4">Afternoon Out</option>
                                 </select>
                                 <label for="log_time" class="pl-1 text-base md:text-lg text-zinc-600">Log Time</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="status" name="status" type="number" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
-                                </select>
-                                <label for="status" class="pl-1 text-base md:text-lg text-zinc-600">Status</label>
                             </div>
                         </div>
 

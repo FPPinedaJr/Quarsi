@@ -35,7 +35,8 @@ if (isset($_SESSION['logged_in'])) {
 
 
 
-<body class="flex items-center justify-center h-screen overflow-hidden text-black md:bg-gradient-to-tr from-green-800 to-slate-200 ">
+<body
+  class="flex items-center justify-center h-screen overflow-hidden text-black md:bg-gradient-to-tr from-green-800 to-slate-200 ">
   <main class="flex justify-center w-4/6 text-black bg-transparent">
     <div class="flex justify-center p-2 text-center bg-white rounded-lg md:shadow-lg md:shadow-zinc-700/50 ">
       <div class="flex justify-center p-2 text-center bg-white rounded-lg w-96">
@@ -79,34 +80,46 @@ if (isset($_SESSION['logged_in'])) {
               </div>
             </div>
           </form>
-          <div class="w-full flex justify-center text-sm mt-3"><p class="text-green-600 cursor-pointer hover:text-green-500">Forgot Password?</p></div>
+          <div class="w-full flex justify-center text-sm mt-3">
+            <p class="text-green-600 cursor-pointer hover:text-green-500">Forgot Password?</p>
+          </div>
         </div>
       </div>
-    </main>
+  </main>
 
-    <!-- Send OTP -->
-    <div class="fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center invisible">
-      <div class="flex items-center flex-col md:w-1/4 w-10/12 px-4 py-2 bg-white rounded-md">
-        <div class="text-center font-bold text-3xl mt-3">OTP Verification</div>
-        <!-- Input OTP -->
-        <div class="w-3/4 h-fit flex justify-between mt-7 px-4">
-          <input class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400" autocomplete="one-time-code" maxlength="1">
-          <input class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400" autocomplete="one-time-code" maxlength="1">
-          <input class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400" autocomplete="one-time-code" maxlength="1">
-          <input class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400" autocomplete="one-time-code" maxlength="1">
-        </div>
-        <div class="mt-4 mb-2 text-xs text-zinc-500 w-3/4 text-center flex flex-wrap">
-          Please enter the 4-digit one-time-password (OTP) we sent to your email to verify.
-        </div>
-        <button class="bg-emerald-700 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-800" type="submit">Send OTP</button>
-        <div class="flex justify-center my-2">
-          <a class="text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer">Sign In with a passkey</a>
-        </div>
-        <div class="flex justify-center text-center text-[12px] -mt-1 mb-3 cursor-pointer">New user?
-          <a class="text-emerald-400 hover:text-emerald-300 ml-1 text-[12px]">Sign up here</a>
-        </div>
+  <!-- Send OTP -->
+  <div class="invisible fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center">
+    <div class="flex items-center flex-col md:w-1/4 w-10/12 px-4 py-2 bg-white rounded-md">
+      <div class="text-center font-bold text-3xl mt-3">OTP Verification</div>
+      <!-- Input OTP -->
+      <div class="w-3/4 h-fit flex justify-between mt-7 px-4">
+        <input id="digit-1"
+          class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-2"
+          class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-3"
+          class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-4"
+          class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+      </div>
+      <div class="mt-4 mb-2 text-xs text-zinc-500 w-3/4 text-center flex flex-wrap">
+        Please enter the 4-digit one-time-password (OTP) we sent to your email to verify.
+      </div>
+      <button
+        class="bg-emerald-700 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-800"
+        type="submit">Submit</button>
+      <div class="flex justify-center my-2">
+        <a class="text-emerald-400 hover:text-emerald-300 font-semibold cursor-pointer">Sign In with a passkey</a>
+      </div>
+      <div class="flex justify-center text-center text-[12px] -mt-1 mb-3 cursor-pointer">New user?
+        <a class="text-emerald-400 hover:text-emerald-300 ml-1 text-[12px]">Sign up here</a>
       </div>
     </div>
+  </div>
 
 
 
@@ -131,6 +144,26 @@ if (isset($_SESSION['logged_in'])) {
 
 
     $(document).ready(function () {
+      $("input[id^='digit-']").on("keyup", function (e) {
+        let currentInput = $(this);
+        let currentValue = currentInput.val();
+
+        if (e.key === "Backspace") {
+          if (currentValue === "") {
+            currentInput.prev("input").focus();
+          }
+        } else if (currentValue.length === 1) {
+          currentInput.next("input").focus();
+        }
+      });
+
+      $("input[id^='digit-']").on("input", function () {
+        let currentInput = $(this);
+        if (currentInput.val().length > 1) {
+          currentInput.val(currentInput.val().charAt(0));
+        }
+      });
+
       $('#show-password').change(function () {
         const passwordInput1 = $('#pass1Reg');
         const passwordInput2 = $('#pass2Reg');
