@@ -13,30 +13,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         event.idevent AS 'idevent',
         event.date AS 'date',
         event.name AS 'name',
-        organization.short_name AS 'organization',
-        event.organization AS 'idorganization',
-        event.log_time AS 'log_time',
-        event.is_active AS 'is_active',
-        event.set_points AS 'set_points'
+        event.log_time AS 'log_time'
     FROM event
-    INNER JOIN organization
-    WHERE organization.idorganization = event.organization
     ");
 
     $stmt1->execute();
     $events = $stmt1->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmt2 = $pdo->prepare("
-        SELECT 
-            organization.idorganization as 'idorganization',
-            organization.name as 'name',
-            organization.short_name as 'short_name'
-        FROM organization
-        ORDER BY organization.name
-    ");
-
-    $stmt2->execute();
-    $organizations = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
     $stmt3 = $pdo->prepare("
         SELECT o.short_name as organization, year, block, f_name, l_name, iduser
@@ -112,107 +94,43 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             <div class="my-2 border-t-2 border-zinc-500"></div>
             <!-- Events List -->
-
-            <div id=""
-                class="flex-col hidden w-full gap-2 mt-2 bg-white md:flex md:mt-0 h-fit md:justify-center md:items-center">
-                <div id=""
-                    class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
-                    <div
-                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-2/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
-                        Event Name
-                    </div>
-                    <div
-                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/6 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                        Date
-                    </div>
-                    <div
-                        class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:border-r-2 md:border-[#b7b9b9]">
-                        Set Points
-                    </div>
-                    <div
-                        class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/6 md:h-full md:px-1">
-                        <div class="text-white font-['mulish'] text-lg md:text-[1.3rem] ">Status</div>
-                        <div class="text-emerald-100 font-['mulish'] text-xs md:hidden">Log Time</div>
-                    </div>
-                    <div
-                        class="hidden md:flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:bg-zinc-600 md:border-r-2 md:border-[#b7b9b9] text-white">
-                        Log Time
-                    </div>
-                </div>
+            <div class="w-full flex justify-center mt-4 h-fit">
+                <table class="w-full md:w-4/5">
+                    <tr class="font-light text-lg text-left bg-teal-700 text-white">
+                        <th class="font-normal px-2 py-1">EVENT NAME</th>
+                        <th class="font-normal px-2 py-1">DATE</th>
+                        <th class="font-normal px-2 py-1">CURRENT LOG</th>
+                    </tr>
+    
+                    <?php foreach ($events as $event): ?>
+                    <tr id="event-<?=$event['idevent']?>" data-idevent="<?=$event['idevent']?>" data-name="<?=$event['name']?>" data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>"
+                    class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
+                        <td class="pl-2"><?=$event['name']?></td>
+                        <td class="pl-2"><?=$event['date']?></td>
+                        <td class="pl-2">
+                            <?php
+                            if ($event['log_time']  == 0) {
+                                echo 'Disabled';
+                            } else if ($event['log_time']  == 1) {
+                                echo 'Morning In';
+                            } else if ($event['log_time']  == 2) {
+                                echo 'Morning Out';
+                            } else if ($event['log_time']  == 3) {
+                                echo 'Afternoon In';
+                            } else if ($event['log_time']  == 4) {
+                                echo 'Afternoon Out';
+                            } ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
             </div>
-
-            <?php foreach ($events as $event): ?>
-
-                <div id="event-<?= $event['idevent'] ?>" data-name="<?= $event['name'] ?>" data-date="<?= $event['date'] ?>"
-                    data-organization="<?= $event['idorganization'] ?>" data-log_time="<?= $event['log_time'] ?>"
-                    data-status="<?= $event['is_active'] ?>" data-set_points="<?= $event['set_points'] ?>"
-                    class="flex flex-col flex-shrink-0 w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                    <div id="" onclick="showEditEventModal(<?= $event['idevent'] ?>)"
-                        class="relative flex flex-col w-full md:w-4/5 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer md:flex-row md:h-10">
-                        <div
-                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-2/6 md:h-full md:px-1 md:border-r-2 md:justify-center md:border-[#b7b9b9] md:font-medium">
-                            <?= $event['name'] ?>
-                        </div>
-                        <div
-                            class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/6 md:text-[1.3rem] md:px-1 md:justify-center md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                            <?= $event['date'] ?>
-                        </div>
-                        <div
-                            class="flex items-center md:border-r-2 md:border-[#b7b9b9] w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium">
-                            <?= $event['set_points'] ?>
-                        </div>
-                        <div
-                            class="absolute top-0 right-0 flex flex-col items-center justify-center flex-grow-0 flex-shrink-0 w-24 h-full font-['mulish'] p-1 bg-zinc-600 align-center md:flex-row md:right-0 md:w-1/6 md:h-full md:px-1">
-                            <?php if ($event['is_active'] == 0) {
-                                echo '<div class="text-white text-lg md:text-[1.3rem] ">
-                                    Inactive
-                                </div>';
-                            } else if ($event['is_active'] == 1) {
-                                echo '<div class="text-emerald-100 text-lg md:text-[1.3rem] ">
-                                    Active
-                                </div>';
-                            }
-                            ?>
-                            <div class="text-emerald-100 font-['mulish'] text-xs md:hidden">
-                                <?php if ($event['log_time'] == 0) {
-                                    echo "Disabled";
-                                } else if ($event['log_time'] == 1) {
-                                    echo "Morning In";
-                                } else if ($event['log_time'] == 2) {
-                                    echo "Morning Out";
-                                } else if ($event['log_time'] == 3) {
-                                    echo "Afternoon In";
-                                } else if ($event['log_time'] == 4) {
-                                    echo "Afternoon Out";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div
-                            class="hidden md:flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/6 md:px-1 md:h-full md:text-[1.3rem] md:justify-center md:font-medium md:bg-zinc-600 md:border-r-2 md:border-[#b7b9b9] text-white">
-                            <?php if ($event['log_time'] == 0) {
-                                echo "Disabled";
-                            } elseif ($event['log_time'] == 1) {
-                                echo "Morning In";
-                            } else if ($event['log_time'] == 2) {
-                                echo "Morning Out";
-                            } else if ($event['log_time'] == 3) {
-                                echo "Afternoon In";
-                            } else if ($event['log_time'] == 4) {
-                                echo "Afternoon Out";
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach ?>
-
         </main>
 
         <!-- Events Add Modal -->
         <div id="add_event_modal"
             class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-            <div id="add_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+            <div id="add_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-[25rem]">
                 <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Add Event</p>
                 </div>
@@ -222,59 +140,18 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <form id="add_event_form" action="./includes/crud_event.php" type="button" method="POST"
                         class="flex flex-col justify-center w-full h-full px-3">
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
+                            <div class="flex flex-col w-full my-2 h-fit ">
                                 <input id="add_name" name="name" type="text" required autocomplete="name"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="add_name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col w-full my-2 h-fit ">
                                 <input id="add_date" name="date" type="date" required
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="add_date" class="pl-1 text-base md:text-lg text-zinc-600">Date</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="add_set_points" name="set_points" type="number" required
-                                    class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="add_set_points" class="pl-1 text-base md:text-lg text-zinc-600">Set
-                                    Points</label>
-                            </div>
                         </div>
-
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="add_organization" name="organization" required autocomplete="off"
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <?php foreach ($organizations as $organization): ?>
-                                        <option value="<?= $organization['idorganization'] ?>"
-                                            class="font-['mulish'] text-black text-base w-full"><?= $organization['name'] ?>
-                                        </option>
-                                    <?php endforeach ?>
-                                </select>
-                                <label for="add_organization"
-                                    class="pl-1 text-base md:text-lg text-zinc-600">Organization</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="add_log_time" name="log_time" type="number" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="0">Disabled</option>
-                                    <option value="1">Morning In</option>
-                                    <option value="2">Morning Out</option>
-                                    <option value="3">Afternoon In</option>
-                                    <option value="4">Afternoon Out</option>
-                                </select>
-                                <label for="add_log_time" class="pl-1 text-base md:text-lg text-zinc-600">Log Time</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="add_status" name="status" type="number" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
-                                </select>
-                                <label for="add_status" class="pl-1 text-base md:text-lg text-zinc-600">Status</label>
-                            </div>
-                        </div>
-
 
                         <div class="flex items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
                             <button id="add_event_btn" type="submit" name="action" value="add"
@@ -290,7 +167,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         <!-- Events Edit Modal -->
         <div id="edit_event_modal"
             class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-            <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-1/4">
+            <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-[25rem]">
                 <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
                     <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-11 invite_btn"
@@ -553,19 +430,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             var $name = $('#event-' + id).data('name');
             var $date = $('#event-' + id).data('date');
-            var $set_points = $('#event-' + id).data('set_points');
-            var $organization = $('#event-' + id).data('organization');
             var $log_time = $('#event-' + id).data('log_time');
-            var $status = $('#event-' + id).data('status');
-            var $set_points = $('#event-' + id).data('set_points');
-
             $('#idevent').val(id);
             $('#date').val($date);
             $('#name').val($name);
-            $('#set_points').val($set_points);
-            $('#organization').val($organization);
             $('#log_time').val($log_time);
-            $('#status').val($status);
         }
 
         function hideEditEventModal() {
