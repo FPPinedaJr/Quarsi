@@ -69,7 +69,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Error inserting attendance for student ID $student_id. Please try again.";
         }
     endforeach;
-    
+
+    $stmt2 = $pdo->prepare("UPDATE event SET has_invite = 1 WHERE idevent = :idevent");
+    $stmt2->bindParam(':idevent', $idevent, PDO::PARAM_INT);
+
+    if ($stmt2->execute()) {
+        echo "Event has invites";
+    } else {
+        echo "Error inviting students for this event. Please try again.";
+    }    
     header("Location: ../events.php");
     exit();
 }

@@ -13,7 +13,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         event.idevent AS 'idevent',
         event.date AS 'date',
         event.name AS 'name',
-        event.log_time AS 'log_time'
+        event.log_time AS 'log_time',
+        event.has_invite AS 'invite'
     FROM event
     ");
 
@@ -94,20 +95,22 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             <div class="my-2 border-t-2 border-zinc-500"></div>
             <!-- Events List -->
-            <div class="w-full flex justify-center mt-4 h-fit">
-                <table class="w-full md:w-4/5">
+            <div class="w-full flex justify-center my-4 h-fit">
+                <table class="w-full md:w-2/3">
                     <tr class="font-light text-lg text-left bg-teal-700 text-white">
-                        <th class="font-normal px-2 py-1">EVENT NAME</th>
-                        <th class="font-normal px-2 py-1">DATE</th>
-                        <th class="font-normal px-2 py-1">CURRENT LOG</th>
+                        <th class="font-normal px-2 py-1 w-3/5">EVENT NAME</th>
+                        <th class="font-normal px-2 py-1 w-1/5">DATE</th>
+                        <th class="font-normal px-2 py-1 w-1/5">CURRENT LOG</th>
                     </tr>
     
                     <?php foreach ($events as $event): ?>
-                    <tr id="event-<?=$event['idevent']?>" data-idevent="<?=$event['idevent']?>" data-name="<?=$event['name']?>" data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>"
-                    class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
-                        <td class="pl-2"><?=$event['name']?></td>
-                        <td class="pl-2"><?=$event['date']?></td>
-                        <td class="pl-2">
+                    <tr id="event-<?=$event['idevent']?>" data-idevent="<?=$event['idevent']?>" data-name="<?=$event['name']?>" 
+                        data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>" data-invite="<?=$event['invite']?>"
+                    class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 text-lg" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
+                    <!-- has invite -->
+                        <td class="pl-2 py-1"><?=$event['name']?></td>
+                        <td class="pl-2 py-1"><?=$event['date']?></td>
+                        <td class="pl-2 py-1">
                             <?php
                             if ($event['log_time']  == 0) {
                                 echo 'Disabled';
@@ -170,15 +173,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-[25rem]">
                 <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
-                    <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-11 invite_btn"
+                    <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-5 invite_btn"
                         onclick="showInviteModal()">
                         <i
                             class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
-                    </div>
-                    <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-4 invite_btn"
-                        onclick="showEndModal()">
-                        <i
-                            class="text-xl text-white cursor-pointer md:text-xl fa-solid fa-calendar-xmark hover:text-emerald-400"></i>
                     </div>
                 </div>
 
@@ -248,32 +246,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     </form>
                 </div>
             </div>
-        </div>
-
-
-        <!-- End modal -->
-        <div id="end_modal"
-            class="fixed top-0 left-0 z-50 flex items-center justify-center invisible w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
-            <form id="end_students_form" action="./includes/end_event.php" type="button" method="POST"
-                class="w-10/12 md:w-1/3 a-2/3">
-                <input id="end_event" type="hidden" name="idEndEvent">
-                <div id="end_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white">
-                    <div
-                        class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
-                        End Event
-                    </div>
-
-                </div>
-                <div class="flex flex-col w-full h-auto p-5 bg-white text-md">
-                    <p class="text-emerald-700">Are you sure to end event "<span id="event_to_end" class="font-semibold"></span>"?</p>
-                </div>
-                <div class="flex items-center justify-center w-full gap-3 py-3 bg-white h-fit">
-                    <button type="button" onclick="hideEndModal()"
-                    class="rounded-lg hover:bg-teal-600 hover:text-white w-20 p-1 text-base font-semibold text-teal-800 font-['mulish'] border bg-none border-teal-700 cursor-pointer flex justify-center add_invite_btn">Cancel</button>
-                    <button type="submit"
-                            class="rounded-lg hover:bg-red-600 w-20 p-1 text-base font-semibold text-white font-['mulish'] bg-red-700 cursor-pointer flex justify-center add_invite_btn border border-red-700">End</button>
-                </div>
-            </form>
         </div>
 
         <!-- Invite Modal -->
@@ -390,7 +362,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                     
                 <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
-                    <button type="submit" value="invite" name="action"
+                    <button id="add_invite_btn" type="submit" value="invite" name="action"
                     class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
                     Invite</button>
                 </div>
@@ -458,39 +430,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function changeHeaderTitle() {
             $('#header_title').text('Events');
         }
-
-        function showEndModal() {
-            var $idevent = $('#idevent').val();
-            $('#end_modal').removeClass('invisible');
-            $('body').addClass('overflow-hidden');
-            $('#end_event').val($idevent); 
-            $('#event_to_end').text($('#event-' + $idevent).data('name'));
-            $('#edit_event_modal').addClass('invisible');
-            $('input[type="checkbox"]').prop('checked', false);
-        }
-
-
-        function hideEndModal() {
-            $('#end_modal').addClass('invisible');
-            $('body').removeClass('overflow-hidden');
-        }
-
-        function showEndModal() {
-            var $idevent = $('#idevent').val();
-            $('#end_modal').removeClass('invisible');
-            $('body').addClass('overflow-hidden');
-            $('#end_event').val($idevent); 
-            $('#event_to_end').text($('#event-' + $idevent).data('name'));
-            $('#edit_event_modal').addClass('invisible');
-            $('input[type="checkbox"]').prop('checked', false);
-        }
-
-
-        function hideEndModal() {
-            $('#end_modal').addClass('invisible');
-            $('body').removeClass('overflow-hidden');
-        }
-
+        
         function showInviteModal() {
             var $id = $('#idevent').val();
             $('#invite_modal').removeClass('invisible');
@@ -537,6 +477,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 if (!$(event.target).closest('#end_modal_main').length && $(event.target).closest('#end_modal').length) {
                     hideEndModal();
                 }
+
             })
 
             // Select/deselect all students within a block when the block checkbox is clicked
