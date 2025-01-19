@@ -14,7 +14,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         event.date AS 'date',
         event.name AS 'name',
         event.log_time AS 'log_time',
-        event.has_invite AS 'invite'
+        event.morning_in AS 'morning_in',
+        event.morning_out AS 'morning_out',
+        event.afternoon_in AS 'afternoon_in',
+        event.morning_out AS 'afternoon_out'
     FROM event
     ");
 
@@ -105,9 +108,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
     
                     <?php foreach ($events as $event): ?>
                     <tr id="event-<?=$event['idevent']?>" data-idevent="<?=$event['idevent']?>" data-name="<?=$event['name']?>" 
-                        data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>" data-invite="<?=$event['invite']?>"
-                    class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 text-lg" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
-                    <!-- has invite -->
+                        data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>"
+                        data-morning_in="<?=$event['morning_in']?>" data-morning_out="<?=$event['morning_out']?>"
+                        data-afternoon_in="<?=$event['afternoon_in']?>" data-afternoon_out="<?=$event['afternoon_out']?>"
+                        class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 text-lg" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
                         <td class="pl-2 py-1"><?=$event['name']?></td>
                         <td class="pl-2 py-1"><?=$event['date']?></td>
                         <td class="pl-2 py-1">
@@ -173,7 +177,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-[25rem]">
                 <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
-                    <div class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-5 invite_btn"
+                    <div id="inviteBtn" class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-5 invite_btn"
                         onclick="showInviteModal()">
                         <i
                             class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
@@ -324,7 +328,128 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 </div>
                 
                 <div class="flex justify-center w-full my-4 h-fit">
-                    <div class="flex flex-wrap gap-6 p-2 w-fit h-fit justify-evenly">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=1>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Morning In</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=2>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Morning Out</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=3>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon In</span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="checkbox-wrapper-12">   
+                            <label class="relative cursor-pointer">
+                                <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=4>
+                                <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
+                                <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon Out</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                    
+                <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
+                    <button id="add_invite_btn" type="submit" value="invite" name="action"
+                    class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
+                    Invite</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Edit Invite Modal -->
+        <div id="edit_invite_modal"
+            class="fixed top-0 left-0 z-30 flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
+            <form id="invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
+                class="w-10/12 md:w-1/3 h-2/3">
+                <input id="invite_event" type="hidden" name="idevent">
+                <div id="edit_invite_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white">
+                    <div
+                        class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
+                        Update Invite
+                    </div>
+                    <?php
+                    $currentProgram = '';
+                    $currentYear = '';
+                    $currentBlock = '';
+
+                    foreach ($students as $student) {
+                        if ($student['organization'] !== $currentProgram) {
+                            if ($currentProgram !== '') {
+                                echo '</div></div></div>';
+                            }
+                            $currentProgram = $student['organization'];
+                            $currentYear = '';
+                            $currentBlock = '';
+                            echo '<div class="m-4 program-group">';
+                            echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
+                            echo '<div class="ml-4">';
+                        }
+
+                        if ($student['year'] !== $currentYear) {
+                            if ($currentYear !== '') {
+                                echo '</div></div></div></div>';
+                            }
+                            $currentYear = $student['year'];
+                            $currentBlock = '';
+                            echo '<div class="mb-2 ml-1 md:ml-4 year">';
+                            echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("Year " . $currentYear) . '</span></label>
+                            ';
+                            echo '<div class="ml-4 md:ml-8">';
+                        }
+
+                        if ($student['block'] !== $currentBlock) {
+                            if ($currentBlock !== '') {
+                                echo '</div></div>';
+                            }
+                            $currentBlock = $student['block'];
+                            echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
+                            echo ' <i class="ml-2 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i><label class="relative py-1 pl-5"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("block " . $currentBlock) . '</label>
+                           ';
+                            echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
+                        }
+
+                        echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
+                        echo '<label>';
+                        echo '<input type="checkbox" name="students[]" value="' . htmlspecialchars($student['iduser']) . '" class="student-checkbox">';
+                        echo '<span class="md:ml-1">';
+                        echo htmlspecialchars($student['l_name'] . ', ' . $student['f_name']);
+                        echo '</span>';
+                        echo '</label>';
+                        echo '</div>';
+                    }
+
+                    if ($currentBlock !== '') {
+                        echo '</div>';
+                    }
+                    if ($currentYear !== '') {
+                        echo '</div>';
+                    }
+                    if ($currentProgram !== '') {
+                        echo '</div>';
+                    }
+                    ?>
+
+                </div>
+                
+                <div class="flex justify-center w-full my-4 h-fit">
+                    <div class="grid grid-cols-2 gap-2">
                         <div class="checkbox-wrapper-12">
                             <label class="relative cursor-pointer">
                                 <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=1>
@@ -403,10 +528,18 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             var $name = $('#event-' + id).data('name');
             var $date = $('#event-' + id).data('date');
             var $log_time = $('#event-' + id).data('log_time');
+            var $logs = [
+                $('#event-' + id).data('morning_in'), $('#event-' + id).data('morning_out'),
+                $('#event-' + id).data('afternoon_in'), $('#event-' + id).data('afternoon_out'),
+            ]
+
             $('#idevent').val(id);
             $('#date').val($date);
             $('#name').val($name);
             $('#log_time').val($log_time);
+            if ($logs.includes(1)) {
+                $('#inviteBtn').off('click').on('click', showEditInviteModal());
+            }
         }
 
         function hideEditEventModal() {
@@ -445,6 +578,19 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').removeClass('overflow-hidden');
         }
 
+        function showEditInviteModal() {
+            var $id = $('#idevent').val();
+            $('#edit_invite_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+            $('#invite_event').val($id);
+            $('#edit_event_modal').addClass('invisible');
+        }
+
+        function hideEditInviteModal() {
+            $('#edit_invite_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
         $(document).ready(function () {
             changeHeaderTitle();
 
@@ -467,18 +613,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             });
 
             $(document).on('click', function (event) {
-                if (!$(event.target).closest('#invite_modal_main').length && $(event.target).closest('#invite_modal').length) {
+                if (!$(event.target).closest('#edit_invite_modal_main').length && $(event.target).closest('#edit_invite_modal').length) {
                     hideInviteModal();
                 }
             });
 
-
             $(document).on('click', function (event) {
-                if (!$(event.target).closest('#end_modal_main').length && $(event.target).closest('#end_modal').length) {
-                    hideEndModal();
+                if (!$(event.target).closest('#invite_modal_main').length && $(event.target).closest('#invite_modal').length) {
+                    hideEditInviteModal();
                 }
+            });
 
-            })
 
             // Select/deselect all students within a block when the block checkbox is clicked
             $('.block-checkbox').click(function () {

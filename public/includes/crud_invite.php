@@ -20,15 +20,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (in_array(1, $logtime)) {
         $morning_in = $def;
+        $stmt = $pdo->prepare("UPDATE event SET morning_in = 1 WHERE idevent = :idevent");
+        $stmt->execute([':idevent'=>$idevent]);
     }
     if (in_array(2, $logtime)) {
         $morning_out = $def;
+        $stmt = $pdo->prepare("UPDATE event SET morning_out = 1 WHERE idevent = :idevent");
+        $stmt->execute([':idevent'=>$idevent]);
     }
     if (in_array(3, $logtime)) {
         $afternoon_in = $def;
+        $stmt = $pdo->prepare("UPDATE event SET afternoon_in = 1 WHERE idevent = :idevent");
+        $stmt->execute([':idevent'=>$idevent]);
     }
     if (in_array(4, $logtime)) {
         $afternoon_out = $def;
+        $stmt = $pdo->prepare("UPDATE event SET afternoon_out = 1 WHERE idevent = :idevent");
+        $stmt->execute([':idevent'=>$idevent]);
     }
 
     foreach ($students as $student_id): 
@@ -70,14 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     endforeach;
 
-    $stmt2 = $pdo->prepare("UPDATE event SET has_invite = 1 WHERE idevent = :idevent");
-    $stmt2->bindParam(':idevent', $idevent, PDO::PARAM_INT);
-
-    if ($stmt2->execute()) {
-        echo "Event has invites";
-    } else {
-        echo "Error inviting students for this event. Please try again.";
-    }    
     header("Location: ../events.php");
     exit();
 }
