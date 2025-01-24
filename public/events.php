@@ -17,12 +17,22 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         event.morning_in AS 'morning_in',
         event.morning_out AS 'morning_out',
         event.afternoon_in AS 'afternoon_in',
-        event.morning_out AS 'afternoon_out'
+        event.afternoon_out AS 'afternoon_out',
+            (
+                SELECT GROUP_CONCAT(attendance.user) 
+                FROM attendance
+                WHERE attendance.event = event.idevent
+            ) AS 'invited_users'
     FROM event
+    LEFT JOIN attendance
+        ON event.idevent = attendance.event
+        GROUP BY 
+        event.idevent
     ");
 
     $stmt1->execute();
     $events = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
 
     $stmt3 = $pdo->prepare("
         SELECT o.short_name as organization, year, block, f_name, l_name, iduser
@@ -111,6 +121,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>"
                         data-morning_in="<?=$event['morning_in']?>" data-morning_out="<?=$event['morning_out']?>"
                         data-afternoon_in="<?=$event['afternoon_in']?>" data-afternoon_out="<?=$event['afternoon_out']?>"
+                        data-users="<?=$event['invited_users']?>"
                         class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 text-lg" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
                         <td class="pl-2 py-1"><?=$event['name']?></td>
                         <td class="pl-2 py-1"><?=$event['date']?></td>
@@ -382,7 +393,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             class="fixed top-0 left-0 z-30 invisible flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
             <form id="edit_invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
                 class="w-10/12 md:w-1/3 h-2/3">
-                <input id="eit_invite_event" type="hidden" name="idevent">
+                <input id="edit_invite_event" type="hidden" name="idevent">
                 <div id="edit_invite_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white">
                     <div
                         class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
@@ -492,7 +503,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                         
                     <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
-                        <button id="edit_invite_btn" type="submit" value="invite" name="action"
+                        <button id="edit_invite_btn" type="submit" name="action" value="update_invite"
                         class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Update
                         Invite</button>
                     </div>
@@ -540,16 +551,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 $('#event-' + id).data('afternoon_in'), $('#event-' + id).data('afternoon_out'),
             ]
 
-            console.log($logs)
-
             $('#idevent').val(id);
             $('#date').val($date);
             $('#name').val($name);
             $('#log_time').val($log_time);
             if ($logs.includes(1)) {
-                $('#inviteBtn').off('click').on('click', showEditInviteModal); // Pass the function reference
+                $('#inviteBtn').off('click').on('click', showEditInviteModal); 
             } else {
-                $('#inviteBtn').off('click').on('click', showInviteModal); // Pass the function reference
+                $('#inviteBtn').off('click').on('click', showInviteModal); 
             }
         }
 
@@ -592,6 +601,88 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function showEditInviteModal() {
             var $id = $('#idevent').val();
+            var $usersStr = $('#event-' + $id).data('users');
+            $usersStr = String($usersStr);
+            if ($usersStr) { 
+                if ($usersStr.includes(',')) {
+                    var $usersList = $usersStr.split(',');
+                } else {
+                    var $usersList = [$usersStr];
+                }
+            } else {
+                console.log('No users found for the specified event.');
+            }
+
+            $('#edit_invite_modal_main').find('.student-checkbox').each(function() {
+                var studentValue = $(this).val(); 
+
+                if ($usersList.includes(studentValue)) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+            });
+
+            
+            $('#edit_invite_modal_main').find('.block-checkbox').each(function () {
+                var $blockCheckbox = $(this);
+                var $studentCheckboxes = $blockCheckbox.closest('.block-container').find('.student-checkbox');
+
+                var totalCheckboxes = $studentCheckboxes.length;
+                var checkedCheckboxes = $studentCheckboxes.filter(':checked').length; 
+
+                $blockCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
+            });
+
+            $('#edit_invite_modal_main').find('.year-checkbox').each(function () {
+                var $yearCheckbox = $(this);
+                var $blockCheckboxes = $yearCheckbox.closest('.year').find('.block-checkbox');
+
+                var totalCheckboxes = $blockCheckboxes.length;
+                var checkedCheckboxes = $blockCheckboxes.filter(':checked').length; 
+
+                $yearCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
+            });
+            
+            $('#edit_invite_modal_main').find('.program-checkbox').each(function () {
+                var $programCheckbox = $(this);
+                var $yearCheckboxes = $programCheckbox.closest('.program-group').find('.year-checkbox');
+
+                var totalCheckboxes = $yearCheckboxes.length;
+                var checkedCheckboxes = $yearCheckboxes.filter(':checked').length; 
+
+                $programCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
+            });
+
+            var $morning_in = "";
+            var $morning_out = "";
+            var $afternoon_in = "";
+            var $afternoon_out = "";
+
+            if($('#event-' + $id).data('morning_in')) {
+                $morning_in = 1;
+            }
+            if($('#event-' + $id).data('morning_out')) {
+                $morning_out = 2;
+            }
+            if($('#event-' + $id).data('afternoon_in')) {
+                $afternoon_in = 3;
+            }
+            if($('#event-' + $id).data('afternoon_out')) {
+                $afternoon_out = 4;
+            }
+
+            var logs_list = [$morning_in, $morning_out, $afternoon_in, $afternoon_out];
+            
+            $('#edit_invite_modal_main').find('.checkbox-input').each(function() {
+                var checkboxValue = $(this).val();
+                if (logs_list.map(String).includes(checkboxValue)) {
+                    $(this).prop('checked', true);
+                    $(this).next('.checkbox-tile').addClass('border-teal-500 shadow-lg text-teal-500');
+                }
+            });
+
+
             $('#edit_invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
             $('#invite_event').val($id);
@@ -637,8 +728,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             });
 
 
-            // Select/deselect all students within a block when the block checkbox is clicked
-            $('.block-checkbox').click(function () {
+            $('#invite_modal_main').find('.block-checkbox').click(function () {
                 var $blockCheckboxes = $(this).closest('.block-container').find('.student-checkbox');
                 var $dropdown = $(this).closest('.block-container').find('.block-dropdown');
                 var $container = $(this).closest('.block-container').find('.student-container');
@@ -649,7 +739,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-            $('.block-dropdown').click(function () {
+            $('#invite_modal_main').find('.block-dropdown').click(function () {
                 var $dropdown = $(this);
                 var $container = $(this).closest('.block-container').find('.student-container');
                 if ($dropdown.hasClass('fa-caret-right')) {
@@ -661,13 +751,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-            // Select/deselect all students within a year when the year checkbox is clicked
-            $('.year-checkbox').click(function () {
+            $('#invite_modal_main').find('.year-checkbox').click(function () {
                 var $yearCheckboxes = $(this).closest('.year').find('.student-checkbox, .block-checkbox');
                 $yearCheckboxes.prop('checked', this.checked);
             });
 
-            $('.year-dropdown').click(function () {
+            $('#invite_modal_main').find('.year-dropdown').click(function () {
                 var $dropdown = $(this).closest('.year').find('.year-dropdown');
                 var $container = $(this).closest('.year').find('.block-container');
                 if ($dropdown.hasClass('fa-caret-right')) {
@@ -679,14 +768,70 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-            // Select/deselect all students within a program when the program checkbox is clicked
-            $('.program-checkbox').click(function () {
+            $('#invite_modal_main').find('.program-checkbox').click(function () {
                 var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
                 var $idevent = $
                 $programCheckboxes.prop('checked', this.checked);
             });
 
-            $('.checkbox-input').on('change', function() {
+            $('#invite_modal_main').find('.checkbox-input').on('change', function() {
+                const tile = $(this).next('.checkbox-tile');
+
+                if (this.checked) {
+                    tile.addClass('border-teal-500 shadow-lg text-teal-500');
+                } else {
+                    tile.removeClass('border-teal-500 shadow-lg text-teal-500');
+                }
+            });
+
+
+            $('#edit_invite_modal_main').find('.block-checkbox').click(function () {
+                var $blockCheckboxes = $(this).closest('.block-container').find('.student-checkbox');
+                var $dropdown = $(this).closest('.block-container').find('.block-dropdown');
+                var $container = $(this).closest('.block-container').find('.student-container');
+                $blockCheckboxes.prop('checked', this.checked);
+                if ($dropdown.hasClass('fa-caret-right')) {
+                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
+                    $container.removeClass('hidden');
+                }
+            });
+
+            $('#edit_invite_modal_main').find('.block-dropdown').click(function () {
+                var $dropdown = $(this);
+                var $container = $(this).closest('.block-container').find('.student-container');
+                if ($dropdown.hasClass('fa-caret-right')) {
+                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
+                    $container.removeClass('hidden');
+                } else {
+                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
+                    $container.addClass('hidden');
+                }
+            });
+
+            $('#edit_invite_modal_main').find('.year-checkbox').click(function () {
+                var $yearCheckboxes = $(this).closest('.year').find('.student-checkbox, .block-checkbox');
+                $yearCheckboxes.prop('checked', this.checked);
+            });
+
+            $('#edit_invite_modal_main').find('.year-dropdown').click(function () {
+                var $dropdown = $(this).closest('.year').find('.year-dropdown');
+                var $container = $(this).closest('.year').find('.block-container');
+                if ($dropdown.hasClass('fa-caret-right')) {
+                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
+                    $container.removeClass('hidden');
+                } else {
+                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
+                    $container.addClass('hidden');
+                }
+            });
+
+            $('#edit_invite_modal_main').find('.program-checkbox').click(function () {
+                var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
+                var $idevent = $
+                $programCheckboxes.prop('checked', this.checked);
+            });
+
+            $('#edit_invite_modal_main').find('.checkbox-input').on('change', function() {
                 const tile = $(this).next('.checkbox-tile');
 
                 if (this.checked) {
