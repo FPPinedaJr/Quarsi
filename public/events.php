@@ -685,7 +685,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             $('#edit_invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
-            $('#invite_event').val($id);
+            $('#edit_invite_event').val($id);
             $('#edit_event_modal').addClass('invisible');
         }
 
