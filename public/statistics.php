@@ -74,6 +74,7 @@ if ($_SESSION["logged_in"] == !true) {
     $total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total_students'];
 
     $yearLabels = [
+        0 => 'unknown',
         1 => '1st',
         2 => '2nd',
         3 => '3rd',
