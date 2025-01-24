@@ -45,6 +45,19 @@ if ($_SESSION["logged_in"] == !true) {
     $stmt = $pdo->query($query);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+
+    $query = "SELECT 
+            iduser,
+            CONCAT(l_name, ', ', f_name) as fullname
+        FROM user 
+        WHERE (is_officer != 1 AND is_superuser != 1 AND is_admin != 1)
+        ORDER BY year, block, l_name;";
+
+    $stmt = $pdo->query($query);
+    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
     ?>
 
 
@@ -82,28 +95,94 @@ if ($_SESSION["logged_in"] == !true) {
     include_once("./includes/partial/header.php");
     ?>
 
-    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
-        <main class="flex justify-center w-full h-full ">
-            <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md ">
+    <body class="justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
+        <div class="flex justify-center w-full h-full">
+            <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md">
                 <thead class="text-white bg-teal-500">
                     <tr>
-                        <th class="px-4 py-2 text-center">Attendance Range</th>
-                        <th class="px-4 py-2 text-center">Count</th>
+                        <th class="px-4 py-2 text-center">ATTENDANCE RANGE</th>
+                        <th class="px-4 py-2 text-center">COUNT</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($results as $row): ?>
                         <tr class="border-b odd:bg-teal-100/60 even:bg-teal-200/60">
-                            <td class="px-4 py-2 text-center"> <?php echo htmlspecialchars($row['attendance_range']); ?> </td>
-                            <td class="px-4 py-2 mr-4 text-center"> <?php echo htmlspecialchars($row['count_in_range']); ?>
-                                students</td>
+                            <td class="px-4 py-2 text-center"><?php echo htmlspecialchars($row['attendance_range']); ?></td>
+                            <td class="px-4 py-2 text-center"><?php echo htmlspecialchars($row['count_in_range']); ?> students
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        </main>
+        </div>
 
+        <div class="flex items-center justify-center w-full mt-6">
+            <button
+                class="px-6 py-2 font-semibold text-teal-500 transition-all border border-teal-500 rounded-md md:hover:text-white md:hover:bg-teal-600"
+                onclick="showNewSemModal()">
+                Start a New Semester
+            </button>
+        </div>
     </body>
+
+
+    <div id="new_semester_modal"
+        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
+        <div id="new_semester_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-3/5">
+            <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
+                <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Start a New Semester</p>
+            </div>
+
+            <div class="p-6 bg-white">
+                <p class="text-lg font-medium text-gray-800">Starting a new semester will do the following:</p>
+                <ul class="mt-4 ml-6 text-gray-700 list-disc">
+                    <li>Delete all past attendance</li>
+                    <li>Delete all past events</li>
+                    <li>Select students for the new semester (manually)</li>
+                    <li>Reset their Year and Block (students will need to update them)</li>
+                    <li>Delete the students who did not enroll</li>
+                </ul>
+            </div>
+
+            <div class="flex justify-end p-4 bg-white">
+                <button id="proceed_button"
+                    class="px-6 py-2 font-semibold text-white bg-teal-700 rounded-md hover:bg-teal-800">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="select_student_modal"
+        class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
+        <div id="select_student_modal_main"
+            class="relative flex flex-col w-5/6 p-6 overflow-y-auto bg-white rounded-lg shadow-md h-5/6 md:w-2/5">
+            <h2 class="mb-4 text-lg font-semibold text-teal-700">Select Students to Enroll</h2>
+            <div>
+
+                <input type="checkbox" id="select_all" class="px-4 py-2 mb-4 font-semibold">
+                <label class="italic font-bold text-teal-500">Select All</label>
+            </div>
+            <form id="student_form">
+                <div id="student_list" class="space-y-2">
+                    <?php foreach ($students as $student): ?>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" id="<?= $student['iduser'] ?>}" name="<?= $student['fullname'] ?>"
+                                value="<?= $student['iduser'] ?>" class="text-teal-700 student_checkbox">
+                            <label for="student_<?= $student['iduser'] ?>"
+                                class="text-gray-700"><?= $student['fullname'] ?></label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <p class="mt-4 text-sm text-red-600">Please double-check before proceeding.</p>
+                <button type="submit" id="submit_students"
+                    class="px-6 py-2 mt-6 font-semibold text-white bg-teal-700 rounded-md hover:bg-teal-800">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -111,9 +190,83 @@ if ($_SESSION["logged_in"] == !true) {
             $('#header_title').text('Statistics');
         }
 
+        function showNewSemModal(id) {
+            $('#new_semester_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+        }
+
+        function hideNewSemModal() {
+            $('#new_semester_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
+        function showSelectModal(id) {
+            $('#select_student_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+        }
+
+        function hideSelectModal() {
+            $('#select_student_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
         $(document).ready(function () {
+            let selectAllState = false;
+
+
             changeHeaderTitle();
 
+            $('#select_all').on('click', function () {
+                selectAllState = !selectAllState;
+                $('.student_checkbox').prop('checked', selectAllState);
+            });
+
+            $('#student_form').on('submit', function (e) {
+                e.preventDefault();
+
+                let selectedStudents = [];
+                $('.student_checkbox:checked').each(function () {
+                    selectedStudents.push($(this).val());
+                });
+
+                if (selectedStudents.length === 0) {
+                    alert('Please select at least one student.');
+                    return;
+                }
+
+                $.ajax({
+                    url: 'includes/end_sem.php',
+                    method: 'POST',
+                    data: { students: selectedStudents },
+                    success: function (response) {
+                        console.log(response);
+                        alert('End semester process completed successfully.');
+                        location.reload();
+                    }
+
+                });
+            });
+
+
+
+
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#new_semester_modal_main').length && $(event.target).closest('#new_semester_modal').length) {
+                    hideNewSemModal();
+                }
+            })
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#select_student_modal_main').length && $(event.target).closest('#select_student_modal').length) {
+                    hideSelectModal();
+                }
+            })
+
+            $('#proceed_button').on('click', function () {
+                hideNewSemModal();
+                showSelectModal();
+            });
 
         });
     </script>
