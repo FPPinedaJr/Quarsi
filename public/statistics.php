@@ -58,6 +58,43 @@ if ($_SESSION["logged_in"] == !true) {
     $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
+    $stmt = $pdo->prepare("SELECT 
+                                year, 
+                                block, 
+                                COUNT(*) AS count_per_block
+                            FROM user
+                            WHERE is_admin != 1
+                            GROUP BY year, block
+                            ORDER BY year, block");
+    $stmt->execute();
+    $yearBlockResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $totalStmt = $pdo->prepare("SELECT COUNT(*) AS total_students FROM user WHERE is_admin != 1");
+    $totalStmt->execute();
+    $total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total_students'];
+
+    $yearLabels = [
+        1 => '1st',
+        2 => '2nd',
+        3 => '3rd',
+        4 => '4th',
+    ];
+
+    $organizedData = [];
+    foreach ($yearBlockResults as $row) {
+        $year = $row['year'];
+        $block = $row['block'];
+        $count = $row['count_per_block'];
+
+        if (!isset($organizedData[$year])) {
+            $organizedData[$year] = [
+                'total' => 0,
+                'blocks' => [],
+            ];
+        }
+        $organizedData[$year]['total'] += $count;
+        $organizedData[$year]['blocks'][$block] = $count;
+    }
     ?>
 
 
@@ -96,7 +133,48 @@ if ($_SESSION["logged_in"] == !true) {
     ?>
 
     <body class="justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
+
         <div class="flex justify-center w-full h-full">
+            <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md ">
+                <thead class="text-sm text-white bg-teal-500 md:text-md">
+                    <tr >
+                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Year</th>
+                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Total</th>
+                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Block 1</th>
+                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Block 2</th>
+                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Block 3</th>
+                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Unknown</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($organizedData as $year => $data): ?>
+                        <tr class="border-b odd:bg-teal-100/60 even:bg-teal-200/60">
+                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
+                                <?= $yearLabels[$year] ?? $year  ?></td>
+                            <td class="px-1 py-1 text-center md:px-4 md:py-2"><?= $data['total'] ?></td>
+                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
+                                <?php echo isset($data['blocks'][1]) ? $data['blocks'][1] : '0'; ?>
+                            </td>
+                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
+                                <?php echo isset($data['blocks'][2]) ? $data['blocks'][2] : '0'; ?>
+                            </td>
+                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
+                                <?php echo isset($data['blocks'][3]) ? $data['blocks'][3] : '0'; ?>
+                            </td>
+                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
+                                <?php echo isset($data['blocks'][0]) ? $data['blocks'][0] : '0'; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <tr class="text-white bg-teal-500">
+                        <td colspan="6" class="px-4 py-2 font-bold text-center">Overall Total:
+                            <?php echo htmlspecialchars($total); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-center w-full h-full mt-10">
             <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md">
                 <thead class="text-white bg-teal-500">
                     <tr>
