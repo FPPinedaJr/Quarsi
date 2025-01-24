@@ -184,7 +184,8 @@ if ($_SESSION["logged_in"] == !true) {
 
     <div id="success_modal"
         class="fixed invisible top-0 left-0  right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center">
-        <div id="success_modal_main" class="relative flex flex-col items-center w-5/6 p-10 bg-white rounded-lg shadow-md md:w-1/3">
+        <div id="success_modal_main"
+            class="relative flex flex-col items-center w-5/6 p-10 bg-white rounded-lg shadow-md md:w-1/3">
             <i class="mb-4 text-6xl text-teal-500 fas fa-check-circle"></i>
             <h3 class="mb-4 text-lg font-semibold text-gray-700">Operation Successful</h3>
             <p class="mb-6 text-center text-gray-600">The selected students have been enrolled successfully.</p>
@@ -223,8 +224,7 @@ if ($_SESSION["logged_in"] == !true) {
         }
 
         function hideSuccessModal() {
-            $('#success_modal').addClass('invisible');
-            $('body').removeClass('overflow-hidden');
+            location.reload();
         }
 
         $(document).ready(function () {
@@ -256,11 +256,7 @@ if ($_SESSION["logged_in"] == !true) {
                     method: 'POST',
                     data: { students: selectedStudents },
                     success: function (response) {
-                        if (response === 'success') {
-                            $('#success_modal').removeClass('invisible');
-                        } else {
-                            alert(response);
-                        }
+                        $('#success_modal').removeClass('invisible');
                     }
 
                 });

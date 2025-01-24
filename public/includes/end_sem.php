@@ -29,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
+            echo 'Error: ' . $e->getMessage();
         }
 
-        echo 'Error: ' . $e->getMessage();
     }
 }
