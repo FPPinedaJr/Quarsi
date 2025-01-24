@@ -182,6 +182,18 @@ if ($_SESSION["logged_in"] == !true) {
         </div>
     </div>
 
+    <div id="success_modal"
+        class="fixed invisible top-0 left-0  right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center">
+        <div id="success_modal_main" class="relative flex flex-col items-center w-5/6 p-10 bg-white rounded-lg shadow-md md:w-1/3">
+            <i class="mb-4 text-6xl text-teal-500 fas fa-check-circle"></i>
+            <h3 class="mb-4 text-lg font-semibold text-gray-700">Operation Successful</h3>
+            <p class="mb-6 text-center text-gray-600">The selected students have been enrolled successfully.</p>
+            <button onclick="hideSuccessModal()"
+                class="px-6 py-2 text-sm font-semibold text-teal-600 border border-teal-500 rounded-md hover:text-white hover:bg-teal-600">
+                Okay
+            </button>
+        </div>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -207,6 +219,11 @@ if ($_SESSION["logged_in"] == !true) {
 
         function hideSelectModal() {
             $('#select_student_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
+        function hideSuccessModal() {
+            $('#success_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
         }
 
@@ -239,9 +256,11 @@ if ($_SESSION["logged_in"] == !true) {
                     method: 'POST',
                     data: { students: selectedStudents },
                     success: function (response) {
-                        console.log(response);
-                        alert('End semester process completed successfully.');
-                        location.reload();
+                        if (response === 'success') {
+                            $('#success_modal').removeClass('invisible');
+                        } else {
+                            alert(response);
+                        }
                     }
 
                 });
@@ -260,6 +279,12 @@ if ($_SESSION["logged_in"] == !true) {
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#select_student_modal_main').length && $(event.target).closest('#select_student_modal').length) {
                     hideSelectModal();
+                }
+            })
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#success_modal_main').length && $(event.target).closest('#success_modal').length) {
+                    hideSuccessModal();
                 }
             })
 
