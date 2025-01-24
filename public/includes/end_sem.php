@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
-        $updateMustSetQuery = "UPDATE user SET must_set_blockyear = 1 WHERE iduser IN (" . implode(',', array_fill(0, count($selectedStudents), '?')) . ")";
+        $updateMustSetQuery = "UPDATE user SET year = 0, block = 0, must_set_blockyear = 1 WHERE iduser IN (" . implode(',', array_fill(0, count($selectedStudents), '?')) . ")";
         $stmt = $pdo->prepare($updateMustSetQuery);
         $stmt->execute($selectedStudents);
 
