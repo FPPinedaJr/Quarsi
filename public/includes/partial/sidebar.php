@@ -76,13 +76,13 @@ $user = $stmt->fetch();
           </div>
           <span class="font-['merriweather_sans'] ml-3">Generate QR</span>
         </a>
-        <a href="students.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+        <a href="student.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <div class="flex justify-center w-8">
             <i class="text-2xl fa-solid fa-user-graduate"></i>
           </div>
           <span class="font-['merriweather_sans'] ml-3">Students</span>
         </a>
-        <a href="officers.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+        <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <div class="flex justify-center w-8">
             <i class="text-2xl fa-solid fa-users"></i>
           </div>
