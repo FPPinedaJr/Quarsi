@@ -64,95 +64,82 @@ $user = $stmt->fetch();
       <!-- navigation -->
       <div class="flex flex-col flex-grow mb-3 space-y-1 font-semibold">
         <a href="dashboard.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-solid fa-table-columns"></i>
-          <span class="font-['merriweather_sans'] ml-4">Dashboard</span>
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-table-columns"></i>
+          </div>
+          <span class="font-['merriweather_sans'] ml-3">Dashboard</span>
         </a>
         <a href="qr.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-solid fa-qrcode"></i>
-          <span class="font-['merriweather_sans'] ml-5">Generate QR</span>
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-qrcode"></i>
+          </div>
+          <span class="font-['merriweather_sans'] ml-3">Generate QR</span>
+        </a>
+        <a href="student.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-user-graduate"></i>
+          </div>
+          <span class="font-['merriweather_sans'] ml-3">Students</span>
+        </a>
+        <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-users"></i>
+          </div>
+          <span class="font-['merriweather_sans'] ml-3">Officers</span>
         </a>
 
-
         <?php
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-          <a href="scanner.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-            <i class="text-2xl fa-solid fa-expand"></i>
-            <span class="font-[\'merriweather_sans\'] ml-5">QR scanner</span>
-          </a>
-          ';
-        }
+              <a href="scanner.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+                <div class="flex justify-center w-8">
+                  <i class="text-2xl fa-solid fa-expand"></i>
+                </div>
+                <span class="font-[\'merriweather_sans\'] ml-3">QR scanner</span>
+              </a>
+              ';
+          }
 
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-          <a href="events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-            <i class="text-2xl fa-solid fa-calendar"></i>
-            <span class="font-[\'merriweather_sans\'] ml-5">Events</span>
-          </a>';
-        }
-        if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
-          echo '
-           <a href="student.php"  class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-            <i class="text-2xl fa-solid fa-user"></i>
-            <span class="font-[\'merriweather_sans\'] ml-5">Students</span>
-          </a>
-          ';
-        }
-        if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
-          echo '
-          <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-            <i class="text-2xl fa-solid fa-users-rays"></i>
-            <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
-          </a>
-          ';
-        }
-        if ($_SESSION['is_admin'] == 1) {
-          echo '
-          <a href="superuser.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-            <i class="text-2xl fa-solid fa-user-secret"></i>
-            <span class="font-[\'merriweather_sans\'] ml-5">Superusers</span>
-          </a>
-          ';
-
-          // echo '
-          // <a href="admin.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          //   <i class="text-2xl fa-solid fa-user-tie"></i>
-          //   <span class="font-[\'merriweather_sans\'] ml-5">Administrators</span>
-          // </a>
-          // ';
-        }
+            <a href="events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+              <div class="flex justify-center w-8">
+                <i class="text-2xl fa-solid fa-calendar"></i>
+              </div>
+              <span class="font-[\'merriweather_sans\'] ml-3">Events</span>
+            </a>
+            <a href="statistics.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+              <div class="flex justify-center w-8">
+                <i class="text-2xl fa-solid fa-chart-column"></i>
+              </div>
+              <span class="font-[\'merriweather_sans\'] ml-3">Statistics</span>
+            </a>'
+            ;
+          }
         ?>
-
-        <?php
-        if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
-          echo '
-          <a href="reset.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-            <i class="text-2xl fa-solid fa-key"></i>
-            <span class="font-[\'merriweather_sans\'] ml-4">Password Reset</span>
-          </a>
-        ';
-        }
-        ?>
-
 
         <a href="profile.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-regular fa-user"></i>
-          <span class=" text-black font-['merriweather_sans'] ml-5">Profile</span>
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-regular fa-user"></i>
+          </div>
+          <span class="font-['merriweather_sans'] ml-3">Profile</span>
         </a>
 
         <a href="game" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl fa-solid fa-gamepad"></i>
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-gamepad"></i>
+          </div>
           <span class="font-['merriweather_sans'] ml-3">Have some fun!</span>
         </a>
 
         <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <i class="text-2xl text-black fa-solid fa-arrow-right-from-bracket"></i>
-          <span class=" text-black font-['merriweather_sans'] ml-5">Log Out</span>
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-arrow-right-from-bracket"></i>
+          </div>
+          <span class="font-['merriweather_sans'] ml-3">Log Out</span>
         </a>
-        <div class="h-10">
-        </div>
-
       </div>
+
     </div>
   </div>
 </div>
