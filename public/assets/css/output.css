@@ -1248,16 +1248,8 @@ video {
   border-color: rgb(229 231 235 / var(--tw-divide-opacity));
 }
 
-.overflow-auto {
-  overflow: auto;
-}
-
 .overflow-hidden {
   overflow: hidden;
-}
-
-.overflow-x-auto {
-  overflow-x: auto;
 }
 
 .overflow-y-auto {
@@ -2180,14 +2172,6 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:visible {
-    visibility: visible;
-  }
-
-  .md\:invisible {
-    visibility: hidden;
-  }
-
   .md\:absolute {
     position: absolute;
   }
@@ -2374,10 +2358,6 @@ video {
     width: 100%;
   }
 
-  .md\:w-5\/6 {
-    width: 83.333333%;
-  }
-
   .md\:min-w-0 {
     min-width: 0px;
   }
@@ -2404,10 +2384,6 @@ video {
 
   .md\:gap-4 {
     gap: 1rem;
-  }
-
-  .md\:overflow-hidden {
-    overflow: hidden;
   }
 
   .md\:rounded-l-lg {
