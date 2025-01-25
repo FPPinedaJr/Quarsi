@@ -76,18 +76,6 @@ $user = $stmt->fetch();
           </div>
           <span class="font-['merriweather_sans'] ml-3">Generate QR</span>
         </a>
-        <a href="student.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <div class="flex justify-center w-8">
-            <i class="text-2xl fa-solid fa-user-graduate"></i>
-          </div>
-          <span class="font-['merriweather_sans'] ml-3">Students</span>
-        </a>
-        <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <div class="flex justify-center w-8">
-            <i class="text-2xl fa-solid fa-users"></i>
-          </div>
-          <span class="font-['merriweather_sans'] ml-3">Officers</span>
-        </a>
 
         <?php
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
@@ -98,11 +86,24 @@ $user = $stmt->fetch();
                 </div>
                 <span class="font-[\'merriweather_sans\'] ml-3">QR scanner</span>
               </a>
+                      <a href="student.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-user-graduate"></i>
+          </div>
+          <span class="font-[\'merriweather_sans\'] ml-3">Students</span>
+        </a>
+        
               ';
           }
 
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
+          <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-solid fa-users"></i>
+          </div>
+          <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
+        </a>
             <a href="events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
               <div class="flex justify-center w-8">
                 <i class="text-2xl fa-solid fa-calendar"></i>
@@ -139,6 +140,9 @@ $user = $stmt->fetch();
           </div>
           <span class="font-['merriweather_sans'] ml-3">Log Out</span>
         </a>
+
+
+        <div class="h-10"></div>
       </div>
 
     </div>
