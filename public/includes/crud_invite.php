@@ -3,7 +3,6 @@ session_start();
 include_once "../includes/connect_db.php";  
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    print_r($_POST);
     if (isset($_POST['action'])) {
         ini_set('max_execution_time', '900'); 
         if ($_POST['action'] == 'invite') {
@@ -71,15 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt1->bindParam(':afternoon_out', $afternoon_out, PDO::PARAM_STR);
                 }
         
-                if ($stmt1->execute()) {
-                    echo "Recorded students";
-                } else {
-                    echo "Error inserting attendance for student ID $student_id. Please try again.";
-                }
+                $stmt1->execute();
+
             endforeach;
-        
             header("Location: ../events.php");
             exit();
+        
             } else if ($_POST['action'] == 'update_invite') {
             $students = $_POST['students'];
             $logtime = $_POST['logtime'];
@@ -112,18 +108,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $logtime_flags[$selected_log - 1] = 1; // Adjust index (logtime starts from 1)
             }            
             
-            echo "prevlogs";    
-            print_r($prev_logs);
-            echo "log flags";    
-            print_r($logtime_flags);
-
             $morning_in = NULL;
             $morning_out = NULL;
             $afternoon_in = NULL;
             $afternoon_out = NULL;
 
             for ($i = 0; $i < count($logtime_flags); $i++) {
-                    echo"log:". $logtime_flags[$i] ."true";
                 if ($i == 0) {
                     if ($logtime_flags[$i] != 0) {
                         $morning_in = $def;
@@ -203,13 +193,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmt1->bindParam(':afternoon_out', $afternoon_out, PDO::PARAM_STR);
                 }
         
-                if ($stmt1->execute()) {
-                    echo "Recorded students";
-                } else {
-                    echo "Error inserting attendance for student ID $student_id. Please try again.";
-                }
+                $stmt1->execute();
             endforeach;
-        
             header("Location: ../events.php");
             exit();
         }
