@@ -343,7 +343,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         <div class="grid grid-cols-2 gap-2">
                             <div class="checkbox-wrapper-12">
                                 <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime" value=1>
+                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=1>
                                     <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
                                     <span class="text-sm text-center text-zinc-700 checkbox-label">Morning In</span>
                                     </span>
@@ -351,7 +351,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             </div>
                             <div class="checkbox-wrapper-12">
                                 <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime" value=2>
+                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=2>
                                     <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
                                     <span class="text-sm text-center text-zinc-700 checkbox-label">Morning Out</span>
                                     </span>
@@ -359,7 +359,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             </div>
                             <div class="checkbox-wrapper-12">
                                 <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime" value=3>
+                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=3>
                                     <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
                                     <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon In</span>
                                     </span>
@@ -367,7 +367,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             </div>
                             <div class="checkbox-wrapper-12">   
                                 <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime" value=4>
+                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=4>
                                     <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
                                     <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon Out</span>
                                     </span>
@@ -468,22 +468,22 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         <div class="w-full text-center font-semibold text-lg mb-6 text-zinc-800">Log Time</div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-3/4">
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="morning_in_toggle" type="checkbox" value="1" class="sr-only peer" onclick="showLogtimeModal('#morning_in_toggle')">
+                                <input id="morning_in_toggle" type="checkbox" name="logtime[]" value="1" class="sr-only peer" onclick="showLogtimeModal('#morning_in_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning In</span>
                             </label>                        
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="morning_out_toggle" type="checkbox" value="2" class="sr-only peer" onclick="showLogtimeModal('#morning_out_toggle')">
+                                <input id="morning_out_toggle" type="checkbox" name="logtime[]" value="2" class="sr-only peer" onclick="showLogtimeModal('#morning_out_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning Out</span>
                             </label>                        
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="afternoon_in_toggle" type="checkbox" value="3" class="sr-only peer" onclick="showLogtimeModal('#afternoon_in_toggle')">
+                                <input id="afternoon_in_toggle" type="checkbox" name="logtime[]" value="3" class="sr-only peer" onclick="showLogtimeModal('#afternoon_in_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon In</span>
                             </label>                        
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="afternoon_out_toggle" type="checkbox" value="4" class="sr-only peer" onclick="showLogtimeModal('#afternoon_out_toggle')">
+                                <input id="afternoon_out_toggle" type="checkbox" name="logtime[]" value="4" class="sr-only peer" onclick="showLogtimeModal('#afternoon_out_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon Out</span>
                             </label>                        
@@ -511,7 +511,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 </div>
                 <div class="w-full flex justify-center mt-auto mb-1">
                     <button onclick="hideLogtimeModal()" type="button"  class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
-                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500">Confirm</button>
+                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500" onclick="confirmLogtimeChange()">Confirm</button>
                 </div>
             </div>
         </div>
@@ -693,16 +693,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').removeClass('overflow-hidden');
         }
 
+        let pendingCheckbox = null;
+
         function showLogtimeModal(idlog) {
-            var logVal = $(idlog).val();
-            var logText = $(idlog).closest('label').find('span').text(); 
+            pendingCheckbox = $(idlog); 
+            const logText = pendingCheckbox.closest('label').find('span').text();
 
-            if ($(idlog).is(':checked')) {
-                $('#changelog_status').text("off");
-            } else {
-                $('#changelog_status').text("on");
-            }
-
+            const status = pendingCheckbox.is(':checked') ? "on" : "off";
+            $('#changelog_status').text(status);
             $('#changelog').text(logText);
 
             $('#switch_modal').removeClass('invisible');
@@ -711,9 +709,46 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function hideLogtimeModal() {
             $('#switch_modal').addClass('invisible');
-            $('body').removeClass('overflow-hidden');
+
+            if (pendingCheckbox) {
+                pendingCheckbox.prop('checked', !pendingCheckbox.is(':checked'));
+                pendingCheckbox = null; 
+            }
         }
 
+        function confirmLogtimeChange() {
+            const checkboxState = pendingCheckbox.is(':checked') ? 1 : 0; 
+            const checkbox = pendingCheckbox.val(); 
+            var $id = $('#idevent').val();
+
+            console.log(checkboxState);
+            console.log(checkbox);
+            console.log($id);
+
+            $.ajax({
+                url: './includes/update_logtime.php', 
+                type: 'POST',
+                data: {
+                    id: $id,
+                    checkbox: checkbox,
+                    state: checkboxState,
+                },
+                success: function (response) {
+                    console.log('Database updated:', response);
+
+                    $('#switch_modal').addClass('invisible');
+                    pendingCheckbox = null;
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating database:', error);
+
+                    // Revert the checkbox state on error
+                    pendingCheckbox.prop('checked', !pendingCheckbox.is(':checked'));
+                    $('#switch_modal').addClass('invisible');
+                    pendingCheckbox = null;
+                }
+            });
+        }
         $(document).ready(function () {
             changeHeaderTitle();
 
