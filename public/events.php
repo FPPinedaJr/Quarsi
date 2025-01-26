@@ -468,29 +468,28 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         <div class="w-full text-center font-semibold text-lg mb-6 text-zinc-800">Log Time</div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-3/4">
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input type="checkbox" value="1" class="sr-only peer">
+                                <input id="morning_in_toggle" type="checkbox" value="1" class="sr-only peer" onclick="showLogtimeModal('#morning_in_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning In</span>
                             </label>                        
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input type="checkbox" value="2" class="sr-only peer">
+                                <input id="morning_out_toggle" type="checkbox" value="2" class="sr-only peer" onclick="showLogtimeModal('#morning_out_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning Out</span>
                             </label>                        
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input type="checkbox" value="3" class="sr-only peer">
+                                <input id="afternoon_in_toggle" type="checkbox" value="3" class="sr-only peer" onclick="showLogtimeModal('#afternoon_in_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon In</span>
                             </label>                        
                             <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input type="checkbox" value="4" class="sr-only peer">
+                                <input id="afternoon_out_toggle" type="checkbox" value="4" class="sr-only peer" onclick="showLogtimeModal('#afternoon_out_toggle')">
                                 <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon Out</span>
                             </label>                        
                         </div>
                     </div>
 
-                        
                     <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
                         <button id="edit_invite_btn" type="submit" name="action" value="update_invite"
                         class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Update
@@ -501,8 +500,21 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </form>
         </div>
 
-
-
+        <!-- Toggle switch alert modal -->
+        <div id="switch_modal" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-30 fixed top-0 left-0 invisible">
+            <div id="switch_modal_main" class="rounded-lg w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
+                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Change Log Time</div>
+                <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
+                    <p>
+                        Are you sure to turn <span id="changelog" class="italic"></span> <span id="changelog_status" class="font-semibold"></span> log?
+                    </p>
+                </div>
+                <div class="w-full flex justify-center mt-auto mb-1">
+                    <button onclick="hideLogtimeModal()" type="button"  class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
+                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500">Confirm</button>
+                </div>
+            </div>
+        </div>
 
     </body>
 
@@ -670,7 +682,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-
             $('#edit_invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
             $('#edit_invite_event').val($id);
@@ -679,6 +690,27 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function hideEditInviteModal() {
             $('#edit_invite_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
+        function showLogtimeModal(idlog) {
+            var logVal = $(idlog).val();
+            var logText = $(idlog).closest('label').find('span').text(); 
+
+            if ($(idlog).is(':checked')) {
+                $('#changelog_status').text("off");
+            } else {
+                $('#changelog_status').text("on");
+            }
+
+            $('#changelog').text(logText);
+
+            $('#switch_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+        }
+
+        function hideLogtimeModal() {
+            $('#switch_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
         }
 
@@ -715,6 +747,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#switch_modal_main').length && $(event.target).closest('#switch_modal').length) {
+                    hideLogtimeModal();
+                }
+            });
 
             $('#invite_modal_main').find('.block-checkbox').click(function () {
                 var $blockCheckboxes = $(this).closest('.block-container').find('.student-checkbox');
@@ -815,8 +852,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             $('#edit_invite_modal_main').find('.program-checkbox').click(function () {
                 var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
-                var $idevent = $
-                $programCheckboxes.prop('checked', this.checked);
+                var $idevent = $programCheckboxes.prop('checked', this.checked);
             });
 
             $('#edit_invite_modal_main').find('.checkbox-input').on('change', function() {
