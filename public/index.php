@@ -88,7 +88,7 @@ if (isset($_SESSION['logged_in'])) {
     class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
     <div id="note_modal_main" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 ">
       <div class="w-11/12 p-6 text-center bg-white rounded-lg shadow-lg md:w-96 ">
-        <i class="text-yellow-500 text-7xl fas fa-key"></i>
+        <i class="mt-5 text-teal-500 text-7xl fas fa-unlock"></i>
 
         <h2 class="mt-4 text-lg font-bold">Important Information</h2>
         <p class="mt-2 text-gray-700">
