@@ -502,11 +502,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         <!-- Toggle switch alert modal -->
         <div id="switch_modal" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-30 fixed top-0 left-0 invisible">
-            <div id="switch_modal_main" class="rounded-lg w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
+            <div id="switch_modal_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
                 <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Change Log Time</div>
                 <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
                     <p>
-                        Are you sure to turn <span id="changelog" class="italic"></span> <span id="changelog_status" class="font-semibold"></span> log?
+                        Are you sure to turn <span id="changelog_status" class="font-semibold"></span> <span id="changelog" class="italic"></span> log?
                     </p>
                 </div>
                 <div class="w-full flex justify-center mt-auto mb-1">
@@ -742,7 +742,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 error: function (xhr, status, error) {
                     console.error('Error updating database:', error);
 
-                    // Revert the checkbox state on error
                     pendingCheckbox.prop('checked', !pendingCheckbox.is(':checked'));
                     $('#switch_modal').addClass('invisible');
                     pendingCheckbox = null;
