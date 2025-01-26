@@ -83,6 +83,22 @@ if ($_SESSION["logged_in"] == !true) {
                 $stmt->execute([$_SESSION['userid']]);
                 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
+
+
+                function getStatus($time)
+                {
+                    if ($time === '00:00:00') {
+                        return 'Absent';
+                    } elseif ($time === '11:11:11') {
+                        return 'Excused';
+                    } elseif (is_null($time)) {
+                        return 'No attendance';
+                    } else {
+                        return $time; // Exact time
+                    }
+                }
+
+
                 if ($rows) {
 
                     ?>
@@ -92,7 +108,6 @@ if ($_SESSION["logged_in"] == !true) {
                                 <th class="p-2 text-left" rowspan="2">Event</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
-                                <!-- <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th> -->
                             </tr>
                             <tr class="border border-gray-300">
                                 <th class="p-2 border-l border-r border-gray-300">In</th>
@@ -103,8 +118,20 @@ if ($_SESSION["logged_in"] == !true) {
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             <?php foreach ($rows as $row): ?>
-                                <tr class="border bg-gray-50">
-                                    <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
+                                <tr class="border bg-gray-50 group">
+                                    <td class="p-2 text-left">
+                                        <div class="relative">
+                                            <?= htmlspecialchars($row['name']) ?>
+                                            <!-- Tooltip -->
+                                            <div
+                                                class="absolute left-0 z-10 hidden w-64 p-2 mt-2 text-xs text-white bg-gray-700 border border-gray-300 rounded shadow-lg top-full group-hover:block">
+                                                <p>Morning In: <?= getStatus($row['morning_in']) ?></p>
+                                                <p>Morning Out: <?= getStatus($row['morning_out']) ?></p>
+                                                <p>Afternoon In: <?= getStatus($row['afternoon_in']) ?></p>
+                                                <p>Afternoon Out: <?= getStatus($row['afternoon_out']) ?></p>
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td class="p-2 text-center">
                                         <?= $row['morning_in'] === '00:00:00' ? '❌' : ($row['morning_in'] ? '✅' : '➖') ?>
                                     </td>
@@ -117,9 +144,12 @@ if ($_SESSION["logged_in"] == !true) {
                                     <td class="p-2 text-center">
                                         <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?>
                                     </td>
-                                    <!-- <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
-                                </td> -->
                                 </tr>
+
+
+
+
+
                                 <?php
                                 $TotalLog += $row['morning_in'] !== null ? 1 : 0;
                                 $TotalLog += $row['morning_out'] !== null ? 1 : 0;
