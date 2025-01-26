@@ -49,10 +49,11 @@ if ($_SESSION["logged_in"] == !true) {
 
     $query = "SELECT 
             iduser,
+            year,
             CONCAT(l_name, ', ', f_name) as fullname
         FROM user 
         WHERE (is_officer != 1 AND is_superuser != 1 AND is_admin != 1)
-        ORDER BY year, block, l_name;";
+        ORDER BY year, l_name;";
 
     $stmt = $pdo->query($query);
     $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -138,7 +139,7 @@ if ($_SESSION["logged_in"] == !true) {
         <div class="flex justify-center w-full h-full">
             <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md ">
                 <thead class="text-sm text-white bg-teal-500 md:text-md">
-                    <tr >
+                    <tr>
                         <th class="px-1 py-1 text-center md:px-4 md:py-2">Year</th>
                         <th class="px-1 py-1 text-center md:px-4 md:py-2">Total</th>
                         <th class="px-1 py-1 text-center md:px-4 md:py-2">Block 1</th>
@@ -151,7 +152,8 @@ if ($_SESSION["logged_in"] == !true) {
                     <?php foreach ($organizedData as $year => $data): ?>
                         <tr class="border-b odd:bg-teal-100/60 even:bg-teal-200/60">
                             <td class="px-1 py-1 text-center md:px-4 md:py-2">
-                                <?= $yearLabels[$year] ?? $year  ?></td>
+                                <?= $yearLabels[$year] ?? $year ?>
+                            </td>
                             <td class="px-1 py-1 text-center md:px-4 md:py-2"><?= $data['total'] ?></td>
                             <td class="px-1 py-1 text-center md:px-4 md:py-2">
                                 <?php echo isset($data['blocks'][1]) ? $data['blocks'][1] : '0'; ?>
@@ -169,7 +171,8 @@ if ($_SESSION["logged_in"] == !true) {
                     <?php endforeach; ?>
                     <tr class="text-white bg-teal-500">
                         <td colspan="6" class="px-4 py-2 font-bold text-center">Overall Total:
-                            <?php echo htmlspecialchars($total); ?></td>
+                            <?php echo htmlspecialchars($total); ?>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -243,7 +246,22 @@ if ($_SESSION["logged_in"] == !true) {
             </div>
             <form id="student_form">
                 <div id="student_list" class="space-y-2">
-                    <?php foreach ($students as $student): ?>
+                    <?php
+                    $last_year = 69;
+                    foreach ($students as $student):
+                        ?>
+
+                        <?php
+                            if ($student['year'] != $last_year) {
+                            $last_year = $student['year'];
+                        ?>
+                            <div class="flex items-center justify-center mt-6 mb-3 space-x-2 text-white bg-teal-500">
+                                <h2 class="text-lg font-bold"> - - - <?php echo $yearLabels[$student['year']]; ?>  Year - - -</h2>
+                            </div>
+
+
+                        <?php } ?>
+
                         <div class="flex items-center space-x-2">
                             <input type="checkbox" id="<?= $student['iduser'] ?>}" name="<?= $student['fullname'] ?>"
                                 value="<?= $student['iduser'] ?>" class="text-teal-700 student_checkbox">
