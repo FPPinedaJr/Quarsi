@@ -139,7 +139,7 @@ if ($_SESSION["logged_in"] == !true) {
 
                                     foreach ($fields as $field): ?>
                                         <td class="p-2 text-center">
-                                            <span class="relative overflow-x-hidden cursor-default group">
+                                            <span class="relative overflow-x-hidden cursor-default select-none group">
                                                 <?php
                                                 if ($row[$field] === '00:00:00') {
                                                     echo '❌';
@@ -155,7 +155,7 @@ if ($_SESSION["logged_in"] == !true) {
 
                                                 <!-- tooltip -->
                                                 <div
-                                                    class="absolute left-0 px-2 py-1 text-[10px] text-white transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full w-max group-hover:opacity-100">
+                                                    class="select-none absolute left-0 px-2 py-1 text-[10px] text-white transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full w-max group-hover:opacity-100">
                                                     <?= getTooltip($row[$field]) ?>
                                                 </div>
 
@@ -220,6 +220,13 @@ if ($_SESSION["logged_in"] == !true) {
         }
 
         $(document).ready(function () {
+            $('body').on('touchstart', function (e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault(); // Prevent default action for multi-touch
+                }
+            });
+
+
             changeHeaderTitle();
             getScorePercentage();
         });
