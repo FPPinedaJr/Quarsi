@@ -130,7 +130,7 @@ if ($_SESSION["logged_in"] == !true) {
                                 <th class="p-2 border-l border-r border-gray-300">Out</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200 ">
+                        <tbody class="overflow-hidden divide-y divide-gray-200 ">
                             <?php foreach ($rows as $row): ?>
                                 <tr class="border bg-gray-50 ">
                                     <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
