@@ -22,7 +22,7 @@ if (isset($_SESSION['logged_in'])) {
   <title>Sign in | Quarsi</title>
 
   <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="./assets/css/output.css?v=1.2">
+  <link rel="stylesheet" href="./assets/css/output.css?v=1.3">
   <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
   <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,7 +87,7 @@ if (isset($_SESSION['logged_in'])) {
   <div id="note_modal"
     class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
     <div id="note_modal_main" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 ">
-      <div class="p-6 text-center bg-white rounded-lg shadow-lg w-96 ">
+      <div class="w-11/12 p-6 text-center bg-white rounded-lg shadow-lg md:w-96 ">
         <i class="text-6xl text-yellow-500 fas fa-key"></i>
 
         <h2 class="mt-4 text-lg font-bold">Notice</h2>

@@ -26,7 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-        <link rel="stylesheet" href="./assets/css/output.css?v=1.2">
+        <link rel="stylesheet" href="./assets/css/output.css?v=1.3">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
