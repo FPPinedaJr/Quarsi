@@ -10,8 +10,7 @@ SELECT
     CONCAT(f_name, ' ', l_name) AS full_name,
     student_no AS student_number,
     CONCAT('Year ', year, ' Block ', block) AS section,
-    email,
-    total_points
+    email
 FROM user
 WHERE iduser = ?;
 ");
