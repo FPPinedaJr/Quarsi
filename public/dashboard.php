@@ -74,8 +74,7 @@ if ($_SESSION["logged_in"] == !true) {
                     a.morning_in,
                     a.morning_out,
                     a.afternoon_in,
-                    a.afternoon_out,
-                    a.points
+                    a.afternoon_out
                 FROM attendance a 
                 INNER JOIN event e on a.event = e.idevent
                 WHERE user = ?
