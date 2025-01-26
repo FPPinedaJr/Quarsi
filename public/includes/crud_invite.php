@@ -5,6 +5,7 @@ include_once "../includes/connect_db.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action'])) {
         ini_set('max_execution_time', '900');
+        
         if ($_POST['action'] == 'invite') {
             $students = $_POST['students'];
             $logtime = $_POST['logtime'];
