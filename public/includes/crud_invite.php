@@ -124,9 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if(!empty($values2)) {
                 $query2 .= implode(",", $values2) . ")";
+                $stmt2 = $pdo->prepare($query2);
+                $stmt2->execute($params2);
             }
-            $stmt2 = $pdo->prepare($query2);
-            $stmt2->execute($params2);
 
             header("location: ../events.php");
         }

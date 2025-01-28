@@ -11,6 +11,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
     $stmt1 = $pdo->prepare("
     SELECT 
         event.idevent AS 'idevent',
+        DATE_FORMAT(event.date, '%M %d, %Y') AS 'formatted-date',
         event.date AS 'date',
         event.name AS 'name',
         event.log_time AS 'log_time',
@@ -111,9 +112,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             <div class="flex justify-center w-full my-4 h-fit">
                 <table class="w-full md:w-2/3">
                     <tr class="text-lg font-light text-left text-white bg-teal-700">
-                        <th class="w-3/5 px-2 py-1 font-normal">EVENT NAME</th>
-                        <th class="w-1/5 px-2 py-1 font-normal">DATE</th>
-                        <th class="w-1/5 px-2 py-1 font-normal">CURRENT LOG</th>
+                        <th class="w-3/6 px-2 py-1 font-normal">EVENT NAME</th>
+                        <th class="w-2/6 px-2 py-1 font-normal">DATE</th>
+                        <th class="w-1/6 px-2 py-1 font-normal">CURRENT LOG</th>
                     </tr>
     
                     <?php foreach ($events as $event): ?>
@@ -124,7 +125,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         data-users="<?=$event['invited_users']?>"
                         class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 text-lg" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
                         <td class="py-1 pl-2"><?=$event['name']?></td>
-                        <td class="py-1 pl-2"><?=$event['date']?></td>
+                        <td class="py-1 pl-2"><?=$event['formatted-date']?></td>
                         <td class="py-1 pl-2">
                             <?php
                             if ($event['log_time']  == 0) {
