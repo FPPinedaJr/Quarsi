@@ -340,43 +340,31 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     }
                     ?>
                 
-                    <div class="flex justify-center w-full my-4 h-fit">
-                        <div class="grid grid-cols-2 gap-2">
-                            <div class="checkbox-wrapper-12">
-                                <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=1>
-                                    <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
-                                    <span class="text-sm text-center text-zinc-700 checkbox-label">Morning In</span>
-                                    </span>
-                                </label>
-                            </div>
-                            <div class="checkbox-wrapper-12">
-                                <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=2>
-                                    <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
-                                    <span class="text-sm text-center text-zinc-700 checkbox-label">Morning Out</span>
-                                    </span>
-                                </label>
-                            </div>
-                            <div class="checkbox-wrapper-12">
-                                <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=3>
-                                    <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
-                                    <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon In</span>
-                                    </span>
-                                </label>
-                            </div>
-                            <div class="checkbox-wrapper-12">   
-                                <label class="relative cursor-pointer">
-                                    <input class="absolute w-0 h-0 overflow-hidden checkbox-input" type="checkbox" name="logtime[]" value=4>
-                                    <span class="relative flex flex-col items-center justify-center h-12 bg-white border-2 border-gray-300 rounded-md shadow-md w-28 checkbox-tile">
-                                    <span class="text-sm text-center text-zinc-700 checkbox-label">Afternoon Out</span>
-                                    </span>
-                                </label>
-                            </div>
+                    <div class="flex flex-col justify-center items-center w-full h-fit border-t-2 pt-2 mt-4">
+                        <div class="w-full text-center font-semibold text-lg mb-6 text-zinc-800">Log Time</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-3/4">
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input type="checkbox" name="logtime[]" value="1" class="sr-only peer">
+                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning In</span>
+                            </label>                        
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input type="checkbox" name="logtime[]" value="2" class="sr-only peer">
+                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning Out</span>
+                            </label>                        
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input type="checkbox" name="logtime[]" value="3" class="sr-only peer">
+                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon In</span>
+                            </label>                        
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input type="checkbox" name="logtime[]" value="4" class="sr-only peer">
+                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon Out</span>
+                            </label>                        
                         </div>
                     </div>
-
                         
                     <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
                         <button id="add_invite_btn" type="button" onclick="showConfirmInviteModal()"
