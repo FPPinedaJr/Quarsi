@@ -249,8 +249,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Event</p>
                 </div>
                 <div class="flex flex-col w-full h-auto p-2 text-md">
-                    <p class="font-semibold text-emerald-700">This will delete "<span id="event_to_delete"></span>."</p>
-                    <p class="text-emerald-700">Are you sure?</p>
+                    <p class="font-semibold text-emerald-700">Are you sure to delete event "<span id="event_to_delete"></span>"?</p>
                 </div>
                 <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
                     <button id="deleteEventCancel" onclick="hideDeleteEventModal()"
@@ -537,6 +536,21 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </div>
         </div>
 
+        <!-- Invite Error -->
+        <div id="confirm_invite_error" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
+            <div id="confirm_invite_error_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
+                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Invite Error</div>
+                <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
+                    <p>
+                        Please select students to invite.
+                    </p>
+                </div>
+                <div class="w-full flex justify-center mt-auto mb-1">
+                    <button onclick="hideConfirmInviteErrorModal()" type="button"  class="rounded px-2 py-1 text-white bg-teal-700">Okay</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Confirm Update Invite -->
         <div id="confirm_update_invite" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
             <div id="confirm_update_invite_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
@@ -798,16 +812,21 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
 
         function showConfirmInviteModal () {
-            $('#confirm_invite').removeClass("invisible");
-
-
             $count = $('input.student-checkbox:checked').length; 
-            $('#invite_count').text($count);
-            
+            if ($count == 0) {
+                $('#confirm_invite_error').removeClass("invisible");
+            } else {
+                $('#invite_count').text($count);
+                $('#confirm_invite').removeClass("invisible");
+            }
         }
 
         function hideConfirmInviteModal() {
             $('#confirm_invite').addClass("invisible");
+        }
+
+        function hideConfirmInviteErrorModal() {
+            $('#confirm_invite_error').addClass("invisible");
         }
 
         function showConfirmEditInviteModal () {
@@ -930,6 +949,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#confirm_invite_main').length && $(event.target).closest('#confirm_invite').length) {
                     hideConfirmInviteModal();
+                }  
+            });
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#confirm_invite_error_main').length && $(event.target).closest('#confirm_invite_error').length) {
+                    hideConfirmInviteErrorModal();
                 }  
             });
 

@@ -109,6 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($stmt1->execute($params1)) {
                     echo "success";
                 }
+            } else {
+                $stmt3 = $pdo->prepare("UPDATE attendance SET morning_in=?, morning_out=?, afternoon_in=?, afternoon_out=? WHERE event=?");
+                if ($stmt3->execute([$morning_in, $morning_out, $afternoon_in, $afternoon_out, $idevent])) {
+                    echo "success";
+                }
             }
 
             $query2 = "DELETE FROM attendance WHERE user in (";
@@ -129,7 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo "success";
                 };
             }
-
         }
 
     }
