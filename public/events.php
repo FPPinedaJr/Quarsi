@@ -379,7 +379,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                         
                     <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
-                        <button id="add_invite_btn" type="submit" value="invite" name="action"
+                        <button id="add_invite_btn" type="button" value="invite" name="action" onclick="showConfirmInviteModal()"
                         class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
                         Invite</button>
                     </div>
@@ -393,13 +393,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         <div id="edit_invite_modal"
             class="fixed top-0 left-0 z-30 invisible flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
             <form id="edit_invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
-                class="w-10/12 md:w-1/3 h-2/3">
+            class="w-10/12 md:w-1/3 h-2/3">
                 <input id="edit_invite_event" type="hidden" name="idevent">
-                <div id="edit_invite_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white">
+                <div id="edit_invite_modal_main" class="w-full h-full overflow-y-auto text-lg bg-white  overflow-x-hidden">
                     <div
                         class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
                         Update Invite
                     </div>
+                    <div class="w-full flex h-fit p-1 text-xl ml-2 font-semibold text-zinc-700 my-2"><p>Invited Students: <span id="invited-students" class="text-teal-500"></span></p></div>
                     <?php
                     $currentProgram = '';
                     $currentYear = '';
@@ -517,6 +518,31 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             </div>
         </div>
 
+        <!-- Confirm Invite -->
+        <div id="confirm_invite" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
+            <div id="confirm_invite_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
+                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Confirm Invite</div>
+                <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
+                    <p>
+                        Are you sure to invite <span id="invite_count" class="font-semibold"></span> students?
+                    </p>
+                </div>
+                <div class="w-full flex justify-center mt-auto mb-1">
+                    <button onclick="hideConfirmInviteModal()" type="button"  class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
+                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500" onclick="confirmInviteStudents()">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invited student notif -->
+        <div id="notif_invite" class="fixed invisible top-30 left-1/2 -translate-x-1/2 flex items-center justify-between w-1/2 md:w-1/5 h-10 rounded-md border border-teal-500 bg-white text-teal-700 text-xs md:text-sm shadow">
+            <p class="flex-1 text-center">
+                Successfully invited <span class="font-bold">50</span> students
+            </p>
+            <button class="p-2 hover:bg-gray-200 h-full rounded-md">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
     </body>
 
 
@@ -614,6 +640,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             } else {
                 console.log('No users found for the specified event.');
             }
+
+            $('#invited-students').text($usersList.length);
 
             $('#edit_invite_modal_main').find('.student-checkbox').each(function() {
                 var studentValue = $(this).val(); 
@@ -749,6 +777,21 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
         }
+
+        function showConfirmInviteModal () {
+            $('#confirm_invite').removeClass("invisible");
+
+
+            $count = $('input.student-checkbox:checked').length; 
+            $('#invite_count').text($count);
+            
+            $('#invite_count').text($usersList.length)
+        }
+
+        function hideConfirmInviteModal() {
+            $('#confirm_invite').addClass("invisible");
+        }
+
         $(document).ready(function () {
             changeHeaderTitle();
 
@@ -786,6 +829,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 if (!$(event.target).closest('#switch_modal_main').length && $(event.target).closest('#switch_modal').length) {
                     hideLogtimeModal();
                 }
+            });
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#confirm_invite_main').length && $(event.target).closest('#confirm_invite').length) {
+                    hideConfirmInviteModal();
+                }  
             });
 
             $('#invite_modal_main').find('.block-checkbox').click(function () {
