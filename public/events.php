@@ -121,7 +121,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <tr id="event-<?=$event['idevent']?>" data-idevent="<?=$event['idevent']?>" data-name="<?=$event['name']?>" 
                         data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>"
                         data-morning_in="<?=$event['morning_in']?>" data-morning_out="<?=$event['morning_out']?>"
-                        data-afternoon_in="<?=$event['afternoon_in']?>" data-afternoon_ out="<?=$event['afternoon_out']?>"
+                        data-afternoon_in="<?=$event['afternoon_in']?>" data-afternoon_out="<?=$event['afternoon_out']?>"
                         data-users="<?=$event['invited_users']?>"
                         class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 text-lg" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
                         <td class="py-1 pl-2"><?=$event['name']?></td>
