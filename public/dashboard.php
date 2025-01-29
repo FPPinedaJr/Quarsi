@@ -31,7 +31,7 @@ if ($_SESSION["logged_in"] == !true) {
         <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-        <link rel="stylesheet" href="./assets/css/output.css?v=1.2">
+        <link rel="stylesheet" href="./assets/css/output.css?v=1.3">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -63,7 +63,7 @@ if ($_SESSION["logged_in"] == !true) {
             </div>
 
             <!-- Table Div -->
-            <div class="w-full max-w-sm overflow-y-auto mt-44">
+            <div class="w-full overflow-x-hidden overflow-y-auto md:max-w-lg mt-44">
                 <?php
                 $LogIn = 0;
                 $TotalLog = 0;
@@ -74,26 +74,53 @@ if ($_SESSION["logged_in"] == !true) {
                     a.morning_in,
                     a.morning_out,
                     a.afternoon_in,
-                    a.afternoon_out,
-                    a.points
+                    a.afternoon_out
                 FROM attendance a 
                 INNER JOIN event e on a.event = e.idevent
                 WHERE user = ?
-                ORDER BY e.date;
+                ORDER BY date;
             ");
                 $stmt->execute([$_SESSION['userid']]);
                 $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
+
+
+                function getStatus($time)
+                {
+                    if ($time === '00:00:00') {
+                        return 'Absent';
+                    } elseif ($time === '11:11:11') {
+                        return 'Excused';
+                    } elseif (is_null($time)) {
+                        return 'No attendance';
+                    } else {
+                        return $time; // Exact time
+                    }
+                }
+
+
+                function getTooltip($time)
+                {
+                    if ($time === '00:00:00')
+                        return 'Absent';
+                    if ($time === '11:11:11')
+                        return 'Excused';
+                    if (!$time)
+                        return 'No attendance';
+                    return $time;
+                }
+
+                $fields = ['morning_in', 'morning_out', 'afternoon_in', 'afternoon_out'];
+
                 if ($rows) {
 
                     ?>
-                    <table class="w-full text-center border-collapse">
+                    <table class="w-full overflow-x-hidden text-center border-collapse">
                         <thead class="sticky top-0 bg-white">
                             <tr class="border border-gray-300">
                                 <th class="p-2 text-left" rowspan="2">Event</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
-                                <!-- <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th> -->
                             </tr>
                             <tr class="border border-gray-300">
                                 <th class="p-2 border-l border-r border-gray-300">In</th>
@@ -102,25 +129,43 @@ if ($_SESSION["logged_in"] == !true) {
                                 <th class="p-2 border-l border-r border-gray-300">Out</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody class="overflow-hidden divide-y divide-gray-200 ">
                             <?php foreach ($rows as $row): ?>
-                                <tr class="border bg-gray-50">
+                                <tr class="border select-none bg-gray-50 ">
                                     <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['morning_in'] === '00:00:00' ? '❌' : ($row['morning_in'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['morning_out'] === '00:00:00' ? '❌' : ($row['morning_out'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['afternoon_in'] === '00:00:00' ? '❌' : ($row['afternoon_in'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <td class="p-2 text-center">
-                                        <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?>
-                                    </td>
-                                    <!-- <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
-                                </td> -->
+
+                                    <?php
+
+
+                                    foreach ($fields as $field): ?>
+                                        <td class="p-2 text-center">
+                                            <span class="relative overflow-x-hidden cursor-default select-none group">
+                                                <?php
+                                                if ($row[$field] === '00:00:00') {
+                                                    echo '❌';
+                                                } elseif ($row[$field] === '11:11:11') {
+                                                    echo '🎉';
+                                                } elseif ($row[$field]) {
+                                                    echo '✅';
+                                                } else {
+                                                    echo '➖';
+                                                }
+                                                ?>
+
+
+                                                <!-- tooltip -->
+                                                <div
+                                                    class="select-none absolute left-0 px-2 py-1 text-[10px] text-white transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full w-max group-hover:opacity-100">
+                                                    <?= getTooltip($row[$field]) ?>
+                                                </div>
+
+                                            </span>
+                                        </td>
+
+
+                                    <?php endforeach; ?>
                                 </tr>
+
                                 <?php
                                 $TotalLog += $row['morning_in'] !== null ? 1 : 0;
                                 $TotalLog += $row['morning_out'] !== null ? 1 : 0;
@@ -175,6 +220,13 @@ if ($_SESSION["logged_in"] == !true) {
         }
 
         $(document).ready(function () {
+            $('body').on('touchstart', function (e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault(); // Prevent default action for multi-touch
+                }
+            });
+
+
             changeHeaderTitle();
             getScorePercentage();
         });

@@ -69,7 +69,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-        <link rel="stylesheet" href="./assets/css/output.css?v=1.2">
+        <link rel="stylesheet" href="./assets/css/output.css?v=1.3">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -171,20 +171,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 <div id=""
                     class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
                     <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
+                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/3 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
                         Student Name
                     </div>
                     <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
+                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/3 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                         Student ID
                     </div>
                     <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
+                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/3 md:px-1 md:h-full md:text-[1.3rem]">
                         Program, Year & Block
-                    </div>
-                    <div
-                        class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                        <p class="text-center">Points</p>
                     </div>
                 </div>
             </div>
@@ -221,21 +217,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <!-- Information -->
                             <div class="flex flex-col w-auto h-full md:w-full md:h-auto md:flex-row">
                                 <div
-                                    class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                    class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/3 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                                     <p class="md:w-3/4"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
                                 </div>
                                 <div
-                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/3 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                                     <?= $student['student_no'] ?>
                                 </div>
                                 <div
-                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/3 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
                                     <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
-                                </div>
-                                <div
-                                    class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                                    <p class="text-lg"><?= $student['total_points'] ?></p>
-                                    <p class="text-xs md:hidden">Points</p>
                                 </div>
                             </div>
                         </div>

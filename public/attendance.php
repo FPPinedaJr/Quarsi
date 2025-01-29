@@ -31,7 +31,7 @@ if ($_SESSION["logged_in"] == !true) {
         <link rel="icon" href="./assets/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="./assets/css/fontawesome/all.min.css">
         <link rel="stylesheet" href="./assets/css/fontawesome/fontawesome.min.css">
-        <link rel="stylesheet" href="./assets/css/output.css?v=1.2">
+        <link rel="stylesheet" href="./assets/css/output.css?v=1.3">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -66,8 +66,7 @@ if ($_SESSION["logged_in"] == !true) {
                     a.morning_in,
                     a.morning_out,
                     a.afternoon_in,
-                    a.afternoon_out,
-                    a.points
+                    a.afternoon_out
                 FROM attendance a 
                 INNER JOIN event e on a.event = e.idevent
                 INNER JOIN user on a.user = user.iduser
@@ -81,9 +80,8 @@ if ($_SESSION["logged_in"] == !true) {
 
                 $stmt2 = $pdo->prepare("
             SELECT 
-            CONCAT(user.f_name, ' ', user.l_name) AS fullname, 
+            CONCAT(user.f_name, ' ', user.l_name) AS fullname
             
-            user.total_points
             FROM user
             WHERE iduser = ?;
             ");
@@ -112,7 +110,6 @@ if ($_SESSION["logged_in"] == !true) {
                                 <th class="p-2 text-left" rowspan="2">Event</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
                                 <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
-                                <!-- <th class="p-2 text-right border-l border-r border-gray-300" rowspan="2">Points</th> -->
                             </tr>
                             <tr class="border border-gray-300">
                                 <th class="p-2 border-l border-r border-gray-300">In</th>
@@ -137,8 +134,7 @@ if ($_SESSION["logged_in"] == !true) {
                                     <td class="p-2 text-center">
                                         <?= $row['afternoon_out'] === '00:00:00' ? '❌' : ($row['afternoon_out'] ? '✅' : '➖') ?>
                                     </td>
-                                    <!-- <td class="p-2 text-right <?= $row['points'] < 0 ? 'text-red-500' : '' ?>"><?= $row['points'] ?>
-                                    </td> -->
+                                    
                                 </tr>
                                 <?php
                                 $TotalLog += $row['morning_in'] !== null ? 1 : 0;
