@@ -54,9 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $pdo->prepare($query);
 
             if ($stmt->execute($params)) {
-                echo "Recorded students";
-                header("location: ../events.php");
-
+                echo "success"; 
             } else {
                 echo "Error inserting attendance. Please try again.";
             }
@@ -108,9 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!empty($values1)) {
                 $query1 .= implode(",", $values1);
                 $stmt1 = $pdo->prepare($query1);
-                $stmt1->execute($params1);
+                if ($stmt1->execute($params1)) {
+                    echo "success";
+                }
             }
-            
+
             $query2 = "DELETE FROM attendance WHERE user in (";
             $values2 = [];
             $params2 = [];
@@ -125,10 +125,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if(!empty($values2)) {
                 $query2 .= implode(",", $values2) . ")";
                 $stmt2 = $pdo->prepare($query2);
-                $stmt2->execute($params2);
+                if ($stmt2->execute($params2)) {
+                    echo "success";
+                };
             }
 
-            header("location: ../events.php");
         }
 
     }
