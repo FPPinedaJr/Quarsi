@@ -80,6 +80,9 @@ if (isset($_SESSION['logged_in'])) {
               </div>
             </div>
           </form>
+          <div class="flex justify-center w-full mt-3 text-sm">
+            <p class="text-green-600 cursor-pointer hover:text-green-500">Forgot Password?</p>
+          </div>
         </div>
       </div>
   </main>
@@ -89,6 +92,41 @@ if (isset($_SESSION['logged_in'])) {
     <div id="note_modal_main" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 ">
       <div class="w-11/12 p-6 text-center bg-white rounded-lg shadow-lg md:w-96 ">
         <i class="mt-5 text-teal-500 text-7xl fas fa-unlock"></i>
+  <!-- Send OTP -->
+  <div class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full bg-gray-400/50 backdrop-blur-md">
+    <div class="flex flex-col items-center w-10/12 px-4 py-2 bg-white rounded-md md:w-1/4">
+      <div class="mt-3 text-3xl font-bold text-center">OTP Verification</div>
+      <!-- Input OTP -->
+      <div class="flex justify-between w-3/4 px-4 h-fit mt-7">
+        <input id="digit-1"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-2"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-3"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-4"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+      </div>
+      <div class="flex flex-wrap w-3/4 mt-4 mb-2 text-xs text-center text-zinc-500">
+        Please enter the 4-digit one-time-password (OTP) we sent to your email to verify.
+      </div>
+      <button
+        class="bg-emerald-700 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-800"
+        type="submit">Submit</button>
+      <div class="flex justify-center my-2">
+        <a class="font-semibold cursor-pointer text-emerald-400 hover:text-emerald-300">Sign In with a passkey</a>
+      </div>
+      <div class="flex justify-center text-center text-[12px] -mt-1 mb-3 cursor-pointer">New user?
+        <a class="text-emerald-400 hover:text-emerald-300 ml-1 text-[12px]">Sign up here</a>
+      </div>
+    </div>
+  </div>
+
+
 
         <h2 class="mt-4 text-lg font-bold">Important Information</h2>
         <p class="mt-2 text-gray-700">
@@ -141,6 +179,25 @@ if (isset($_SESSION['logged_in'])) {
       });
 
 
+      $("input[id^='digit-']").on("keyup", function (e) {
+        let currentInput = $(this);
+        let currentValue = currentInput.val();
+
+        if (e.key === "Backspace") {
+          if (currentValue === "") {
+            currentInput.prev("input").focus();
+          }
+        } else if (currentValue.length === 1) {
+          currentInput.next("input").focus();
+        }
+      });
+
+      $("input[id^='digit-']").on("input", function () {
+        let currentInput = $(this);
+        if (currentInput.val().length > 1) {
+          currentInput.val(currentInput.val().charAt(0));
+        }
+      });
 
       $('#show-password').change(function () {
         const passwordInput1 = $('#pass1Reg');
