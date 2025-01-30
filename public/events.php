@@ -29,6 +29,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         ON event.idevent = attendance.event
         GROUP BY 
         event.idevent
+    ORDER BY event.date DESC
     ");
 
     $stmt1->execute();
@@ -86,63 +87,79 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
     ?>
 
     <body class="flex justify-center w-screen min-h-screen mt-20 overflow-x-hidden">
+        <!-- Events List -->
         <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
-            <!-- Search bar -->
-            <div class="flex w-full h-10 mb-4 border border-gray-600 rounded-md md:w-[15rem]">
-                <input id="search_student" name="search_student"
-                    class="flex h-full w-full align-center text-start pl-2 text-['mulish'] bg-white rounded-md focus:outline-none"
-                    placeholder="Find event...">
-            </div>
 
-            <!-- Filter -->
-            <div class="flex w-full mb-2 h-fit">
-                <div
-                    class="flex items-center justify-center w-1/2 p-1 text-lg text-white bg-teal-700 rounded-sm md:w-20 h-fit">
-                    Date</div>
-            </div>
-
-            <!-- Add Button -->
-            <div id="add_event_modal_btn" onclick="showAddEventModal()"
-                class="fixed z-20 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
-                <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
-            </div>
-
-            <div class="my-2 border-t-2 border-zinc-500"></div>
-            <!-- Events List -->
-            <div class="flex justify-center w-full my-4 h-fit">
+            <!-- desktop view -->
+            <div class="md:flex hidden  justify-center w-full my-4 h-fit">
                 <table class="w-full md:w-2/3">
                     <tr class="text-lg font-light text-left text-white bg-teal-700">
                         <th class="w-3/6 px-2 py-1 font-normal">EVENT NAME</th>
                         <th class="w-2/6 px-2 py-1 font-normal">DATE</th>
                         <th class="w-1/6 px-2 py-1 font-normal">CURRENT LOG</th>
                     </tr>
-    
+
                     <?php foreach ($events as $event): ?>
-                    <tr id="event-<?=$event['idevent']?>" data-idevent="<?=$event['idevent']?>" data-name="<?=$event['name']?>" 
-                        data-date="<?=$event['date']?>" data-log_time="<?=$event['log_time']?>"
-                        data-morning_in="<?=$event['morning_in']?>" data-morning_out="<?=$event['morning_out']?>"
-                        data-afternoon_in="<?=$event['afternoon_in']?>" data-afternoon_out="<?=$event['afternoon_out']?>"
-                        data-users="<?=$event['invited_users']?>"
-                        class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 text-lg" onclick="showEditEventModal(<?=$event['idevent']?>)"> 
-                        <td class="py-1 pl-2"><?=$event['name']?></td>
-                        <td class="py-1 pl-2"><?=$event['formatted-date']?></td>
-                        <td class="py-1 pl-2">
-                            <?php
-                            if ($event['log_time']  == 0) {
-                                echo 'Disabled';
-                            } else if ($event['log_time']  == 1) {
-                                echo 'Morning In';
-                            } else if ($event['log_time']  == 2) {
-                                echo 'Morning Out';
-                            } else if ($event['log_time']  == 3) {
-                                echo 'Afternoon In';
-                            } else if ($event['log_time']  == 4) {
-                                echo 'Afternoon Out';
-                            } ?>
-                        </td>
-                    </tr>
+                        <tr id="event-<?= $event['idevent'] ?>" data-idevent="<?= $event['idevent'] ?>"
+                            data-name="<?= $event['name'] ?>" data-date="<?= $event['date'] ?>"
+                            data-log_time="<?= $event['log_time'] ?>" data-morning_in="<?= $event['morning_in'] ?>"
+                            data-morning_out="<?= $event['morning_out'] ?>" data-afternoon_in="<?= $event['afternoon_in'] ?>"
+                            data-afternoon_out="<?= $event['afternoon_out'] ?>" data-users="<?= $event['invited_users'] ?>"
+                            class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 md:text-lg"
+                            onclick="showEditEventModal(<?= $event['idevent'] ?>)">
+                            <td class="py-1 pl-2"><?= $event['name'] ?></td>
+                            <td class="py-1 pl-2"><?= $event['formatted-date'] ?></td>
+                            <td class="py-1 pl-2">
+                                <?php
+                                if ($event['log_time'] == 0) {
+                                    echo 'Disabled';
+                                } else if ($event['log_time'] == 1) {
+                                    echo 'Morning In';
+                                } else if ($event['log_time'] == 2) {
+                                    echo 'Morning Out';
+                                } else if ($event['log_time'] == 3) {
+                                    echo 'Afternoon In';
+                                } else if ($event['log_time'] == 4) {
+                                    echo 'Afternoon Out';
+                                } ?>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </table>
+            </div>
+
+            <!-- mobile view -->
+            <div class="md:hidden flex flex-col gap-5 justify-center w-full my-4 h-fit">
+                <?php foreach ($events as $event): ?>
+                    <div id="event-<?= $event['idevent'] ?>" data-idevent="<?= $event['idevent'] ?>"
+                        data-name="<?= $event['name'] ?>" data-date="<?= $event['date'] ?>"
+                        data-log_time="<?= $event['log_time'] ?>" data-morning_in="<?= $event['morning_in'] ?>"
+                        data-morning_out="<?= $event['morning_out'] ?>" data-afternoon_in="<?= $event['afternoon_in'] ?>"
+                        data-afternoon_out="<?= $event['afternoon_out'] ?>" data-users="<?= $event['invited_users'] ?>"
+                        class="w-full flex rounded-lg p-5 border-teal-700  border <?php echo $event['log_time'] != 0 ? 'bg-teal-200' : '' ?>  "
+                        onclick="showEditEventModal(<?= $event['idevent'] ?>)">
+
+                        <div class="flex flex-col h-full justify-center w-3/5">
+                            <div class="pl-2 font-semibold text-lg text-nowrap"><?= $event['name'] ?></div>
+                            <div class="h-full pl-2 text-sm text-gray-400"><?= $event['formatted-date'] ?></div>
+                        </div>
+                        <?php if ($event['log_time'] != 0) { ?>
+                        <div class="w-2/5">
+                            <table class="w-full text-center"> 
+                                <tr>
+                                    <td colspan="2" class="px-3 font-semibold rounded"><?php if (($event['log_time'] == 1) || ($event['log_time'] == 2)) {echo 'Morning';} else {echo 'Afternoon';} ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="rounded text-sm px-3 mt-1 <?php if (($event['log_time'] == 1) || ($event['log_time'] == 3)) {echo 'bg-teal-300';} ?> " >IN</td>
+                                    <td class="rounded text-sm px-3 mt-1 <?php if (($event['log_time'] == 2) || ($event['log_time'] == 4)) {echo 'bg-teal-300';} ?> " >OUT</td>
+                                    
+                                </tr>
+                            </table>
+                        </div>
+                        <?php } ?>
+                
+                    </div>
+                <?php endforeach; ?>
             </div>
         </main>
 
@@ -192,16 +209,20 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <!-- Options -->
                     <div class="absolute right-3 top-3 p-1 w-fit h-fit">
                         <div class="relative">
-                            <i onclick="toggleEventOptions()" class="fa-solid fa-ellipsis text-xl text-white hover:text-emerald-400 cursor-pointer"></i>
-                            <div id="eventOptions" class="invisible absolute text-sm -right-4 w-40 border border-gray-500 flex flex-col top-6 bg-white rounded-lg">
-                                <div id="inviteBtn" class="flex w-full py-1 px-2 items-center border-b border-gray-400 rounded-t-lg cursor-pointer hover:bg-gray-200">
+                            <i onclick="toggleEventOptions()"
+                                class="fa-solid fa-ellipsis text-xl text-white hover:text-emerald-400 cursor-pointer"></i>
+                            <div id="eventOptions"
+                                class="invisible absolute text-sm -right-4 w-40 border border-gray-500 flex flex-col top-6 bg-white rounded-lg">
+                                <div id="inviteBtn"
+                                    class="flex w-full py-1 px-2 items-center border-b border-gray-400 rounded-t-lg cursor-pointer hover:bg-gray-200">
                                     <div class="w-6 h-full flex items-center justify-center mr-2">
                                         <i class="fa-solid fa-user-plus"></i>
                                     </div>
                                     Invite Students
                                 </div>
                                 <a id="eventAttendance" href="" class="">
-                                    <div id="attendanceBtn" class="flex w-full items-center py-1 px-2 cursor-pointer rounded-b-lg hover:bg-gray-200">
+                                    <div id="attendanceBtn"
+                                        class="flex w-full items-center py-1 px-2 cursor-pointer rounded-b-lg hover:bg-gray-200">
                                         <div class="w-6 h-full flex items-center justify-center mr-2">
                                             <i class="fa-solid fa-clipboard-list mr-1"></i>
                                         </div>
@@ -267,14 +288,15 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <p class="font-['mulish'] text-emerald-700 font-semibold text-xl">Delete Event</p>
                 </div>
                 <div class="flex flex-col w-full h-auto p-2 text-md">
-                    <p class="font-semibold text-emerald-700">Are you sure to delete event "<span id="event_to_delete"></span>"?</p>
+                    <p class="font-semibold text-emerald-700">Are you sure to delete event "<span
+                            id="event_to_delete"></span>"?</p>
                 </div>
                 <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
                     <button id="deleteEventCancel" onclick="hideDeleteEventModal()"
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
                     <form action="./includes/crud_event.php" type="button" method="POST">
                         <button type="submit" value="delete" name="action"
-                            class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md" >Delete</button>
+                            class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
                         <input id="id_delete_event" type="hidden" name="idevent" class="">
                     </form>
                 </div>
@@ -349,161 +371,184 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     }
                     if ($currentYear !== '') {
                         echo '</div>';
-                        echo '</div>';                    
+                        echo '</div>';
                     }
                     if ($currentProgram !== '') {
                         echo '</div>';
-                        echo '</div>';                    
-                        echo '</div>';                    
+                        echo '</div>';
+                        echo '</div>';
                     }
                     ?>
-                
+
                     <div class="flex flex-col justify-center items-center w-full h-fit border-t-2 pt-2 mt-4">
                         <div class="w-full text-center font-semibold text-lg mb-6 text-zinc-800">Log Time</div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-3/4">
                             <label class="inline-flex items-center mb-5 cursor-pointer">
                                 <input type="checkbox" name="logtime[]" value="1" class="sr-only peer">
-                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning In</span>
-                            </label>                        
+                            </label>
                             <label class="inline-flex items-center mb-5 cursor-pointer">
                                 <input type="checkbox" name="logtime[]" value="2" class="sr-only peer">
-                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning Out</span>
-                            </label>                        
+                            </label>
                             <label class="inline-flex items-center mb-5 cursor-pointer">
                                 <input type="checkbox" name="logtime[]" value="3" class="sr-only peer">
-                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon In</span>
-                            </label>                        
+                            </label>
                             <label class="inline-flex items-center mb-5 cursor-pointer">
                                 <input type="checkbox" name="logtime[]" value="4" class="sr-only peer">
-                                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
                                 <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon Out</span>
-                            </label>                        
+                            </label>
                         </div>
                     </div>
-                        
+
                     <div class="flex items-center justify-center w-full py-3 bg-white h-fit">
                         <button id="add_invite_btn" type="button" onclick="showConfirmInviteModal()"
-                        class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
-                        Invite</button>
+                            class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Add
+                            Invite</button>
                     </div>
                 </div>
-                
+
             </form>
         </div>
 
-        
+
         <!-- Edit Invite Modal -->
         <div id="edit_invite_modal"
             class="fixed top-0 left-0 z-30 invisible flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
-            <div id="edit_invite_modal_main" class="overflow-y-auto text-lg bg-white w-10/12 md:w-1/3 h-2/3 overflow-x-hidden">
+            <div id="edit_invite_modal_main"
+                class="overflow-y-auto text-lg bg-white w-10/12 md:w-1/3 h-2/3 overflow-x-hidden">
                 <form id="edit_invite_students_form" action="./includes/crud_invite.php" type="button" method="POST"
                     class="w-full h-fit">
                     <input id="edit_invite_event" type="hidden" name="idevent">
                     <input type="hidden" name="action" value="update_invite">
-                        <div
-                            class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
-                            Update Invite
-                        </div>
-                        <div class="w-full flex h-fit p-1 text-xl ml-2 font-semibold text-zinc-700 my-2"><p>Invited Students: <span id="invited-students" class="text-teal-500"></span></p></div>
-                        <?php
-                        $currentProgram = '';
-                        $currentYear = '';
-                        $currentBlock = '';
+                    <div
+                        class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
+                        Update Invite
+                    </div>
+                    <div class="w-full flex h-fit p-1 text-xl ml-2 font-semibold text-zinc-700 my-2">
+                        <p>Invited Students: <span id="invited-students" class="text-teal-500"></span></p>
+                    </div>
+                    <?php
+                    $currentProgram = '';
+                    $currentYear = '';
+                    $currentBlock = '';
 
-                        foreach ($students as $student) {
-                            if ($student['organization'] !== $currentProgram) {
-                                if ($currentProgram !== '') {
-                                    echo '</div></div></div>';
-                                }
-                                $currentProgram = $student['organization'];
-                                $currentYear = '';
-                                $currentBlock = '';
-                                echo '<div class="m-4 program-group">';
-                                echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
-                                echo '<div class="ml-4">';
+                    foreach ($students as $student) {
+                        if ($student['organization'] !== $currentProgram) {
+                            if ($currentProgram !== '') {
+                                echo '</div></div></div>';
                             }
+                            $currentProgram = $student['organization'];
+                            $currentYear = '';
+                            $currentBlock = '';
+                            echo '<div class="m-4 program-group">';
+                            echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
+                            echo '<div class="ml-4">';
+                        }
 
-                            if ($student['year'] !== $currentYear) {
-                                if ($currentYear !== '') {
-                                    echo '</div></div></div></div>';
-                                }
-                                $currentYear = $student['year'];
-                                $currentBlock = '';
-                                echo '<div class="mb-2 ml-1 md:ml-4 year">';
-                                echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("Year " . $currentYear) . '</span></label>
+                        if ($student['year'] !== $currentYear) {
+                            if ($currentYear !== '') {
+                                echo '</div></div></div></div>';
+                            }
+                            $currentYear = $student['year'];
+                            $currentBlock = '';
+                            echo '<div class="mb-2 ml-1 md:ml-4 year">';
+                            echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("Year " . $currentYear) . '</span></label>
                                 ';
-                                echo '<div class="ml-4 md:ml-8">';
-                            }
+                            echo '<div class="ml-4 md:ml-8">';
+                        }
 
-                            if ($student['block'] !== $currentBlock) {
-                                if ($currentBlock !== '') {
-                                    echo '</div></div>';
-                                }
-                                $currentBlock = $student['block'];
-                                echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
-                                echo ' <i class="ml-2 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i><label class="relative py-1 pl-5"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("block " . $currentBlock) . '</label>
+                        if ($student['block'] !== $currentBlock) {
+                            if ($currentBlock !== '') {
+                                echo '</div></div>';
+                            }
+                            $currentBlock = $student['block'];
+                            echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
+                            echo ' <i class="ml-2 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i><label class="relative py-1 pl-5"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("block " . $currentBlock) . '</label>
                             ';
-                                echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
-                            }
-
-                            echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
-                            echo '<label>';
-                            echo '<input type="checkbox" name="students[]" value="' . htmlspecialchars($student['iduser']) . '" class="student-checkbox">';
-                            echo '<span class="md:ml-1">';
-                            echo htmlspecialchars($student['l_name'] . ', ' . $student['f_name']);
-                            echo '</span>';
-                            echo '</label>';
-                            echo '</div>';
+                            echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
                         }
 
-                        if ($currentBlock !== '') {
-                            echo '</div>';
-                        }
-                        if ($currentYear !== '') {
-                            echo '</div>';
-                            echo '</div>';                    
-                        }
-                        if ($currentProgram !== '') {
-                            echo '</div>';
-                            echo '</div>';                    
-                            echo '</div>';                    
-                        }
-                        ?>
+                        echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
+                        echo '<label>';
+                        echo '<input type="checkbox" name="students[]" value="' . htmlspecialchars($student['iduser']) . '" class="student-checkbox">';
+                        echo '<span class="md:ml-1">';
+                        echo htmlspecialchars($student['l_name'] . ', ' . $student['f_name']);
+                        echo '</span>';
+                        echo '</label>';
+                        echo '</div>';
+                    }
 
-                        <div class="flex flex-col justify-center items-center w-full h-fit border-t-2 pt-2 mt-4">
-                            <div class="w-full text-center font-semibold text-lg mb-6 text-zinc-800">Log Time</div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-3/4">
-                                <label class="inline-flex items-center mb-5 cursor-pointer">
-                                    <input id="morning_in_toggle" type="checkbox" name="logtime[]" value="1" class="sr-only peer" onclick="showLogtimeModal('#morning_in_toggle')">
-                                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
-                                    <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning In</span>
-                                </label>                        
-                                <label class="inline-flex items-center mb-5 cursor-pointer">
-                                    <input id="morning_out_toggle" type="checkbox" name="logtime[]" value="2" class="sr-only peer" onclick="showLogtimeModal('#morning_out_toggle')">
-                                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
-                                    <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning Out</span>
-                                </label>                        
-                                <label class="inline-flex items-center mb-5 cursor-pointer">
-                                    <input id="afternoon_in_toggle" type="checkbox" name="logtime[]" value="3" class="sr-only peer" onclick="showLogtimeModal('#afternoon_in_toggle')">
-                                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
-                                    <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon In</span>
-                                </label>                        
-                                <label class="inline-flex items-center mb-5 cursor-pointer">
-                                    <input id="afternoon_out_toggle" type="checkbox" name="logtime[]" value="4" class="sr-only peer" onclick="showLogtimeModal('#afternoon_out_toggle')">
-                                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600"></div>
-                                    <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon Out</span>
-                                </label>                        
-                            </div>
+                    if ($currentBlock !== '') {
+                        echo '</div>';
+                    }
+                    if ($currentYear !== '') {
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    if ($currentProgram !== '') {
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    ?>
+
+                    <div class="flex flex-col justify-center items-center w-full h-fit border-t-2 pt-2 mt-4">
+                        <div class="w-full text-center font-semibold text-lg mb-6 text-zinc-800">Log Time</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 w-3/4">
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input id="morning_in_toggle" type="checkbox" name="logtime[]" value="1"
+                                    class="sr-only peer" onclick="showLogtimeModal('#morning_in_toggle')">
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning In</span>
+                            </label>
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input id="morning_out_toggle" type="checkbox" name="logtime[]" value="2"
+                                    class="sr-only peer" onclick="showLogtimeModal('#morning_out_toggle')">
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Morning Out</span>
+                            </label>
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input id="afternoon_in_toggle" type="checkbox" name="logtime[]" value="3"
+                                    class="sr-only peer" onclick="showLogtimeModal('#afternoon_in_toggle')">
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon In</span>
+                            </label>
+                            <label class="inline-flex items-center mb-5 cursor-pointer">
+                                <input id="afternoon_out_toggle" type="checkbox" name="logtime[]" value="4"
+                                    class="sr-only peer" onclick="showLogtimeModal('#afternoon_out_toggle')">
+                                <div
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                                </div>
+                                <span class="ms-3 text-sm font-medium text-gray-400 dark:text-gray-500">Afternoon Out</span>
+                            </label>
                         </div>
+                    </div>
 
-                        <div class="flex items-center justify-center w-full py-3 bg-white h-fit mt-6 mb-2">
-                            <button id="edit_invite_btn" type="button" onclick="showConfirmEditInviteModal()"
+                    <div class="flex items-center justify-center w-full py-3 bg-white h-fit mt-6 mb-2">
+                        <button id="edit_invite_btn" type="button" onclick="showConfirmEditInviteModal()"
                             class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Update
                             Invite</button>
-                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -511,72 +556,89 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         </div>
 
         <!-- Toggle switch alert modal -->
-        <div id="switch_modal" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-30 fixed top-0 left-0 invisible">
+        <div id="switch_modal"
+            class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-30 fixed top-0 left-0 invisible">
             <div id="switch_modal_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
-                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Change Log Time</div>
+                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Change Log
+                    Time</div>
                 <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
                     <p>
-                        Are you sure to turn <span id="changelog_status" class="font-semibold"></span> <span id="changelog" class="italic"></span> log?
+                        Are you sure to turn <span id="changelog_status" class="font-semibold"></span> <span id="changelog"
+                            class="italic"></span> log?
                     </p>
                 </div>
                 <div class="w-full flex justify-center mt-auto mb-1">
-                    <button onclick="hideLogtimeModal()" type="button"  class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
-                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500" onclick="confirmLogtimeChange()">Confirm</button>
+                    <button onclick="hideLogtimeModal()" type="button"
+                        class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
+                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500"
+                        onclick="confirmLogtimeChange()">Confirm</button>
                 </div>
             </div>
         </div>
 
         <!-- Confirm Invite -->
-        <div id="confirm_invite" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
+        <div id="confirm_invite"
+            class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
             <div id="confirm_invite_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
-                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Confirm Invite</div>
+                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Confirm
+                    Invite</div>
                 <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
                     <p>
                         Are you sure to invite <span id="invite_count" class="font-semibold"></span> students?
                     </p>
                 </div>
                 <div class="w-full flex justify-center mt-auto mb-1">
-                    <button onclick="hideConfirmInviteModal()" type="button"  class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
-                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500" onclick="confirmInvite()">Confirm</button>
+                    <button onclick="hideConfirmInviteModal()" type="button"
+                        class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
+                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500"
+                        onclick="confirmInvite()">Confirm</button>
                 </div>
             </div>
         </div>
 
         <!-- Invite Error -->
-        <div id="confirm_invite_error" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
+        <div id="confirm_invite_error"
+            class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
             <div id="confirm_invite_error_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
-                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Invite Error</div>
+                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Invite
+                    Error</div>
                 <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
                     <p>
                         Cannot invite 0 students. Please select students to invite.
                     </p>
                 </div>
                 <div class="w-full flex justify-center mt-auto mb-1">
-                    <button onclick="hideConfirmInviteErrorModal()" type="button"  class="rounded px-2 py-1 text-white bg-teal-700">Okay</button>
+                    <button onclick="hideConfirmInviteErrorModal()" type="button"
+                        class="rounded px-2 py-1 text-white bg-teal-700">Okay</button>
                 </div>
             </div>
         </div>
 
         <!-- Confirm Update Invite -->
-        <div id="confirm_update_invite" class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
+        <div id="confirm_update_invite"
+            class="w-full h-full bg-gray-500/30 backdrop-blur-sm flex justify-center items-center z-40 fixed top-0 left-0 invisible">
             <div id="confirm_update_invite_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
-                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Confirm Invite Changes</div>
+                <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Confirm
+                    Invite Changes</div>
                 <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
                     <p>
                         Are you sure to make changes in this invite?
                     </p>
                 </div>
                 <div class="w-full flex justify-center mt-auto mb-1">
-                    <button onclick="hideConfirmEditInviteModal()" type="button"  class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
-                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500" onclick="confirmEditInvite()">Confirm</button>
+                    <button onclick="hideConfirmEditInviteModal()" type="button"
+                        class="rounded px-2 py-1 text-teal-800 hover:text-teal-500 hover:underline">Cancel</button>
+                    <button class="rounded px-2 py-1 ml-8 text-white bg-teal-800 hover:bg-teal-500"
+                        onclick="confirmEditInvite()">Confirm</button>
                 </div>
             </div>
         </div>
 
         <!-- Invited student notif -->
-        <div id="notif_invite" class="fixed invisible top-30 left-1/2 -translate-x-1/2 flex items-center justify-between w-1/2 md:w-1/5 h-10 rounded-md border border-teal-500 bg-white text-teal-700 text-xs md:text-sm shadow">
+        <div id="notif_invite"
+            class="fixed invisible top-30 left-1/2 -translate-x-1/2 flex items-center justify-between w-1/2 md:w-1/5 h-10 rounded-md border border-teal-500 bg-white text-teal-700 text-xs md:text-sm shadow">
             <p class="flex-1 text-center">
-                Successfully invited <span id="success_invite_count"  class="font-bold"></span> students
+                Successfully invited <span id="success_invite_count" class="font-bold"></span> students
             </p>
             <button class="p-2 hover:bg-gray-200 h-full rounded-md">
                 <i class="fa-solid fa-xmark"></i>
@@ -613,7 +675,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             var $name = $('#event-' + id).data('name');
             var $date = $('#event-' + id).data('date');
             var $log_time = $('#event-' + id).data('log_time');
-            var $users =  $('#event-' + id).data('users');
+            var $users = $('#event-' + id).data('users');
 
             $('#idevent').val(id);
             $('#date').val($date);
@@ -621,9 +683,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('#log_time').val($log_time);
             $('#eventAttendance').attr('href', 'attendance.php?event=' + id);
             if ($users) {
-                $('#inviteBtn').off('click').on('click', showEditInviteModal); 
+                $('#inviteBtn').off('click').on('click', showEditInviteModal);
             } else {
-                $('#inviteBtn').off('click').on('click', showInviteModal); 
+                $('#inviteBtn').off('click').on('click', showInviteModal);
             }
         }
 
@@ -659,14 +721,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function changeHeaderTitle() {
             $('#header_title').text('Events');
         }
-        
+
         function showInviteModal() {
             var $id = $('#idevent').val();
             $('#invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
             $('#invite_event').val($id);
-            $('#edit_event_modal').addClass('invisible');   
-            hideEditInviteModal();         
+            $('#edit_event_modal').addClass('invisible');
+            hideEditInviteModal();
             $('input[type="checkbox"]').prop('checked', false);
         }
 
@@ -679,7 +741,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             var $id = $('#idevent').val();
             var $usersStr = $('#event-' + $id).data('users');
             $usersStr = String($usersStr);
-            if ($usersStr) { 
+            if ($usersStr) {
                 if ($usersStr.includes(',')) {
                     var $usersList = $usersStr.split(',');
                 } else {
@@ -691,8 +753,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             $('#invited-students').text($usersList.length);
 
-            $('#edit_invite_modal_main').find('.student-checkbox').each(function() {
-                var studentValue = $(this).val(); 
+            $('#edit_invite_modal_main').find('.student-checkbox').each(function () {
+                var studentValue = $(this).val();
 
                 if ($usersList.includes(studentValue)) {
                     $(this).prop('checked', true);
@@ -701,13 +763,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-            
+
             $('#edit_invite_modal_main').find('.block-checkbox').each(function () {
                 var $blockCheckbox = $(this);
                 var $studentCheckboxes = $blockCheckbox.closest('.block-container').find('.student-checkbox');
 
                 var totalCheckboxes = $studentCheckboxes.length;
-                var checkedCheckboxes = $studentCheckboxes.filter(':checked').length; 
+                var checkedCheckboxes = $studentCheckboxes.filter(':checked').length;
 
                 $blockCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
             });
@@ -717,17 +779,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 var $blockCheckboxes = $yearCheckbox.closest('.year').find('.block-checkbox');
 
                 var totalCheckboxes = $blockCheckboxes.length;
-                var checkedCheckboxes = $blockCheckboxes.filter(':checked').length; 
+                var checkedCheckboxes = $blockCheckboxes.filter(':checked').length;
 
                 $yearCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
             });
-            
+
             $('#edit_invite_modal_main').find('.program-checkbox').each(function () {
                 var $programCheckbox = $(this);
                 var $yearCheckboxes = $programCheckbox.closest('.program-group').find('.year-checkbox');
 
                 var totalCheckboxes = $yearCheckboxes.length;
-                var checkedCheckboxes = $yearCheckboxes.filter(':checked').length; 
+                var checkedCheckboxes = $yearCheckboxes.filter(':checked').length;
 
                 $programCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
             });
@@ -737,22 +799,22 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             var $afternoon_in = "";
             var $afternoon_out = "";
 
-            if($('#event-' + $id).data('morning_in')) {
+            if ($('#event-' + $id).data('morning_in')) {
                 $morning_in = 1;
             }
-            if($('#event-' + $id).data('morning_out')) {
+            if ($('#event-' + $id).data('morning_out')) {
                 $morning_out = 2;
             }
-            if($('#event-' + $id).data('afternoon_in')) {
+            if ($('#event-' + $id).data('afternoon_in')) {
                 $afternoon_in = 3;
             }
-            if($('#event-' + $id).data('afternoon_out')) {
+            if ($('#event-' + $id).data('afternoon_out')) {
                 $afternoon_out = 4;
             }
 
             var logs_list = [$morning_in, $morning_out, $afternoon_in, $afternoon_out];
-            
-            $('#edit_invite_modal_main').find('.peer').each(function() {
+
+            $('#edit_invite_modal_main').find('.peer').each(function () {
                 var checkboxValue = $(this).val();
                 if (logs_list.map(String).includes(checkboxValue)) {
                     $(this).prop('checked', true);
@@ -773,7 +835,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         let pendingCheckbox = null;
 
         function showLogtimeModal(idlog) {
-            pendingCheckbox = $(idlog); 
+            pendingCheckbox = $(idlog);
             const logText = pendingCheckbox.closest('label').find('span').text();
 
             const status = pendingCheckbox.is(':checked') ? "on" : "off";
@@ -789,13 +851,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             if (pendingCheckbox) {
                 pendingCheckbox.prop('checked', !pendingCheckbox.is(':checked'));
-                pendingCheckbox = null; 
+                pendingCheckbox = null;
             }
         }
 
         function confirmLogtimeChange() {
-            const checkboxState = pendingCheckbox.is(':checked') ? 1 : 0; 
-            const checkbox = pendingCheckbox.val(); 
+            const checkboxState = pendingCheckbox.is(':checked') ? 1 : 0;
+            const checkbox = pendingCheckbox.val();
             var $id = $('#idevent').val();
 
             console.log(checkboxState);
@@ -803,7 +865,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             console.log($id);
 
             $.ajax({
-                url: './includes/update_logtime.php', 
+                url: './includes/update_logtime.php',
                 type: 'POST',
                 data: {
                     id: $id,
@@ -826,8 +888,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             });
         }
 
-        function showConfirmInviteModal () {
-            $count = $('input.student-checkbox:checked').length; 
+        function showConfirmInviteModal() {
+            $count = $('input.student-checkbox:checked').length;
             if ($count == 0) {
                 $('#confirm_invite_error').removeClass("invisible");
             } else {
@@ -844,17 +906,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('#confirm_invite_error').addClass("invisible");
         }
 
-        function showConfirmEditInviteModal () {
-            $count = $('input.student-checkbox:checked').length; 
+        function showConfirmEditInviteModal() {
+            $count = $('input.student-checkbox:checked').length;
             if ($count == 0) {
                 $('#confirm_invite_error').removeClass("invisible");
             } else {
-                $('#confirm_update_invite').removeClass("invisible");  
+                $('#confirm_update_invite').removeClass("invisible");
             }
         }
 
         function hideConfirmEditInviteModal() {
-            $count = $('input.student-checkbox:checked').length; 
+            $count = $('input.student-checkbox:checked').length;
             $('#confirm_update_invite').addClass("invisible");
         }
 
@@ -866,11 +928,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log("Response from server:", response);                    
-                    if (response.trim() === "success") {  
+                    console.log("Response from server:", response);
+                    if (response.trim() === "success") {
                         hideConfirmInviteModal();
                         location.reload();
-                        let count = $('input.student-checkbox:checked').length; 
+                        let count = $('input.student-checkbox:checked').length;
                         // sessionStorage.setItem('invite_success', count); 
                         $('#success_invite_count').text(count);
                         hideInviteModal();
@@ -894,8 +956,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log("Response from server:", response);                    
-                    if (response.trim() === "success") {  
+                    console.log("Response from server:", response);
+                    if (response.trim() === "success") {
                         hideConfirmEditInviteModal();
                         location.reload();
 
@@ -911,9 +973,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
 
         function showNotification() {
-            $('#notif_invite').removeClass('invisible'); 
+            $('#notif_invite').removeClass('invisible');
             setTimeout(function () {
-                $('#notif_invite').addClass('invisible'); 
+                $('#notif_invite').addClass('invisible');
             }, 5000);
         }
 
@@ -928,7 +990,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             if (invite_count) {
                 $('#success_invite_count').text(invite_count);
                 showNotification();
-                sessionStorage.removeItem('invite_success'); 
+                sessionStorage.removeItem('invite_success');
             }
 
             $(document).on('click', function (event) {
@@ -976,19 +1038,19 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#confirm_invite_main').length && $(event.target).closest('#confirm_invite').length) {
                     hideConfirmInviteModal();
-                }  
+                }
             });
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#confirm_invite_error_main').length && $(event.target).closest('#confirm_invite_error').length) {
                     hideConfirmInviteErrorModal();
-                }  
+                }
             });
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#confirm_edit_invite_main').length && $(event.target).closest('#confirm_edit_invite').length) {
                     hideConfirmEditInviteModal();
-                }  
+                }
             });
 
             $('#invite_modal_main').find('.block-checkbox').click(function () {
@@ -1037,7 +1099,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 $programCheckboxes.prop('checked', this.checked);
             });
 
-            $('#invite_modal_main').find('.checkbox-input').on('change', function() {
+            $('#invite_modal_main').find('.checkbox-input').on('change', function () {
                 const tile = $(this).next('.checkbox-tile');
 
                 if (this.checked) {
@@ -1093,7 +1155,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 var $idevent = $programCheckboxes.prop('checked', this.checked);
             });
 
-            $('#edit_invite_modal_main').find('.checkbox-input').on('change', function() {
+            $('#edit_invite_modal_main').find('.checkbox-input').on('change', function () {
                 const tile = $(this).next('.checkbox-tile');
 
                 if (this.checked) {
