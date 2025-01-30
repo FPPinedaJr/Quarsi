@@ -869,6 +869,10 @@ video {
   margin-top: 2rem;
 }
 
+.\!block {
+  display: block !important;
+}
+
 .block {
   display: block;
 }
@@ -1115,6 +1119,10 @@ video {
 
 .max-w-sm {
   max-width: 24rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .flex-shrink-0 {
@@ -1624,6 +1632,10 @@ video {
   padding: 16rem;
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -2045,6 +2057,10 @@ video {
   transition-duration: 300ms;
 }
 
+.duration-200 {
+  transition-duration: 200ms;
+}
+
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
@@ -2406,6 +2422,10 @@ video {
 
   .md\:w-full {
     width: 100%;
+  }
+
+  .md\:w-1\/5 {
+    width: 20%;
   }
 
   .md\:min-w-0 {
