@@ -530,7 +530,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 <div class="w-full h-fit pt-2 mb-2 border-b border-teal-700 font-semibold text-teal-800 text-lg">Invite Error</div>
                 <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
                     <p>
-                        Please select students to invite.
+                        Cannot invite 0 students. Please select students to invite.
                     </p>
                 </div>
                 <div class="w-full flex justify-center mt-auto mb-1">
@@ -595,16 +595,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             var $name = $('#event-' + id).data('name');
             var $date = $('#event-' + id).data('date');
             var $log_time = $('#event-' + id).data('log_time');
-            var $logs = [
-                $('#event-' + id).data('morning_in'), $('#event-' + id).data('morning_out'),
-                $('#event-' + id).data('afternoon_in'), $('#event-' + id).data('afternoon_out'),
-            ]
+            var $users =  $('#event-' + id).data('users');
 
             $('#idevent').val(id);
             $('#date').val($date);
             $('#name').val($name);
             $('#log_time').val($log_time);
-            if ($logs.includes(1)) {
+            if ($users) {
                 $('#inviteBtn').off('click').on('click', showEditInviteModal); 
             } else {
                 $('#inviteBtn').off('click').on('click', showInviteModal); 
@@ -818,10 +815,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
 
         function showConfirmEditInviteModal () {
-            $('#confirm_update_invite').removeClass("invisible");            
+            $count = $('input.student-checkbox:checked').length; 
+            if ($count == 0) {
+                $('#confirm_invite_error').removeClass("invisible");
+            } else {
+                $('#confirm_update_invite').removeClass("invisible");  
+            }
         }
 
         function hideConfirmEditInviteModal() {
+            $count = $('input.student-checkbox:checked').length; 
             $('#confirm_update_invite').addClass("invisible");
         }
 
@@ -836,12 +839,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     console.log("Response from server:", response);                    
                     if (response.trim() === "success") {  
                         hideConfirmInviteModal();
-                        let count = $('input.student-checkbox:checked').length; 
-                        sessionStorage.setItem('invite_success', count); 
                         location.reload();
-
+                        let count = $('input.student-checkbox:checked').length; 
+                        // sessionStorage.setItem('invite_success', count); 
                         $('#success_invite_count').text(count);
-                        showNotification();
                         hideInviteModal();
                     } else {
                         alert('Error: ' + response);
@@ -854,6 +855,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
 
         function confirmEditInvite() {
+
+
             var formData = $('#edit_invite_students_form').serialize();
 
             $.ajax({

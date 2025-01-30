@@ -8,7 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if ($_POST['action'] == 'invite') {
             $students = $_POST['students'];
-            $logtime = $_POST['logtime'];
+            $logtime = [];
+            if (isset($_POST['logtime']) && $_POST['logtime'] != NULL) {
+                $logtime = $_POST['logtime'];
+            }
             $idevent = $_POST['idevent'];
             $null = NULL;
             $def = "00:00:00";
@@ -64,7 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         else if ($_POST['action'] == 'update_invite') {
             $students = $_POST['students'];
-            $logtime = $_POST['logtime'];
+            $logtime =[];
+            if (isset($_POST['logtime']) && $_POST['logtime'] != NULL) {
+                $logtime = $_POST['logtime'];
+            }
             $idevent = $_POST['idevent'];
             $null = NULL;
             $def = "00:00:00";
