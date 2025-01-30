@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($stmt->execute($params)) {
                 echo "success"; 
+                exit();
             } else {
                 echo "Error inserting attendance. Please try again.";
             }
@@ -112,14 +113,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (!empty($values1)) {
                 $query1 .= implode(",", $values1);
                 $stmt1 = $pdo->prepare($query1);
-                if ($stmt1->execute($params1)) {
-                    echo "success";
-                }
+                $stmt1->execute($params1);
             } else {
                 $stmt3 = $pdo->prepare("UPDATE attendance SET morning_in=?, morning_out=?, afternoon_in=?, afternoon_out=? WHERE event=?");
-                if ($stmt3->execute([$morning_in, $morning_out, $afternoon_in, $afternoon_out, $idevent])) {
-                    echo "success";
-                }
+                $stmt3->execute([$morning_in, $morning_out, $afternoon_in, $afternoon_out, $idevent]);
             }
 
             $query2 = "DELETE FROM attendance WHERE user in (";
@@ -136,10 +133,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if(!empty($values2)) {
                 $query2 .= implode(",", $values2) . ")";
                 $stmt2 = $pdo->prepare($query2);
-                if ($stmt2->execute($params2)) {
-                    echo "success";
-                };
+                $stmt2->execute($params2);
             }
+            
+            echo "success";
+            exit();
+
         }
 
     }

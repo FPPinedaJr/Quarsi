@@ -89,6 +89,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
     <body class="flex justify-center w-screen min-h-screen mt-20 overflow-x-hidden">
         <!-- Events List -->
         <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
+            <!-- Add Button -->
+            <div id="add_event_modal_btn" onclick="showAddEventModal()"
+                class="fixed z-20 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
+                <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
+            </div>
 
             <!-- desktop view -->
             <div class="justify-center hidden w-full my-4 md:flex h-fit">
@@ -144,18 +149,30 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             <div class="h-full pl-2 text-zinc-600"><?= $event['formatted-date'] ?></div>
                             <?php if ($event['log_time'] != 0) { ?>
                                 <div class="ml-1 mt-2 flex w-fit rounded-full font-semibold border border-gray-400
-                                <?php if ($event['log_time'] == 1 || $event['log_time'] == 2) {echo 'bg-yellow-200';} else {echo 'bg-rose-300';} ?> 
+                                <?php if ($event['log_time'] == 1 || $event['log_time'] == 2) {
+                                    echo 'bg-yellow-200';
+                                } else {
+                                    echo 'bg-rose-300';
+                                } ?> 
                                 text-sm justify-center items-center px-3 pb-1">
-                                    <?php 
-                                    if ($event['log_time'] == 1) { echo "Morning | In";} 
-                                    if ($event['log_time'] == 2) { echo "Morning | Out";} 
-                                    if ($event['log_time'] == 3) { echo "Afternoon | In";} 
-                                    if ($event['log_time'] == 4) { echo "Afternoon | Out";} 
+                                    <?php
+                                    if ($event['log_time'] == 1) {
+                                        echo "Morning | In";
+                                    }
+                                    if ($event['log_time'] == 2) {
+                                        echo "Morning | Out";
+                                    }
+                                    if ($event['log_time'] == 3) {
+                                        echo "Afternoon | In";
+                                    }
+                                    if ($event['log_time'] == 4) {
+                                        echo "Afternoon | Out";
+                                    }
                                     ?>
                                 </div>
                             <?php } ?>
                         </div>
-                
+
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -176,7 +193,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <div class="flex flex-col w-full my-2 h-fit ">
-                                <input id="add_name" name="name" type="text" required autocomplete="name"
+                                <input id="add_name" name="name" type="text" required autocomplete="off" placeholder="e.g. General Assembly"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="add_name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
@@ -241,7 +258,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <input id="idevent" name="idevent" type="hidden">
                             <div class="flex flex-col w-full my-2 h-fit md:w-full ">
-                                <input id="name" name="name" type="text" required autocomplete="name"
+                                <input id="name" name="name" type="text" required autocomplete="off" placeholder="e.g. General Assembly"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
@@ -928,12 +945,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 success: function (response) {
                     console.log("Response from server:", response);
                     if (response.trim() === "success") {
-                        hideConfirmInviteModal();
                         location.reload();
                         let count = $('input.student-checkbox:checked').length;
-                        // sessionStorage.setItem('invite_success', count); 
+                        sessionStorage.setItem('invite_success', count); 
                         $('#success_invite_count').text(count);
-                        hideInviteModal();
                     } else {
                         alert('Error: ' + response);
                     }
@@ -956,10 +971,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 success: function (response) {
                     console.log("Response from server:", response);
                     if (response.trim() === "success") {
-                        hideConfirmEditInviteModal();
                         location.reload();
-
-                        hideEditInviteModal();
                     } else {
                         alert('Error: ' + response);
                     }
