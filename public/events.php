@@ -189,11 +189,29 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             <div id="edit_event_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-[25rem]">
                 <div class="relative flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Event</p>
-                    <div id="inviteBtn" class="absolute z-30 flex items-center top-2.3 h-fit invite md:top-4 right-5 invite_btn"
-                        onclick="">
-                        <i
-                            class="text-base text-white cursor-pointer md:text-xl fa-solid fa-user-plus hover:text-emerald-400"></i>
+                    <!-- Options -->
+                    <div class="absolute right-3 top-3 p-1 w-fit h-fit">
+                        <div class="relative">
+                            <i onclick="toggleEventOptions()" class="fa-solid fa-ellipsis text-xl text-white hover:text-emerald-400 cursor-pointer"></i>
+                            <div id="eventOptions" class="invisible absolute text-sm -right-4 w-40 border border-gray-500 flex flex-col top-6 bg-white rounded-lg">
+                                <div id="inviteBtn" class="flex w-full py-1 px-2 items-center border-b border-gray-400 rounded-t-lg cursor-pointer hover:bg-gray-200">
+                                    <div class="w-6 h-full flex items-center justify-center mr-2">
+                                        <i class="fa-solid fa-user-plus"></i>
+                                    </div>
+                                    Invite Students
+                                </div>
+                                <a id="eventAttendance" href="" class="">
+                                    <div id="attendanceBtn" class="flex w-full items-center py-1 px-2 cursor-pointer rounded-b-lg hover:bg-gray-200">
+                                        <div class="w-6 h-full flex items-center justify-center mr-2">
+                                            <i class="fa-solid fa-clipboard-list mr-1"></i>
+                                        </div>
+                                        View Attendance
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
                 <!-- fieldset -->
@@ -601,6 +619,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('#date').val($date);
             $('#name').val($name);
             $('#log_time').val($log_time);
+            $('#eventAttendance').attr('href', 'attendance.php?event=' + id);
             if ($users) {
                 $('#inviteBtn').off('click').on('click', showEditInviteModal); 
             } else {
@@ -611,6 +630,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function hideEditEventModal() {
             $('#edit_event_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
+            hideEventOptions();
+        }
+
+        function toggleEventOptions() {
+            $('#eventOptions').toggleClass('invisible');
+        }
+
+        function hideEventOptions() {
+            if (!$('#eventOptions').hasClass('invisible')) {
+                $('#eventOptions').addClass('invisible');
+            }
         }
 
         function showDeleteEventModal() {
@@ -916,6 +946,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#delete_event_modal_main').length && $(event.target).closest('#delete_event_modal').length) {
                     hideDeleteEventModal();
+                }
+            });
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#eventOptions, .fa-ellipsis').length) {
+                    hideEventOptions();
                 }
             });
 
