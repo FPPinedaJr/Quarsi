@@ -3,72 +3,144 @@ session_start();
 include_once "../includes/connect_db.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    $students = $_POST['students'];
-    $logtime = $_POST['logtime'];
-    $idevent = $_POST['idevent'];
-    $null = NULL;
-    $def = "00:00:00";
+    if (isset($_POST['action'])) {
+        ini_set('max_execution_time', '900');
+        
+        if ($_POST['action'] == 'invite') {
+            $students = $_POST['students'];
+            $logtime = [];
+            if (isset($_POST['logtime']) && $_POST['logtime'] != NULL) {
+                $logtime = $_POST['logtime'];
+            }
+            $idevent = $_POST['idevent'];
+            $null = NULL;
+            $def = "00:00:00";
 
-    $morning_in = NULL;
-    $morning_out = NULL;
-    $afternoon_in = NULL;
-    $afternoon_out = NULL;
+            $morning_in = NULL;
+            $morning_out = NULL;
+            $afternoon_in = NULL;
+            $afternoon_out = NULL;
 
-    if (in_array(1, $logtime)) {
-        $morning_in = $def;
+            if (in_array(1, $logtime)) {
+                $morning_in = $def;
+                $stmt = $pdo->prepare("UPDATE event SET morning_in = 1 WHERE idevent = :idevent");
+                $stmt->execute([':idevent' => $idevent]);
+            }
+            if (in_array(2, $logtime)) {
+                $morning_out = $def;
+                $stmt = $pdo->prepare("UPDATE event SET morning_out = 1 WHERE idevent = :idevent");
+                $stmt->execute([':idevent' => $idevent]);
+            }
+            if (in_array(3, $logtime)) {
+                $afternoon_in = $def;
+                $stmt = $pdo->prepare("UPDATE event SET afternoon_in = 1 WHERE idevent = :idevent");
+                $stmt->execute([':idevent' => $idevent]);
+            }
+            if (in_array(4, $logtime)) {
+                $afternoon_out = $def;
+                $stmt = $pdo->prepare("UPDATE event SET afternoon_out = 1 WHERE idevent = :idevent");
+                $stmt->execute([':idevent' => $idevent]);
+            }
+
+            $query = "INSERT INTO attendance (event, user, morning_in, morning_out, afternoon_in, afternoon_out) VALUES ";
+
+            $values = [];
+            $params = [];
+
+            foreach ($students as $index => $student_id) {
+                $values[] = "(?, ?, ?, ?, ?, ?)";
+                array_push($params, $idevent, $student_id, $morning_in, $morning_out, $afternoon_in, $afternoon_out);
+            }
+
+            $query .= implode(", ", $values);
+
+            $stmt = $pdo->prepare($query);
+
+            if ($stmt->execute($params)) {
+                echo "success"; 
+                exit();
+            } else {
+                echo "Error inserting attendance. Please try again.";
+            }
+
+            exit();
+        } 
+        
+        else if ($_POST['action'] == 'update_invite') {
+            $students = $_POST['students'];
+            $logtime =[];
+            if (isset($_POST['logtime']) && $_POST['logtime'] != NULL) {
+                $logtime = $_POST['logtime'];
+            }
+            $idevent = $_POST['idevent'];
+            $null = NULL;
+            $def = "00:00:00";
+
+            $prev = $pdo->prepare("SELECT user FROM attendance WHERE event=:idevent");
+            $prev->execute([':idevent' => $idevent]);
+
+            $prev_students = array_column($prev->fetchAll(PDO::FETCH_ASSOC), 'user');
+            
+            $morning_in = NULL;
+            $morning_out = NULL;
+            $afternoon_in = NULL;
+            $afternoon_out = NULL;
+
+            if (in_array(1, $logtime)) {
+                $morning_in = $def;
+            }
+            if (in_array(2, $logtime)) {
+                $morning_out = $def;
+            }
+            if (in_array(3, $logtime)) {
+                $afternoon_in = $def;
+            }
+            if (in_array(4, $logtime)) {
+                $afternoon_out = $def;
+            }
+
+            $query1 = "INSERT INTO attendance (event, user, morning_in, morning_out, afternoon_in, afternoon_out) VALUES ";
+            $values1 = [];
+            $params1 = [];
+
+            foreach ($students as $student_id):
+                if (!in_array($student_id, $prev_students)) {
+                    $values1[] = "(?, ?, ?, ?, ?, ?)";
+                    array_push($params1, $idevent, $student_id, $morning_in, $morning_out, $afternoon_in, $afternoon_out);
+                }
+            endforeach;
+
+            if (!empty($values1)) {
+                $query1 .= implode(",", $values1);
+                $stmt1 = $pdo->prepare($query1);
+                $stmt1->execute($params1);
+            } else {
+                $stmt3 = $pdo->prepare("UPDATE attendance SET morning_in=?, morning_out=?, afternoon_in=?, afternoon_out=? WHERE event=?");
+                $stmt3->execute([$morning_in, $morning_out, $afternoon_in, $afternoon_out, $idevent]);
+            }
+
+            $query2 = "DELETE FROM attendance WHERE user in (";
+            $values2 = [];
+            $params2 = [];
+
+            foreach ($prev_students as $student_id):
+                if (!in_array($student_id, $students)) {
+                    $values2[] = "?";
+                    array_push($params2, $student_id);
+                }
+            endforeach;
+
+            if(!empty($values2)) {
+                $query2 .= implode(",", $values2) . ")";
+                $stmt2 = $pdo->prepare($query2);
+                $stmt2->execute($params2);
+            }
+            
+            echo "success";
+            exit();
+
+        }
+
     }
-    if (in_array(2, $logtime)) {
-        $morning_out = $def;
-    }
-    if (in_array(3, $logtime)) {
-        $afternoon_in = $def;
-    }
-    if (in_array(4, $logtime)) {
-        $afternoon_out = $def;
-    }
 
-    foreach ($students as $student_id): 
-        $stmt1 = $pdo->prepare("
-                INSERT INTO attendance (event, user, morning_in, morning_out, afternoon_in, afternoon_out) 
-                VALUES (:event, :user, :morning_in, :morning_out, :afternoon_in, :afternoon_out)
-                ");
-        $stmt1->bindParam(':event', $idevent, PDO::PARAM_INT);
-        $stmt1->bindParam(':user', $student_id, PDO::PARAM_INT);
-
-        if (is_null($morning_in)) {
-            $stmt1->bindParam(':morning_in', $morning_in, PDO::PARAM_NULL);
-        } else {
-            $stmt1->bindParam(':morning_in', $morning_in, PDO::PARAM_STR);
-        }
-
-        if (is_null($morning_out)) {
-            $stmt1->bindParam(':morning_out', $morning_out, PDO::PARAM_NULL);
-        } else {
-            $stmt1->bindParam(':morning_out', $morning_out, PDO::PARAM_STR);
-        }
-
-        if (is_null($afternoon_in)) {
-            $stmt1->bindParam(':afternoon_in', $afternoon_in, PDO::PARAM_NULL);
-        } else {
-            $stmt1->bindParam(':afternoon_in', $afternoon_in, PDO::PARAM_STR);
-        }
-
-        if (is_null($afternoon_out)) {
-            $stmt1->bindParam(':afternoon_out', $afternoon_out, PDO::PARAM_NULL);
-        } else {
-            $stmt1->bindParam(':afternoon_out', $afternoon_out, PDO::PARAM_STR);
-        }
-
-        if ($stmt1->execute()) {
-            echo "Recorded students";
-        } else {
-            echo "Error inserting attendance for student ID $student_id. Please try again.";
-        }
-    endforeach;
-    
-    header("Location: ../events.php");
-    exit();
 }
