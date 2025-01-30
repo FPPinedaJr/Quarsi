@@ -141,22 +141,20 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                         <div class="flex flex-col h-full justify-center w-3/5">
                             <div class="pl-2 font-semibold text-lg text-nowrap"><?= $event['name'] ?></div>
-                            <div class="h-full pl-2 text-sm text-gray-400"><?= $event['formatted-date'] ?></div>
+                            <div class="h-full pl-2 text-zinc-600"><?= $event['formatted-date'] ?></div>
+                            <?php if ($event['log_time'] != 0) { ?>
+                                <div class="ml-1 mt-2 flex w-fit rounded-full font-semibold border border-gray-400
+                                <?php if ($event['log_time'] == 1 || $event['log_time'] == 2) {echo 'bg-yellow-200';} else {echo 'bg-rose-300';} ?> 
+                                text-sm justify-center items-center px-3 pb-1">
+                                    <?php 
+                                    if ($event['log_time'] == 1) { echo "Morning | In";} 
+                                    if ($event['log_time'] == 2) { echo "Morning | Out";} 
+                                    if ($event['log_time'] == 3) { echo "Afternoon | In";} 
+                                    if ($event['log_time'] == 4) { echo "Afternoon | Out";} 
+                                    ?>
+                                </div>
+                            <?php } ?>
                         </div>
-                        <?php if ($event['log_time'] != 0) { ?>
-                        <div class="w-2/5">
-                            <table class="w-full text-center"> 
-                                <tr>
-                                    <td colspan="2" class="px-3 font-semibold rounded"><?php if (($event['log_time'] == 1) || ($event['log_time'] == 2)) {echo 'Morning';} else {echo 'Afternoon';} ?></td>
-                                </tr>
-                                <tr>
-                                    <td class="rounded text-sm px-3 mt-1 <?php if (($event['log_time'] == 1) || ($event['log_time'] == 3)) {echo 'bg-teal-300';} ?> " >IN</td>
-                                    <td class="rounded text-sm px-3 mt-1 <?php if (($event['log_time'] == 2) || ($event['log_time'] == 4)) {echo 'bg-teal-300';} ?> " >OUT</td>
-                                    
-                                </tr>
-                            </table>
-                        </div>
-                        <?php } ?>
                 
                     </div>
                 <?php endforeach; ?>
