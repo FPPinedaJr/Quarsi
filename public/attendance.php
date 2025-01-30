@@ -69,7 +69,6 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             <main class="flex flex-col items-center w-full h-full">
 
 
-
                 <div class="w-full overflow-x-hidden overflow-y-auto md:max-w-lg mt-36">
                     <?php
                     $stmt = $pdo->prepare("
@@ -111,7 +110,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                         ?>
 
-                        <h1 class="absolute top-0 left-0 w-full pt-20 pl-4 text-xl text-gray-500"><?= $rows[0]['fullname'] ?>'s
+                        <h1 class="absolute top-0 w-full pt-20 pl-4 text-xl text-gray-500 left-5"><?= $rows[0]['fullname'] ?>'s
                             attendance</h1>
 
                         <!-- Points Div -->
@@ -230,7 +229,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                             ?>
 
-                            <h2 class="w-full p-4 mt-3 text-xl font-bold text-center "  ><span class="text-teal-600">EVENT:</span> 
+                            <h2 class="w-full p-4 mt-3 text-xl font-bold text-center "><span class="text-teal-600">EVENT:</span>
                             <?= $rows[0]['event_name'] ?>
                             </h2>
 
@@ -325,6 +324,20 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             changeHeaderTitle();
             getScorePercentage();
 
+            $('#search_form').on('submit', function (e) {
+                e.preventDefault();
+                let stud_num = $('#search_input').val();
+                console.log(stud_num);
+                window.location.href = 'attendance.php?student=' + stud_num;
+            });
+
+            $('#search_input').on('input', function () {
+                this.setCustomValidity('');
+            });
+
+            $('#search_input').on('invalid', function () {
+                this.setCustomValidity('Example: 2020-8-1234');
+            });
         });
     </script>
 
