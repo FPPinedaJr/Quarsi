@@ -330,10 +330,9 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             <label for="<?= $log ?>" class="block text-sm font-medium text-gray-700"><?= $label ?></label>
                             <select name="<?= $log ?>" id="<?= $log ?>"
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                                <option value="null" disabled>-- no attendance --</option>
                                 <option value="11:11:11">Excused</option>
-                                <option id="real_val" value="val">val</option>
-                                <option value="null">No Attendance</option>
-                                <option value="00:00:00">Absent</option>
+                                <option value="00:00:00" >Absent</option>
                             </select>
                         </div>
                     <?php } ?>
