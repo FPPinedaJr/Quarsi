@@ -141,7 +141,8 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 <?php foreach ($rows as $row): ?>
-                                    <tr onclick="showEditAttendanceModal(this, <?= $row['idevent'] ?>, <?= $row['iduser'] ?>)"
+                                    <tr onclick="showEditAttendanceModal(this, <?= $row['iduser'] ?>, <?= $row['idevent'] ?>)"
+                                        id="row_ <?= $row['iduser'] ?>_<?= $row['idevent'] ?>"
                                         class="border cursor-pointer select-none bg-gray-50"
                                         data-student-name="<?= $row['fullname'] ?? 'null' ?>"
                                         data-event-name="<?= $row['event_name'] ?? 'null' ?>"
@@ -253,7 +254,8 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
                                 <?php foreach ($rows as $row): ?>
-                                        <tr onclick="showEditAttendanceModal(this, <?= $row['idevent'] ?>, <?= $row['iduser'] ?>)"
+                                        <tr onclick="showEditAttendanceModal(this, <?= $row['iduser'] ?>, <?= $row['idevent'] ?>)"
+                                            id="row_ <?= $row['iduser'] ?>_<?= $row['idevent'] ?>"
                                             class="border cursor-pointer select-none bg-gray-50"
                                             data-student-name="<?= $row['fullname'] ?? 'null' ?>"
                                             data-event-name="<?= $row['event_name'] ?? 'null' ?>"
@@ -319,7 +321,8 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     </button>
                 </div>
                 <h3 class="pt-5 mx-5 text-lg font-semibold">Name: <span id="student_name" class="font-normal"></span></h3>
-                <h3 class="pb-5 mx-5 text-lg font-semibold border-b border-gray-400">Event: <span id="event_name" class="font-normal"></span></h3>
+                <h3 class="pb-5 mx-5 text-lg font-semibold border-b border-gray-400">Event: <span id="event_name"
+                        class="font-normal"></span></h3>
                 <form id="edit_attendance_form" class="p-6 space-y-4">
                     <?php
                     $logs = ['morning_in', 'morning_out', 'afternoon_in', 'afternoon_out'];
@@ -332,17 +335,21 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
                                 <option value="null" disabled>-- no attendance --</option>
                                 <option value="11:11:11">Excused</option>
-                                <option value="00:00:00" >Absent</option>
+                                <option value="00:00:00">Absent</option>
                             </select>
                         </div>
                     <?php } ?>
 
-                    <div class="flex justify-end p-4 rounded-b-lg bg-gray-50">
+                    <div class="flex justify-end p-4 rounded-b-lg">
                         <button type="submit"
                             class="px-6 py-2 font-semibold text-white bg-teal-700 rounded-md hover:bg-teal-800 focus:ring-2 focus:ring-teal-500 focus:outline-none">
                             Edit
                         </button>
                     </div>
+
+
+                    <input type="text" id="event_id" value="" class="hidden">
+                    <input type="text" id="user_id" value="" class="hidden">
                 </form>
 
             </div>
@@ -353,7 +360,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
     </body>
 
     <script>
-        function showEditAttendanceModal(row, idevent, iduser) {
+        function showEditAttendanceModal(row, user_id, event_id) {
             $('#edit_attendance_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
 
@@ -361,7 +368,9 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             const studentName = $(row).data('student-name') || 'No name available';
             const eventName = $(row).data('event-name') || 'No event available';
 
-            // Set the content of the spans
+            $('#user_id').val(user_id);
+            $('#event_id').val(event_id);
+
             $('#student_name').text(studentName);
             $('#event_name').text(eventName);
 
@@ -382,7 +391,6 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     $select.val(value);
                 }
 
-                // Disable select if it's "No Attendance" or has a real timestamp
                 let isRealValue = value !== '00:00:00' && value !== '11:11:11' && value !== 'null';
                 let isNoAttendance = value === 'null';
 
@@ -442,6 +450,47 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     hideEditAttendanceModal();
                 }
             })
+
+            if (window.location.hash) {
+                let row_id = window.location.hash.substring(1); 
+                let row = document.getElementById(row_id);
+
+                if (row) {
+                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+
+            $('#edit_attendance_form').on('submit', function (e) {
+                e.preventDefault();
+
+                let user_id = $('#user_id').val();
+                let event_id = $('#event_id').val();
+
+                let morning_in = $('#morning_in').val() || "";
+                let morning_out = $('#morning_out').val() || "";
+                let afternoon_in = $('#afternoon_in').val() || "";
+                let afternoon_out = $('#afternoon_out').val() || "";
+
+                console.log("morning in: " + morning_in)
+                console.log("mornig out: " + morning_out)
+                $.ajax({
+                    url: 'includes/edit_attendance.php',
+                    method: 'POST',
+                    data: {
+                        user_id: user_id,
+                        event_id: event_id,
+                        morning_in: morning_in,
+                        morning_out: morning_out,
+                        afternoon_in: afternoon_in,
+                        afternoon_out: afternoon_out
+                    },
+                    success: function (response) {
+                        window.location.hash = response;
+                        location.reload();
+                    }
+
+                });
+            });
         });
     </script>
 
