@@ -68,10 +68,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         WHEN e.log_time = 2 THEN 'morning_out'
                         WHEN e.log_time = 3 THEN 'afternoon_in'
                         WHEN e.log_time = 4 THEN 'afternoon_out'
-                    END AS time,
-                    e.is_active
+                    END AS time
                     FROM event e
-                    WHERE is_active = 1;
+                    ORDER BY log_time DESC, name;
                 ");
                     $stmt->execute();
                     $events = $stmt->fetchall(PDO::FETCH_ASSOC);
