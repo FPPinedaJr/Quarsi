@@ -73,8 +73,10 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     <?php
                     $stmt = $pdo->prepare("
                     SELECT 
+                            user.iduser,
+                            e.idevent,
                             CONCAT(user.f_name, ' ', user.l_name) AS fullname, 
-                            e.name,
+                            e.name as event_name,
                             a.morning_in,
                             a.morning_out,
                             a.afternoon_in,
@@ -110,7 +112,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                         ?>
 
-                        <h1 class="absolute top-0 w-full pt-20 pl-4 text-xl text-gray-500 left-5"><?= $rows[0]['fullname'] ?>'s
+                        <h1 class="absolute top-0 w-5/6 pt-20 pl-4 text-xl text-gray-500 left-5"><?= $rows[0]['fullname'] ?>'s
                             attendance</h1>
 
                         <!-- Points Div -->
@@ -139,13 +141,18 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 <?php foreach ($rows as $row): ?>
-                                    <tr class="border select-none bg-gray-50 ">
-                                        <td class="p-2 text-left"><?= htmlspecialchars($row['name']) ?></td>
+                                    <tr onclick="showEditAttendanceModal(this, <?= $row['idevent'] ?>, <?= $row['iduser'] ?>)"
+                                        class="border cursor-pointer select-none bg-gray-50"
+                                        data-student-name="<?= $row['fullname'] ?? 'null' ?>"
+                                        data-event-name="<?= $row['event_name'] ?? 'null' ?>"
+                                        data-morning-in="<?= $row['morning_in'] ?? 'null' ?>"
+                                        data-morning-out="<?= $row['morning_out'] ?? 'null' ?>"
+                                        data-afternoon-in="<?= $row['afternoon_in'] ?? 'null' ?>"
+                                        data-afternoon-out="<?= $row['afternoon_out'] ?? 'null' ?>">
 
-                                        <?php
+                                        <td class="p-2 text-left"><?= $row['event_name'] ?></td>
 
-
-                                        foreach ($fields as $field): ?>
+                                        <?php foreach ($fields as $field): ?>
                                             <td class="p-2 text-center">
                                                 <span class="relative overflow-x-hidden cursor-default select-none group">
                                                     <?php
@@ -159,18 +166,12 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                                         echo '➖';
                                                     }
                                                     ?>
-
-
-                                                    <!-- tooltip -->
                                                     <div
                                                         class="select-none absolute left-0 px-2 py-1 text-[10px] text-white transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full w-max group-hover:opacity-100">
                                                         <?= getTooltip($row[$field]) ?>
                                                     </div>
-
                                                 </span>
                                             </td>
-
-
                                         <?php endforeach; ?>
                                     </tr>
                                     <?php
@@ -202,7 +203,9 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     <div class="w-full overflow-x-hidden overflow-y-auto md:max-w-lg">
                         <?php
                         $stmt = $pdo->prepare("
-                        SELECT 
+                        SELECT  
+                                user.iduser,
+                                e.idevent,
                                 CONCAT(user.l_name, ', ', user.f_name) AS fullname, 
                                 e.name AS event_name,
                                 a.morning_in,
@@ -250,8 +253,15 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                 </thead>
                                 <tbody class="divide-y divide-gray-200">
                                 <?php foreach ($rows as $row): ?>
-                                        <tr class="border select-none bg-gray-50 ">
-                                            <td class="p-2 text-left"><?= htmlspecialchars($row['fullname']) ?></td>
+                                        <tr onclick="showEditAttendanceModal(this, <?= $row['idevent'] ?>, <?= $row['iduser'] ?>)"
+                                            class="border cursor-pointer select-none bg-gray-50"
+                                            data-student-name="<?= $row['fullname'] ?? 'null' ?>"
+                                            data-event-name="<?= $row['event_name'] ?? 'null' ?>"
+                                            data-morning-in="<?= $row['morning_in'] ?? 'null' ?>"
+                                            data-morning-out="<?= $row['morning_out'] ?? 'null' ?>"
+                                            data-afternoon-in="<?= $row['afternoon_in'] ?? 'null' ?>"
+                                            data-afternoon-out="<?= $row['afternoon_out'] ?? 'null' ?>">
+                                            <td class="p-2 text-left"><?= $row['fullname'] ?></td>
 
                                             <?php
 
@@ -297,10 +307,98 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
         <?php } ?>
 
 
+        <div id="edit_attendance_modal"
+            class="fixed inset-0 z-50 flex items-center justify-center invisible bg-black bg-opacity-50 backdrop-blur-md">
+            <div id="edit_attendance_modal_main" class="w-11/12 max-w-xl bg-white rounded-lg shadow-lg md:w-full">
+
+                <div class="flex items-center justify-between px-6 py-4 bg-teal-700 rounded-t-lg">
+                    <p class="text-2xl font-semibold text-white">Edit Attendance</p>
+                    <button onclick="hideEditAttendanceModal()" id="close_modal"
+                        class="text-2xl text-white hover:text-gray-200">
+                        &times;
+                    </button>
+                </div>
+                <h3 class="pt-5 mx-5 text-lg font-semibold">Name: <span id="student_name" class="font-normal"></span></h3>
+                <h3 class="pb-5 mx-5 text-lg font-semibold border-b border-gray-400">Event: <span id="event_name" class="font-normal"></span></h3>
+                <form id="edit_attendance_form" class="p-6 space-y-4">
+                    <?php
+                    $logs = ['morning_in', 'morning_out', 'afternoon_in', 'afternoon_out'];
+                    foreach ($logs as $log) {
+                        $label = ucwords(str_replace('_', ' ', $log)); // Convert snake_case to Title Case
+                        ?>
+                        <div>
+                            <label for="<?= $log ?>" class="block text-sm font-medium text-gray-700"><?= $label ?></label>
+                            <select name="<?= $log ?>" id="<?= $log ?>"
+                                class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                                <option value="11:11:11">Excused</option>
+                                <option id="real_val" value="val">val</option>
+                                <option value="null">No Attendance</option>
+                                <option value="00:00:00">Absent</option>
+                            </select>
+                        </div>
+                    <?php } ?>
+
+                    <div class="flex justify-end p-4 rounded-b-lg bg-gray-50">
+                        <button type="submit"
+                            class="px-6 py-2 font-semibold text-white bg-teal-700 rounded-md hover:bg-teal-800 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                            Edit
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
 
     </body>
 
     <script>
+        function showEditAttendanceModal(row, idevent, iduser) {
+            $('#edit_attendance_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+
+            const logs = ['morning_in', 'morning_out', 'afternoon_in', 'afternoon_out'];
+            const studentName = $(row).data('student-name') || 'No name available';
+            const eventName = $(row).data('event-name') || 'No event available';
+
+            // Set the content of the spans
+            $('#student_name').text(studentName);
+            $('#event_name').text(eventName);
+
+            logs.forEach(log => {
+                let value = $(row).attr('data-' + log.replace('_', '-')) || 'null';
+                let $select = $('#' + log);
+
+
+                if (value !== '00:00:00' && value !== '11:11:11' && value !== 'null' && value) {
+                    let $realOption = $select.find('#real_val');
+                    if ($realOption.length) {
+                        $realOption.val(value).text(value);
+                    } else {
+                        $select.append(`<option id="real_val" value="${value}">${value}</option>`);
+                    }
+                    $select.val(value);
+                } else {
+                    $select.val(value);
+                }
+
+                // Disable select if it's "No Attendance" or has a real timestamp
+                let isRealValue = value !== '00:00:00' && value !== '11:11:11' && value !== 'null';
+                let isNoAttendance = value === 'null';
+
+                $select.prop('disabled', isRealValue || isNoAttendance);
+            });
+        }
+
+
+
+
+        function hideEditAttendanceModal() {
+            $('#edit_attendance_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
         function getScorePercentage() {
             var logIn = <?= $LogIn ?>;
             var totalLog = <?= $TotalLog ?>;
@@ -338,6 +436,13 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             $('#search_input').on('invalid', function () {
                 this.setCustomValidity('Example: 2020-8-1234');
             });
+
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#edit_attendance_modal_main').length && $(event.target).closest('#edit_attendance_modal').length) {
+                    hideEditAttendanceModal();
+                }
+            })
         });
     </script>
 
