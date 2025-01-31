@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            
                 $mail->Port       = 465;                                    
 
-                $mail->setFrom('acsmailer2303@gmail.com', 'Mailer');
+                $mail->setFrom('acsmailer2303@gmail.com', 'Quarsi');
                 $mail->addAddress($email);   
 
                 $mail->isHTML(true);                                  
@@ -106,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <h3>Change Password OTP Verification</h3>
                                 <p>Use the OTP below to verify your request:</p>
                                 <div class='otp-box'>$otp</div>
-                                <p>This code expires in <strong>5 minutes</strong>.</p>
                             </div>
                             <div class='footer'>If you did not request this, please ignore this email.</div>
                         </div>

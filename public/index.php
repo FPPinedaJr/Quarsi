@@ -131,7 +131,6 @@ if (isset($_SESSION['logged_in'])) {
       </div>
       <div class="mt-4 mb-2 text-xs text-zinc-500 w-3/4 justify-center text-center flex flex-wrap">
         Please enter the 4-digit one-time-password (OTP) we sent to your email to verify.
-        <p class="font-semibold mt-2">OTP expires after <strong>5 minutes</strong>.</p>
       </div>
       <button class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600 mb-6" type="button" onclick="verifyOTP()">Submit</button>
     </div>
@@ -159,19 +158,20 @@ if (isset($_SESSION['logged_in'])) {
   <div id="change_pass_modal" class="invisible fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center">
     <div id="change_pass_modal_main" class="flex items-center flex-col md:w-1/4 w-10/12 px-6 py-2 bg-white rounded-md">
       <div class="w-full h-fit py-1 font-bold text-3xl text-center">Change Password</div>
-      <form action="" method="POST"  class="flex flex-col w-full mt-4">
-        <label for="pass1" class=" text-zinc-700">
+      <form action="change_password.php" method="POST"  class="flex flex-col w-full mt-4">
+        <input id="change_pass_email" type="hidden" name="email">
+        <label for="pass1CP" class=" text-zinc-700">
           Enter your new password:
         </label>
-        <input id="pass1" type="password" name="password" 
+        <input id="pass1CP" type="password" name="password" 
         class="mt-2 w-full px-2 py-1 focus:outline-none rounded-md border border-teal-700">
-        <label for="pass2" class=" text-zinc-700">
+        <label for="pass2CP" class=" text-zinc-700">
           Re-enter your password:
         </label>
-        <input id="pass2" type="password" name="pass2" 
+        <input id="pass2CP" type="password" name="pass2" 
         class="mt-2 w-full px-2 py-1 focus:outline-none rounded-md border border-teal-700">
         <div class="flex justify-center mt-4 mb-2">
-          <button type="button" onclick="" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Confirm</button>
+          <button type="button" onclick="changePassword()" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Confirm</button>
         </div>
       </form>
     </div>
@@ -179,15 +179,15 @@ if (isset($_SESSION['logged_in'])) {
 
 
   <!-- Error modal -->
-  <div id="error_message" class="w-1/5 invisible flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-red-600 rounded-lg z-20 bg-rose-200">
+  <div id="error_message" class="w-96 invisible flex h-14 items-center fixed top-2 left-50 translate-x-1/2d border-2 border-red-600 rounded-lg z-20 bg-rose-200">
     <div id="e_message" class="w-full h-full flex justify-center items-center flex-1 text-sm"></div>
-    <div class="flex h-full w-8 justify-center items-center hover:bg-gray-200 rounded-e-lg cursor-pointer"><i onclick="hideErrorMessage()" class="text-xs fa-solid fa-x"></i></div>
+    <div class="flex w-8 h-8 ml-1 justify-center items-center hover:bg-red-400/50 rounded cursor-pointer"><i onclick="hideErrorMessage()" class="text-xs fa-solid fa-x"></i></div>
    </div>
 
   <!-- Success modal -->
-  <div id="success_message" class="w-1/5 invisible flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-teal-600 rounded-lg z-20 bg-[#e4ffee]">
+  <div id="success_message" class="w-96 invisible items-center flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-teal-600 rounded-lg z-20 bg-[#e4ffee]">
     <div id="s_message" class="w-full h-full flex justify-center items-center flex-1 text-sm"></div>
-    <div class="flex h-full w-8 justify-center items-center hover:bg-gray-200 rounded-e-lg cursor-pointer"><i onclick="hideSuccessMessage()" class="text-xs fa-solid fa-x"></i></div>
+    <div class="flex w-8 h-8 ml-1 justify-center items-center hover:bg-gray-300/50 rounded cursor-pointer"><i onclick="hideSuccessMessage()" class="text-xs fa-solid fa-x"></i></div>
    </div>
 
   <script>
@@ -224,11 +224,11 @@ if (isset($_SESSION['logged_in'])) {
 
     function hideOTPModal() {
       $('#otp_modal').addClass('invisible');
-      $('#otp')
     }
 
     function showChangePassword() {
       $('#change_pass_modal').removeClass('invisible');
+      hideOTPModal();
     }
 
     function showErrorMessage() {
@@ -295,9 +295,11 @@ if (isset($_SESSION['logged_in'])) {
         },
         success: function(response) {
           if (response === "match") {
+            $('#change_pass_email').val($email);
             showChangePassword();
           } else {
             $('#e_message').text('OTP did not match. Re-enter the OTP code again');
+            showErrorMessage();
             $('#digit-1').val(''); 
             $('#digit-2').val(''); 
             $('#digit-3').val(''); 
@@ -305,6 +307,44 @@ if (isset($_SESSION['logged_in'])) {
           }
         }
       })
+    }
+
+    function changePassword() {
+      var $email = $('#change_pass_email').val();
+      var $pass1 = $('#pass1CP').val();
+      var $pass2 = $('#pass2CP').val();
+
+      if ($pass1 == $pass2) {
+
+        if ($pass1.length < 8) {
+          $('#e_message').text('Password should be at least 8 characters.');
+          showErrorMessage();
+        } else {
+          $.ajax({
+            url: "includes/change_password.php",
+            type: "POST",
+            data: {
+              email: $email,
+              password: $pass2
+            },
+            success: function(response) {
+              if (response === "success") {
+                $('#change_pass_modal').addClass('invisible');
+                $('#s_message').text('Successfully changed password!');
+                showSuccessMessage();
+              } else {
+                $('#change_pass_modal').addClass('invisible');
+                $('#e_message').text('Cannot change password');
+                showErrorMessage();
+              }
+            }
+          })
+        }
+      } else {
+        $('#e_message').text('Password did not match!');
+        showErrorMessage();
+      }
+      
     }
 
 
@@ -419,10 +459,6 @@ if (isset($_SESSION['logged_in'])) {
       $(document).on('click', function (event) {
         if (!$(event.target).closest('#forgot_pass_modal_main').length && $(event.target).closest('#forgot_pass_modal').length) {
           hideForgotPassModal();
-        }
-
-        if (!$(event.target).closest('#otp_modal_main').length && $(event.target).closest('#otp_modal').length) {
-          hideOTPModal();
         }
       })
 

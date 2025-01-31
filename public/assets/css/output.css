@@ -1193,6 +1193,10 @@ video {
   width: 100vw;
 }
 
+.w-60 {
+  width: 15rem;
+}
+
 .min-w-16 {
   min-width: 4rem;
 }
@@ -2412,6 +2416,26 @@ video {
 .hover\:bg-teal-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(17 94 89 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-gray-200\/50:hover {
+  background-color: rgb(229 231 235 / 0.5);
+}
+
+.hover\:bg-gray-200\/20:hover {
+  background-color: rgb(229 231 235 / 0.2);
+}
+
+.hover\:bg-gray-400\/50:hover {
+  background-color: rgb(156 163 175 / 0.5);
+}
+
+.hover\:bg-gray-300\/50:hover {
+  background-color: rgb(209 213 219 / 0.5);
+}
+
+.hover\:bg-red-400\/50:hover {
+  background-color: rgb(248 113 113 / 0.5);
 }
 
 .hover\:text-\[\#6a6b3a\]:hover {
