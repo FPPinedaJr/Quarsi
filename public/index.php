@@ -110,9 +110,10 @@ if (isset($_SESSION['logged_in'])) {
   </div>
 
   <!-- Submit OTP -->
-  <div class="invisible fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center">
-    <div class="flex items-center flex-col md:w-1/4 w-10/12 px-4 py-2 bg-white rounded-md">
+  <div id="otp_modal" class="invisible fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center">
+    <div id="otp_modal_main" class="flex items-center flex-col md:w-1/4 w-10/12 px-4 py-2 bg-white rounded-md">
       <div class="text-center font-bold text-3xl mt-3">OTP Verification</div>
+      <input id="otp_email" type="hidden" name="email">
       <!-- Input OTP -->
       <div class="w-3/4 h-fit flex justify-between mt-7 px-4">
         <input id="digit-1"
@@ -128,10 +129,11 @@ if (isset($_SESSION['logged_in'])) {
           class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
           autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
       </div>
-      <div class="mt-4 mb-2 text-xs text-zinc-500 w-3/4 text-center flex flex-wrap">
+      <div class="mt-4 mb-2 text-xs text-zinc-500 w-3/4 justify-center text-center flex flex-wrap">
         Please enter the 4-digit one-time-password (OTP) we sent to your email to verify.
+        <p class="font-semibold mt-2">OTP expires after <strong>5 minutes</strong>.</p>
       </div>
-      <button class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600 mb-6" type="button">Submit</button>
+      <button class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600 mb-6" type="button" onclick="verifyOTP()">Submit</button>
     </div>
   </div>
 
@@ -152,6 +154,41 @@ if (isset($_SESSION['logged_in'])) {
       </form>
     </div>
   </div>
+
+  <!-- Change password -->
+  <div id="change_pass_modal" class="invisible fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center">
+    <div id="change_pass_modal_main" class="flex items-center flex-col md:w-1/4 w-10/12 px-6 py-2 bg-white rounded-md">
+      <div class="w-full h-fit py-1 font-bold text-3xl text-center">Change Password</div>
+      <form action="" method="POST"  class="flex flex-col w-full mt-4">
+        <label for="pass1" class=" text-zinc-700">
+          Enter your new password:
+        </label>
+        <input id="pass1" type="password" name="password" 
+        class="mt-2 w-full px-2 py-1 focus:outline-none rounded-md border border-teal-700">
+        <label for="pass2" class=" text-zinc-700">
+          Re-enter your password:
+        </label>
+        <input id="pass2" type="password" name="pass2" 
+        class="mt-2 w-full px-2 py-1 focus:outline-none rounded-md border border-teal-700">
+        <div class="flex justify-center mt-4 mb-2">
+          <button type="button" onclick="" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Error modal -->
+  <div id="error_message" class="w-1/5 invisible flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-red-600 rounded-lg z-20 bg-rose-200">
+    <div id="e_message" class="w-full h-full flex justify-center items-center flex-1 text-sm"></div>
+    <div class="flex h-full w-8 justify-center items-center hover:bg-gray-200 rounded-e-lg cursor-pointer"><i onclick="hideErrorMessage()" class="text-xs fa-solid fa-x"></i></div>
+   </div>
+
+  <!-- Success modal -->
+  <div id="success_message" class="w-1/5 invisible flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-teal-600 rounded-lg z-20 bg-[#e4ffee]">
+    <div id="s_message" class="w-full h-full flex justify-center items-center flex-1 text-sm"></div>
+    <div class="flex h-full w-8 justify-center items-center hover:bg-gray-200 rounded-e-lg cursor-pointer"><i onclick="hideSuccessMessage()" class="text-xs fa-solid fa-x"></i></div>
+   </div>
 
   <script>
     function resetComponent() {
@@ -177,13 +214,52 @@ if (isset($_SESSION['logged_in'])) {
 
     function hideForgotPassModal() {
       $('#forgot_pass_modal').addClass('invisible');
+      $('#corp_email').val('');
+    }
+
+    function showOTPModal() {
+      $('#otp_modal').removeClass('invisible');
+      hideForgotPassModal();
+    }
+
+    function hideOTPModal() {
+      $('#otp_modal').addClass('invisible');
+      $('#otp')
+    }
+
+    function showChangePassword() {
+      $('#change_pass_modal').removeClass('invisible');
+    }
+
+    function showErrorMessage() {
+      $('#error_message').removeClass('invisible').fadeIn(300);
+      setTimeout(function() {
+        $('#error_message').fadeOut(1000, function() {
+          $(this).addClass('invisible');
+        });
+      }, 5000);
+    }
+
+    function hideErrorMessage() {
+      $('#error_message').addClass('invisible');
+    }
+
+    function showSuccessMessage() {
+      $('#success_message').removeClass('invisible').fadeIn(300);
+      setTimeout(function() {
+        $('#success_message').fadeOut(1000, function() {
+          $(this).addClass('invisible');
+        });
+      }, 5000);
+    }
+
+    function hideSuccessMessage() {
+      $('#success_message').addClass('invisible');
     }
 
     function verifyEmail() {
       var $email = $('#corp_email').val();
       var $action = $('input[name=action]').val();
-      console.log($email);
-      console.log($action);
       $.ajax({
         url: "includes/send_otp.php",
         type: "POST",
@@ -194,13 +270,41 @@ if (isset($_SESSION['logged_in'])) {
         success: function(response) {
           console.log(response);
             if (response === "exists") {
-                alert("Email found! Sending OTP...");
-                // $("#forgot_pass_modal form").submit();
+                showOTPModal();
+                $('#s_message').text('OTP is being sent to your email.')
+                showSuccessMessage();
+                $('#otp_email').val($email)
             } else {
-                alert("Email not registered!");
+                $('#e_message').text('Account does not exist.')
+                showErrorMessage();
             }
         }
     });
+    }
+
+    function verifyOTP() {
+      var $otp = $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val();
+      var $email = $('#otp_email').val();
+
+      $.ajax({
+        url: "includes/verify_otp.php",
+        type: "POST",
+        data: {
+          email: $email,
+          code: $otp
+        },
+        success: function(response) {
+          if (response === "match") {
+            showChangePassword();
+          } else {
+            $('#e_message').text('OTP did not match. Re-enter the OTP code again');
+            $('#digit-1').val(''); 
+            $('#digit-2').val(''); 
+            $('#digit-3').val(''); 
+            $('#digit-4').val('');
+          }
+        }
+      })
     }
 
 
@@ -315,6 +419,10 @@ if (isset($_SESSION['logged_in'])) {
       $(document).on('click', function (event) {
         if (!$(event.target).closest('#forgot_pass_modal_main').length && $(event.target).closest('#forgot_pass_modal').length) {
           hideForgotPassModal();
+        }
+
+        if (!$(event.target).closest('#otp_modal_main').length && $(event.target).closest('#otp_modal').length) {
+          hideOTPModal();
         }
       })
 
