@@ -69,15 +69,18 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
         <div id="organizationGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             <?php foreach ($rows as $row) { ?>
-                <div class="p-4 bg-teal-200 rounded-lg shadow ">
+                <div class="p-4 bg-teal-200 rounded-lg shadow " data-id="<?= $row['idorganization'] ?>"
+                    data-name="<?= $row['name'] ?>" data-short_name="<?= $row['short_name'] ?>"
+                    data-program="<?= $row['program'] ?>" data-abbreviation="<?= $row['abbreviation'] ?>">
                     <h3 class="text-lg font-bold"><?= $row['name'] ?> (<?= $row['short_name'] ?>)</h3>
                     <p><strong>Program:</strong> <?= $row['program'] ?></p>
                     <div class="mt-2 space-x-2">
-                        <button
-                            onclick="editOrganization(<?= $row['idorganization'] ?>, <?= $row['name'] ?>, <?= $row['short_name'] ?>, <?= $row['program'] ?>, <?= $row['abbreviation'] ?>)"
-                            class="px-2 py-1 text-yellow-500 border border-teal-600 rounded hover:text-yellow-400 ">Edit <i
-                                class="fa-solid fa-pencil"></i></button>
-                        <button onclick="deleteOrganization(<?= $row['idorganization'] ?>, <?= $row['name'] ?>)"
+                        <button onclick="showEditModal(this)"
+                            class="px-2 py-1 text-yellow-500 border border-teal-600 rounded hover:text-yellow-400">
+                            Edit <i class="fa-solid fa-pencil"></i>
+                        </button>
+
+                        <button onclick="showDeleteModal(this)"
                             class="px-2 py-1 text-red-500 bg-teal-200 border border-teal-600 rounded hover:text-red-400">Delete
                             <i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -85,82 +88,197 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
             <?php } ?>
 
             <button onclick="showOrgModal()"
-                class="p-4 text-5xl font-bold text-blue-500 border border-blue-500 rounded-lg shadow hover:bg-teal-100">
+                class="p-4 text-5xl font-bold text-teal-400 border border-teal-400 rounded-lg shadow hover:text-teal-500 hover:border-teal-500">
                 <i class="fa-solid fa-plus"></i></button>
         </div>
     </main>
 
 
-    <!-- Modal -->
     <div id="orgModal" class="fixed inset-0 flex items-center justify-center invisible bg-gray-800 bg-opacity-50">
         <div id="orgModalMain" class="p-6 bg-white rounded shadow w-96">
-            <h3 id="modalTitle" class="mb-4 text-xl font-bold">Add Organization</h3>
-            <form id="organizationForm" class="space-y-4">
-                <input type="hidden" id="id" name="id">
-                <input type="text" id="name" name="name" placeholder="Name" required class="w-full p-2 border rounded">
-                <input type="text" id="short_name" name="short_name" placeholder="Short Name" required
-                    class="w-full p-2 border rounded">
-                <input type="text" id="program" name="program" placeholder="Program" required
-                    class="w-full p-2 border rounded">
-                <input type="text" id="abbreviation" name="abbreviation" placeholder="Abbreviation" required
-                    class="w-full p-2 border rounded">
-                <button type="submit" class="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600">Save</button>
+            <h3 id="modalTitle" class="mb-4 text-xl font-bold text-teal-700"><span id="add_edit">Add</span> Organization
+            </h3>
+            <form id="organizationForm">
+                <div class="space-y-2">
+
+                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="method" name="method">
+
+                    <label for="name" class="block mt-1 font-medium text-teal-700">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Name" required autocomplete="off"
+                        class="w-full p-2 border border-teal-500 rounded focus:outline-none focus:ring-2 focus:ring-teal-500">
+
+                    <label for="short_name" class="block mt-1 font-medium text-teal-700">Short Name:</label>
+                    <input type="text" id="short_name" name="short_name" placeholder="Short Name" required
+                        autocomplete="off"
+                        class="w-full p-2 border border-teal-500 rounded focus:outline-none focus:ring-2 focus:ring-teal-500">
+
+                    <label for="program" class="block mt-1 font-medium text-teal-700">Program:</label>
+                    <input type="text" id="program" name="program" placeholder="Program" required autocomplete="off"
+                        class="w-full p-2 border border-teal-500 rounded focus:outline-none focus:ring-2 focus:ring-teal-500">
+
+                    <label for="abbreviation" class="block mt-1 font-medium text-teal-700">Abbreviation:</label>
+                    <input type="text" id="abbreviation" name="abbreviation" placeholder="Abbreviation" required
+                        autocomplete="off"
+                        class="w-full p-2 border border-teal-500 rounded focus:outline-none focus:ring-2 focus:ring-teal-500">
+                </div>
+
+                <button onclick="submitData()" class="w-full p-2 mt-4 text-white bg-teal-500 rounded hover:bg-teal-600">
+                    Confirm
+                </button>
             </form>
             <button onclick="hideOrgModal()"
-                class="w-full p-2 mt-4 text-white bg-gray-500 rounded hover:bg-gray-600">Cancel</button>
+                class="w-full p-2 mt-2 text-gray-500 bg-white border border-gray-500 rounded hover:bg-gray-600">Cancel</button>
         </div>
     </div>
 
+    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center invisible bg-gray-800 bg-opacity-50">
+        <div id="deleteModalMain" class="p-6 bg-white rounded shadow w-96">
+            <h3 id="modalTitle" class="mb-4 text-xl font-bold text-teal-700">Delete Organization</h3>
+            <form id="deleteForm" class="space-y-4">
+                <p class="text-sm text-teal-700">Are you sure to delete organization "<span id="organization_to_delete"
+                        class="font-semibold text-teal-500"></span>"?</p>
+
+                <div class="flex justify-end">
+                    <button type="button" onclick="hideDeleteModal()"
+                        class="px-4 py-2 text-gray-400 bg-white border border-gray-400 rounded hover:bg-gray-600">Cancel</button>
+                    <button onclick="submitData()"
+                        class="px-4 py-2 ml-3 text-white bg-red-500 rounded hover:bg-red-600">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script>
 
-        function showOrgModal() {
+        function showOrgModal(text) {
+            $('#add_edit').text('Add');
+            $('#method').val('add');
+
             $('#orgModal').removeClass('invisible');
         }
 
         function hideOrgModal() {
             $('#orgModal').addClass('invisible');
-            $('#organizationForm')[0].reset();
+            $('#orgModal form')[0].reset();
         }
 
-        function editOrganization(id, name, short_name, program, abbreviation) {
+        function showEditModal(button) {
+
+            const div = $(button).closest('div[data-id]');
+            $('#method').val('edit');
+
+            const id = $(div).data('id');
+            const name = $(div).data('name');
+            const short_name = $(div).data('short_name');
+            const program = $(div).data('program');
+            const abbreviation = $(div).data('abbreviation');
+
             $('#id').val(id);
             $('#name').val(name);
             $('#short_name').val(short_name);
             $('#program').val(program);
             $('#abbreviation').val(abbreviation);
-            $('#modalTitle').text("Edit Organization");
+
             showOrgModal();
+            $('#add_edit').text('Edit');
+            $('#method').val('edit');
+
         }
 
-        function deleteOrganization(id, name) {
-            if (confirm(`Are you sure you want to delete '${name}'?`)) {
-                $.ajax({
-                    url: 'crud_organization.php',
-                    type: 'DELETE',
-                    data: { id: id },
-                    success: function () {
-                        fetchOrganizations();
-                    }
-                });
+        function showDeleteModal(button) {
+            const div = $(button).closest('div[data-id]');
+            
+            const id = div.data('id');
+            const name = div.data('name');
+            
+            $('#id').val(id);
+            $('#method').val('delete');
+
+            $('#organization_to_delete').text(name);
+            $('#deleteModal').removeClass('invisible');
+        }
+
+
+
+        function hideDeleteModal() {
+            $('#deleteModal').addClass('invisible');
+        }
+
+
+
+        function submitData() {
+            let method = $('#method').val().trim();
+            let id = $('#id').val().trim();
+            let name = $('#name').val().trim();
+            let short_name = $('#short_name').val().trim();
+            let program = $('#program').val().trim();
+            let abbreviation = $('#abbreviation').val().trim();
+
+            let requestData = { id, name, short_name, program, abbreviation };
+
+            switch (method) {
+                case 'add':
+                    $.ajax({
+                        url: 'includes/crud_organization.php',
+                        type: 'POST',
+                        data: { ...requestData, method: 'add' },
+                        success: function (response) {
+                            // alert(response);
+                            location.reload();
+                        }
+                    });
+                    break;
+
+                case 'edit':
+                    $.ajax({
+                        url: 'includes/crud_organization.php',
+                        type: 'POST',
+                        data: { ...requestData, method: 'edit' },
+                        success: function (response) {
+                            // alert(response);
+                            location.reload();
+                        }
+                    });
+                    break;
+
+                case 'delete':
+                    $.ajax({
+                        url: 'includes/crud_organization.php',
+                        type: 'POST',
+                        data: { id: id, method: 'delete' },
+                        success: function (response) {
+                            // alert(response);
+                            location.reload();
+                        }
+                    });
+                    break;
+
+                default:
+                    alert("Invalid method!");
+                    break;
             }
         }
 
-        $(document).ready(function () {
-            fetchOrganizations();
 
-            $("#organizationForm").submit(function (event) {
-                event.preventDefault();
-                $.post('crud_organization.php', $(this).serialize(), function () {
-                    fetchOrganizations();
-                    hideOrgModal();
-                });
-            });
+
+
+
+
+
+
+
+        $(document).ready(function () {
 
             $(document).on('click', function (event) {
-                if (!$(event.target).closest('#orgModalMain').length && $(event.target).closest('#orgModal').length) {
+                if ($(event.target).is('#orgModal')) {
                     hideOrgModal();
                 }
-            })
+                if ($(event.target).is('#deleteModal')) {
+                    hideDeleteModal();
+                }
+            });
         });
     </script>
 </body>
