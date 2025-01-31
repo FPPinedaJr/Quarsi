@@ -343,7 +343,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     <div class="flex justify-end p-4 rounded-b-lg">
                         <button type="submit"
                             class="px-6 py-2 font-semibold text-white bg-teal-700 rounded-md hover:bg-teal-800 focus:ring-2 focus:ring-teal-500 focus:outline-none">
-                            Edit
+                            Save Changes
                         </button>
                     </div>
 
