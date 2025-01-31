@@ -78,44 +78,47 @@ $user = $stmt->fetch();
 
         <?php
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
-          echo '
+            echo '
               <a href="scanner.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
                 <div class="flex justify-center w-8">
                   <i class="text-2xl fa-solid fa-expand"></i>
                 </div>
                 <span class="font-[\'merriweather_sans\'] ml-3">QR scanner</span>
               </a>
-                      <a href="student.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <div class="flex justify-center w-8">
-            <i class="text-2xl fa-solid fa-user-graduate"></i>
-          </div>
-          <span class="font-[\'merriweather_sans\'] ml-3">Students</span>
-        </a>
-        
-              ';
-          }
+              <a href="student.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+                <div class="flex justify-center w-8">
+                  <i class="text-2xl fa-solid fa-user-graduate"></i>
+                </div>
+                <span class="font-[\'merriweather_sans\'] ml-3">Students</span>
+              </a>';
+            }
 
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-          <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <div class="flex justify-center w-8">
-            <i class="text-2xl fa-solid fa-users"></i>
-          </div>
-          <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
-        </a>
+            <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+              <div class="flex justify-center w-8">
+                <i class="text-2xl fa-solid fa-users"></i>
+              </div>
+              <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
+            </a>
             <a href="events.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
               <div class="flex justify-center w-8">
                 <i class="text-2xl fa-solid fa-calendar"></i>
               </div>
               <span class="font-[\'merriweather_sans\'] ml-3">Events</span>
             </a>
+            <a href="organization.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+              <div class="flex justify-center w-8">
+                <i class="text-2xl fa-solid fa-school"></i>
+              </div>
+              <span class="font-[\'merriweather_sans\'] ml-3">Organization</span>
+            </a>
             <a href="statistics.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
               <div class="flex justify-center w-8">
                 <i class="text-2xl fa-solid fa-chart-column"></i>
               </div>
               <span class="font-[\'merriweather_sans\'] ml-3">Statistics</span>
-            </a>'
-            ;
+            </a>';
           }
         ?>
 
