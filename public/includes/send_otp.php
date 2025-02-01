@@ -14,9 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $stmt1 = $pdo->prepare('SELECT * from user where email=?');
         $stmt1->execute([$email]);
+        $user = $stmt1->fetch(PDO::FETCH_ASSOC);
 
         if ($stmt1->rowCount() > 0) {
-            echo 'exists';
+            $cur_exp = $user['otp_expiry'];
+            $time_diff = $pdo->prepare('SELECT TIMESTAMPDIFF(MINUTE, ?, NOW())');
+            $time_diff->execute([$cur_exp]);
+            $diff = $time_diff->fetchColumn();
+
+            if (($diff < 0) && ($diff != NULL)) {
+                echo $diff*-1;
+                exit();
+            } 
 
             $mail = new PHPMailer(true);
 
@@ -25,8 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $char_3 = rand(0, 9);
             $char_4 = rand(0, 9);
             $otp = $char_1 . $char_2 . $char_3 . $char_4;
-            $_SESSION['otp'] = $otp;
-
+            
             try {
                 $mail->isSMTP();                                            
                 $mail->Host       = 'smtp.gmail.com';                     
@@ -106,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <h3>Change Password OTP Verification</h3>
                                 <p>Use the OTP below to verify your request:</p>
                                 <div class='otp-box'>$otp</div>
+                                <p>This OTP expires after <strong>5 minutes</strong>.</p>
                             </div>
                             <div class='footer'>If you did not request this, please ignore this email.</div>
                         </div>
@@ -113,12 +122,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </html>";
 
                 $mail->send();
+                $stmt2 = $pdo->prepare('UPDATE user SET otp=SHA2(?, 256), otp_expiry=DATE_ADD(NOW(), INTERVAL 5 MINUTE) WHERE email=?');
+                $stmt2->execute([$otp, $email]);
+                echo 'success';
+                exit();
+    
             } catch (Exception $e) {
-                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                echo "Message could not be sent.";
+                exit();
             }
 
         } else {
             echo 'Account does not exists.';
+            exit();
         }
 
     }
