@@ -111,7 +111,7 @@ $user = $stmt->fetch();
               <div class="flex justify-center w-8">
                 <i class="text-2xl fa-solid fa-school"></i>
               </div>
-              <span class="font-[\'merriweather_sans\'] ml-3">Organization</span>
+              <span class="font-[\'merriweather_sans\'] ml-3">Organizations</span>
             </a>
             <a href="statistics.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
               <div class="flex justify-center w-8">
