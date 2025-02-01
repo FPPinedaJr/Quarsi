@@ -224,6 +224,10 @@ if (isset($_SESSION['logged_in'])) {
 
     function hideOTPModal() {
       $('#otp_modal').addClass('invisible');
+      $('#digit-1').val(''); 
+      $('#digit-2').val(''); 
+      $('#digit-3').val(''); 
+      $('#digit-4').val('');    
     }
 
     function showChangePassword() {
@@ -269,17 +273,20 @@ if (isset($_SESSION['logged_in'])) {
         },
         success: function(response) {
           console.log(response);
-            if (response === "exists") {
-                showOTPModal();
-                $('#s_message').text('OTP is being sent to your email.')
-                showSuccessMessage();
-                $('#otp_email').val($email)
+            if (response === "success") {
+              showOTPModal();
+              $('#s_message').text('OTP is being sent to your email.')
+              showSuccessMessage();
+              $('#otp_email').val($email)
+            } else if (response === 'Account does not exists.' || response === 'Message could not be sent.') {
+              $('#e_message').text(response);
+              showErrorMessage();
             } else {
-                $('#e_message').text('Account does not exist.')
-                showErrorMessage();
+              $('#e_message').text('Please wait for ' + response + ' minutes more to resend your OTP.')
+              showErrorMessage();
             }
-        }
-    });
+          }
+      });
     }
 
     function verifyOTP() {
@@ -297,8 +304,11 @@ if (isset($_SESSION['logged_in'])) {
           if (response === "match") {
             $('#change_pass_email').val($email);
             showChangePassword();
+          } else if (response === "expired"){
+            $('#e_message').text('OTP has expired. Please try again later.');
+            showErrorMessage();
           } else {
-            $('#e_message').text('OTP did not match. Re-enter the OTP code again');
+            $('#e_message').text('OTP did not match!');
             showErrorMessage();
             $('#digit-1').val(''); 
             $('#digit-2').val(''); 
