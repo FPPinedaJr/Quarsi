@@ -4,7 +4,7 @@ include_once "../includes/connect_db.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action'])) {
-        if ($_POST['action'] == 'submit') {
+        if ($_POST['action'] == 'update') {
             $iduser = $_POST['iduser'];
             $f_name = mb_convert_case(trim($_POST['f_name']), MB_CASE_TITLE, "UTF-8");
             $l_name = mb_convert_case(trim($_POST['l_name']), MB_CASE_TITLE, "UTF-8");            
@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $block = $_POST['block'];
             $email = trim($_POST['email']);
             $user_type = $_POST['user_type'];
-            $total_points = $_POST['total_points'];
             $profile_pic = $_FILES['profile_pic'];
             $user = 1;
             $img_content = "";
@@ -50,83 +49,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($user_type == 0) {
                 $stmt = $pdo->prepare("
                     UPDATE user
-                    SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, total_points=:total_points, profile_pic=:profile_pic
-                    WHERE iduser=:iduser
+                    SET student_no=?, f_name=?, l_name=?, organization=?,
+                        year=?, block=?, email=?, profile_pic=?, is_officer=0, is_superuser=0, is_admin=0
+                    WHERE iduser=?
                 ");
-                $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
-                $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
-                $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
-                $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
-                $stmt->bindParam(':organization', $organization, PDO::PARAM_INT);
-                $stmt->bindParam(':year', $year, PDO::PARAM_INT);
-                $stmt->bindParam(':block', $block, PDO::PARAM_INT);
-                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
-                $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                echo "success";
+                header("Location: ../student.php");
 
             } else if ($user_type == 1) {
                 $stmt = $pdo->prepare("
                     UPDATE user
-                    SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, is_officer=:user, total_points=:total_points, profile_pic=:profile_pic
-                    WHERE iduser=:iduser
+                    SET student_no=?, f_name=?, l_name=?, organization=?,
+                        year=?, block=?, email=?, profile_pic=?, is_officer=1, is_superuser=0, is_admin=0
+                    WHERE iduser=?
                     ");
-                $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
-                $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
-                $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
-                $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
-                $stmt->bindParam(':organization', $organization, PDO::PARAM_INT);
-                $stmt->bindParam(':year', $year, PDO::PARAM_INT);
-                $stmt->bindParam(':block', $block, PDO::PARAM_INT);
-                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
-                $stmt->bindParam(':user', $user, PDO::PARAM_INT);
-                $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
-
-            } else if ($user_type == 2) {
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                echo "success";
+                header("Location: ../student.php");
+    
+                } else if ($user_type == 2) {
                 $stmt = $pdo->prepare("
                     UPDATE user
-                    SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, is_superuser=:user, total_points=:total_points, profile_pic=:profile_pic
-                    WHERE iduser=:iduser
+                    SET student_no=?, f_name=?, l_name=?, organization=?,
+                        year=?, block=?, email=?, profile_pic=?, is_superuser=1, is_officer=1, is_admin=0
+                    WHERE iduser=?
                     ");
-                $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
-                $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
-                $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
-                $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
-                $stmt->bindParam(':organization', $organization, PDO::PARAM_INT);
-                $stmt->bindParam(':year', $year, PDO::PARAM_INT);
-                $stmt->bindParam(':block', $block, PDO::PARAM_INT);
-                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
-                $stmt->bindParam(':user', $user, PDO::PARAM_INT);
-                $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                echo "success";
+                header("Location: ../student.php");
 
             } else if ($user_type == 3) {
                 $stmt = $pdo->prepare("
                     UPDATE user
-                    SET student_no=:student_no, f_name=:f_name, l_name=:l_name, organization=:organization,
-                        year=:year, block=:block, email=:email, is_admin=:user, total_points=:total_points, profile_pic=:profile_pic
-                    WHERE iduser=:iduser
+                    SET student_no=?, f_name=?, l_name=?, organization=?,
+                        year=?, block=?, email=?, profile_pic=?, is_superuser=0, is_officer=0, is_admin=1
+                    WHERE iduser=?
                     ");
-                $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
-                $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
-                $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
-                $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
-                $stmt->bindParam(':organization', $organization, PDO::PARAM_INT);
-                $stmt->bindParam(':year', $year, PDO::PARAM_INT);
-                $stmt->bindParam(':block', $block, PDO::PARAM_INT);
-                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                $stmt->bindParam(':total_points', $total_points, PDO::PARAM_INT);
-                $stmt->bindParam(':user', $user, PDO::PARAM_INT);
-                $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
-            }
-            if ($stmt->execute()) {
-                header("Location: ../student.php");
-                exit();
-            } else {
-                echo "Error updating user. Please try again.";
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                echo "success";
             }
 
         } else if ($_POST['action'] == 'delete') {
@@ -182,42 +143,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $img_content = file_get_contents("../assets/images/default_pic.jpg");
             }
 
-        }
-
-        $stmt = $pdo->prepare("
-            SELECT * FROM user 
-            WHERE student_no=:student_no
-        ");
-        $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
-
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($row) {
-            header("location: ../error_user.php");
-            exit();
-        }
-
-
-        $stmt = $pdo->prepare("
-                INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, profile_pic)
-                VALUES (:student_no, :f_name, :l_name, :organization, :year, :block, :email, SHA2(:password, 256), :profile_pic)
+            $stmt = $pdo->prepare("
+                SELECT * FROM user 
+                WHERE student_no=:student_no
             ");
-        $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
-        $stmt->bindParam(':f_name', $f_name, PDO::PARAM_STR);
-        $stmt->bindParam(':l_name', $l_name, PDO::PARAM_STR);
-        $stmt->bindParam(':organization', $organization, PDO::PARAM_INT);
-        $stmt->bindParam(':year', $year, PDO::PARAM_INT);
-        $stmt->bindParam(':block', $block, PDO::PARAM_INT);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->bindParam(':profile_pic', $img_content, PDO::PARAM_LOB);
-    }
 
-    if ($stmt->execute()) {
-        header("Location: ../student.php");
-        exit();
-    } else {
-        echo "Error adding user. Please try again.";
+            $stmt->bindParam(':student_no', $student_no, PDO::PARAM_STR);
+
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row) {
+                header("location: ../error_user.php");
+                exit();
+            }
+
+
+            $stmt = $pdo->prepare("
+                    INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, profile_pic)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256), ?)
+                ");
+            $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $student_no, $img_content]);
+            echo "success";
+            header("Location: ../student.php");
+        }
     }
 }

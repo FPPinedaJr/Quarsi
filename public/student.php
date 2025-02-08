@@ -189,8 +189,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     echo "3";
                                 } else {
                                     echo "0";
-                                } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200">
-                                    <td class="py-2 pl-3 flex items-center"><img src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);} else {echo 'assets/images/default_pic.jpg';}?>"
+                                } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200" onclick="showEditStudentModal(<?=$student['iduser']?>)">
+                                    <td class="py-2 pl-3 flex items-center"><img src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);}?>"
                                     class="rounded-full mr-2 border border-gray-400 w-6 h-6" loading="lazy"> 
                                     <?=$student['f_name']?> <?=$student['l_name']?></td>
                                     <td class="py-2 pl-3"><?=$student['student_no']?></td>
@@ -313,22 +313,22 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         type="button" method="POST" class="flex flex-col justify-center w-full h-full px-3">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
                                 <input id="iduser" name="iduser" type="hidden">
                                 <input id="f_name" name="f_name" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="f_name" class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
                             </div>
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <input id="l_name" name="l_name" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                             </div>
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <input id="student_no" name="student_no" type="text" pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}"
 
                                     placeholder="2000-1-0001" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                             </div>
                         </div>
@@ -336,7 +336,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="program" name="program" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
                                     <?php foreach ($programs as $program): ?>
                                         <option value="<?= $program['idprogram'] ?>"
                                             class="font-['mulish'] text-black text-base w-full"><?= $program['name'] ?></option>
@@ -346,7 +346,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             </div>
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="year" name="year" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                     <option value="" class="font-['mulish'] text-black text-base">Select</option>
                                     <option value="1" class="font-['mulish'] text-black text-base">First Year</option>
                                     <option value="2" class="font-['mulish'] text-black text-base">Second Year</option>
@@ -357,7 +357,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             </div>
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="block" name="block" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                     <option value="" class="font-['mulish'] text-black text-base">Select</option>
                                     <option value="1" class="font-['mulish'] text-black text-base">1</option>
                                     <option value="2" class="font-['mulish'] text-black text-base">2</option>
@@ -370,64 +370,40 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
                                 <input id="email" name="email" type="email" required autocomplete="email"
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
+                            </div>
+
+                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
+                                <input id="add_profile_pic" name="profile_pic" type="file" 
+                                    class="flex items-center flex-grow-0 w-full md:w-3/4 text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
+                                <input id="hidden_profile" type="hidden" name="hidden_profile">
+                                <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile Picture</label>
                             </div>
 
                             <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
                                 echo "
-                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
-                                <select id='user_type' name='user_type' type='text' required
-                                    class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
-                                    <option value='' class='text-base text-black font-mulish'>Select</option>
-                                    <option value='0' class='text-base text-black font-mulish'>Student</option>
-                                    <option value='1' class='text-base text-black font-mulish'>Officer</option>
-                                    <option value='2' class='text-base text-black font-mulish'>Superuser</option>
-                                    <option value='3' class='text-base text-black font-mulish'>Admin</option>
-                                </select>
-                                <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
-                            </div>
-                            <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
-                                <input id='total_points' name='total_points' type='number' required
-                                    class='flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500'>
-                                <label for='total_points' class='pl-1 text-base md:text-lg text-zinc-600'>Total Points</label>
-                            </div>
-                                ";
+                                <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                                    <select id='user_type' name='user_type' type='text' required
+                                        class='w-full md:w-3/4 flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
+                                        <option value='' class='text-base text-black font-mulish'>Select</option>
+                                        <option value='0' class='text-base text-black font-mulish'>Student</option>
+                                        <option value='1' class='text-base text-black font-mulish'>Officer</option>
+                                        <option value='2' class='text-base text-black font-mulish'>Superuser</option>
+                                        <option value='3' class='text-base text-black font-mulish'>Admin</option>
+                                    </select>
+                                    <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
+                                </div>" ;
                             } else {
-                                echo '
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
-                                <input id="add_profile_pic" name="profile_pic" type="file" 
-                                    class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
-                                <input id="hidden_profile" type="hidden" name="hidden_profile">
-                                <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile Picture</label>
-                            </div>
-                            <div class="flex-col hidden w-full my-2 h-fit md:w-1/3">
-                                <input id="total_points" name="total_points" type="number" required
-                                    class="flex items-center w-full pl-1 text-black border border-gray-500 md:h-9 font-mulish focus:outline-teal-500">
-                                <label for="total_points" class="pl-1 text-base md:text-lg text-zinc-600">Total Points</label>
-                            </div>';
+                                echo "
+                                <div class='flex w-full my-2 h-fit md:w-1/3 invisible'></div>
+                                ";
                             } ?>
 
                         </div>
 
-                        <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
-                            echo '
-                        <div class="flex w-full h-fit flex-col bg-[#fbfcf8] md:flex-row md:gap-2 mb-4">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
-                                <input id="add_profile_pic" name="profile_pic" type="file" 
-                                    class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
-                                <input id="hidden_profile" type="hidden" name="hidden_profile">
-                                <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile Picture</label>
-                            </div>
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-                        </div>
-
-                        ';
-                        } ?>
-
                         <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                            <button id="save_student_btn" type="submit" value="submit" name="action"
+                            <button id="save_student_btn" type="submit" value="update" name="action"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
                             </button>
                             <button id="delete_student_btn" type="button" onclick="showDeleteStudentModal()"
