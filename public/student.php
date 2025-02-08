@@ -167,6 +167,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             <div id="found"></div>
 
             <!-- Students List -->
+            <!-- Desktop view -->
             <div class="md:flex hidden border-gray-400 w-full justify-center mt-10">
                 <table id="students-table" class="w-2/3">
                     <thead>
@@ -199,6 +200,36 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Mobile View -->
+            <div class="flex flex-col w-full items-center md:hidden mt-10">
+                <?php foreach ($students as $student): ?>
+                    <div id="student-<?php echo $student['iduser'] ?>"
+                        data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
+                        data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
+                        data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
+                        data-email="<?php echo $student['email'] ?>"
+                        data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
+                            echo "1";
+                        } else if ($student['is_superuser'] == 1) {
+                            echo "2";
+                        } else if ($student['is_admin'] == 1) {
+                            echo "3";
+                        } else {
+                            echo "0";
+                        }?>"
+                    class="flex items-center p-1 border-2 border-gray shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
+                        <div class="w-1/3 h-full flex items-center justify-center">
+                            <img src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>" alt="profile picture" class="w-16 h-16 rounded-full border border-gray-200">
+                        </div>
+                        <div class="w-2/3 h-full pl-2 p-1 flex justify-center flex-col text-nowrap">
+                            <p class="font-semibold text-xl"><?php echo $student['f_name'] ?> <?php echo $student['l_name'] ?></p>
+                            <p class="text-gray-700"><?php echo $student['student_no'] ?></p>
+                            <p class=""><?php echo $student['program'] ?> <?php echo $student['year'] ?> Block <?php echo $student['year'] ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </main>
 
@@ -300,7 +331,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         <div id="edit_student_modal"
             class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center  ">
             <div id="edit_student_modal_main" class="relative flex flex-col w-5/6 overflow-y-auto h-4/5 md:h-fit md:w-3/5">
-                <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
+                <div class="flex flex-col md:flex-row py-2 items-center justify-center w-full h-fit text-center bg-teal-700 md:h-16">
                     <p class="font-semibold text-white font-['merriweather_sans'] text-2xl md:text-3xl">Edit Students</p>
                     <div class="block md:absolute md:right-5 text-white font-['mulish']">
                         <a id="student_log" class="hover:underline">View Student's Log</a>
