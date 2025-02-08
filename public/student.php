@@ -163,78 +163,43 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 
-            <div class="my-2 border-t-2 border-zinc-500"></div>
-            <!-- Students List -->
-
-            <div class="flex-col hidden w-full gap-2 mt-2 bg-white h-fit md:justify-center md:items-center md:flex">
-                <div id=""
-                    class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
-                    <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/3 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
-                        Student Name
-                    </div>
-                    <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/3 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
-                        Student ID
-                    </div>
-                    <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/3 md:px-1 md:h-full md:text-[1.3rem]">
-                        Program, Year & Block
-                    </div>
-                </div>
-            </div>
-
             <!-- Found -->
             <div id="found"></div>
 
-            <div id="students-list">
-                <?php foreach ($students as $student): ?>
-                    <div id="student-<?php echo $student['iduser'] ?>"
-                        data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
-                        data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
-                        data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
-                        data-email="<?php echo $student['email'] ?>"
-                        data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
-                              echo "1";
-                          } else if ($student['is_superuser'] == 1) {
-                              echo "2";
-                          } else if ($student['is_admin'] == 1) {
-                              echo "3";
-                          } else {
-                              echo "0";
-                          } ?>"
-                        class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
-                        <div id=""
-                            onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"
-                            class="relative flex w-full md:w-3/4 md:h-auto md:items-stretch p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] hover:bg-[#dde4e2e0] h-fit cursor-pointer items-center">
-                            <!-- Image -->
-                            <div class="flex h-full min-w-16 w-16 mr-2 justify-center items-center px-1 md:absolute md:-left-[2.5rem] md:min-w-0 md:w-fit md:p-1 md:bg-emerald-700/20 md:rounded-l-lg cursor-default">
-                                <h1><?= $student['iduser']  ?></h1>
-                                <!-- <img class="w-full border border-gray-300 rounded-full md:w-8" src="data:image/jpeg;base64, <?= base64_encode($student['profile_pic']) ?>"> -->
-                            </div>
-                            
-                            <!-- Information -->
-                            <div class="flex flex-col w-auto h-full md:w-full md:h-auto md:flex-row">
-                                <div
-                                    class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/3 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                                    <p class="md:w-3/4"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
-                                </div>
-                                <div
-                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:py-1 text-zinc-600 md:w-1/3 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
-                                    <?= $student['student_no'] ?>
-                                </div>
-                                <div
-                                    class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/3 md:py-1 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
-                                    <?= $student['program'] ?>         <?= $student['year'] ?> Block <?= $student['block'] ?>
-                                </div>
-                            </div>
-                        </div>
-    
-                    </div>
-    
-                <?php endforeach; ?>
+            <!-- Students List -->
+            <div class="md:flex hidden border-gray-400 w-full justify-center mt-10">
+                <table id="students-table" class="w-2/3">
+                    <thead>
+                        <th class="bg-teal-700 text-lg text-white py-2 pl-3 text-left font-semibold w-1/2">Students Name</th>
+                        <th class="bg-teal-700 text-lg text-white py-2 pl-3 text-left font-semibold w-1/4">Student ID</th>
+                        <th class="bg-teal-700 text-lg text-white py-2 pl-3 text-left font-semibold w-1/4">Program, Year & Block</th>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($students as $student): ?>                        
+                            <tr id="student-<?php echo $student['iduser'] ?>"
+                                data-student_no="<?php echo $student['student_no'] ?>" data-f_name="<?php echo $student['f_name'] ?>"
+                                data-l_name="<?php echo $student['l_name'] ?>" data-idprogram="<?php echo $student['idprogram_user'] ?>"
+                                data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
+                                data-email="<?php echo $student['email'] ?>"
+                                data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
+                                    echo "1";
+                                } else if ($student['is_superuser'] == 1) {
+                                    echo "2";
+                                } else if ($student['is_admin'] == 1) {
+                                    echo "3";
+                                } else {
+                                    echo "0";
+                                } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200">
+                                    <td class="py-2 pl-3 flex items-center"><img src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);} else {echo 'assets/images/default_pic.jpg';}?>"
+                                    class="rounded-full mr-2 border border-gray-400 w-6 h-6" loading="lazy"> 
+                                    <?=$student['f_name']?> <?=$student['l_name']?></td>
+                                    <td class="py-2 pl-3"><?=$student['student_no']?></td>
+                                    <td class="py-2 pl-3"><?=$student['program']?> <?=$student['year']?> Block <?=$student['block']?></td>
+                                </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
-
         </main>
 
         <!-- Add student modal -->
