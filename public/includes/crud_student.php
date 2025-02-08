@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $block = $_POST['block'];
             $email = trim($_POST['email']);
             $user_type = $_POST['user_type'];
-            $profile_pic = $_FILES['profile_pic'];
+            $profile_pic = NULL;
+            if (isset($_POST['profile_pic'])){$profile_pic = $_FILES['profile_pic'];}
             $user = 1;
             $img_content = "";
             $hidden_profile = $_POST['hidden_profile'];
@@ -54,8 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                 ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
-                echo "success";
-                header("Location: ../student.php");
+                echo $iduser;
+                exit();
 
             } else if ($user_type == 1) {
                 $stmt = $pdo->prepare("
@@ -65,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                     ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
-                echo "success";
-                header("Location: ../student.php");
+                echo $iduser;
+                exit();
     
                 } else if ($user_type == 2) {
                 $stmt = $pdo->prepare("
@@ -76,8 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                     ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
-                echo "success";
-                header("Location: ../student.php");
+                echo $iduser;
+                exit();
 
             } else if ($user_type == 3) {
                 $stmt = $pdo->prepare("
@@ -87,7 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                     ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
-                echo "success";
+                echo $iduser;
+                exit();
             }
 
         } else if ($_POST['action'] == 'delete') {
