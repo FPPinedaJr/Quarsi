@@ -666,9 +666,37 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         $("#students-table tbody").html('<p class="text-red-500">Error occurred. Please try again.</p>');
                     }
                 });
-            }, 600);
-        });
+                }, 600);
+            });
 
-        })
+            $("input[name='year[]'], input[name='block[]']").on("change", function() {
+                let selectedYears = $("input[name='year[]']:checked").map(function() {
+                    return this.value;
+                }).get();
+                
+                let selectedBlocks = $("input[name='block[]']:checked").map(function() {
+                    return this.value;
+                }).get();
+
+                $.ajax({
+                    url: "./filter.php", 
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        years: selectedYears,
+                        blocks: selectedBlocks
+                    },
+                    success: function(response) {
+                        $("#students-table tbody").html(response.table);
+                        $("#students-div").html(response.div);
+                        const observer = lozad(); 
+                        observer.observe();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+            });
+    });
+})
     </script>
 <?php } ?>
