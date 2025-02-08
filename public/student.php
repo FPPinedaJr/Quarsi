@@ -22,7 +22,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         user.is_officer as 'is_officer',
         user.is_superuser as 'is_superuser',
         user.is_admin as 'is_admin',
-        user.total_points as 'total_points',
         user.profile_pic as 'profile_pic'
       FROM user
       INNER JOIN organization
@@ -203,7 +202,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                               echo "3";
                           } else {
                               echo "0";
-                          } ?>" data-total_points="<?php echo $student['total_points'] ?>"
+                          } ?>"
                         class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                         <div id=""
                             onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)"

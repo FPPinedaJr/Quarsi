@@ -22,7 +22,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         user.is_officer as 'is_officer',
         user.is_superuser as 'is_superuser',
         user.is_admin as 'is_admin',
-        user.total_points as 'total_points',
         user.profile_pic as 'profile_pic'
       FROM user
       INNER JOIN organization
@@ -118,20 +117,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 <div id=""
                     class="relative flex flex-col w-full md:w-3/4 p-1 md:p-0 border border-[#b7b9b9] bg-[#EDF4F2] h-fit md:flex-row md:h-10">
                     <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
+                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/3 md:h-full md:px-1 md:border-r-2 md:border-[#b7b9b9]">
                         Officer Name
                     </div>
                     <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
+                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/3 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9]">
                         Student ID
                     </div>
                     <div
-                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem]">
+                        class="flex items-center justify-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/3 md:px-1 md:h-full md:text-[1.3rem]">
                         Program, Year & Block
-                    </div>
-                    <div
-                        class="absolute top-0 flex flex-col justify-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-1 w-fit md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                        <p class="text-center">Points</p>
                     </div>
                 </div>
             </div>
@@ -151,7 +146,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         echo "3";
                     } else {
                         echo "0";
-                    } ?>" data-total_points="<?php echo $officer['total_points'] ?>"
+                    } ?>" 
                     class="flex flex-col w-full gap-2 mt-2 bg-white md:mt-0 h-fit md:justify-center md:items-center">
                     <div id=""
                         onclick="showEditOfficerModal(<?php echo $officer['iduser'] ?>)"
@@ -165,21 +160,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         <!-- Information -->
                         <div class="flex flex-col w-auto h-full md:w-full md:h-auto md:flex-row">
                             <div
-                                class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/4 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                class="flex items-center w-[15rem] text-wrap h-fit font-bold md:py-1 font-['mulish'] text-[1.5rem] md:text-[1.3rem] md:w-1/3 md:h-auto md:px-1 md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                                 <?= $officer['f_name'] ?>         <?= $officer['l_name'] ?>
                             </div>
                             <div
-                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/4 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
+                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm text-zinc-600 md:w-1/3 md:text-[1.3rem] md:px-1 md:h-full md:text-black md:border-r-2 md:border-[#b7b9b9] md:font-medium">
                                 <?= $officer['student_no'] ?>
                             </div>
                             <div
-                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/4 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
+                                class="flex items-center w-full h-fit font-bold font-['mulish'] text-sm md:w-1/3 md:px-1 md:h-full md:text-[1.3rem] md:font-medium">
                                 <?= $officer['program'] ?>         <?= $officer['year'] ?> Block <?= $officer['block'] ?>
-                            </div>
-                            <div
-                                class="absolute top-0 flex flex-col justify-center items-center h-full p-1 text-white bg-zinc-600 font-['mulish'] align-center right-0 min-w-16 md:right-0 md:text-[1.3rem] md:w-1/4 md:h-full md:px-1">
-                                <p class="text-lg"><?= $officer['total_points'] ?></p>
-                                <p class="text-xs md:hidden">Points</p>
                             </div>
                         </div>
                     </div>
