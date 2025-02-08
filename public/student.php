@@ -75,6 +75,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             href="https://fonts.googleapis.com/css2?family=Cookie&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
             rel="stylesheet">
         <script src="./assets/js/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lozad"></script>
     </head>
 
     <?php
@@ -163,8 +164,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 
-            <!-- Found -->
-            <div id="found"></div>
 
             <!-- Students List -->
             <!-- Desktop view -->
@@ -191,19 +190,19 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 } else {
                                     echo "0";
                                 } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200" onclick="showEditStudentModal(<?=$student['iduser']?>)">
-                                    <td class="py-2 pl-3 flex items-center"><img src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);}?>"
-                                    class="rounded-full mr-2 border border-gray-400 w-6 h-6" loading="lazy"> 
-                                    <p class="<?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?> font-semibold"><?=$student['f_name']?> <?=$student['l_name']?></p></td>
-                                    <td class="py-2 pl-3"><?=$student['student_no']?></td>
-                                    <td class="py-2 pl-3"><?=$student['program']?> <?=$student['year']?> Block <?=$student['block']?></td>
-                                </tr>
+                                <td class="py-2 pl-3 flex items-center"><img data-src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);}?>"
+                                class="rounded-full mr-2 border border-gray-400 w-6 h-6 lozad"> 
+                                <p class="<?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?> font-semibold"><?=$student['f_name']?> <?=$student['l_name']?></p></td>
+                                <td class="py-2 pl-3"><?=$student['student_no']?></td>
+                                <td class="py-2 pl-3"><?=$student['program']?> <?=$student['year']?> Block <?=$student['block']?></td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
 
             <!-- Mobile View -->
-            <div class="flex flex-col w-full items-center md:hidden mt-10">
+            <div id="students-div"  class="flex flex-col w-full items-center md:hidden mt-10">
                 <?php foreach ($students as $student): ?>
                     <?php if ($student['is_superuser'] == 1)?>
                     <div id="student-<?php echo $student['iduser'] ?>"
@@ -220,9 +219,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         } else {
                             echo "0";
                         }?>"
-                    class="flex items-center p-1 border-2 border-gray shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
+                    class="flex student-div items-center p-1 border-2 border-gray shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
                         <div class="w-1/3 h-full flex items-center justify-center">
-                            <img src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>" alt="profile picture" class="w-16 h-16 rounded-full border border-gray-200">
+                            <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>" alt="profile picture" class="w-16 h-16 rounded-full border border-gray-200 lozad">
                         </div>
                         <div class="w-2/3 h-full pl-2 p-1 flex justify-center flex-col text-nowrap">
                             <p class="font-semibold text-xl <?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?>"><?php echo $student['f_name'] ?> <?php echo $student['l_name'] ?></p>
@@ -470,8 +469,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     </form>
                 </div>
             </div>
-        </div>
-
+        </div>         
     </body>
 
 
@@ -558,6 +556,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         }
 
         $(document).ready(function () {
+            const observer = lozad(); 
+            observer.observe();
+
             changeHeaderTitle();
             let debounceTimer;
 
@@ -621,35 +622,53 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 })
             });
 
+            if (localStorage.getItem('loading') === 'true') {
+                $("#students-table tbody").html(
+                    '<tr>' +
+                        '<td colspan="3" class="w-full h-36 flex items-center justify-center">' +
+                            '<div class="w-10 h-10 border-4 border-t-teal-500 border-gray-300 rounded-full animate-spin"></div>' +
+                        '</td>' +
+                    '</tr>'
+                );
+            }
 
-            $("#search_student").on("input", function() {
+            localStorage.removeItem('loading');
+
+
+            $("#search_student").on("keyup", function() {
                 $("input[name='year[]'], input[name='block[]']").prop("checked", false);
                 
-                let input = $(this).val();
-
-                if (input.length > 0) {
-                    $("#students-list").hide();
-                    $("#found").show(); 
-                } else {
-                    $("#found").hide();
-                    $("#students-list").show();
-                }
-
+                let input = $(this).val().trim();
                 clearTimeout(debounceTimer);
-
                 debounceTimer = setTimeout(() => {
-                    if (input) {
-                        $.ajax({
-                            url: "./find.php",
-                            method: "POST",
-                            data: { input: input },
-                            success: function(data) {
-                                $("#found").html(data);
-                            }
-                        });
+                $("#students-table tbody").html(
+                    '<tr>' +
+                        '<td colspan="3" class="relative w-full h-36">' +
+                            '<div class="w-10 h-10 border-4 border-t-teal-500 border-gray-300 rounded-full animate-spin mx-auto"></div>' +
+                        '</td>' +
+                    '</tr>'
+                );
+
+                $.ajax({
+                    url: "./find.php",
+                    method: "POST",
+                    dataType: "json",
+                    data: { input: input },
+                    success: function (response) {
+                        $("#students-table tbody").html(response.table);
+                        $("#students-div").html(response.div);
+                        const observer = lozad(); 
+                        observer.observe();
+                        localStorage.removeItem('loading');
+                    }, 
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        $("#students-table tbody").html('<p class="text-red-500">Error occurred. Please try again.</p>');
                     }
-                }, 300); 
-            });
+                });
+            }, 600);
+        });
+
         })
     </script>
 <?php } ?>
