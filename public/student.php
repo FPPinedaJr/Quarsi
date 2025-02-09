@@ -160,7 +160,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
             <!-- Add Button -->
             <div id="add_student_modal_btn" onclick="showAddStudentModal()"
-                class="fixed z-20 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
+                class="fixed z-[100] flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 
@@ -192,9 +192,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200" onclick="showEditStudentModal(<?=$student['iduser']?>)">
                                 <td class="py-2 pl-3 flex items-center"><img data-src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);}?>"
                                 class="rounded-full mr-2 border border-gray-400 w-6 h-6 lozad"> 
-                                <p class="<?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?> font-semibold"><?=$student['f_name']?> <?=$student['l_name']?></p></td>
-                                <td class="py-2 pl-3"><?=$student['student_no']?></td>
-                                <td class="py-2 pl-3"><?=$student['program']?> <?=$student['year']?> Block <?=$student['block']?></td>
+                                <p id="fullname" class="<?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?> font-semibold"><?=$student['f_name']?> <?=$student['l_name']?></p></td>
+                                <td id="student-no" class="py-2 pl-3"><?=$student['student_no']?></td>
+                                <td id="program-yr-blck" class="py-2 pl-3"><?=$student['program']?> <?=$student['year']?> Block <?=$student['block']?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -224,9 +224,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>" alt="profile picture" class="w-16 h-16 rounded-full border border-gray-200 lozad">
                         </div>
                         <div class="w-2/3 h-full pl-2 p-1 flex justify-center flex-col text-nowrap">
-                            <p class="font-semibold text-xl <?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?>"><?php echo $student['f_name'] ?> <?php echo $student['l_name'] ?></p>
-                            <p class="text-gray-700"><?php echo $student['student_no'] ?></p>
-                            <p class=""><?php echo $student['program'] ?> <?php echo $student['year'] ?> Block <?php echo $student['year'] ?></p>
+                            <p id="fullname" class="font-semibold text-xl <?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?>"><?php echo $student['f_name'] ?> <?php echo $student['l_name'] ?></p>
+                            <p id="student-no" class="text-gray-700"><?php echo $student['student_no'] ?></p>
+                            <p id="program-yr-blck"><?php echo $student['program'] ?> <?php echo $student['year'] ?> Block <?php echo $student['year'] ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -532,6 +532,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
         function editStudent() {
             let data = $('#edit_student_form').serialize();
+            let id = $('#iduser').val();
 
             $.ajax({
                 url: 'includes/crud_student.php',
@@ -541,9 +542,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     window.location.hash = response;
                     location.reload();
                 }
-            })
-
+            });
         }
+
 
         function showDeleteStudentModal() {
             var $id = $('#iduser').val()
@@ -692,6 +693,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 let selectedBlocks = $("input[name='block[]']:checked").map(function() {
                     return this.value;
                 }).get();
+
+                $("#students-table tbody").html(
+                    '<tr>' +
+                        '<td colspan="3" class="relative w-full h-36">' +
+                            '<div class="w-10 h-10 border-4 border-t-teal-500 border-gray-300 rounded-full animate-spin mx-auto"></div>' +
+                        '</td>' +
+                    '</tr>'
+                );
 
                 $.ajax({
                     url: "./filter.php", 

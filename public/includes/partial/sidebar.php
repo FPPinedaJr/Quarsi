@@ -95,8 +95,8 @@ $user = $stmt->fetch();
 
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-            <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-              <div class="flex justify-center w-8">
+            <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer items-center px-5 py-3 hidden">
+              <div class="justify-center w-8 hidden">
                 <i class="text-2xl fa-solid fa-users"></i>
               </div>
               <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
