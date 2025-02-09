@@ -167,7 +167,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
             <!-- Students List -->
             <!-- Desktop view -->
-            <div class="md:flex hidden border-gray-400 w-full justify-center mt-10">
+            <div class="md:flex hidden border-gray-400 w-full justify-center my-10">
                 <table id="students-table" class="w-2/3">
                     <thead>
                         <th class="bg-teal-700 text-lg text-white py-2 pl-3 text-left font-semibold w-1/2">Students Name</th>
@@ -219,7 +219,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         } else {
                             echo "0";
                         }?>"
-                    class="flex student-div items-center p-1 border-2 border-gray shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
+                    class="flex student-div items-center p-1 border border-teal-400 shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
                         <div class="w-1/3 h-full flex items-center justify-center">
                             <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>" alt="profile picture" class="w-16 h-16 rounded-full border border-gray-200 lozad">
                         </div>

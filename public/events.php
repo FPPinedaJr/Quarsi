@@ -99,9 +99,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             <div class="justify-center hidden w-full my-4 md:flex h-fit">
                 <table class="w-full md:w-2/3">
                     <tr class="text-lg font-light text-left text-white bg-teal-700">
-                        <th class="w-3/6 px-2 py-1 font-normal">EVENT NAME</th>
-                        <th class="w-2/6 px-2 py-1 font-normal">DATE</th>
-                        <th class="w-1/6 px-2 py-1 font-normal">CURRENT LOG</th>
+                        <th class="w-3/6 px-2 font-semibold py-2 pl-3">Event Name</th>
+                        <th class="w-2/6 px-2 font-semibold py-2 pl-3">Date</th>
+                        <th class="w-1/6 px-2 font-semibold py-2 pl-3">Current Log</th>
                     </tr>
 
                     <?php foreach ($events as $event): ?>
@@ -110,11 +110,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             data-log_time="<?= $event['log_time'] ?>" data-morning_in="<?= $event['morning_in'] ?>"
                             data-morning_out="<?= $event['morning_out'] ?>" data-afternoon_in="<?= $event['afternoon_in'] ?>"
                             data-afternoon_out="<?= $event['afternoon_out'] ?>" data-users="<?= $event['invited_users'] ?>"
-                            class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 md:text-lg"
+                            class="cursor-pointer border-b even:bg-[#EDF4F2] odd:bg-gray-200 hover:bg-gray-300"
                             onclick="showEditEventModal(<?= $event['idevent'] ?>)">
-                            <td class="py-1 pl-2"><?= $event['name'] ?></td>
-                            <td class="py-1 pl-2"><?= $event['formatted-date'] ?></td>
-                            <td class="py-1 pl-2">
+                            <td class="font-semibold py-2 pl-3"><?= $event['name'] ?></td>
+                            <td class="py-2 pl-3"><?= $event['formatted-date'] ?></td>
+                            <td class="py-2 pl-3">
                                 <?php
                                 if ($event['log_time'] == 0) {
                                     echo 'Disabled';
@@ -141,7 +141,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         data-log_time="<?= $event['log_time'] ?>" data-morning_in="<?= $event['morning_in'] ?>"
                         data-morning_out="<?= $event['morning_out'] ?>" data-afternoon_in="<?= $event['afternoon_in'] ?>"
                         data-afternoon_out="<?= $event['afternoon_out'] ?>" data-users="<?= $event['invited_users'] ?>"
-                        class="w-full flex rounded-lg p-5 border-teal-700  border <?php echo $event['log_time'] != 0 ? 'bg-teal-200' : '' ?>  "
+                        class="w-full flex rounded-lg p-5 border-teal-700  border <?php echo $event['log_time'] != 0 ? 'bg-teal-200' : '' ?> shadow-md "
                         onclick="showEditEventModal(<?= $event['idevent'] ?>)">
 
                         <div class="flex flex-col justify-center w-3/5 h-full">
