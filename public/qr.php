@@ -61,9 +61,9 @@ if ($_SESSION["logged_in"] == !true) {
                     ";
 
                     echo "</div><div class='ml-4 text-left'>";
-                    echo "<p class='text-lg font-bold text-green-800'>" . strtoupper($user['full_name']) . "</p>";
-                    echo "<p class='text-sm text-green-800'>" . $user['student_number'] . "</p>";
-                    echo "<p class='text-green-800 '>" . $user['section'] . "</p>";
+                    echo "<p class='text-lg font-bold '>" . strtoupper($user['full_name']) . "</p>";
+                    echo "<p class='text-sm '>" . $user['student_number'] . "</p>";
+                    echo "<p class=''>" . $user['section'] . "</p>";
                     echo "</div></div>";
                 } else {
                     echo "<p class='text-red-500'>No student number found.</p>";
