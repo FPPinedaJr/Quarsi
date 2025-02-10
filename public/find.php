@@ -74,8 +74,8 @@ if (count($students) > 0) {
             } else {
                 echo "0";
             } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200" onclick="showEditStudentModal(<?=$student['iduser']?>)">
-            <td class="py-2 pl-3 flex items-center"><img data-src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);}?>"
-            class="rounded-full mr-2 border border-gray-400 w-6 h-6 lozad"> 
+            <td class="flex items-center py-2 pl-3"><img data-src="<?php if ($student['profile_pic']) {echo 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']);}?>"
+            class="w-6 h-6 mr-2 border border-gray-400 rounded-full lozad"> 
             <p class="<?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?> font-semibold"><?=$student['f_name']?> <?=$student['l_name']?></p></td>
             <td class="py-2 pl-3"><?=$student['student_no']?></td>
             <td class="py-2 pl-3"><?=$student['program']?> <?=$student['year']?> Block <?=$student['block']?></td>
@@ -83,7 +83,7 @@ if (count($students) > 0) {
     <?php endforeach;
     $table_html = ob_get_clean();
 } else {
-    $table_html = "<tr><td colspan='3' class='text-center text-gray-500 py-2'>No results found</td></tr>";
+    $table_html = "<tr><td colspan='3' class='py-2 text-center text-gray-500'>No results found</td></tr>";
 }
 
 // Generate div content using output buffering
@@ -106,10 +106,10 @@ if (count($students) > 0): ?>
                             echo "0";
                         }?>"
                     class="flex student-div items-center p-1 border-2 border-gray shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden" onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
-                <div class="w-1/3 h-full flex items-center justify-center">
-                    <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>" alt="profile picture" class="w-16 h-16 rounded-full border border-gray-200 lozad">
+                <div class="flex items-center justify-center w-1/3 h-full">
+                    <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>" alt="profile picture" class="w-16 h-16 border border-gray-200 rounded-full lozad">
                 </div>
-                <div class="w-2/3 h-full pl-2 p-1 flex justify-center flex-col text-nowrap">
+                <div class="flex flex-col justify-center w-2/3 h-full p-1 pl-2 text-nowrap">
                     <p class="font-semibold text-xl <?php if($student['is_superuser'] == 0 && $student['is_officer'] == 1) {echo 'text-blue-600';} else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {echo 'text-violet-500';}?>"><?php echo $student['f_name'] ?> <?php echo $student['l_name'] ?></p>
                     <p class="text-gray-700"><?php echo $student['student_no'] ?></p>
                     <p class=""><?php echo $student['program'] ?> <?php echo $student['year'] ?> Block <?php echo $student['year'] ?></p>
@@ -118,13 +118,18 @@ if (count($students) > 0): ?>
         <?php endforeach; ?>
     </div>
 <?php else: ?>
-    <div id="students-div" class="flex student-div flex-col w-full items-center md:hidden mt-10">
-        <p class="text-gray-500 text-lg">No students found.</p>
+    <div id="students-div" class="flex flex-col items-center w-full mt-10 student-div md:hidden">
+        <p class="text-lg text-gray-500">No students found.</p>
     </div>
 <?php endif; ?>
 
 <?php $div_html = ob_get_clean();
 
 // Return JSON response
-echo json_encode(["table" => $table_html, "div" => $div_html]);
+echo json_encode([
+    "table" => $table_html, 
+    "div" => $div_html,
+    "results_count" => count($students),
+
+]);
 ?>
