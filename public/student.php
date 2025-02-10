@@ -805,7 +805,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 if (selectedYears.length === 0 || selectedBlocks.length === 0 || selectedOrg.length === 0) {
                     $("#students-table tbody").html("<tr><td colspan='3' class='p-4 text-center'>No students found</td></tr>");
                     $("#students-div").html('<p class="text-lg text-gray-500">No students found.</p>');
-                    $("#pagination_container").html('');
+                    $(".results-count").text('0');
                     return;
                 }
 
