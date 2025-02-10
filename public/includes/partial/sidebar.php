@@ -218,14 +218,15 @@ $user = $stmt->fetch();
 
   function showLoader(text) {
     $("#loader-text").text(text);
-    $("#alien-loader").removeClass("hidden").addClass("flex");
+    $("#alien-loader").hide().removeClass("hidden").fadeIn(300).addClass("flex");
     $("body").css("overflow", "hidden");
   }
+
 
   function hideLoader() {
     $("#alien-loader").fadeOut(300, function () {
       $(this).addClass("hidden");
-      $("body").css("overflow", "auto"); 
+      $("body").css("overflow", "auto");
     });
   }
 
