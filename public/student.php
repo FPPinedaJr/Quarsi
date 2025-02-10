@@ -8,6 +8,9 @@ include_once("./includes/connect_db.php");
 if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1)) {
     header("Location: index.php");
 } else {
+    $limit = 50; 
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+    $offset = ($page - 1) * $limit;
     $stmt1 = $pdo->prepare("
       SELECT 
         user.iduser as 'iduser',
@@ -27,10 +30,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
       INNER JOIN organization
       ON user.organization = organization.idorganization
       WHERE user.is_admin <> 1
-      ORDER BY is_superuser DESC, is_officer DESC, user.year, user.block, user.f_name;
+      ORDER BY is_superuser DESC, is_officer DESC, user.year, user.block, user.f_name
+      LIMIT ? OFFSET ?;
     ");
 
-    $stmt1->execute();
+    $stmt1->execute([$limit, $offset]);
     $students = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
     $stmt2 = $pdo->prepare("
@@ -45,6 +49,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
     $stmt2->execute();
     $programs = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
+    $stmt3 = $pdo->query("SELECT COUNT(*) FROM user WHERE is_admin <> 1");
+    $total_students = $stmt3->fetchColumn();
+    $total_pages = ceil($total_students / $limit);
     ?>
 
     <!DOCTYPE html>
@@ -240,6 +247,60 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         </div>
                     </div>
                 <?php endforeach; ?>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination_container" class="flex w-full justify-center">
+                <div class="flex justify-center gap-2 my-5 md:w-1/3">
+                    <?php
+                    $adjacents = 1; // Number of adjacent pages to show on each side
+                    $max_pages_to_show = 4; // Adjust this based on preference
+
+                    // First Page Button
+                    if ($page > 1) { ?>
+                        <a href="?page=1" data-page="1" class="paginate_btn md:px-4 md:py-2 md:text-sm px-2 py-2 text-xs mx-1 border bg-gray-200 rounded hover:bg-gray-300">1</a>
+                    <?php }
+
+                    if ($page == 1) { ?>
+                        <a href="?page=1" data-page="<?=$page?>" class="paginate_btn md:px-4 md:py-2 md:text-sm px-2 py-2 text-xs mx-1 border bg-teal-700 rounded text-white">1</a>
+
+                    <?php }
+                    // Previous Button
+                    if ($page > 1) { ?>
+                        <a href="?page=<?= $page - 1 ?>" data-page="<?= $page - 1 ?>" class="paginate_btn md:px-4 md:py-2 md:text-sm px-2 py-2 text-xs mx-1 border bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+                    <?php }
+
+                    // Show "..." if needed
+                    if ($page > $adjacents + 2) {
+                        echo '<span class="px-3 py-2 mx-1">...</span>';
+                    }
+
+                    // Adjacent Pages
+                    $start = max(2, $page - $adjacents);
+                    $end = min($total_pages - 1, $page + $adjacents);
+                    for ($i = $start; $i <= $end; $i++) {
+                        echo '<a href="?page=' . $i . '" data-page="' . $i . '" class="paginate_btn md:px-4 md:py-2 md:text-sm px-2 py-2 text-xs mx-1 border ' . ($i == $page ? 'bg-teal-700 text-white' : 'bg-gray-200 hover:bg-gray-300') . ' rounded">' . $i . '</a>';
+                    }
+
+                    // Show "..." if there's a gap before the last page
+                    if ($page < $total_pages - ($adjacents + 1)) {
+                        echo '<span class="px-3 py-2 mx-1">...</span>';
+                    }
+
+                    // Last Page Button
+                    if ($page < $total_pages) {
+                        echo '<a href="?page=' . $total_pages . '" data-page="' . $total_pages . '" class="paginate_btn md:px-4 md:py-2 md:text-sm px-2 py-2 text-xs mx-1 border bg-gray-200 hover:bg-gray-300 rounded">' . $total_pages . '</a>';
+                    }
+
+                    // Next Button
+                    if ($page < $total_pages) { ?>
+                        <a href="?page=<?= $page + 1 ?>" data-page="<?= $page + 1 ?>" class="paginate_btn md:px-4 md:py-2 md:text-sm px-2 py-2 text-xs mx-1 border bg-gray-200 rounded hover:bg-gray-300">Next</a>
+                    <?php }
+
+                    if ($page == $total_pages) { ?>
+                        <a href="?page=<?=$page?>" data-page="<?=$page?>" class="paginate_btn md:px-4 md:py-2 md:text-sm px-2 py-2 text-xs mx-1 border bg-teal-700 rounded text-white"><?=$page?></a>
+                    <?php }?>
+                </div>
             </div>
         </main>
 
@@ -481,6 +542,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 </div>
             </div>
         </div>         
+
+        
     </body>
 
 
@@ -660,7 +723,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             });
 
             $("input[name='year[]'], input[name='block[]'], input[name='org[]']").prop("checked", true);
-            
+
             $("input[name='year[]'], input[name='block[]'], input[name='org[]']").on("change", function() {
                 let selectedYears = $("input[name='year[]']:checked").map(function() {
                     return this.value;
@@ -674,9 +737,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     return this.value;
                 }).get();
 
+                let page = $(".paginate_btn").data("page") || 1;
+                console.log(page);
+
                 if (selectedYears.length === 0 || selectedBlocks.length === 0 || selectedOrg.length === 0) {
                     $("#students-table tbody").html("<tr><td colspan='3' class='text-center p-4'>No students found</td></tr>");
                     $("#students-div").html('<p class="text-gray-500 text-lg">No students found.</p>');
+                    $("#pagination_container").html('');
                     return; 
                 }
 
@@ -695,21 +762,21 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     data: {
                         years: selectedYears,
                         blocks: selectedBlocks,
-                        org: selectedOrg
+                        org: selectedOrg,
+                        page: page
                     },
                     success: function(response) {
                         $("#students-table tbody").html(response.table);
                         $("#students-div").html(response.div);
+                        $("#page_container").html(response.page);
                         const observer = lozad(); 
                         observer.observe();
                     },
                     error: function(xhr, status, error) {
                         console.log(xhr.responseText);
                     }
+                });
             });
-
-            
-    });
-})
+        })
     </script>
 <?php } ?>
