@@ -44,23 +44,19 @@ if (!empty($block_filter)) {
     $params = array_merge($params, $block_filter);
 }
 
-// Add pagination
 $query .= " ORDER BY is_superuser DESC, is_officer DESC, user.year, user.block, user.f_name ";
 
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get total students count (needed for pagination)
 $count_query = "SELECT COUNT(*) FROM user WHERE is_admin <> 1";
 $stmt_count = $pdo->prepare($count_query);
 $stmt_count->execute();
 $total_students = $stmt_count->fetchColumn();
 
-// Ensure correct JSON response type
 header('Content-Type: application/json');
 
-// Generate table rows
 ob_start();
 if (count($students) > 0) {
     foreach ($students as $student): ?>
@@ -92,10 +88,9 @@ if (count($students) > 0) {
     $table_html = "<tr><td colspan='3' class='py-2 text-center text-gray-500'>No results found</td></tr>";
 }
 
-// Generate div section
 ob_start();
 if (count($students) > 0): ?>
-    <div id="students-div" class="flex flex-col items-center w-full mt-10 md:hidden">
+    <div id="students-div" class="flex flex-col items-center w-full md:hidden">
         <?php foreach ($students as $student): ?>
             <div class="flex student-div items-center p-1 border-2 border-gray shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden">
                 <div class="flex items-center justify-center w-1/3 h-full">
@@ -118,7 +113,6 @@ if (count($students) > 0): ?>
 <?php 
 $div_html = ob_get_clean();
 
-// Return JSON response
 echo json_encode([
     "table" => $table_html,
     "div" => $div_html,

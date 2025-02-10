@@ -756,6 +756,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         '</tr>'
                     );
 
+                    $("#students-div").html(
+                        '<div class="relative flex justify-center items-center w-full h-36">' +
+                        '<div class="w-10 h-10 mx-auto border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>' +
+                        '<div>' 
+                    );
+
                     $.ajax({
                         url: "./find.php",
                         method: "POST",
@@ -815,6 +821,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     '<div class="w-10 h-10 mx-auto border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>' +
                     '</td>' +
                     '</tr>'
+                );
+
+                $("#students-div").html(
+                    '<div class="relative flex justify-center items-center w-full h-36">' +
+                    '<div class="w-10 h-10 mx-auto border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>' +
+                    '<div>' 
                 );
 
                 $.ajax({
