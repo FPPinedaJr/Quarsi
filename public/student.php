@@ -332,7 +332,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         </a>
                     </div>
 
-                    <p class="mb-2 text-sm">Showing <span class="results-count"><?= $results_count ?></span> results</p>
+                    <p class="mt-2 mb-2 text-sm text-teal-500">Showing <span class="results-count"><?= $results_count ?></span> results...</p>
                 </div>
             </div>
 
