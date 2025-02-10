@@ -739,6 +739,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 $("input[name='year[]'], input[name='block[]'], input[name='org[]']").prop("checked", true);
 
                 let input = $(this).val().trim();
+
+                if (input == '') {
+                    location.reload();
+                    return;
+                }
+
+
                 clearTimeout(debounceTimer);
                 debounceTimer = setTimeout(() => {
                     $("#students-table tbody").html(
