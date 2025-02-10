@@ -107,8 +107,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         <i id="filter" onclick="toggleFilter()" class="text-xl cursor-pointer fa-solid fa-sliders"></i>
 
                         <!-- Filters -->
-                        <div id="filter_dropdown" class="absolute flex flex-col bg-white border rounded-sm z-20 top-[2rem] right-[0.20rem] md:-top-2 md:-right-[7.5rem] h-fit w-28 border-gray-200/50 invisible">
-                            <div class="relative group w-full h-fit md:px-2 pl-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70 text-center pr-5"><i class="ml-2 text-sm fa-solid fa-angle-left md:hidden"></i>Year<i class="hidden text-sm fa-solid fa-angle-right md:block"></i>
+                        <div id="filter_dropdown" class="absolute flex flex-col bg-white border rounded-sm z-20 top-[2rem] right-[0.20rem] md:-top-2 md:-right-[9.5rem] h-fit w-36 border-gray-200/50 invisible">
+                            <div class="relative group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70 text-center pr-5"><i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Year<i class="hidden text-xs fa-solid fa-angle-right md:block"></i>
                                 <div id="year_filter" class="absolute top-0 z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible right-28 md:-right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
                                         <input type="checkbox" name="year[]" id="year-1" value="1">
@@ -128,8 +128,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     </div>
                                 </div>
                             </div>
-                            <div class="group w-full h-fit md:px-2 pl-2 py-1 text-lg font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5"><i class="ml-2 text-sm fa-solid fa-angle-left md:hidden"></i>Block<i class="hidden text-sm fa-solid fa-angle-right md:block"></i>
-                                <div id="block_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-10 right-28 md:-right-28 h-fit w-28">
+                            <div class="group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5"><i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Block<i class="hidden text-xs fa-solid fa-angle-right md:block"></i>
+                                <div id="block_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-7 right-28 md:-right-28 h-fit w-28">
                                     <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
                                         <input type="checkbox" name="block[]" id="block-0" value="0">
                                         <label for="block-0" class="ml-4 font-['mulish'] cursor-pointer">Block 0</label>
@@ -150,6 +150,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                         <input type="checkbox" name="block[]" id="block-4" value="4">
                                         <label for="block-4" class="ml-4 font-['mulish'] cursor-pointer">Block 4</label>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5"><i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Organization<i class="hidden text-xs fa-solid fa-angle-right md:block"></i>
+                                <div id="org_filter" class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-14 right-28 md:-right-28 h-fit w-28">
+                                    <?php foreach ($programs as $program): ?>
+                                        <div class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
+                                            <input type="checkbox" name="org[]" class="org_radio" id="org-<?=$program['idprogram']?>" value="<?=$program['idprogram']?>">
+                                            <label for="org-<?=$program['idprogram']?>" class="ml-4 font-['mulish'] cursor-pointer"><?=$program['short_name']?></label>
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
@@ -601,42 +611,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     hideFilter();
                 }
             })
-            
-            $("input[name='year[]'], input[name='block[]']").on('change', function () {
-                $("#search_student").val("");
-                $("#found").hide();
-                $("#students-list").show();
-
-                let year = $("input[name='year[]']:checked").map(function() {
-                    return $(this).val();
-                }).get(); 
-                
-                let block = $("input[name='block[]']:checked").map(function() {
-                    return $(this).val();
-                }).get(); 
-
-                $("#students-list > div").each(function() {
-                    let student_block = $(this).data('block');
-                    let student_year = $(this).data('year');
-
-                    let isVisible = true;
-
-                    if (year.length > 0 && block.length > 0) {
-                        isVisible = year.includes(String(student_year)) && block.includes(String(student_block));
-                    } 
-                    else if (year.length > 0) {
-                        isVisible = year.includes(String(student_year));
-                    } 
-                    else if (block.length > 0) {
-                        isVisible = block.includes(String(student_block));
-                    } 
-                    else {
-                        isVisible = true;
-                    }
-
-                    $(this).toggle(isVisible);
-                })
-            });
 
             if (localStorage.getItem('loading') === 'true') {
                 $("#students-table tbody").html(
@@ -652,7 +626,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
 
             $("#search_student").on("keyup", function() {
-                $("input[name='year[]'], input[name='block[]']").prop("checked", false);
+                $("input[name='year[]'], input[name='block[]'], input[name='org[]']").prop("checked", true);
                 
                 let input = $(this).val().trim();
                 clearTimeout(debounceTimer);
@@ -685,7 +659,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 }, 600);
             });
 
-            $("input[name='year[]'], input[name='block[]']").on("change", function() {
+            $("input[name='year[]'], input[name='block[]'], input[name='org[]']").prop("checked", true);
+            
+            $("input[name='year[]'], input[name='block[]'], input[name='org[]']").on("change", function() {
                 let selectedYears = $("input[name='year[]']:checked").map(function() {
                     return this.value;
                 }).get();
@@ -693,6 +669,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 let selectedBlocks = $("input[name='block[]']:checked").map(function() {
                     return this.value;
                 }).get();
+
+                let selectedOrg = $("input[name='org[]']:checked").map(function() {
+                    return this.value;
+                }).get();
+
+                if (selectedYears.length === 0 || selectedBlocks.length === 0 || selectedOrg.length === 0) {
+                    $("#students-table tbody").html("<tr><td colspan='3' class='text-center p-4'>No students found</td></tr>");
+                    $("#students-div").html('<p class="text-gray-500 text-lg">No students found.</p>');
+                    return; 
+                }
 
                 $("#students-table tbody").html(
                     '<tr>' +
@@ -708,7 +694,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     dataType: "json",
                     data: {
                         years: selectedYears,
-                        blocks: selectedBlocks
+                        blocks: selectedBlocks,
+                        org: selectedOrg
                     },
                     success: function(response) {
                         $("#students-table tbody").html(response.table);
@@ -720,6 +707,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         console.log(xhr.responseText);
                     }
             });
+
+            
     });
 })
     </script>

@@ -1,12 +1,8 @@
 <?php
 session_start();
-include_once "./includes/connect_db.php";
+include_once "../includes/connect_db.php";
 
-$year_filter = isset($_POST['years']) ? $_POST['years'] : [];
-$block_filter = isset($_POST['blocks']) ? $_POST['blocks'] : [];
-$org_filter = isset($_POST['org']) ? $_POST['org']: NULL;
-
-
+$org = $_POST['org'];
 $query = "
     SELECT 
         user.iduser as 'iduser',
@@ -24,35 +20,12 @@ $query = "
         user.profile_pic as 'profile_pic'
     FROM user
     INNER JOIN organization ON user.organization = organization.idorganization
-    WHERE 1=1"; 
-
-$params = [];
-
-if (!empty($org_filter)) {
-    $placeholders = implode(',', array_fill(0, count($org_filter), '?'));
-    $query .= " AND user.organization IN ($placeholders)";
-    $params = array_merge($params, $org_filter);
-}
-
-if (!empty($year_filter)) {
-    $placeholders = implode(',', array_fill(0, count($year_filter), '?'));
-    $query .= " AND user.year IN ($placeholders)";
-    $params = array_merge($params, $year_filter);
-}
-
-if (!empty($block_filter)) {
-    $placeholders = implode(',', array_fill(0, count($block_filter), '?'));
-    $query .= " AND user.block IN ($placeholders)";
-    $params = array_merge($params, $block_filter);
-}
-
-$query .= " ORDER BY is_superuser DESC, is_officer DESC, user.year, user.block, user.f_name";
+    WHERE user.organization=?
+";
 
 $stmt = $pdo->prepare($query);
-$stmt->execute($params);
-
+$stmt->execute([$org]);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 
 header('Content-Type: application/json');
 

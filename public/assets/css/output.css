@@ -692,6 +692,10 @@ video {
   top: 2.5rem;
 }
 
+.top-16 {
+  top: 4rem;
+}
+
 .top-2 {
   top: 0.5rem;
 }
@@ -712,8 +716,16 @@ video {
   top: 2rem;
 }
 
-.top-1\/2 {
-  top: 50%;
+.top-8 {
+  top: 2rem;
+}
+
+.top-7 {
+  top: 1.75rem;
+}
+
+.top-14 {
+  top: 3.5rem;
 }
 
 .z-20 {
@@ -992,6 +1004,10 @@ video {
   height: 0.25rem;
 }
 
+.h-1\/3 {
+  height: 33.333333%;
+}
+
 .h-10 {
   height: 2.5rem;
 }
@@ -1010,6 +1026,10 @@ video {
 
 .h-2\/3 {
   height: 66.666667%;
+}
+
+.h-2\/5 {
+  height: 40%;
 }
 
 .h-20 {
@@ -1044,6 +1064,10 @@ video {
   height: 1.5rem;
 }
 
+.h-60 {
+  height: 15rem;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -1067,38 +1091,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-60 {
-  height: 15rem;
-}
-
-.h-3\/4 {
-  height: 75%;
-}
-
-.h-1\/2 {
-  height: 50%;
-}
-
-.h-96 {
-  height: 24rem;
-}
-
-.h-1\/4 {
-  height: 25%;
-}
-
-.h-1\/3 {
-  height: 33.333333%;
-}
-
-.h-3\/5 {
-  height: 60%;
-}
-
-.h-2\/5 {
-  height: 40%;
 }
 
 .min-h-16 {
@@ -1183,6 +1175,10 @@ video {
 
 .w-32 {
   width: 8rem;
+}
+
+.w-36 {
+  width: 9rem;
 }
 
 .w-4\/5 {
@@ -1310,11 +1306,6 @@ video {
 
 .-translate-x-full {
   --tw-translate-x: -100%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-y-1\/2 {
-  --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -2782,6 +2773,26 @@ video {
     top: 0.75rem;
   }
 
+  .md\:-right-\[7rem\] {
+    right: -7rem;
+  }
+
+  .md\:-right-\[6rem\] {
+    right: -6rem;
+  }
+
+  .md\:-right-\[8rem\] {
+    right: -8rem;
+  }
+
+  .md\:-right-\[10rem\] {
+    right: -10rem;
+  }
+
+  .md\:-right-\[9\.5rem\] {
+    right: -9.5rem;
+  }
+
   .md\:ml-1 {
     margin-left: 0.25rem;
   }
@@ -2838,6 +2849,10 @@ video {
     height: 4rem;
   }
 
+  .md\:h-2\/5 {
+    height: 40%;
+  }
+
   .md\:h-9 {
     height: 2.25rem;
   }
@@ -2853,10 +2868,6 @@ video {
 
   .md\:h-full {
     height: 100%;
-  }
-
-  .md\:h-2\/5 {
-    height: 40%;
   }
 
   .md\:w-1\/3 {
