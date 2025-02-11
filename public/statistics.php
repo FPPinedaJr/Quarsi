@@ -348,12 +348,14 @@ if ($_SESSION["logged_in"] == !true) {
                     return;
                 }
 
+                showLoader('Starting a new Semester...');
                 $.ajax({
                     url: 'includes/end_sem.php',
                     method: 'POST',
                     data: { students: selectedStudents },
                     success: function (response) {
                         $('#success_modal').removeClass('invisible');
+                        hideLoader();
                     }
 
                 });
