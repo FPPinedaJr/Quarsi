@@ -78,7 +78,7 @@ $user = $stmt->fetch();
 
         <?php
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
-            echo '
+          echo '
               <a href="scanner.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
                 <div class="flex justify-center w-8">
                   <i class="text-2xl fa-solid fa-expand"></i>
@@ -91,7 +91,7 @@ $user = $stmt->fetch();
                 </div>
                 <span class="font-[\'merriweather_sans\'] ml-3">Students</span>
               </a>';
-            }
+        }
 
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
@@ -119,7 +119,7 @@ $user = $stmt->fetch();
               </div>
               <span class="font-[\'merriweather_sans\'] ml-3">Statistics</span>
             </a>';
-          }
+        }
         ?>
 
         <a href="profile.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
@@ -148,6 +148,21 @@ $user = $stmt->fetch();
       </div>
 
     </div>
+  </div>
+</div>
+
+
+
+
+<!-- Alien Loader Overlay -->
+<div id="alien-loader" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-70">
+  <div class="flex flex-col items-center space-y-4">
+    <div class="flex space-x-2 text-5xl">
+      <span class="animate-bounce">👽</span>
+      <span class="delay-150 animate-bounce">👾</span>
+      <span class="delay-300 animate-bounce">🛸</span>
+    </div>
+    <p id="loader-text" class="text-lg font-semibold text-white">Loading...</p>
   </div>
 </div>
 
@@ -201,12 +216,27 @@ $user = $stmt->fetch();
     $('body').removeClass('overflow-y-hidden');
   }
 
+  function showLoader(text) {
+    $("#loader-text").text(text);
+    $("#alien-loader").hide().removeClass("hidden").fadeIn(300).addClass("flex");
+    $("body").css("overflow", "hidden");
+  }
+
+
+  function hideLoader() {
+    $("#alien-loader").fadeOut(300, function () {
+      $(this).addClass("hidden");
+      $("body").css("overflow", "auto");
+    });
+  }
+
   $(document).ready(function () {
     $('#sidebar-overlay').on('click', function (event) {
       if (event.target === this) {
         closeSidebar();
       }
     });
+
   });
 
 </script>
