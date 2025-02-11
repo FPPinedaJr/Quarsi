@@ -688,8 +688,8 @@ video {
   top: 0px;
 }
 
-.top-10 {
-  top: 2.5rem;
+.top-14 {
+  top: 3.5rem;
 }
 
 .top-2 {
@@ -734,6 +734,10 @@ video {
 
 .z-\[100\] {
   z-index: 100;
+}
+
+.z-\[200\] {
+  z-index: 200;
 }
 
 .z-\[80\] {
@@ -997,10 +1001,6 @@ video {
   height: 0.25rem;
 }
 
-.h-1\/3 {
-  height: 33.333333%;
-}
-
 .h-10 {
   height: 2.5rem;
 }
@@ -1019,10 +1019,6 @@ video {
 
 .h-2\/3 {
   height: 66.666667%;
-}
-
-.h-2\/5 {
-  height: 40%;
 }
 
 .h-20 {
@@ -1055,10 +1051,6 @@ video {
 
 .h-6 {
   height: 1.5rem;
-}
-
-.h-60 {
-  height: 15rem;
 }
 
 .h-8 {
@@ -1104,6 +1096,10 @@ video {
 
 .w-1\/3 {
   width: 33.333333%;
+}
+
+.w-1\/4 {
+  width: 25%;
 }
 
 .w-1\/6 {
@@ -1306,16 +1302,6 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
 @keyframes bounce {
   0%, 100% {
     transform: translateY(-25%);
@@ -1332,16 +1318,26 @@ video {
   animation: bounce 1s infinite;
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 .cursor-default {
   cursor: default;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .cursor-not-allowed {
   cursor: not-allowed;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .select-none {
@@ -1414,6 +1410,12 @@ video {
   gap: 1.25rem;
 }
 
+.space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
@@ -1442,12 +1444,6 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
-}
-
-.space-x-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -1654,6 +1650,11 @@ video {
   border-color: rgb(113 113 122 / var(--tw-border-opacity));
 }
 
+.border-t-teal-500 {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(20 184 166 / var(--tw-border-opacity));
+}
+
 .bg-\[\#2e2c2c69\] {
   background-color: #2e2c2c69;
 }
@@ -1661,6 +1662,11 @@ video {
 .bg-\[\#EDF4F2\] {
   --tw-bg-opacity: 1;
   background-color: rgb(237 244 242 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#d9f0ea\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(217 240 234 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#e4ffee\] {
@@ -1834,6 +1840,14 @@ video {
 
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
+}
+
+.bg-opacity-70 {
+  --tw-bg-opacity: 0.7;
+}
+
+.bg-opacity-90 {
+  --tw-bg-opacity: 0.9;
 }
 
 .bg-none {
@@ -2279,11 +2293,6 @@ video {
   color: rgb(39 39 42 / var(--tw-text-opacity));
 }
 
-.text-red-400 {
-  --tw-text-opacity: 1;
-  color: rgb(248 113 113 / var(--tw-text-opacity));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -2304,8 +2313,8 @@ video {
   opacity: 0.75;
 }
 
-.opacity-50 {
-  opacity: 0.5;
+.opacity-90 {
+  opacity: 0.9;
 }
 
 .shadow {
@@ -2571,6 +2580,11 @@ video {
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-gray-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-gray-300\/50:hover {
   background-color: rgb(209 213 219 / 0.5);
 }
@@ -2597,6 +2611,11 @@ video {
 .hover\:bg-red-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-teal-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(94 234 212 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-teal-500:hover {
@@ -2852,10 +2871,6 @@ video {
 
   .md\:h-16 {
     height: 4rem;
-  }
-
-  .md\:h-2\/5 {
-    height: 40%;
   }
 
   .md\:h-9 {

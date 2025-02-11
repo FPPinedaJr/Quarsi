@@ -116,13 +116,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
                         <!-- Filters -->
                         <div id="filter_dropdown"
-                            class="absolute flex flex-col bg-white border rounded-sm z-20 top-[2rem] right-[0.20rem] md:-top-2 md:-right-[9.5rem] h-fit w-36 border-gray-200/50 invisible">
+                            class="absolute flex flex-col bg-white border rounded-sm top-[2rem] right-[0.20rem] md:-top-2 md:-right-[9.5rem] h-fit w-36 border-gray-200/50 invisible">
                             <div
                                 class="relative group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70 text-center pr-5">
                                 <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Year<i
                                     class="hidden text-xs fa-solid fa-angle-right md:block"></i>
                                 <div id="year_filter"
-                                    class="absolute top-0 z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible right-28 md:-right-28 h-fit w-28">
+                                    class="absolute top-0 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible right-28 md:-right-28 h-fit w-28">
                                     <div
                                         class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
                                         <input type="checkbox" name="year[]" id="year-1" value="1">
@@ -150,7 +150,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Block<i
                                     class="hidden text-xs fa-solid fa-angle-right md:block"></i>
                                 <div id="block_filter"
-                                    class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-7 right-28 md:-right-28 h-fit w-28">
+                                    class="absolute flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-7 right-28 md:-right-28 h-fit w-28">
                                     <div
                                         class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
                                         <input type="checkbox" name="block[]" id="block-0" value="0">
@@ -183,7 +183,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Organization<i
                                     class="hidden text-xs fa-solid fa-angle-right md:block"></i>
                                 <div id="org_filter"
-                                    class="absolute z-20 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-14 right-28 md:-right-28 h-fit w-28">
+                                    class="absolute flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-14 right-28 md:-right-28 h-fit w-28">
                                     <?php foreach ($programs as $program): ?>
                                         <div
                                             class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
@@ -350,6 +350,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
                     <form id="add_student_form" action="./includes/crud_student.php" type="button" method="POST"
                         enctype="multipart/form-data" class="flex flex-col justify-center w-full h-full px-3">
+                        <input type="hidden" name="action" value="add">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
@@ -421,7 +422,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         </div>
 
                         <div class="flex items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                            <button id="add_student_btn" type="submit" name="action" value="add"
+                            <button id="add_student_btn" type="button" onclick="addStudent()"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-28">Add
                             </button>
                         </div>
@@ -569,10 +570,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
                     <button id="deleteStudentCancel" onclick="hideDeleteStudentModal()"
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
-                    <form action="./includes/crud_student.php" type="button" method="POST">
-                        <button type="submit" value="delete" name="action"
+                    <form id="delete_student_form" action="./includes/crud_student.php" type="button" method="POST">
+                        <button type="button" onclick="deleteStudent()" 
                             class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
                         <input id="id_delete_student" type="hidden" name="iduser" class="">
+                        <input type="hidden" value="delete" name="action">
                     </form>
                 </div>
             </div>
@@ -602,6 +604,25 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         function hideAddStudentModal() {
             $('#add_student_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
+        }
+
+        function addStudent() {
+            let data = $('#add_student_form').serialize();
+            hideAddStudentModal();
+            showLoader("Loading...");
+            $('#filter').addClass('invisible');
+
+            $.ajax({
+                url: 'includes/crud_student.php',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    window.location.hash = response;
+                    location.reload();
+                    hideLoader();
+                    $('#filter').removeClass('invisible')
+                }
+            });
         }
 
         function showEditStudentModal(id) {
@@ -641,6 +662,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         function editStudent() {
             let data = $('#edit_student_form').serialize();
             let id = $('#iduser').val();
+            hideEditStudentModal();
+            showLoader("Loading...");
+            $('#filter').addClass('invisible');
 
             $.ajax({
                 url: 'includes/crud_student.php',
@@ -649,6 +673,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 success: function (response) {
                     window.location.hash = response;
                     location.reload();
+                    hideLoader();
+                    $('#filter').removeClass('invisible')
                 }
             });
         }
@@ -665,6 +691,27 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         function hideDeleteStudentModal() {
             $('#delete_student_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
+        }
+
+        function deleteStudent() {
+            let data = $('#delete_student_form').serialize();
+            let id = $('#iduser').val();
+            hideDeleteStudentModal();
+            hideEditStudentModal();
+            showLoader("Loading...");
+            $('#filter').addClass('invisible');
+
+            $.ajax({
+                url: 'includes/crud_student.php',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    window.location.hash = response;
+                    hideLoader();
+                    location.reload();
+                    $('#filter').removeClass('invisible')
+                }
+            });
         }
 
         function changeHeaderTitle() {
