@@ -90,7 +90,7 @@ if (isset($_SESSION['logged_in'])) {
 
   <div id="note_modal"
     class="fixed invisible top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-    <div id="note_modal_main" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 ">
+    <div id="note_modal_main" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-90 ">
       <div class="w-11/12 p-6 text-center bg-white rounded-lg shadow-lg md:w-96 ">
         <i class="mt-5 text-teal-500 text-7xl fas fa-unlock"></i>
         <h2 class="mt-4 text-lg font-bold">Important Information</h2>
@@ -144,8 +144,8 @@ if (isset($_SESSION['logged_in'])) {
         <span class="btn-text">Submit</span>
         <span class="flex items-center hidden space-x-1 btn-loader">
           <span class="animate-bounce">👽</span>
-          <span class="delay-150 animate-bounce">👾</span>
-          <span class="delay-300 animate-bounce">🛸</span>
+          <span class="animate-bounce">👾</span>
+          <span class="nimate-bounce">🛸</span>
         </span>
       </button>
     </div>
@@ -169,8 +169,8 @@ if (isset($_SESSION['logged_in'])) {
             <span class="btn-text">Send OTP</span>
             <span class="flex items-center hidden space-x-1 btn-loader">
               <span class="animate-bounce">👽</span>
-              <span class="delay-150 animate-bounce">👾</span>
-              <span class="delay-300 animate-bounce">🛸</span>
+              <span class="animate-bounce">👾</span>
+              <span class="animate-bounce">🛸</span>
             </span>
           </button>
         </div>
@@ -201,8 +201,8 @@ if (isset($_SESSION['logged_in'])) {
             <span class="btn-text">Confirm</span>
             <span class="flex items-center hidden space-x-1 btn-loader">
               <span class="animate-bounce">👽</span>
-              <span class="delay-150 animate-bounce">👾</span>
-              <span class="delay-300 animate-bounce">🛸</span>
+              <span class="animate-bounce">👾</span>
+              <span class="nimate-bounce">🛸</span>
             </span>
           </button>
         </div>
@@ -306,7 +306,7 @@ if (isset($_SESSION['logged_in'])) {
       var $action = $('input[name=action]').val();
 
       let btn = $("#email-btn");
-      btn.prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+      btn.prop("disabled", true).addClass("opacity-90 cursor-not-allowed");
       btn.find(".btn-text").addClass("hidden");
       btn.find(".btn-loader").removeClass("hidden");
 
@@ -319,7 +319,7 @@ if (isset($_SESSION['logged_in'])) {
         },
         success: function (response) {
           console.log(response);
-          btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+          btn.prop("disabled", false).removeClass("opacity-90 cursor-not-allowed");
           btn.find(".btn-text").removeClass("hidden");
           btn.find(".btn-loader").addClass("hidden");
           if (response === "success") {
@@ -343,7 +343,7 @@ if (isset($_SESSION['logged_in'])) {
       var $email = $('#otp_email').val();
 
       let btn = $("#submit-btn");
-      btn.prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+      btn.prop("disabled", true).addClass("opacity-90 cursor-not-allowed");
       btn.find(".btn-text").addClass("hidden");
       btn.find(".btn-loader").removeClass("hidden");
 
@@ -355,7 +355,7 @@ if (isset($_SESSION['logged_in'])) {
           code: $otp
         },
         success: function (response) {
-          btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+          btn.prop("disabled", false).removeClass("opacity-90 cursor-not-allowed");
           btn.find(".btn-text").removeClass("hidden");
           btn.find(".btn-loader").addClass("hidden");
           if (response === "match") {
@@ -382,14 +382,14 @@ if (isset($_SESSION['logged_in'])) {
       var $pass2 = $('#pass2CP').val();
 
       let btn = $("#confirm-btn");
-      btn.prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+      btn.prop("disabled", true).addClass("opacity-90 cursor-not-allowed");
       btn.find(".btn-text").addClass("hidden");
       btn.find(".btn-loader").removeClass("hidden");
 
       if ($pass1 == $pass2) {
         if ($pass1.length < 8) {
           $('#e_message').text('Password should be at least 8 characters.');
-          btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+          btn.prop("disabled", false).removeClass("opacity-90 cursor-not-allowed");
           btn.find(".btn-text").removeClass("hidden");
           btn.find(".btn-loader").addClass("hidden");
           showErrorMessage();
@@ -406,7 +406,7 @@ if (isset($_SESSION['logged_in'])) {
               password: $pass2
             },
             success: function (response) {
-              btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+              btn.prop("disabled", false).removeClass("opacity-90 cursor-not-allowed");
               btn.find(".btn-text").removeClass("hidden");
               btn.find(".btn-loader").addClass("hidden");
 
@@ -424,7 +424,7 @@ if (isset($_SESSION['logged_in'])) {
         }
       } else {
         $('#e_message').text('Password did not match!');
-        btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+        btn.prop("disabled", false).removeClass("opacity-90 cursor-not-allowed");
         btn.find(".btn-text").removeClass("hidden");
         btn.find(".btn-loader").addClass("hidden");
         showErrorMessage();
