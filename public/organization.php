@@ -220,6 +220,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
             switch (method) {
                 case 'add':
+                    showLoader('Creating Organization...');
                     $.ajax({
                         url: 'includes/crud_organization.php',
                         type: 'POST',
@@ -232,6 +233,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
                     break;
 
                 case 'edit':
+                    showLoader('Saving...');
                     $.ajax({
                         url: 'includes/crud_organization.php',
                         type: 'POST',
@@ -244,6 +246,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
                     break;
 
                 case 'delete':
+                    showLoader('Deleting...');
                     $.ajax({
                         url: 'includes/crud_organization.php',
                         type: 'POST',

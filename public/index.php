@@ -71,8 +71,9 @@ if (isset($_SESSION['logged_in'])) {
               <button type="button" id="show" class="absolute top-2 right-3"><i id="eyeIcon"
                   class="fas fa-eye"></i></button>
             </div>
-            <div class="w-full flex justify-end text-sm mr-1">
-              <p onclick='showForgotPassModal()' class="text-green-600 cursor-pointer hover:text-green-500 hover:underline">Forgot Password?</p>
+            <div class="flex justify-end w-full mr-1 text-sm">
+              <p onclick='showForgotPassModal()'
+                class="text-green-600 cursor-pointer hover:text-green-500 hover:underline">Forgot Password?</p>
             </div>
 
             <div class="h-10 mt-8 mb-3">
@@ -110,103 +111,123 @@ if (isset($_SESSION['logged_in'])) {
   </div>
 
   <!-- Submit OTP -->
-  <div id="otp_modal" class="fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center invisible">
-    <div id="otp_modal_main" class="flex items-center flex-col h-1/3 md:h-2/5 md:w-1/4 w-10/12 px-4 py-2 bg-white rounded-md">
-      <div class="text-center font-bold text-3xl mt-3">OTP Verification</div>
+  <div id="otp_modal"
+    class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full bg-gray-400/50 backdrop-blur-md">
+    <div id="otp_modal_main" class="flex flex-col items-center w-10/12 px-4 py-2 bg-white rounded-md md:w-1/4">
+      <div class="mt-3 text-3xl font-bold text-center">OTP Verification</div>
       <input id="otp_email" type="hidden" name="email">
       <!-- Input OTP -->
-      <div id="otp_content" class="w-full flex flex-col justify-center items-center">
-        <div class="w-3/4 h-fit flex justify-between mt-7 px-4">
-          <input id="digit-1"
-            class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-          <input id="digit-2"
-            class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-          <input id="digit-3"
-            class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-          <input id="digit-4"
-            class="border border-gray-400 rounded-md text-2xl w-10 h-10 bg-white shadow-lg text-center focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-        </div>
-        <div class="mt-4 mb-2 text-xs text-zinc-500 w-3/4 justify-center text-center flex flex-wrap">
-          Please enter the 4-digit one-time-password (OTP) we sent to your email to verify. OTP expires after 5 minutes.
-        </div>
-        <button class="bg-emerald-500 py-1 text-md text-white mt-6 rounded-full w-[9rem] font-semibold hover:bg-emerald-600 mb-6" type="button" onclick="verifyOTP()">Submit</button>
+      <div class="flex justify-between w-3/4 px-4 h-fit mt-7">
+        <input id="digit-1"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text"
+          onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-2"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text"
+          onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-3"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text"
+          onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+        <input id="digit-4"
+          class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
+          autocomplete="one-time-code" maxlength="1" type="text"
+          onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
       </div>
-
-      <div id="otp_spinner" class="flex justify-center items-center w-full h-full z-20 bg-white invisible">
-        <div class="w-10 h-10 border-4 border-t-teal-500 border-gray-300 rounded-full animate-spin"></div>
+      <div class="flex flex-wrap justify-center w-3/4 mt-4 mb-2 text-xs text-center text-zinc-500">
+        Please enter the 4-digit one-time-password (OTP) we sent to your email to verify.
       </div>
+      <button id="submit-btn"
+        class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600 mb-6 flex items-center justify-center"
+        type="button" onclick="verifyOTP()">
+        <span class="btn-text">Submit</span>
+        <span class="flex items-center hidden space-x-1 btn-loader">
+          <span class="animate-bounce">👽</span>
+          <span class="delay-150 animate-bounce">👾</span>
+          <span class="delay-300 animate-bounce">🛸</span>
+        </span>
+      </button>
     </div>
   </div>
 
-<!-- Send OTP -->
-  <div id="forgot_pass_modal" class="invisible fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center">
-    <div id="forgot_pass_modal_main" class="flex items-center flex-col md:w-1/4 w-10/12 h-60 px-6 py-2 bg-white rounded-md">
-      <div class="w-full h-fit py-1 font-bold text-3xl text-center">Forgot Password</div>
-      <div id="email_content" class="w-full flex">
-        <form action="send_otp.php" method="POST"  class="flex flex-col w-full mt-4">
-          <label for="corp_email" class=" text-zinc-700">
-            Enter your corporate email:
-          </label>
-          <input id="corp_email" type="email" name="email" 
-          class="mt-2 w-full px-2 py-1 focus:outline-none rounded-md border border-teal-700">
-          <input type="hidden" name="action" value="verify_email">
-          <div class="flex justify-center mt-4 mb-2">
-            <button id="email-btn" type="button" onclick="verifyEmail()" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Send OTP</button>
-          </div>
-        </form>
-      </div>
-
-      <div id="email_spinner" class="flex justify-center items-center w-full h-full z-20 bg-white invisible">
-        <div class="w-10 h-10 border-4 border-t-teal-500 border-gray-300 rounded-full animate-spin"></div>
-      </div>
+  <!-- Send OTP -->
+  <div id="forgot_pass_modal"
+    class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full bg-gray-400/50 backdrop-blur-md">
+    <div id="forgot_pass_modal_main" class="flex flex-col items-center w-10/12 px-6 py-2 bg-white rounded-md md:w-1/4">
+      <div class="w-full py-1 text-3xl font-bold text-center h-fit">Forgot Password</div>
+      <form action="send_otp.php" method="POST" class="flex flex-col w-full mt-4">
+        <label for="corp_email" class=" text-zinc-700">
+          Enter your corporate email:
+        </label>
+        <input id="corp_email" type="email" name="email"
+          class="w-full px-2 py-1 mt-2 border border-teal-700 rounded-md focus:outline-none">
+        <input type="hidden" name="action" value="verify_email">
+        <div class="flex justify-center mt-4 mb-2">
+          <button id="email-btn" type="button" onclick="verifyEmail()"
+            class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600 flex items-center justify-center">
+            <span class="btn-text">Send OTP</span>
+            <span class="flex items-center hidden space-x-1 btn-loader">
+              <span class="animate-bounce">👽</span>
+              <span class="delay-150 animate-bounce">👾</span>
+              <span class="delay-300 animate-bounce">🛸</span>
+            </span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
   <!-- Change password -->
-  <div id="change_pass_modal" class="fixed top-0 left-0 w-full h-full bg-gray-400/50 backdrop-blur-md flex justify-center items-center invisible">
-    <div id="change_pass_modal_main" class="flex items-center h-2/5 flex-col md:w-1/4 w-10/12 px-6 py-2 bg-white rounded-md">
-      <div class="w-full h-fit py-1 font-bold text-3xl text-center">Change Password</div>
-      <div id="password_content" class="w-full flex">
-        <form action="change_password.php" method="POST"  class="flex flex-col w-full mt-4">
-          <input id="change_pass_email" type="hidden" name="email">
-          <label for="pass1CP" class=" text-zinc-700">
-            Enter your new password:
-          </label>
-          <input id="pass1CP" type="password" name="password" 
-          class="mt-2 w-full px-2 py-1 focus:outline-none rounded-md border border-teal-700">
-          <label for="pass2CP" class=" text-zinc-700">
-            Re-enter your password:
-          </label>
-          <input id="pass2CP" type="password" name="pass2" 
-          class="mt-2 w-full px-2 py-1 focus:outline-none rounded-md border border-teal-700">
-          <div class="flex justify-center mt-4 mb-2">
-            <button type="button" onclick="changePassword()" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Confirm</button>
-          </div>
-        </form>
-      </div>
-
-      <div id="password_spinner" class="flex justify-center items-center w-full h-full z-20 bg-white invisible">
-        <div class="w-10 h-10 border-4 border-t-teal-500 border-gray-300 rounded-full animate-spin"></div>
-      </div>
+  <div id="change_pass_modal"
+    class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full bg-gray-400/50 backdrop-blur-md">
+    <div id="change_pass_modal_main" class="flex flex-col items-center w-10/12 px-6 py-2 bg-white rounded-md md:w-1/4">
+      <div class="w-full py-1 text-3xl font-bold text-center h-fit">Change Password</div>
+      <form action="change_password.php" method="POST" class="flex flex-col w-full mt-4">
+        <input id="change_pass_email" type="hidden" name="email">
+        <label for="pass1CP" class=" text-zinc-700">
+          Enter your new password:
+        </label>
+        <input id="pass1CP" type="password" name="password"
+          class="w-full px-2 py-1 mt-2 border border-teal-700 rounded-md focus:outline-none">
+        <label for="pass2CP" class=" text-zinc-700">
+          Re-enter your password:
+        </label>
+        <input id="pass2CP" type="password" name="pass2"
+          class="w-full px-2 py-1 mt-2 border border-teal-700 rounded-md focus:outline-none">
+        <div class="flex justify-center mt-4 mb-2">
+          <button id="confirm-btn" type="button" onclick="changePassword()"
+            class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600 flex items-center justify-center">
+            <span class="btn-text">Confirm</span>
+            <span class="flex items-center hidden space-x-1 btn-loader">
+              <span class="animate-bounce">👽</span>
+              <span class="delay-150 animate-bounce">👾</span>
+              <span class="delay-300 animate-bounce">🛸</span>
+            </span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
 
   <!-- Error modal -->
-  <div id="error_message" class="w-96 invisible flex h-14 items-center fixed top-2 left-50 translate-x-1/2d border-2 border-red-600 rounded-lg z-20 bg-rose-200">
-    <div id="e_message" class="w-full h-full flex justify-center items-center flex-1 text-sm"></div>
-    <div class="flex w-8 h-8 ml-1 justify-center items-center hover:bg-red-400/50 rounded cursor-pointer"><i onclick="hideErrorMessage()" class="text-xs fa-solid fa-x"></i></div>
-   </div>
+  <div id="error_message"
+    class="fixed z-20 flex items-center invisible text-red-600 border-2 border-red-600 rounded-lg w-96 h-14 top-2 left-50 translate-x-1/2d bg-rose-200">
+    <div class="pl-5 text-xl"><i class="fa-solid fa-circle-exclamation"></i></div>
+    <div id="e_message" class="flex items-center justify-center flex-1 w-full h-full text-sm"></div>
+    <div class="flex items-center justify-center w-8 h-8 pr-5 ml-1 rounded cursor-pointer hover:bg-red-400/50"><i
+        onclick="hideErrorMessage()" class="text-xs fa-solid fa-x"></i></div>
+  </div>
 
   <!-- Success modal -->
-  <div id="success_message" class="w-96 invisible items-center flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-teal-600 rounded-lg z-20 bg-[#e4ffee]">
-    <div id="s_message" class="w-full h-full flex justify-center items-center flex-1 text-sm"></div>
-    <div class="flex w-8 h-8 ml-1 justify-center items-center hover:bg-gray-300/50 rounded cursor-pointer"><i onclick="hideSuccessMessage()" class="text-xs fa-solid fa-x"></i></div>
-   </div>
+  <div id="success_message"
+    class="w-96 text-green-600 invisible items-center flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-teal-600 rounded-lg z-20 bg-[#e4ffee]">
+    <div class="pl-5 text-xl"><i class="fa-solid fa-circle-exclamation"></i></div>
+    <div id="s_message" class="flex items-center justify-center flex-1 w-full h-full text-sm"></div>
+    <div class="flex items-center justify-center w-8 h-8 ml-1 rounded cursor-pointer hover:bg-gray-300/50"><i
+        onclick="hideSuccessMessage()" class="text-xs fa-solid fa-x"></i></div>
+  </div>
 
   <script>
     function resetComponent() {
@@ -242,10 +263,10 @@ if (isset($_SESSION['logged_in'])) {
 
     function hideOTPModal() {
       $('#otp_modal').addClass('invisible');
-      $('#digit-1').val(''); 
-      $('#digit-2').val(''); 
-      $('#digit-3').val(''); 
-      $('#digit-4').val('');    
+      $('#digit-1').val('');
+      $('#digit-2').val('');
+      $('#digit-3').val('');
+      $('#digit-4').val('');
     }
 
     function showChangePassword() {
@@ -254,9 +275,10 @@ if (isset($_SESSION['logged_in'])) {
     }
 
     function showErrorMessage() {
+
       $('#error_message').removeClass('invisible').fadeIn(300);
-      setTimeout(function() {
-        $('#error_message').fadeOut(1000, function() {
+      setTimeout(function () {
+        $('#error_message').fadeOut(1000, function () {
           $(this).addClass('invisible');
         });
       }, 5000);
@@ -268,8 +290,8 @@ if (isset($_SESSION['logged_in'])) {
 
     function showSuccessMessage() {
       $('#success_message').removeClass('invisible').fadeIn(300);
-      setTimeout(function() {
-        $('#success_message').fadeOut(1000, function() {
+      setTimeout(function () {
+        $('#success_message').fadeOut(1000, function () {
           $(this).addClass('invisible');
         });
       }, 5000);
@@ -283,8 +305,11 @@ if (isset($_SESSION['logged_in'])) {
       var $email = $('#corp_email').val();
       var $action = $('input[name=action]').val();
 
-      $('#email_spinner').removeClass('invisible');
-      $('#email_content').removeClass('flex').addClass('hidden');
+      let btn = $("#email-btn");
+      btn.prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+      btn.find(".btn-text").addClass("hidden");
+      btn.find(".btn-loader").removeClass("hidden");
+
       $.ajax({
         url: "includes/send_otp.php",
         type: "POST",
@@ -292,31 +317,35 @@ if (isset($_SESSION['logged_in'])) {
           email: $email,
           action: $action
         },
-        success: function(response) {
-          $('#email_spinner').addClass('invisible');
-          $('#email_content').addClass('flex').removeClass('hidden');
+        success: function (response) {
           console.log(response);
-            if (response === "success") {
-              showOTPModal();
-              $('#s_message').text('OTP is being sent to your email.')
-              showSuccessMessage();
-              $('#otp_email').val($email)
-            } else if (response === 'Account does not exists.' || response === 'Message could not be sent.') {
-              $('#e_message').text(response);
-              showErrorMessage();
-            } else {
-              $('#e_message').text('Please wait for ' + response + ' minutes more to resend your OTP.')
-              showErrorMessage();
-            }
+          btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+          btn.find(".btn-text").removeClass("hidden");
+          btn.find(".btn-loader").addClass("hidden");
+          if (response === "success") {
+            showOTPModal();
+            $('#s_message').text('OTP is being sent to your email.')
+            showSuccessMessage();
+            $('#otp_email').val($email)
+          } else if (response === 'Account does not exists.' || response === 'Message could not be sent.') {
+            $('#e_message').text(response);
+            showErrorMessage();
+          } else {
+            $('#e_message').text('Please wait for ' + response + ' minutes more to resend your OTP.')
+            showErrorMessage();
           }
+        }
       });
     }
 
     function verifyOTP() {
       var $otp = $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val();
       var $email = $('#otp_email').val();
-      $('#otp_spinner').removeClass('invisible');
-      $('#otp_content').removeClass('flex flex-col').addClass('hidden');
+
+      let btn = $("#submit-btn");
+      btn.prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+      btn.find(".btn-text").addClass("hidden");
+      btn.find(".btn-loader").removeClass("hidden");
 
       $.ajax({
         url: "includes/verify_otp.php",
@@ -325,22 +354,22 @@ if (isset($_SESSION['logged_in'])) {
           email: $email,
           code: $otp
         },
-        success: function(response) {
-          $('#otp_spinner').addClass('invisible');
-          $('#otp_content').addClass('flex flex-col').removeClass('hidden');
-
+        success: function (response) {
+          btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+          btn.find(".btn-text").removeClass("hidden");
+          btn.find(".btn-loader").addClass("hidden");
           if (response === "match") {
             $('#change_pass_email').val($email);
             showChangePassword();
-          } else if (response === "expired"){
+          } else if (response === "expired") {
             $('#e_message').text('OTP has expired. Please try again later.');
             showErrorMessage();
           } else {
             $('#e_message').text('OTP did not match!');
             showErrorMessage();
-            $('#digit-1').val(''); 
-            $('#digit-2').val(''); 
-            $('#digit-3').val(''); 
+            $('#digit-1').val('');
+            $('#digit-2').val('');
+            $('#digit-3').val('');
             $('#digit-4').val('');
           }
         }
@@ -352,10 +381,19 @@ if (isset($_SESSION['logged_in'])) {
       var $pass1 = $('#pass1CP').val();
       var $pass2 = $('#pass2CP').val();
 
+      let btn = $("#confirm-btn");
+      btn.prop("disabled", true).addClass("opacity-50 cursor-not-allowed");
+      btn.find(".btn-text").addClass("hidden");
+      btn.find(".btn-loader").removeClass("hidden");
+
       if ($pass1 == $pass2) {
         if ($pass1.length < 8) {
           $('#e_message').text('Password should be at least 8 characters.');
+          btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+          btn.find(".btn-text").removeClass("hidden");
+          btn.find(".btn-loader").addClass("hidden");
           showErrorMessage();
+
         } else {
           $('#password_spinner').removeClass('invisible');
           $('#password_content').removeClass('flex').addClass('hidden');
@@ -367,9 +405,11 @@ if (isset($_SESSION['logged_in'])) {
               email: $email,
               password: $pass2
             },
-            success: function(response) {
-              $('#email_spinner').addClass('invisible');
-              $('#email_content').addClass('flex').removeClass('hidden');
+            success: function (response) {
+              btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+              btn.find(".btn-text").removeClass("hidden");
+              btn.find(".btn-loader").addClass("hidden");
+
               if (response === "success") {
                 $('#change_pass_modal').addClass('invisible');
                 $('#s_message').text('Successfully changed password!');
@@ -384,9 +424,12 @@ if (isset($_SESSION['logged_in'])) {
         }
       } else {
         $('#e_message').text('Password did not match!');
+        btn.prop("disabled", false).removeClass("opacity-50 cursor-not-allowed");
+        btn.find(".btn-text").removeClass("hidden");
+        btn.find(".btn-loader").addClass("hidden");
         showErrorMessage();
       }
-      
+
     }
 
 
@@ -413,13 +456,13 @@ if (isset($_SESSION['logged_in'])) {
 
       if (localStorage.getItem("hideNoteModal") != "true") {
         $("#note_modal").removeClass('invisible');
-      } 
+      }
 
       $("#closeModalBtn").click(function () {
         if ($("#alwaysHideCheckbox").prop("checked")) {
-          localStorage.setItem("hideNoteModal", "true"); 
+          localStorage.setItem("hideNoteModal", "true");
         }
-        $("#note_modal").fadeOut(); 
+        $("#note_modal").fadeOut();
       });
 
 
@@ -503,6 +546,37 @@ if (isset($_SESSION['logged_in'])) {
           hideForgotPassModal();
         }
       })
+
+
+      $("#corp_email").keypress(function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          $("#email-btn").click();
+        }
+      });
+
+      $("#corp_email").keypress(function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          $("#email-btn").click();
+        }
+      });
+
+      $("#digit-4").keypress(function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          $("#submit-btn").click();
+        }
+      });
+
+      $("#pass2CP").keypress(function (e) {
+        console.log('here')
+        if (e.which === 13) {
+          e.preventDefault();
+          $("#confirm-btn").click();
+        }
+      });
+
 
     });
   </script>

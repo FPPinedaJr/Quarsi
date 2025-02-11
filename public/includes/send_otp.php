@@ -37,14 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             try {
                 $mail->isSMTP();                                            
-                $mail->Host       = 'smtp.gmail.com';                     
+                $mail->Host       = 'smtp.hostinger.com';                     
                 $mail->SMTPAuth   = true;                                 
-                $mail->Username   = 'acsmailer2303@gmail.com';                   
-                $mail->Password   = 'hlzesybpehgrmyed';                             
+                $mail->Username   = 'quarsi@miceff.com';                   
+                $mail->Password   = '@tt3nDanc3';                             
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            
                 $mail->Port       = 465;                                    
 
-                $mail->setFrom('acsmailer2303@gmail.com', 'Quarsi');
+                $mail->setFrom('quarsi@miceff.com', 'Quarsi');
                 $mail->addAddress($email);   
 
                 $mail->isHTML(true);                                  
