@@ -471,8 +471,9 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                 let afternoon_in = $('#afternoon_in').val() || "";
                 let afternoon_out = $('#afternoon_out').val() || "";
 
-                console.log("morning in: " + morning_in)
-                console.log("mornig out: " + morning_out)
+                // console.log("morning in: " + morning_in)
+                // console.log("mornig out: " + morning_out)
+                showLoader('Saving...');
                 $.ajax({
                     url: 'includes/edit_attendance.php',
                     method: 'POST',
