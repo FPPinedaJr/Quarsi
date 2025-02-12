@@ -134,6 +134,10 @@ if ($_SESSION["logged_in"] == !true) {
 
         $(document).ready(function () {
             changeHeaderTitle();
+
+            $('button[type="submit"]').on('click', function (event) {
+                showLoader('Saving...');
+            });
         });
     </script>
 
