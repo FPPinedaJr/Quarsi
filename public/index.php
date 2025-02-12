@@ -192,15 +192,17 @@ if (isset($_SESSION['logged_in'])) {
 
 
   <!-- Error modal -->
-  <div id="error_message" class="fixed z-20 flex items-center invisible border-2 border-red-600 rounded-lg w-96 h-14 top-2 left-50 translate-x-1/2d bg-rose-200">
-    <div id="e_message" class="flex items-center justify-center flex-1 w-full h-full text-sm"></div>
+  <div id="error_message" class="fixed z-20 flex items-center invisible text-red-600 border-2 border-red-600 rounded-lg w-96 h-14 top-2 left-50 translate-x-1/2d bg-rose-200">
+    <div class="ml-3 text-lg"><i class="fa-solid fa-circle-exclamation"></i></div>
+    <div id="e_message" class="flex items-center justify-center flex-1 w-full h-full text-sm "></div>
     <div class="flex items-center justify-center w-8 h-8 ml-1 rounded cursor-pointer" onclick="hideErrorMessage()"><i  class="text-xs fa-solid fa-x"></i></div>
    </div>
 
   <!-- Success modal -->
-  <div id="success_message" class="w-96 invisible items-center flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-teal-600 rounded-lg z-20 bg-[#e4ffee]">
-    <div id="s_message" class="flex items-center justify-center flex-1 w-full h-full text-sm"></div>
-    <div class="flex items-center justify-center w-8 h-8 ml-1 rounded " onclick="hideSuccessMessage()"><i  class="text-xs fa-solid fa-x"></i></div>
+  <div id="success_message" class="w-96 invisible text-green-600  items-center flex h-14 fixed top-2 left-50 translate-x-1/2d border-2 border-teal-600 rounded-lg z-20 bg-[#e4ffee]">
+    <div class="ml-3 text-lg"><i class="fa-solid fa-circle-exclamation"></i></div>
+    <div id="s_message" class="flex items-center justify-center flex-1 w-full h-full text-sm "></div>
+    <div class="flex items-center justify-center w-8 h-8 ml-1 rounded cursor-pointer " onclick="hideSuccessMessage()"><i  class="text-xs fa-solid fa-x"></i></div>
    </div>
 
   <script>
@@ -293,14 +295,14 @@ if (isset($_SESSION['logged_in'])) {
           console.log(response);
             if (response === "success") {
               showOTPModal();
-              $('#s_message').text('OTP is being sent to your email.')
+              $('#s_message').text('OTP Successfully sent to your email.')
               showSuccessMessage();
               $('#otp_email').val($email)
             } else if (response === 'Account does not exists.' || response === 'Message could not be sent.') {
               $('#e_message').text(response);
               showErrorMessage();
             } else {
-              $('#e_message').text('Please wait for ' + response + ' minutes more to resend your OTP.')
+              $('#e_message').text('Please wait for ' + response + ' ' + (response == 1 ? 'minute' : 'minutes') + ' to resend your OTP.');
               showErrorMessage();
             }
           }
