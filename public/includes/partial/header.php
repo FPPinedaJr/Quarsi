@@ -13,7 +13,7 @@
 
     <!-- search -->
     <?php if (($_SERVER['REQUEST_METHOD'] == 'GET') && (isset($_GET['student']))) { ?>
-        <div id="search " class="flex items-center justify-end w-64 gap-3 mr-10">
+        <div id="search " class="flex items-center justify-end w-64 gap-3 mr-2 md:r-10">
             <form id="search_form">
                 <input type="text" name="search_input" id="search_input" placeholder="Search..."
                     value="<?= (isset($_GET['student']) && strpos($_GET['student'], '-') !== false) ? htmlspecialchars($_GET['student']) : '' ?>"
