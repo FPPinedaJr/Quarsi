@@ -414,7 +414,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 <input id="add_profile_pic" name="profile_pic" type="file" class="w-full bg-white md:h-9 flex items-center font-['mulish'] text-black focus:outline-teal-500 border border-gray-500 flex-grow-0
                                         file:h-full file:border-none file:bg-teal-700 file:text-white">
                                 <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile
-                                    Picture</label>
+                                    Picture <em class="text-sm text-gray-600">(Optional)</em></label>
                             </div>
                             <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
 
@@ -516,7 +516,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:w-3/4 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
                                 <input id="hidden_profile" type="hidden" name="hidden_profile">
                                 <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile
-                                    Picture</label>
+                                    Picture <em class="text-sm text-gray-600">(Optional)</em></label>
                             </div>
 
                             <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
