@@ -75,7 +75,7 @@ if (count($students) > 0) {
             <td class="flex items-center py-2 pl-3">
                 <img data-src="<?= 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']) ?>" 
                     class="w-6 h-6 mr-2 border border-gray-400 rounded-full lozad">
-                <p class="<?= ($student['is_superuser'] && $student['is_officer']) ? 'text-violet-500' : ($student['is_officer'] ? 'text-blue-600' : '') ?> font-semibold">
+                <p class="<?= ($student['is_superuser'] && $student['is_officer']) ? 'text-orange-400' : ($student['is_officer'] ? 'text-blue-600' : '') ?> font-semibold">
                     <?= $student['f_name'] . ' ' . $student['l_name'] ?>
                 </p>
             </td>
@@ -115,7 +115,7 @@ if (count($students) > 0): ?>
                             <p id="fullname" class="font-semibold text-xl <?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
                                 echo 'text-blue-600';
                             } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
-                                echo 'text-violet-500';
+                                echo 'text-orange-400';
                             } ?>">
                                 <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
                             </p>
