@@ -384,7 +384,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     if ($realOption.length) {
                         $realOption.val(value).text(value);
                     } else {
-                        $select.append(`<option id="real_val" value="${value}" hidden>${value}</option>`);
+                        $select.append(`<option id="real_val" value="${value}">${value}</option>`);
                     }
                     $select.val(value);
                 } else {
@@ -411,14 +411,6 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             var totalLog = <?= $TotalLog ?>;
 
             var totalPoints = (logIn / totalLog * 100).toFixed(2);
-
-            var userId = <?= json_encode($_GET['student']) ?>;
-
-            if (userId == '2022-8-0193') {
-                $("#totalPoints").text("96.69");
-                $(".points").removeClass("text-red-500 text-green-500").addClass("text-fuchsia-500");
-                return;
-            }
 
             $("#totalPoints").text(totalPoints);
 
@@ -479,9 +471,10 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                 let afternoon_in = $('#afternoon_in').val() || "";
                 let afternoon_out = $('#afternoon_out').val() || "";
 
-                // console.log("morning in: " + morning_in)
-                // console.log("mornig out: " + morning_out)
-                showLoader('Saving...');
+                console.log("morning in: " + morning_in)
+                console.log("mornig out: " + morning_out)
+
+                showLoader('Updating Attendance...');
                 $.ajax({
                     url: 'includes/edit_attendance.php',
                     method: 'POST',
