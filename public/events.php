@@ -190,6 +190,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
                     <form id="add_event_form" action="./includes/crud_event.php" type="button" method="POST"
                         class="flex flex-col justify-center w-full h-full px-3">
+                        <input type="hidden" name="action" value="add">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <div class="flex flex-col w-full my-2 h-fit ">
@@ -205,7 +206,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         </div>
 
                         <div class="flex items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                            <button id="add_event_btn" type="submit" name="action" value="add"
+                            <button id="add_event_btn" type="button" onclick="addEvent()"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-28">Add
                             </button>
                         </div>
@@ -247,13 +248,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
                     <form id="edit_event_form" action="./includes/crud_event.php" type="button" method="POST"
                         class="flex flex-col justify-center w-full h-full px-3">
+                        <input type="hidden" value="submit" name="action">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <input id="idevent" name="idevent" type="hidden">
@@ -281,7 +282,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         </div>
 
                         <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                            <button id="save_event_btn" type="submit" value="submit" name="action"
+                            <button id="save_event_btn" type="button" onclick="editEvent()"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
                             </button>
                             <button id="delete_event_btn" type="button" onclick="showDeleteEventModal()"
@@ -310,8 +311,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <button id="deleteEventCancel" onclick="hideDeleteEventModal()"
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
                     <form action="./includes/crud_event.php" type="button" method="POST">
-                        <button type="submit" value="delete" name="action"
+                        <button type="button" onclick="deleteEvent()"
                             class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
+                            <input type="hidden" value="delete" name="action">
                         <input id="id_delete_event" type="hidden" name="idevent" class="">
                     </form>
                 </div>
@@ -683,6 +685,43 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').removeClass('overflow-hidden');
         }
 
+        function addEvent() {
+            let data = $('#add_event_form').serialize();
+            showLoader('Loading...');
+            localStorage.setItem('isLoading', 'true');
+
+            $.ajax({
+                url: 'includes/crud_event.php',
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    hideAddEventModal();
+                    location.reload();
+                    hideLoader();
+                }
+            })
+        }
+
+        function deleteEvent() {
+            let data = $('#delete_event_form').serialize();
+            showLoader('Loading...');
+            localStorage.setItem('isLoading', 'true');
+
+            $.ajax({
+                url: 'includes/crud_event.php',
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    hideDeleteEventModal();
+                    hideEditEventModal();
+                    location.reload();
+                    hideLoader();
+                }
+            })
+        }
+
+
+
         function showEditEventModal(id) {
             $('#edit_event_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
@@ -708,6 +747,23 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('#edit_event_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
             hideEventOptions();
+        }
+
+        function editEvent() {
+            let data = $('#edit_event_form').serialize();
+            showLoader('Loading...');
+            localStorage.setItem('isLoading', 'true');
+
+            $.ajax({
+                url: 'includes/crud_event.php',
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    hideEditEventModal();
+                    location.reload();
+                    hideLoader();
+                }
+            })
         }
 
         function toggleEventOptions() {
@@ -937,6 +993,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function confirmInvite() {
             var formData = $('#invite_students_form').serialize();
+            showLoader("Loading...");
+            localStorage.setItem('isLoading', 'true');
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -946,6 +1004,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
+                        hideLoader();
                         let count = $('input.student-checkbox:checked').length;
                         sessionStorage.setItem('invite_success', count); 
                         $('#success_invite_count').text(count);
@@ -960,9 +1019,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
 
         function confirmEditInvite() {
-
-
             var formData = $('#edit_invite_students_form').serialize();
+            showLoader("Loading...");
+            localStorage.setItem('isLoading', 'true');
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -972,6 +1031,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
+                        hideLoader();
                     } else {
                         alert('Error: ' + response);
                     }
@@ -995,6 +1055,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         $(document).ready(function () {
             changeHeaderTitle();
+            if (localStorage.getItem('isLoading') === 'true') {
+                showLoader('Loading...');
+                localStorage.removeItem('isLoading');
+            }
 
             let invite_count = sessionStorage.getItem('invite_success');
             if (invite_count) {
