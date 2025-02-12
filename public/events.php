@@ -688,7 +688,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function addEvent() {
             let data = $('#add_event_form').serialize();
             showLoader('Loading...');
-            localStorage.setItem('isLoading', 'true');
 
             $.ajax({
                 url: 'includes/crud_event.php',
@@ -705,7 +704,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function deleteEvent() {
             let data = $('#delete_event_form').serialize();
             showLoader('Loading...');
-            localStorage.setItem('isLoading', 'true');
 
             $.ajax({
                 url: 'includes/crud_event.php',
@@ -752,7 +750,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function editEvent() {
             let data = $('#edit_event_form').serialize();
             showLoader('Loading...');
-            localStorage.setItem('isLoading', 'true');
 
             $.ajax({
                 url: 'includes/crud_event.php',
@@ -994,7 +991,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function confirmInvite() {
             var formData = $('#invite_students_form').serialize();
             showLoader("Loading...");
-            localStorage.setItem('isLoading', 'true');
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -1021,7 +1017,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         function confirmEditInvite() {
             var formData = $('#edit_invite_students_form').serialize();
             showLoader("Loading...");
-            localStorage.setItem('isLoading', 'true');
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -1055,11 +1050,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         $(document).ready(function () {
             changeHeaderTitle();
-            if (localStorage.getItem('isLoading') === 'true') {
-                showLoader('Loading...');
-                localStorage.removeItem('isLoading');
-            }
-
             let invite_count = sessionStorage.getItem('invite_success');
             if (invite_count) {
                 $('#success_invite_count').text(invite_count);

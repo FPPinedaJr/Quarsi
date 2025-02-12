@@ -696,8 +696,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         function deleteStudent() {
             let data = $('#delete_student_form').serialize();
             let id = $('#iduser').val();
-            hideDeleteStudentModal();
-            hideEditStudentModal();
             showLoader("Loading...");
             $('#filter').addClass('invisible');
 
@@ -706,6 +704,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 type: 'POST',
                 data: data,
                 success: function (response) {
+                    hideDeleteStudentModal();
+                    hideEditStudentModal();
                     window.location.hash = response;
                     hideLoader();
                     location.reload();
@@ -732,7 +732,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
             changeHeaderTitle();
             let debounceTimer;
-
 
             $("#page_input").keypress(function (event) {
                 if (event.which === 13) {
