@@ -84,8 +84,8 @@ if ($_SESSION["logged_in"] == !true) {
     include_once("./includes/partial/header.php");
     ?>
 
-    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
-        <main class="flex flex-col items-center w-full h-full py-8">
+    <body class="justify-center w-screen mt-24 overflow-x-hidden ">
+        <main class="flex flex-col items-center w-full h-full py-8 pt-20">
             <div class="relative w-48 h-48 overflow-hidden bg-gray-200 border border-teal-600 rounded-full">
                 <img src="data:image/jpeg;base64,<?= base64_encode($user['profile_pic']) ?>" alt="Profile Picture"
                     class="object-cover w-full h-full">
@@ -126,6 +126,7 @@ if ($_SESSION["logged_in"] == !true) {
             </div>
         </main>
     </body>
+    <?php include_once("./includes/partial/footer.php"); ?>
 
     <script>
         function changeHeaderTitle() {

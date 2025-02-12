@@ -94,8 +94,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
     include_once("./includes/partial/header.php");
     ?>
 
-    <body class="flex justify-center w-screen min-h-screen mt-20 overflow-x-hidden">
-        <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
+    <body class="justify-center w-screen min-h-screen mt-20 overflow-x-hidden ">
+        <main class="flex flex-col justify-center w-full min-h-screen px-3 py-2 h-fit">
 
             <div class="flex items-center w-full p-2 md:w-fit h-fit">
                 <div class="flex items-center justify-end h-fit md:w-[20rem] w-fit">
@@ -580,6 +580,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
 
     </body>
+    <?php include_once("./includes/partial/footer.php"); ?>
 
 
     </html>
