@@ -76,12 +76,12 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
                     <p><strong>Program:</strong> <?= $row['program'] ?></p>
                     <div class="mt-2 space-x-2">
                         <button onclick="showEditModal(this)"
-                            class="px-2 py-1 text-yellow-500 border border-teal-600 rounded hover:text-yellow-400">
+                            class="px-2 py-1 text-white bg-blue-500 border rounded hover:bg-blue-400">
                             Edit <i class="fa-solid fa-pencil"></i>
                         </button>
 
                         <button onclick="showDeleteModal(this)"
-                            class="px-2 py-1 text-red-500 bg-teal-200 border border-teal-600 rounded hover:text-red-400">Delete
+                            class="px-2 py-1 text-white bg-red-500 rounded hover:bg-red-400">Delete
                             <i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
