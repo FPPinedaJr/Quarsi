@@ -29,7 +29,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         ON event.idevent = attendance.event
         GROUP BY 
         event.idevent
-    ORDER BY event.date DESC
+    ORDER BY event.date
     ");
 
     $stmt1->execute();
