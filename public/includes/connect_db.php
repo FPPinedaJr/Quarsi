@@ -3,18 +3,18 @@ date_default_timezone_set("Asia/Manila");
 $charset = 'utf8mb4';
 
 // ----- PRODUCTION DATABASE ----- //
-// $hostname = '77.37.35.51';
-// $port = 3306 ;
-// $username = 'u273960544_fpjcm_quarsi';
-// $password = '12345siX*';
-// $defaultSchema = 'u273960544_quarsi';
-
-// ----- DEVELOPMENT DATABASE ----- //
 $hostname = '77.37.35.51';
 $port = 3306 ;
-$username = 'u273960544_tester';
-$password = 'TesTing123*';
-$defaultSchema = 'u273960544_prototype';
+$username = 'u273960544_fpjcm_quarsi';
+$password = '12345siX*';
+$defaultSchema = 'u273960544_quarsi';
+
+// ----- DEVELOPMENT DATABASE ----- //
+// $hostname = '77.37.35.51';
+// $port = 3306 ;
+// $username = 'u273960544_tester';
+// $password = 'TesTing123*';
+// $defaultSchema = 'u273960544_prototype';
 
 
 
