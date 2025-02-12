@@ -480,7 +480,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             </div>
                         </div>
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
+                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-4">
                             <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
                                 <select id="edit_program" name="program" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
@@ -514,7 +514,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             </div>
                         </div>
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
+                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-4">
                             <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
                                 <input id="edit_email" name="email" type="email" required autocomplete="email"
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
