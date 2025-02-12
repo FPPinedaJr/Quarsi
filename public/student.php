@@ -457,32 +457,32 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     <form id="edit_student_form" action="./includes/crud_student.php" enctype="multipart/form-data"
                         type="button" method="POST" class="flex flex-col justify-center w-full h-full px-3">
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
+                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-4 mt-4">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
                                 <input id="iduser" name="iduser" type="hidden">
                                 <input id="edit_action" name="action" type="hidden" value="update">
                                 <input id="edit_f_name" name="f_name" type="text" required
-                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="edit_f_name" class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
                                 <input id="edit_l_name" name="l_name" type="text" required
-                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="edit_l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
                                 <input id="edit_student_no" name="student_no" type="text"
                                     pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}" placeholder="2000-1-0001" required
-                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="edit_student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student
                                     No.</label>
                             </div>
                         </div>
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
                                 <select id="edit_program" name="program" required
-                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
+                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
                                     <?php foreach ($programs as $program): ?>
                                         <option value="<?= $program['idprogram'] ?>"
                                             class="font-['mulish'] text-black text-base w-full"><?= $program['name'] ?></option>
@@ -490,9 +490,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 </select>
                                 <label for="edit_program" class="pl-1 text-base md:text-lg text-zinc-600">Program</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
                                 <select id="edit_year" name="year" type="text" required
-                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                     <option value="" disabled class="font-['mulish'] text-black text-base">Select</option>
                                     <option value="1" class="font-['mulish'] text-black text-base">First Year</option>
                                     <option value="2" class="font-['mulish'] text-black text-base">Second Year</option>
@@ -501,9 +501,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 </select>
                                 <label for="edit_year" class="pl-1 text-base md:text-lg text-zinc-600">Year</label>
                             </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
                                 <select id="edit_block" name="block" type="text" required
-                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                                     <option value="" disabled class="font-['mulish'] text-black text-base">Select</option>
                                     <option value="1" class="font-['mulish'] text-black text-base">1</option>
                                     <option value="2" class="font-['mulish'] text-black text-base">2</option>
@@ -514,15 +514,15 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                         </div>
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
                                 <input id="edit_email" name="email" type="email" required autocomplete="email"
-                                    class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
+                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="edit_email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
                             </div>
 
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
+                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
                                 <input id="add_profile_pic" name="profile_pic" type="file"
-                                    class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:w-3/4 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
+                                    class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
                                 <input id="hidden_profile" type="hidden" name="hidden_profile">
                                 <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile
                                     Picture <em class="text-sm text-gray-600">(Optional)</em></label>
@@ -530,9 +530,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
                             <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
                                 echo "
-                                <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
+                                <div class='flex flex-col justify-center w-full my-2 h-fit md:w-1/3'>
                                     <select id='edit_user_type' name='user_type' type='text' required
-                                        class='w-full md:w-3/4 flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
+                                        class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
                                         <option value='' class='text-base text-black font-mulish' disabled>Select</option>
                                         <option value='0' class='text-base text-black font-mulish'>Student</option>
                                         <option value='1' class='text-base text-black font-mulish'>Officer</option>
