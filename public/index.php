@@ -110,7 +110,7 @@ if (isset($_SESSION['logged_in'])) {
   </div>
 
   <!-- Submit OTP -->
-  <div id="otp_modal" class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full bg-gray-400/50 backdrop-blur-md">
+  <div id="otp_modal" class="invisible fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-400/50 backdrop-blur-md">
     <div id="otp_modal_main" class="flex flex-col items-center w-10/12 px-4 py-2 bg-white rounded-md md:w-1/4">
       <div class="mt-3 text-3xl font-bold text-center">OTP Verification</div>
       <input id="otp_email" type="hidden" name="email">
@@ -119,16 +119,16 @@ if (isset($_SESSION['logged_in'])) {
         <div class="flex justify-between w-3/4 px-4 h-fit mt-7">
           <input id="digit-1"
             class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+            autocomplete="one-time-code" maxlength="1" type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
           <input id="digit-2"
             class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+            autocomplete="one-time-code" maxlength="1" type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
           <input id="digit-3"
             class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+            autocomplete="one-time-code" maxlength="1" type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
           <input id="digit-4"
             class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
-            autocomplete="one-time-code" maxlength="1" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+            autocomplete="one-time-code" maxlength="1" type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
         </div>
         <div class="flex flex-wrap justify-center w-3/4 mt-4 mb-2 text-xs text-center text-zinc-500">
           Please enter the 4-digit one-time-password (OTP) we sent to your email to verify. OTP expires after 5 minutes.
