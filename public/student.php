@@ -609,7 +609,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         function addStudent() {
             let data = new FormData($('#add_student_form')[0]);
             hideAddStudentModal();
-            showLoader("Loading...");
+            showLoader("Adding Student...");
             $('#filter').addClass('invisible');
 
             $.ajax({
@@ -667,7 +667,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             //     console.log(pair[0] + ', ' + pair[1]);  // Debug output
             // }            
             hideEditStudentModal();
-            showLoader("Loading...");
+            showLoader("Saving...");
             $('#filter').addClass('invisible');
 
             $.ajax({
@@ -701,7 +701,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         function deleteStudent() {
             let data = $('#delete_student_form').serialize();
             let id = $('#iduser').val();
-            showLoader("Loading...");
+            showLoader("Deleting...");
             $('#filter').addClass('invisible');
 
             $.ajax({
@@ -807,7 +807,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     );
 
                     $("#students-div").html(
-                        '<div class="relative flex justify-center items-center w-full h-36">' +
+                        '<div class="relative flex items-center justify-center w-full h-36">' +
                         '<div class="w-10 h-10 mx-auto border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>' +
                         '<div>' 
                     );
@@ -874,7 +874,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 );
 
                 $("#students-div").html(
-                    '<div class="relative flex justify-center items-center w-full h-36">' +
+                    '<div class="relative flex items-center justify-center w-full h-36">' +
                     '<div class="w-10 h-10 mx-auto border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>' +
                     '<div>' 
                 );

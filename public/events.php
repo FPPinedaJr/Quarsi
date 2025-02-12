@@ -99,9 +99,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             <div class="justify-center hidden w-full my-4 md:flex h-fit">
                 <table class="w-full md:w-2/3">
                     <tr class="text-lg font-light text-left text-white bg-teal-700">
-                        <th class="w-3/6 px-2 font-semibold py-2 pl-3">Event Name</th>
-                        <th class="w-2/6 px-2 font-semibold py-2 pl-3">Date</th>
-                        <th class="w-1/6 px-2 font-semibold py-2 pl-3">Current Log</th>
+                        <th class="w-3/6 px-2 py-2 pl-3 font-semibold">Event Name</th>
+                        <th class="w-2/6 px-2 py-2 pl-3 font-semibold">Date</th>
+                        <th class="w-1/6 px-2 py-2 pl-3 font-semibold">Current Log</th>
                     </tr>
 
                     <?php foreach ($events as $event): ?>
@@ -112,7 +112,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             data-afternoon_out="<?= $event['afternoon_out'] ?>" data-users="<?= $event['invited_users'] ?>"
                             class="cursor-pointer border-b even:bg-[#EDF4F2] odd:bg-gray-200 hover:bg-gray-300"
                             onclick="showEditEventModal(<?= $event['idevent'] ?>)">
-                            <td class="font-semibold py-2 pl-3"><?= $event['name'] ?></td>
+                            <td class="py-2 pl-3 font-semibold"><?= $event['name'] ?></td>
                             <td class="py-2 pl-3"><?= $event['formatted-date'] ?></td>
                             <td class="py-2 pl-3">
                                 <?php
@@ -194,7 +194,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <div class="flex flex-col w-full my-2 h-fit ">
-                                <input id="add_name" name="name" type="text" required autocomplete="off" placeholder="e.g. General Assembly"
+                                <input id="add_name" name="name" type="text" required autocomplete="off"
+                                    placeholder="e.g. General Assembly"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="add_name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
@@ -259,7 +260,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <input id="idevent" name="idevent" type="hidden">
                             <div class="flex flex-col w-full my-2 h-fit md:w-full ">
-                                <input id="name" name="name" type="text" required autocomplete="off" placeholder="e.g. General Assembly"
+                                <input id="name" name="name" type="text" required autocomplete="off"
+                                    placeholder="e.g. General Assembly"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
@@ -313,7 +315,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <form action="./includes/crud_event.php" type="button" method="POST">
                         <button type="button" onclick="deleteEvent()"
                             class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
-                            <input type="hidden" value="delete" name="action">
+                        <input type="hidden" value="delete" name="action">
                         <input id="id_delete_event" type="hidden" name="idevent" class="">
                     </form>
                 </div>
@@ -687,14 +689,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function addEvent() {
             let data = $('#add_event_form').serialize();
-            showLoader('Loading...');
+            showLoader('Creating Event...');
 
             $.ajax({
                 url: 'includes/crud_event.php',
                 type: 'POST',
                 data: data,
-                success: function(response) {
-                    hideAddEventModal();
+                success: function (response) {
                     location.reload();
                 }
             })
@@ -702,15 +703,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function deleteEvent() {
             let data = $('#delete_event_form').serialize();
-            showLoader('Loading...');
+            showLoader('Deleting Event...');
 
             $.ajax({
                 url: 'includes/crud_event.php',
                 type: 'POST',
                 data: data,
-                success: function(response) {
-                    hideDeleteEventModal();
-                    hideEditEventModal();
+                success: function (response) {
                     location.reload();
                 }
             })
@@ -747,14 +746,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function editEvent() {
             let data = $('#edit_event_form').serialize();
-            showLoader('Loading...');
+            showLoader('Saving...');
 
             $.ajax({
                 url: 'includes/crud_event.php',
                 type: 'POST',
                 data: data,
-                success: function(response) {
-                    hideEditEventModal();
+                success: function (response) {
                     location.reload();
                 }
             })
@@ -929,6 +927,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             console.log(checkbox);
             console.log($id);
 
+            const status = pendingCheckbox.is(':checked') ? "on" : "off";
+            const logText = pendingCheckbox.closest('label').find('span').text();
+
+            showLoader(`Turning ${status}... [${logText.toLowerCase()}]`);
             $.ajax({
                 url: './includes/update_logtime.php',
                 type: 'POST',
@@ -942,6 +944,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                     $('#switch_modal').addClass('invisible');
                     pendingCheckbox = null;
+                    hideLoader();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error updating database:', error);
@@ -949,6 +952,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     pendingCheckbox.prop('checked', !pendingCheckbox.is(':checked'));
                     $('#switch_modal').addClass('invisible');
                     pendingCheckbox = null;
+                    hideLoader();
                 }
             });
         }
@@ -987,7 +991,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function confirmInvite() {
             var formData = $('#invite_students_form').serialize();
-            showLoader("Loading...");
+            showLoader("Inviting Students...");
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -998,7 +1002,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     if (response.trim() === "success") {
                         location.reload();
                         let count = $('input.student-checkbox:checked').length;
-                        sessionStorage.setItem('invite_success', count); 
+                        sessionStorage.setItem('invite_success', count);
                         $('#success_invite_count').text(count);
                     } else {
                         alert('Error: ' + response);
@@ -1012,7 +1016,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function confirmEditInvite() {
             var formData = $('#edit_invite_students_form').serialize();
-            showLoader("Loading...");
+            showLoader("Updating Invite...");
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -1200,7 +1204,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 $yearCheckboxes.prop('checked', this.checked);
             });
 
-            
+
             $('#invite_modal_main').find('.year-dropdown').click(function () {
                 var $dropdown = $(this).closest('.year').find('.year-dropdown');
                 var $container = $(this).closest('.year').find('.block-container');
