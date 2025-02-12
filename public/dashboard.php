@@ -240,7 +240,6 @@ if ($_SESSION["logged_in"] == !true) {
     </body>
     <?php include_once("./includes/partial/footer.php"); ?>
 
-
     <script>
 
         function showSetBlockyearModal(id) {
@@ -260,9 +259,9 @@ if ($_SESSION["logged_in"] == !true) {
             var totalPoints = (logIn / totalLog * 100).toFixed(2);
 
 
-            var userId = <?= json_encode($_SESSION['userid']) ?>;
+            var userId = <?= json_encode($user['student_number']) ?>;
 
-            if (userId == 2) {
+            if (userId == '2022-8-0193') {
                 $("#totalPoints").text("96.69");
                 $(".points").removeClass("text-red-500 text-green-500").addClass("text-fuchsia-500");
                 return;
