@@ -384,7 +384,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="add_year" name="year" type="number" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="">Select</option>
+                                    <option value="" disabled>Select</option>
                                     <option value="1">First Year</option>
                                     <option value="2">Second Year</option>
                                     <option value="3">Third Year</option>
@@ -395,7 +395,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="add_block" name="block" type="number" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="">Select</option>
+                                    <option value="" disabled>Select</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -484,7 +484,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="edit_year" name="year" type="text" required
                                     class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="" class="font-['mulish'] text-black text-base">Select</option>
+                                    <option value="" disabled class="font-['mulish'] text-black text-base">Select</option>
                                     <option value="1" class="font-['mulish'] text-black text-base">First Year</option>
                                     <option value="2" class="font-['mulish'] text-black text-base">Second Year</option>
                                     <option value="3" class="font-['mulish'] text-black text-base">Third Year</option>
@@ -495,7 +495,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
                                 <select id="edit_block" name="block" type="text" required
                                     class="w-full md:w-3/4 flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="" class="font-['mulish'] text-black text-base">Select</option>
+                                    <option value="" disabled class="font-['mulish'] text-black text-base">Select</option>
                                     <option value="1" class="font-['mulish'] text-black text-base">1</option>
                                     <option value="2" class="font-['mulish'] text-black text-base">2</option>
                                     <option value="3" class="font-['mulish'] text-black text-base">3</option>
@@ -524,11 +524,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 <div class='flex flex-col w-full my-2 h-fit md:w-1/3'>
                                     <select id='edit_user_type' name='user_type' type='text' required
                                         class='w-full md:w-3/4 flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
-                                        <option value='' class='text-base text-black font-mulish'>Select</option>
+                                        <option value='' class='text-base text-black font-mulish' disabled>Select</option>
                                         <option value='0' class='text-base text-black font-mulish'>Student</option>
                                         <option value='1' class='text-base text-black font-mulish'>Officer</option>
                                         <option value='2' class='text-base text-black font-mulish'>Superuser</option>
-                                        <option value='3' class='text-base text-black font-mulish'>Admin</option>
                                     </select>
                                     <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
                                 </div>";
