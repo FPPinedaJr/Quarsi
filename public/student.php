@@ -95,7 +95,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
     ?>
 
     <body class="justify-center w-screen min-h-screen mt-20 overflow-x-hidden ">
-        <main class="flex flex-col justify-center w-full min-h-screen px-3 py-2 h-fit">
+        <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
 
             <div class="flex items-center w-full p-2 md:w-fit h-fit">
                 <div class="flex items-center justify-end h-fit md:w-[20rem] w-fit">
@@ -207,131 +207,140 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 
-
+            <div class="my-2 border-t-2 border-zinc-500"></div>
             <!-- Students List -->
             <!-- Desktop view -->
-            <div class="justify-center hidden w-full my-10 border-gray-400 md:flex">
-                <table id="students-table" class="w-2/3">
-                    <thead>
-                        <th class="w-1/2 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Students Name
-                        </th>
-                        <th class="w-1/4 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Student ID</th>
-                        <th class="w-1/4 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Program, Year &
-                            Block</th>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($students as $student): ?>
-                            <tr id="student-<?php echo $student['iduser'] ?>"
-                                data-student_no="<?php echo $student['student_no'] ?>"
-                                data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
-                                data-idprogram="<?php echo $student['idprogram_user'] ?>"
-                                data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
-                                data-email="<?php echo $student['email'] ?>"
-                                data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1 && $student['is_superuser'] == 0) {
-                                      echo "1";
-                                  } else if ($student['is_officer'] == 1 && $student['is_superuser'] == 1) {
-                                      echo "2";
-                                  } else if ($student['is_admin'] == 1) {
-                                      echo "3";
-                                  } else {
-                                      echo "0";
-                                  } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200"
-                                onclick="showEditStudentModal(<?= $student['iduser'] ?>)">
-                                <td class="flex items-center py-2 pl-3"><img data-src="<?php if ($student['profile_pic']) {
-                                    echo 'data:image/jpeg;base64,' . base64_encode($student['profile_pic']);
-                                } ?>" class="w-6 h-6 mr-2 border border-gray-400 rounded-full lozad">
-                                    <p id="fullname" class="<?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
-                                        echo 'text-blue-600';
-                                    } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
-                                        echo 'text-orange-400';
-                                    } ?> font-semibold">
-                                        <?= $student['f_name'] ?>         <?= $student['l_name'] ?>
-                                    </p>
-                                </td>
-                                <td id="student-no" class="py-2 pl-3"><?= $student['student_no'] ?></td>
-                                <td id="program-yr-blck" class="py-2 pl-3"><?= $student['program'] ?>         <?= $student['year'] ?>
-                                    Block
-                                    <?= $student['block'] ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+            <div class="min-h-screen">
+                <div class="justify-center hidden w-full my-5 border-gray-400 md:flex">
+                    <table id="students-table" class="w-2/3">
+                        <thead>
+                            <th class="w-1/2 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Students Name
+                            </th>
+                            <th class="w-1/4 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Student ID
+                            </th>
+                            <th class="w-1/4 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Program, Year
+                                &
+                                Block</th>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($students as $student): ?>
+                                <tr id="student-<?php echo $student['iduser'] ?>"
+                                    data-student_no="<?php echo $student['student_no'] ?>"
+                                    data-f_name="<?php echo $student['f_name'] ?>"
+                                    data-l_name="<?php echo $student['l_name'] ?>"
+                                    data-idprogram="<?php echo $student['idprogram_user'] ?>"
+                                    data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
+                                    data-email="<?php echo $student['email'] ?>"
+                                    data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1 && $student['is_superuser'] == 0) {
+                                          echo "1";
+                                      } else if ($student['is_officer'] == 1 && $student['is_superuser'] == 1) {
+                                          echo "2";
+                                      } else if ($student['is_admin'] == 1) {
+                                          echo "3";
+                                      } else {
+                                          echo "0";
+                                      } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200"
+                                    onclick="showEditStudentModal(<?= $student['iduser'] ?>)">
+                                    <td class="flex items-center py-2 pl-3"><img data-src="<?php if ($student['profile_pic']) {
+                                        echo 'data:image/jpeg;base64,' . base64_encode($student['profile_pic']);
+                                    } ?>" class="w-6 h-6 mr-2 border border-gray-400 rounded-full lozad">
+                                        <p id="fullname" class="<?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
+                                            echo 'text-blue-600';
+                                        } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
+                                            echo 'text-orange-400';
+                                        } ?> font-semibold">
+                                            <?= $student['f_name'] ?>         <?= $student['l_name'] ?>
+                                        </p>
+                                    </td>
+                                    <td id="student-no" class="py-2 pl-3"><?= $student['student_no'] ?></td>
+                                    <td id="program-yr-blck" class="py-2 pl-3"><?= $student['program'] ?>
+                                        <?= $student['year'] ?>
+                                        Block
+                                        <?= $student['block'] ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
 
-            <!-- Mobile View -->
-            <div id="students-div" class="flex flex-col items-center w-full mt-10 md:hidden">
-                <?php foreach ($students as $student): ?>
-                    <div id="student-<?php echo $student['iduser'] ?>" data-student_no="<?php echo $student['student_no'] ?>"
-                        data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
-                        data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
-                        data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>"
-                        data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
-                              echo "1";
-                          } else if ($student['is_superuser'] == 1) {
-                              echo "2";
-                          } else if ($student['is_admin'] == 1) {
-                              echo "3";
-                          } else {
-                              echo "0";
-                          } ?>"
-                        class="flex student-div items-center p-1 border border-teal-400 shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden"
-                        onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
-                        <div class="flex items-center justify-center w-1/3 h-full">
-                            <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>"
-                                alt="profile picture" class="w-16 h-16 border border-gray-200 rounded-full lozad">
+                <!-- Mobile View -->
+                <div id="students-div" class="flex flex-col items-center w-full mt-2 md:hidden">
+                    <?php foreach ($students as $student): ?>
+                        <div id="student-<?php echo $student['iduser'] ?>"
+                            data-student_no="<?php echo $student['student_no'] ?>"
+                            data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
+                            data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
+                            data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>"
+                            data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
+                                  echo "1";
+                              } else if ($student['is_superuser'] == 1) {
+                                  echo "2";
+                              } else if ($student['is_admin'] == 1) {
+                                  echo "3";
+                              } else {
+                                  echo "0";
+                              } ?>"
+                            class="flex student-div items-center p-1 border border-teal-400 shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden"
+                            onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
+                            <div class="flex items-center justify-center w-1/3 h-full">
+                                <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>"
+                                    alt="profile picture" class="w-16 h-16 border border-gray-200 rounded-full lozad">
+                            </div>
+                            <div class="flex flex-col justify-center w-2/3 h-full p-1 pl-2 text-nowrap">
+                                <p id="fullname" class="font-semibold text-xl <?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
+                                    echo 'text-blue-600';
+                                } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
+                                    echo 'text-orange-400';
+                                } ?>">
+                                    <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
+                                </p>
+                                <p id="student-no" class="text-gray-700"><?php echo $student['student_no'] ?></p>
+                                <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?> Block
+                                    <?php echo $student['year'] ?>
+                                </p>
+                            </div>
                         </div>
-                        <div class="flex flex-col justify-center w-2/3 h-full p-1 pl-2 text-nowrap">
-                            <p id="fullname" class="font-semibold text-xl <?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
-                                echo 'text-blue-600';
-                            } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
-                                echo 'text-orange-400';
-                            } ?>">
-                                <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
-                            </p>
-                            <p id="student-no" class="text-gray-700"><?php echo $student['student_no'] ?></p>
-                            <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?> Block
-                                <?php echo $student['year'] ?>
-                            </p>
+                    <?php endforeach; ?>
+                </div>
+
+                <div id="pagination_container" class="flex justify-center w-full">
+                    <div class="flex flex-col items-center my-5 md:w-1/3">
+                        <div class="flex items-center gap-2">
+                            <a href="?page=1" data-page="1"
+                                class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == 1) ? 'pointer-events-none opacity-50' : '' ?>">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                            <a href="?page=<?= max(1, $page - 1) ?>" data-page="<?= max(1, $page - 1) ?>"
+                                class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == 1) ? 'pointer-events-none opacity-50' : '' ?>">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+
+                            <!-- Input Box -->
+                            <div class="flex items-center px-2 py-1 bg-white rounded">
+                                <input type="text" id="page_input"
+                                    class="w-12 text-center border-b-2 border-teal-500 outline-none" value="<?= $page ?>"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'')" minlength="1"
+                                    maxlength="<?= $total_pages ?>">
+                                <span class="mx-2 text-sm">of</span>
+                                <span class="text-sm total-pages"><?= $total_pages ?> pages</span>
+                            </div>
+
+
+                            <a href="?page=<?= min($total_pages, $page + 1) ?>"
+                                data-page="<?= min($total_pages, $page + 1) ?>"
+                                class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == $total_pages) ? 'pointer-events-none opacity-50' : '' ?>">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                            <a href="?page=<?= $total_pages ?>" data-page="<?= $total_pages ?>"
+                                class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == $total_pages) ? 'pointer-events-none opacity-50' : '' ?>">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
                         </div>
+
+                        <p class="mt-2 mb-2 text-sm text-teal-500">Showing <span
+                                class="results-count"><?= $results_count ?></span> results...</p>
                     </div>
-                <?php endforeach; ?>
-            </div>
-
-            <div id="pagination_container" class="flex justify-center w-full">
-                <div class="flex flex-col items-center my-5 md:w-1/3">
-                    <div class="flex items-center gap-2">
-                        <a href="?page=1" data-page="1"
-                            class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == 1) ? 'pointer-events-none opacity-50' : '' ?>">
-                            <i class="fas fa-angle-double-left"></i>
-                        </a>
-                        <a href="?page=<?= max(1, $page - 1) ?>" data-page="<?= max(1, $page - 1) ?>"
-                            class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == 1) ? 'pointer-events-none opacity-50' : '' ?>">
-                            <i class="fas fa-angle-left"></i>
-                        </a>
-
-                        <!-- Input Box -->
-                        <div class="flex items-center px-2 py-1 bg-white rounded">
-                            <input type="text" id="page_input"
-                                class="w-12 text-center border-b-2 border-teal-500 outline-none" value="<?= $page ?>"
-                                oninput="this.value=this.value.replace(/[^0-9]/g,'')" minlength="1"
-                                maxlength="<?= $total_pages ?>">
-                            <span class="mx-2 text-sm">of</span>
-                            <span class="text-sm total-pages"><?= $total_pages ?> pages</span>
-                        </div>
-
-
-                        <a href="?page=<?= min($total_pages, $page + 1) ?>" data-page="<?= min($total_pages, $page + 1) ?>"
-                            class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == $total_pages) ? 'pointer-events-none opacity-50' : '' ?>">
-                            <i class="fas fa-angle-right"></i>
-                        </a>
-                        <a href="?page=<?= $total_pages ?>" data-page="<?= $total_pages ?>"
-                            class="paginate_btn px-3 py-2 border bg-teal-200 text-teal-800 rounded hover:bg-teal-300 <?= ($page == $total_pages) ? 'pointer-events-none opacity-50' : '' ?>">
-                            <i class="fas fa-angle-double-right"></i>
-                        </a>
-                    </div>
-
-                    <p class="mt-2 mb-2 text-sm text-teal-500">Showing <span class="results-count"><?= $results_count ?></span> results...</p>
                 </div>
             </div>
 
@@ -569,7 +578,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     <button id="deleteStudentCancel" onclick="hideDeleteStudentModal()"
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
                     <form id="delete_student_form" action="./includes/crud_student.php" type="button" method="POST">
-                        <button type="button" onclick="deleteStudent()" 
+                        <button type="button" onclick="deleteStudent()"
                             class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
                         <input id="id_delete_student" type="hidden" name="iduser" class="">
                         <input type="hidden" value="delete" name="action">
@@ -808,7 +817,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     $("#students-div").html(
                         '<div class="relative flex items-center justify-center w-full h-36">' +
                         '<div class="w-10 h-10 mx-auto border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>' +
-                        '<div>' 
+                        '<div>'
                     );
 
                     $.ajax({
@@ -875,7 +884,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 $("#students-div").html(
                     '<div class="relative flex items-center justify-center w-full h-36">' +
                     '<div class="w-10 h-10 mx-auto border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>' +
-                    '<div>' 
+                    '<div>'
                 );
 
                 $.ajax({
