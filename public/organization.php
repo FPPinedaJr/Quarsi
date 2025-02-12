@@ -94,7 +94,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
 
     <div id="orgModal" class="fixed inset-0 flex items-center justify-center invisible bg-gray-800 bg-opacity-50">
-        <div id="orgModalMain" class="p-6 bg-white rounded shadow w-96">
+        <div id="orgModalMain" class="w-5/6 p-6 bg-white rounded shadow md:w-96">
             <h3 id="modalTitle" class="mb-4 text-xl font-bold text-teal-700"><span id="add_edit">Add</span> Organization
             </h3>
             <form id="organizationForm">
@@ -132,7 +132,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
     </div>
 
     <div id="deleteModal" class="fixed inset-0 flex items-center justify-center invisible bg-gray-800 bg-opacity-50">
-        <div id="deleteModalMain" class="p-6 bg-white rounded shadow w-96">
+        <div id="deleteModalMain" class="w-5/6 p-6 bg-white rounded shadow md:w-96">
             <h3 id="modalTitle" class="mb-4 text-xl font-bold text-teal-700">Delete Organization</h3>
             <form id="deleteForm" class="space-y-4">
                 <p class="text-sm text-teal-700">Are you sure to delete organization "<span id="organization_to_delete"
