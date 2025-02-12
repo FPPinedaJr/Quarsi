@@ -89,7 +89,7 @@ if ($_SESSION["logged_in"] == !true) {
                 {
                     if ($time === '00:00:00') {
                         return 'Absent';
-                    } elseif ($time === '11:11:11') {
+                    } elseif ($time === '23:23:23') {
                         return 'Excused';
                     } elseif (is_null($time)) {
                         return 'No attendance';
@@ -103,7 +103,7 @@ if ($_SESSION["logged_in"] == !true) {
                 {
                     if ($time === '00:00:00')
                         return 'Absent';
-                    if ($time === '11:11:11')
+                    if ($time === '23:23:23')
                         return 'Excused';
                     if (!$time)
                         return 'No attendance';
@@ -143,7 +143,7 @@ if ($_SESSION["logged_in"] == !true) {
                                                 <?php
                                                 if ($row[$field] === '00:00:00') {
                                                     echo '❌';
-                                                } elseif ($row[$field] === '11:11:11') {
+                                                } elseif ($row[$field] === '23:23:23') {
                                                     echo '🎉';
                                                 } elseif ($row[$field]) {
                                                     echo '✅';
