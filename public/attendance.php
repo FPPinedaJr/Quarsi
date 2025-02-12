@@ -53,7 +53,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
     {
         if ($time === '00:00:00')
             return 'Absent';
-        if ($time === '11:11:11')
+        if ($time === '23:23:23')
             return 'Excused';
         if (!$time)
             return 'No attendance';
@@ -159,7 +159,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                                     <?php
                                                     if ($row[$field] === '00:00:00') {
                                                         echo '❌';
-                                                    } elseif ($row[$field] === '11:11:11') {
+                                                    } elseif ($row[$field] === '23:23:23') {
                                                         echo '🎉';
                                                     } elseif ($row[$field]) {
                                                         echo '✅';
@@ -274,7 +274,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                                         <?php
                                                         if ($row[$field] === '00:00:00') {
                                                             echo '❌';
-                                                        } elseif ($row[$field] === '11:11:11') {
+                                                        } elseif ($row[$field] === '23:23:23') {
                                                             echo '🎉';
                                                         } elseif ($row[$field]) {
                                                             echo '✅';
@@ -334,7 +334,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             <select name="<?= $log ?>" id="<?= $log ?>"
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
                                 <option value="null" disabled>-- no attendance --</option>
-                                <option value="11:11:11">Excused</option>
+                                <option value="23:23:23">Excused</option>
                                 <option value="00:00:00">Absent</option>
                             </select>
                         </div>
@@ -379,7 +379,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                 let $select = $('#' + log);
 
 
-                if (value !== '00:00:00' && value !== '11:11:11' && value !== 'null' && value) {
+                if (value !== '00:00:00' && value !== '23:23:23' && value !== 'null' && value) {
                     let $realOption = $select.find('#real_val');
                     if ($realOption.length) {
                         $realOption.val(value).text(value);
@@ -391,7 +391,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     $select.val(value);
                 }
 
-                let isRealValue = value !== '00:00:00' && value !== '11:11:11' && value !== 'null';
+                let isRealValue = value !== '00:00:00' && value !== '23:23:23' && value !== 'null';
                 let isNoAttendance = value === 'null';
 
                 $select.prop('disabled', isRealValue || isNoAttendance);
@@ -471,8 +471,9 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                 let afternoon_in = $('#afternoon_in').val() || "";
                 let afternoon_out = $('#afternoon_out').val() || "";
 
-                console.log("morning in: " + morning_in)
-                console.log("mornig out: " + morning_out)
+                // console.log("morning in: " + morning_in)
+                // console.log("mornig out: " + morning_out)
+                showLoader('Saving...');
                 $.ajax({
                     url: 'includes/edit_attendance.php',
                     method: 'POST',
