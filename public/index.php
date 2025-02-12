@@ -113,9 +113,9 @@ if (isset($_SESSION['logged_in'])) {
   <div id="otp_modal" class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full bg-gray-400/50 backdrop-blur-md">
     <div id="otp_modal_main" class="flex flex-col items-center w-10/12 px-4 py-2 bg-white rounded-md md:w-1/4">
       <div class="mt-3 text-3xl font-bold text-center">OTP Verification</div>
-      <input id="otp_email" type="hidden" name="email">
       <!-- Input OTP -->
-      <div id="otp_content" class="flex flex-col items-center justify-center w-full">
+      <form id="otp_form" action="includes/verify_otp.php" method="POST" class="flex flex-col items-center justify-center w-full">
+        <input id="otp_email" type="hidden" name="email">
         <div class="flex justify-between w-3/4 px-4 h-fit mt-7">
           <input id="digit-1"
             class="w-10 h-10 text-2xl text-center bg-white border border-gray-400 rounded-md shadow-lg focus:outline-emerald-400"
@@ -135,10 +135,10 @@ if (isset($_SESSION['logged_in'])) {
         </div>
 
         <div class="flex justify-center w-full p-1 mt-6">
-          <button id="otp-btn" class="bg-emerald-500 py-1 text-md text-white rounded-full w-[9rem] font-semibold hover:bg-emerald-600 mb-6" type="button" onclick="verifyOTP()">Submit</button>
+          <button id="otp-btn" class="bg-emerald-500 py-1 text-md text-white rounded-full w-[9rem] font-semibold hover:bg-emerald-600 mb-6" type="submit">Submit</button>
           <div id="otp-loader" class="hidden w-10 h-10 border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>
         </div>
-      </div>
+      </form>
 
     </div>
   </div>
@@ -148,7 +148,7 @@ if (isset($_SESSION['logged_in'])) {
     <div id="forgot_pass_modal_main" class="flex flex-col items-center w-10/12 px-6 py-2 bg-white rounded-md md:w-1/4">
       <div class="w-full py-1 text-3xl font-bold text-center h-fit">Forgot Password</div>
       <div id="email_content" class="flex w-full">
-        <form action="send_otp.php" method="POST"  class="flex flex-col w-full mt-4">
+        <form id="email_form" action="includes/send_otp.php" method="POST"  class="flex flex-col w-full mt-4">
           <label for="corp_email" class=" text-zinc-700">
             Enter your corporate email:
           </label>
@@ -156,7 +156,7 @@ if (isset($_SESSION['logged_in'])) {
           class="w-full px-2 py-1 mt-2 border border-teal-700 rounded-md focus:outline-none">
           <input type="hidden" name="action" value="verify_email">
           <div class="flex justify-center mt-4 mb-2">
-            <button id="email-btn" type="button" onclick="verifyEmail()" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Send OTP</button>
+            <button id="email-btn" type="submit" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Send OTP</button>
             <div id="email-loader" class="hidden w-10 h-10 border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>
           </div>
         </form>
@@ -169,7 +169,7 @@ if (isset($_SESSION['logged_in'])) {
     <div id="change_pass_modal_main" class="flex flex-col items-center w-10/12 px-6 py-2 bg-white rounded-md md:w-1/4">
       <div class="w-full py-1 text-3xl font-bold text-center h-fit">Change Password</div>
       <div id="password_content" class="flex w-full">
-        <form action="change_password.php" method="POST"  class="flex flex-col w-full mt-4">
+        <form id="password_form" action="includes/change_password.php" method="POST"  class="flex flex-col w-full mt-4">
           <input id="change_pass_email" type="hidden" name="email">
           <label for="pass1CP" class=" text-zinc-700">
             Enter your new password:
@@ -182,7 +182,7 @@ if (isset($_SESSION['logged_in'])) {
           <input id="pass2CP" type="password" name="pass2" 
           class="w-full px-2 py-1 mt-2 border border-teal-700 rounded-md focus:outline-none">
           <div class="flex justify-center mt-4 mb-2">
-            <button id="password-btn" type="button" onclick="changePassword()" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Confirm</button>
+            <button id="password-btn" type="submit" class="bg-emerald-500 py-1 text-md text-white mt-2 rounded-full w-[9rem] font-semibold hover:bg-emerald-600">Confirm</button>
             <div id="password-loader" class="hidden w-10 h-10 border-4 border-gray-300 rounded-full border-t-teal-500 animate-spin"></div>
           </div>
         </form>
@@ -276,7 +276,8 @@ if (isset($_SESSION['logged_in'])) {
       $('#success_message').addClass('invisible');
     }
 
-    function verifyEmail() {
+    function verifyEmail(event) {
+      event.preventDefault();      
       var $email = $('#corp_email').val();
       var $action = $('input[name=action]').val();
 
@@ -308,7 +309,8 @@ if (isset($_SESSION['logged_in'])) {
       });
     }
 
-    function verifyOTP() {
+    function verifyOTP(event) {
+      event.preventDefault();      
       var $otp = $('#digit-1').val() + $('#digit-2').val() + $('#digit-3').val() + $('#digit-4').val();
       var $email = $('#otp_email').val();
       $('#otp-loader').removeClass('hidden');
@@ -343,7 +345,8 @@ if (isset($_SESSION['logged_in'])) {
       })
     }
 
-    function changePassword() {
+    function changePassword(event) {
+      event.preventDefault();      
       var $email = $('#change_pass_email').val();
       var $pass1 = $('#pass1CP').val();
       var $pass2 = $('#pass2CP').val();
@@ -498,6 +501,10 @@ if (isset($_SESSION['logged_in'])) {
           hideForgotPassModal();
         }
       })
+
+      $('#email_form').on('submit', verifyEmail);
+      $('#otp_form').on('submit', verifyOTP);
+      $('#password_form').on('submit', changePassword);
 
     });
   </script>
