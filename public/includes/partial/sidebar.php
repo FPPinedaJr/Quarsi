@@ -155,7 +155,7 @@ $user = $stmt->fetch();
 
 
 <!-- Alien Loader Overlay -->
-<div id="alien-loader" class="fixed inset-0 flex items-center justify-center hidden bg-white z-[200] bg-opacity-70">
+<div id="alien-loader" class="fixed inset-0 flex items-center justify-center hidden bg-black/70 backdrop-blur-lg z-[200]">
   <div class="flex flex-col items-center space-y-4">
     <div class="flex space-x-2 text-5xl">
       <span class="animate-bounce">👽</span>

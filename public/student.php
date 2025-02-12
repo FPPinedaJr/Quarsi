@@ -607,7 +607,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         }
 
         function addStudent() {
-            let data = $('#add_student_form').serialize();
+            let data = new FormData($('#add_student_form')[0]);
             hideAddStudentModal();
             showLoader("Loading...");
             $('#filter').addClass('invisible');
@@ -616,10 +616,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 url: 'includes/crud_student.php',
                 type: 'POST',
                 data: data,
+                contentType: false,
+                processData: false,
                 success: function (response) {
-                    window.location.hash = response;
                     location.reload();
-                    hideLoader();
                     $('#filter').removeClass('invisible')
                 }
             });
@@ -660,8 +660,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         }
 
         function editStudent() {
-            let data = $('#edit_student_form').serialize();
             let id = $('#iduser').val();
+            let data = new FormData($('#edit_student_form')[0]);
+
+            // for (let pair of data.entries()) {
+            //     console.log(pair[0] + ', ' + pair[1]);  // Debug output
+            // }            
             hideEditStudentModal();
             showLoader("Loading...");
             $('#filter').addClass('invisible');
@@ -670,10 +674,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 url: 'includes/crud_student.php',
                 type: 'POST',
                 data: data,
+                processData: false,
+                contentType: false,
                 success: function (response) {
                     window.location.hash = response;
                     location.reload();
-                    hideLoader();
                     $('#filter').removeClass('invisible')
                 }
             });
@@ -707,7 +712,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     hideDeleteStudentModal();
                     hideEditStudentModal();
                     window.location.hash = response;
-                    hideLoader();
                     location.reload();
                     $('#filter').removeClass('invisible')
                 }

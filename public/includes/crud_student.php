@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = trim($_POST['email']);
             $user_type = $_POST['user_type'];
             $profile_pic = NULL;
-            if (isset($_POST['profile_pic'])){$profile_pic = $_FILES['profile_pic'];}
+            if (isset($_FILES['profile_pic'])){$profile_pic = $_FILES['profile_pic'];}
             $user = 1;
             $img_content = "";
             $hidden_profile = $_POST['hidden_profile'];

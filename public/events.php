@@ -696,7 +696,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 success: function(response) {
                     hideAddEventModal();
                     location.reload();
-                    hideLoader();
                 }
             })
         }
@@ -713,7 +712,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     hideDeleteEventModal();
                     hideEditEventModal();
                     location.reload();
-                    hideLoader();
                 }
             })
         }
@@ -758,7 +756,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 success: function(response) {
                     hideEditEventModal();
                     location.reload();
-                    hideLoader();
                 }
             })
         }
@@ -1000,7 +997,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
-                        hideLoader();
                         let count = $('input.student-checkbox:checked').length;
                         sessionStorage.setItem('invite_success', count); 
                         $('#success_invite_count').text(count);
@@ -1026,7 +1022,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
-                        hideLoader();
                     } else {
                         alert('Error: ' + response);
                     }
