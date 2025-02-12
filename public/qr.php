@@ -42,8 +42,8 @@ if ($_SESSION["logged_in"] == !true) {
     include_once("./includes/partial/header.php");
     ?>
 
-    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
-        <main class="flex justify-center w-full h-full">
+    <body class="justify-center w-screen min-h-screen mt-24 overflow-x-hidden ">
+        <main class="flex justify-center w-full h-full min-h-screen">
             <div id="qr-code" class="h-full p-6 text-center w-96">
                 <h1 class="mt-5 mb-10 text-2xl font-bold">Your QR Code</h1>
                 <?php
@@ -76,6 +76,7 @@ if ($_SESSION["logged_in"] == !true) {
             </div>
         </main>
     </body>
+    <?php include_once("./includes/partial/footer.php"); ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>

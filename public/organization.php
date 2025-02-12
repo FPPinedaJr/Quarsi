@@ -12,7 +12,7 @@ if (!isset($_SESSION["logged_in"]) || $_SESSION["logged_in"] !== true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard -
+    <title>Organizations -
         <?php
         if ($_SESSION['is_officer'] == 1) {
             echo "Officer";
@@ -63,9 +63,8 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 ?>
 
 
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-    <main class="w-5/6 p-6 bg-white rounded shadow">
-        <h2 class="mb-4 text-2xl font-bold text-center">Organizations</h2>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 ">
+    <main class="w-5/6 min-h-screen p-6 pt-24 rounded ">
 
         <div id="organizationGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             <?php foreach ($rows as $row) { ?>
@@ -282,7 +281,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
 
         $(document).ready(function () {
-            $('#header_title').text('Dashboard');
+            $('#header_title').text('Organizations');
             $(document).on('click', function (event) {
                 if ($(event.target).is('#orgModal')) {
                     hideOrgModal();
@@ -294,5 +293,6 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
         });
     </script>
 </body>
+<?php include_once("./includes/partial/footer.php"); ?>
 
 </html>

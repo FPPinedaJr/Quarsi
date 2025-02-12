@@ -206,6 +206,7 @@ if ($_SESSION["logged_in"] == !true) {
             </button>
         </div>
     </body>
+    <?php include_once("./includes/partial/footer.php"); ?>
 
 
     <div id="new_semester_modal"
