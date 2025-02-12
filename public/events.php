@@ -312,7 +312,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 <div class="flex flex-col w-full gap-2 p-2 md:flex-row md:mt-5 h-fit">
                     <button id="deleteEventCancel" onclick="hideDeleteEventModal()"
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
-                    <form action="./includes/crud_event.php" type="button" method="POST">
+                    <form id=delete_event_form action="./includes/crud_event.php" type="button" method="POST">
                         <button type="button" onclick="deleteEvent()"
                             class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
                         <input type="hidden" value="delete" name="action">
