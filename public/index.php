@@ -110,7 +110,7 @@ if (isset($_SESSION['logged_in'])) {
   </div>
 
   <!-- Submit OTP -->
-  <div id="otp_modal" class="invisible fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-400/50 backdrop-blur-md">
+  <div id="otp_modal" class="fixed top-0 left-0 flex items-center justify-center invisible w-full h-full bg-gray-400/50 backdrop-blur-md">
     <div id="otp_modal_main" class="flex flex-col items-center w-10/12 px-4 py-2 bg-white rounded-md md:w-1/4">
       <div class="mt-3 text-3xl font-bold text-center">OTP Verification</div>
       <input id="otp_email" type="hidden" name="email">
@@ -292,7 +292,6 @@ if (isset($_SESSION['logged_in'])) {
         success: function(response) {
           $('#email-loader').addClass('hidden');
           $('#email-btn').removeClass('hidden');
-          console.log(response);
             if (response === "success") {
               showOTPModal();
               $('#s_message').text('OTP Successfully sent to your email.')
@@ -465,7 +464,6 @@ if (isset($_SESSION['logged_in'])) {
             password: password
           },
           success: function (response) {
-            console.log(response);
 
             if (response === "success") {
               window.location.href = "./dashboard.php";
