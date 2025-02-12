@@ -143,7 +143,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                 <?php foreach ($rows as $row): ?>
                                     <tr onclick="showEditAttendanceModal(this, <?= $row['iduser'] ?>, <?= $row['idevent'] ?>)"
                                         id="row_ <?= $row['iduser'] ?>_<?= $row['idevent'] ?>"
-                                        class="border cursor-pointer select-none bg-gray-50"
+                                        class="border cursor-pointer select-none bg-gray-50 hover:bg-emerald-200"
                                         data-student-name="<?= $row['fullname'] ?? 'null' ?>"
                                         data-event-name="<?= $row['event_name'] ?? 'null' ?>"
                                         data-morning-in="<?= $row['morning_in'] ?? 'null' ?>"
@@ -256,7 +256,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                 <?php foreach ($rows as $row): ?>
                                         <tr onclick="showEditAttendanceModal(this, <?= $row['iduser'] ?>, <?= $row['idevent'] ?>)"
                                             id="row_ <?= $row['iduser'] ?>_<?= $row['idevent'] ?>"
-                                            class="border cursor-pointer select-none bg-gray-50"
+                                            class="border cursor-pointer select-none bg-gray-50 hover:bg-emerald-200"
                                             data-student-name="<?= $row['fullname'] ?? 'null' ?>"
                                             data-event-name="<?= $row['event_name'] ?? 'null' ?>"
                                             data-morning-in="<?= $row['morning_in'] ?? 'null' ?>"
@@ -327,7 +327,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     <?php
                     $logs = ['morning_in', 'morning_out', 'afternoon_in', 'afternoon_out'];
                     foreach ($logs as $log) {
-                        $label = ucwords(str_replace('_', ' ', $log)); // Convert snake_case to Title Case
+                        $label = ucwords(str_replace('_', ' ', $log)); 
                         ?>
                         <div>
                             <label for="<?= $log ?>" class="block text-sm font-medium text-gray-700"><?= $label ?></label>
