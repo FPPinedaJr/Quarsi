@@ -262,7 +262,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             <!-- Mobile View -->
             <div id="students-div" class="flex flex-col items-center w-full mt-10 md:hidden">
                 <?php foreach ($students as $student): ?>
-                    <?php if ($student['is_superuser'] == 1) ?>
                     <div id="student-<?php echo $student['iduser'] ?>" data-student_no="<?php echo $student['student_no'] ?>"
                         data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
                         data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
