@@ -732,16 +732,8 @@ video {
   z-index: 50;
 }
 
-.z-\[100\] {
-  z-index: 100;
-}
-
 .z-\[200\] {
   z-index: 200;
-}
-
-.z-\[80\] {
-  z-index: 80;
 }
 
 .m-4 {
@@ -776,11 +768,6 @@ video {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
-}
-
-.my-10 {
-  margin-top: 2.5rem;
-  margin-bottom: 2.5rem;
 }
 
 .my-2 {

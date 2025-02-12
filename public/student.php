@@ -203,7 +203,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
             <!-- Add Button -->
             <div id="add_student_modal_btn" onclick="showAddStudentModal()"
-                class="fixed z-[100] flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
+                class="fixed z-40 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 
@@ -247,8 +247,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                         <p id="fullname" class="<?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
                                             echo 'text-blue-600';
                                         } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
-                                            echo 'text-orange-400';
-                                        } ?> font-semibold">
+                                            echo 'text-orange-400';} ?> font-semibold">
                                             <?= $student['f_name'] ?>         <?= $student['l_name'] ?>
                                         </p>
                                     </td>
@@ -461,6 +460,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
                                 <input id="iduser" name="iduser" type="hidden">
                                 <input id="edit_action" name="action" type="hidden" value="update">
+
+                                
                                 <input id="edit_f_name" name="f_name" type="text" required
                                     class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="edit_f_name" class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
