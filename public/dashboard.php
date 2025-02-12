@@ -50,8 +50,8 @@ if ($_SESSION["logged_in"] == !true) {
     include_once("./includes/partial/header.php");
     ?>
 
-    <body class="flex justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
-        <main class="flex flex-col items-center w-full h-full ">
+    <body class="justify-center w-screen min-h-screen mt-24 overflow-x-hidden ">
+        <main class="flex flex-col items-center w-full h-full min-h-screen ">
 
             <!-- Points Div -->
             <div class="absolute top-0 left-0 w-full py-16 pt-32 text-2xl text-center bg-teal-300/50">
@@ -238,6 +238,7 @@ if ($_SESSION["logged_in"] == !true) {
         <?php } ?>
 
     </body>
+    <?php include_once("./includes/partial/footer.php"); ?>
 
     <script>
 
@@ -258,9 +259,9 @@ if ($_SESSION["logged_in"] == !true) {
             var totalPoints = (logIn / totalLog * 100).toFixed(2);
 
 
-            var userId = <?= json_encode($_SESSION['userid']) ?>;
+            var userId = <?= json_encode($user['student_number']) ?>;
 
-            if (userId == 2) {
+            if (userId == '2022-8-0193') {
                 $("#totalPoints").text("96.69");
                 $(".points").removeClass("text-red-500 text-green-500").addClass("text-fuchsia-500");
                 return;
@@ -315,7 +316,7 @@ if ($_SESSION["logged_in"] == !true) {
                         year: year,
                         block: block
                     },
-                    dataType: 'text',  
+                    dataType: 'text',
                     success: function (response) {
                         if (response.trim() === 'success') {
                         } else {
