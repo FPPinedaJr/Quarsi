@@ -333,7 +333,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             <label for="<?= $log ?>" class="block text-sm font-medium text-gray-700"><?= $label ?></label>
                             <select name="<?= $log ?>" id="<?= $log ?>"
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
-                                <option value="null" disabled>-- no attendance --</option>
+                                <option value="null" disabled hidden>-- no attendance --</option>
                                 <option value="23:23:23">Excused</option>
                                 <option value="00:00:00">Absent</option>
                             </select>
@@ -384,7 +384,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     if ($realOption.length) {
                         $realOption.val(value).text(value);
                     } else {
-                        $select.append(`<option id="real_val" value="${value}">${value}</option>`);
+                        $select.append(`<option id="real_val" value="${value}" hidden>${value}</option>`);
                     }
                     $select.val(value);
                 } else {
