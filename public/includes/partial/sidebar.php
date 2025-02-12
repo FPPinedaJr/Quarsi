@@ -17,8 +17,31 @@ WHERE iduser = ?;
 $stmt->execute([$_SESSION['userid']]);
 $user = $stmt->fetch();
 ?>
+<style>
+  @keyframes bounce-custom {
 
+    0%,
+    100% {
+      transform: translateY(0);
+    }
 
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .bounce-custom {
+    animation: bounce-custom 1s infinite;
+  }
+
+  .delay-150 {
+    animation-delay: 0.15s;
+  }
+
+  .delay-300 {
+    animation-delay: 0.3s;
+  }
+</style>
 
 <div id="sidebar" class="fixed inset-0 z-50 invisible w-full h-full">
   <div id="sidebar-overlay"
@@ -96,7 +119,7 @@ $user = $stmt->fetch();
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
             <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer items-center px-5 py-3 hidden">
-              <div class="justify-center w-8 hidden">
+              <div class="justify-center hidden w-8">
                 <i class="text-2xl fa-solid fa-users"></i>
               </div>
               <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
@@ -155,12 +178,12 @@ $user = $stmt->fetch();
 
 
 <!-- Alien Loader Overlay -->
-<div id="alien-loader" class="fixed inset-0 flex items-center justify-center hidden bg-black/70 backdrop-blur-lg z-[200]">
+<div id="alien-loader" class="fixed inset-0 hidden flex items-center justify-center bg-black/70 backdrop-blur-lg z-[200]">
   <div class="flex flex-col items-center space-y-4">
     <div class="flex space-x-2 text-5xl">
-      <span class="animate-bounce">👽</span>
-      <span class="delay-150 animate-bounce">👾</span>
-      <span class="delay-300 animate-bounce">🛸</span>
+      <span class="bounce-custom">👽</span>
+      <span class="delay-150 bounce-custom">👾</span>
+      <span class="delay-300 bounce-custom">🛸</span>
     </div>
     <p id="loader-text" class="text-lg font-semibold text-white">Loading...</p>
   </div>
