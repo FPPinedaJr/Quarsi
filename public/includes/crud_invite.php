@@ -119,9 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt3->execute([$morning_in, $morning_out, $afternoon_in, $afternoon_out, $idevent]);
             }
 
-            $query2 = "DELETE FROM attendance WHERE user in (";
+            $query2 = "DELETE FROM attendance WHERE event=? AND user in (";
             $values2 = [];
-            $params2 = [];
+            $params2 = [$idevent];
 
             foreach ($prev_students as $student_id):
                 if (!in_array($student_id, $students)) {
