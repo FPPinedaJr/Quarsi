@@ -95,8 +95,8 @@ $user = $stmt->fetch();
 
         if ($_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
           echo '
-            <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-              <div class="flex justify-center w-8">
+            <a href="officer.php" class="hover:bg-[#d8d8d8] cursor-pointer items-center px-5 py-3 hidden">
+              <div class="justify-center w-8 hidden">
                 <i class="text-2xl fa-solid fa-users"></i>
               </div>
               <span class="font-[\'merriweather_sans\'] ml-3">Officers</span>
@@ -155,7 +155,7 @@ $user = $stmt->fetch();
 
 
 <!-- Alien Loader Overlay -->
-<div id="alien-loader" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-70">
+<div id="alien-loader" class="fixed inset-0 flex items-center justify-center hidden bg-black/70 backdrop-blur-lg z-[200]">
   <div class="flex flex-col items-center space-y-4">
     <div class="flex space-x-2 text-5xl">
       <span class="animate-bounce">👽</span>

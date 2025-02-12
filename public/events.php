@@ -91,7 +91,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         <main class="flex flex-col justify-center w-full px-3 py-2 h-fit">
             <!-- Add Button -->
             <div id="add_event_modal_btn" onclick="showAddEventModal()"
-                class="fixed z-20 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
+                class="fixed z-[100] flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 
@@ -99,9 +99,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             <div class="justify-center hidden w-full my-4 md:flex h-fit">
                 <table class="w-full md:w-2/3">
                     <tr class="text-lg font-light text-left text-white bg-teal-700">
-                        <th class="w-3/6 px-2 py-1 font-normal">EVENT NAME</th>
-                        <th class="w-2/6 px-2 py-1 font-normal">DATE</th>
-                        <th class="w-1/6 px-2 py-1 font-normal">CURRENT LOG</th>
+                        <th class="w-3/6 px-2 py-2 pl-3 font-semibold">Event Name</th>
+                        <th class="w-2/6 px-2 py-2 pl-3 font-semibold">Date</th>
+                        <th class="w-1/6 px-2 py-2 pl-3 font-semibold">Current Log</th>
                     </tr>
 
                     <?php foreach ($events as $event): ?>
@@ -110,11 +110,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             data-log_time="<?= $event['log_time'] ?>" data-morning_in="<?= $event['morning_in'] ?>"
                             data-morning_out="<?= $event['morning_out'] ?>" data-afternoon_in="<?= $event['afternoon_in'] ?>"
                             data-afternoon_out="<?= $event['afternoon_out'] ?>" data-users="<?= $event['invited_users'] ?>"
-                            class="cursor-pointer border-b border-[#b7b9b9] bg-[#EDF4F2] hover:bg-gray-200 md:text-lg"
+                            class="cursor-pointer border-b even:bg-[#EDF4F2] odd:bg-gray-200 hover:bg-gray-300"
                             onclick="showEditEventModal(<?= $event['idevent'] ?>)">
-                            <td class="py-1 pl-2"><?= $event['name'] ?></td>
-                            <td class="py-1 pl-2"><?= $event['formatted-date'] ?></td>
-                            <td class="py-1 pl-2">
+                            <td class="py-2 pl-3 font-semibold"><?= $event['name'] ?></td>
+                            <td class="py-2 pl-3"><?= $event['formatted-date'] ?></td>
+                            <td class="py-2 pl-3">
                                 <?php
                                 if ($event['log_time'] == 0) {
                                     echo 'Disabled';
@@ -141,7 +141,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         data-log_time="<?= $event['log_time'] ?>" data-morning_in="<?= $event['morning_in'] ?>"
                         data-morning_out="<?= $event['morning_out'] ?>" data-afternoon_in="<?= $event['afternoon_in'] ?>"
                         data-afternoon_out="<?= $event['afternoon_out'] ?>" data-users="<?= $event['invited_users'] ?>"
-                        class="w-full flex rounded-lg p-5 border-teal-700  border <?php echo $event['log_time'] != 0 ? 'bg-teal-200' : '' ?>  "
+                        class="w-full flex rounded-lg p-5 border-teal-700  border <?php echo $event['log_time'] != 0 ? 'bg-teal-200' : '' ?> shadow-md "
                         onclick="showEditEventModal(<?= $event['idevent'] ?>)">
 
                         <div class="flex flex-col justify-center w-3/5 h-full">
@@ -190,10 +190,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
                     <form id="add_event_form" action="./includes/crud_event.php" type="button" method="POST"
                         class="flex flex-col justify-center w-full h-full px-3">
+                        <input type="hidden" name="action" value="add">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <div class="flex flex-col w-full my-2 h-fit ">
-                                <input id="add_name" name="name" type="text" required autocomplete="off" placeholder="e.g. General Assembly"
+                                <input id="add_name" name="name" type="text" required autocomplete="off"
+                                    placeholder="e.g. General Assembly"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="add_name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
@@ -205,7 +207,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         </div>
 
                         <div class="flex items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                            <button id="add_event_btn" type="submit" name="action" value="add"
+                            <button id="add_event_btn" type="button" onclick="addEvent()"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-28">Add
                             </button>
                         </div>
@@ -247,18 +249,19 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- fieldset -->
                 <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
                     <form id="edit_event_form" action="./includes/crud_event.php" type="button" method="POST"
                         class="flex flex-col justify-center w-full h-full px-3">
+                        <input type="hidden" value="submit" name="action">
 
                         <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] mt-4">
                             <input id="idevent" name="idevent" type="hidden">
                             <div class="flex flex-col w-full my-2 h-fit md:w-full ">
-                                <input id="name" name="name" type="text" required autocomplete="off" placeholder="e.g. General Assembly"
+                                <input id="name" name="name" type="text" required autocomplete="off"
+                                    placeholder="e.g. General Assembly"
                                     class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
                                 <label for="name" class="pl-1 text-base md:text-lg text-zinc-600">Event Name</label>
                             </div>
@@ -281,7 +284,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         </div>
 
                         <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
-                            <button id="save_event_btn" type="submit" value="submit" name="action"
+                            <button id="save_event_btn" type="button" onclick="editEvent()"
                                 class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
                             </button>
                             <button id="delete_event_btn" type="button" onclick="showDeleteEventModal()"
@@ -310,8 +313,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <button id="deleteEventCancel" onclick="hideDeleteEventModal()"
                         class="w-full p-1 border rounded-lg md:w-20 md:ml-auto border-emerald-700 hover:bg-emerald-700 hover:text-white text-md text-emerald-700">Cancel</button>
                     <form action="./includes/crud_event.php" type="button" method="POST">
-                        <button type="submit" value="delete" name="action"
+                        <button type="button" onclick="deleteEvent()"
                             class="w-full h-full p-1 text-white bg-red-600 rounded-lg md:w-20 md:ml-2 hover:bg-red-700 text-md">Delete</button>
+                        <input type="hidden" value="delete" name="action">
                         <input id="id_delete_event" type="hidden" name="idevent" class="">
                     </form>
                 </div>
@@ -683,6 +687,36 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').removeClass('overflow-hidden');
         }
 
+        function addEvent() {
+            let data = $('#add_event_form').serialize();
+            showLoader('Creating Event...');
+
+            $.ajax({
+                url: 'includes/crud_event.php',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    location.reload();
+                }
+            })
+        }
+
+        function deleteEvent() {
+            let data = $('#delete_event_form').serialize();
+            showLoader('Deleting Event...');
+
+            $.ajax({
+                url: 'includes/crud_event.php',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    location.reload();
+                }
+            })
+        }
+
+
+
         function showEditEventModal(id) {
             $('#edit_event_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
@@ -708,6 +742,20 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('#edit_event_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
             hideEventOptions();
+        }
+
+        function editEvent() {
+            let data = $('#edit_event_form').serialize();
+            showLoader('Saving...');
+
+            $.ajax({
+                url: 'includes/crud_event.php',
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    location.reload();
+                }
+            })
         }
 
         function toggleEventOptions() {
@@ -879,6 +927,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             console.log(checkbox);
             console.log($id);
 
+            const status = pendingCheckbox.is(':checked') ? "on" : "off";
+            const logText = pendingCheckbox.closest('label').find('span').text();
+
+            showLoader(`Turning ${status}... [${logText.toLowerCase()}]`);
             $.ajax({
                 url: './includes/update_logtime.php',
                 type: 'POST',
@@ -892,6 +944,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                     $('#switch_modal').addClass('invisible');
                     pendingCheckbox = null;
+                    hideLoader();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error updating database:', error);
@@ -899,6 +952,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     pendingCheckbox.prop('checked', !pendingCheckbox.is(':checked'));
                     $('#switch_modal').addClass('invisible');
                     pendingCheckbox = null;
+                    hideLoader();
                 }
             });
         }
@@ -937,6 +991,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         function confirmInvite() {
             var formData = $('#invite_students_form').serialize();
+            showLoader("Inviting Students...");
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -947,7 +1002,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     if (response.trim() === "success") {
                         location.reload();
                         let count = $('input.student-checkbox:checked').length;
-                        sessionStorage.setItem('invite_success', count); 
+                        sessionStorage.setItem('invite_success', count);
                         $('#success_invite_count').text(count);
                     } else {
                         alert('Error: ' + response);
@@ -960,9 +1015,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         }
 
         function confirmEditInvite() {
-
-
             var formData = $('#edit_invite_students_form').serialize();
+            showLoader("Updating Invite...");
 
             $.ajax({
                 url: './includes/crud_invite.php',
@@ -995,7 +1049,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         $(document).ready(function () {
             changeHeaderTitle();
-
             let invite_count = sessionStorage.getItem('invite_success');
             if (invite_count) {
                 $('#success_invite_count').text(invite_count);
@@ -1063,6 +1116,77 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
+            function updateParentCheckbox($parentCheckbox, $childCheckboxes) {
+                var totalCheckboxes = $childCheckboxes.length;
+                var checkedCheckboxes = $childCheckboxes.filter(':checked').length;
+
+                $parentCheckbox.prop('checked', totalCheckboxes > 0 && totalCheckboxes === checkedCheckboxes);
+            }
+
+            $('#edit_invite_modal_main').on('change', '.student-checkbox', function () {
+                var $blockContainer = $(this).closest('.block-container');
+                var $yearContainer = $(this).closest('.year');
+                var $programContainer = $(this).closest('.program-group');
+
+                var $blockCheckbox = $blockContainer.find('.block-checkbox');
+                var $yearCheckbox = $yearContainer.find('.year-checkbox');
+                var $programCheckbox = $programContainer.find('.program-checkbox');
+
+                updateParentCheckbox($blockCheckbox, $blockContainer.find('.student-checkbox'));
+                updateParentCheckbox($yearCheckbox, $yearContainer.find('.block-checkbox, .student-checkbox'));
+                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
+            });
+
+            $('#edit_invite_modal_main').on('change', '.block-checkbox', function () {
+                var $yearContainer = $(this).closest('.year');
+                var $programContainer = $(this).closest('.program-group');
+
+                var $yearCheckbox = $yearContainer.find('.year-checkbox');
+                var $programCheckbox = $programContainer.find('.program-checkbox');
+
+                updateParentCheckbox($yearCheckbox, $yearContainer.find('.block-checkbox, .student-checkbox'));
+                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
+            });
+
+            $('#edit_invite_modal_main').on('change', '.year-checkbox', function () {
+                var $programContainer = $(this).closest('.program-group');
+                var $programCheckbox = $programContainer.find('.program-checkbox');
+
+                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
+            });
+
+            $('#edit_invite_modal_main').on('change', '.program-checkbox, .year-checkbox, .block-checkbox', function () {
+                var isChecked = $(this).prop('checked');
+                var $childCheckboxes = $(this).closest('div').find('.block-checkbox, .student-checkbox, .year-checkbox');
+
+                $childCheckboxes.prop('checked', isChecked);
+            });
+
+            $('#invite_modal_main').on('change', '.block-checkbox', function () {
+                var $yearContainer = $(this).closest('.year');
+                var $programContainer = $(this).closest('.program-group');
+
+                var $yearCheckbox = $yearContainer.find('.year-checkbox');
+                var $programCheckbox = $programContainer.find('.program-checkbox');
+
+                updateParentCheckbox($yearCheckbox, $yearContainer.find('.block-checkbox, .student-checkbox'));
+                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
+            });
+
+            $('#invite_modal_main').on('change', '.year-checkbox', function () {
+                var $programContainer = $(this).closest('.program-group');
+                var $programCheckbox = $programContainer.find('.program-checkbox');
+
+                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
+            });
+
+            $('#invite_modal_main').on('change', '.program-checkbox, .year-checkbox, .block-checkbox', function () {
+                var isChecked = $(this).prop('checked');
+                var $childCheckboxes = $(this).closest('div').find('.block-checkbox, .student-checkbox, .year-checkbox');
+
+                $childCheckboxes.prop('checked', isChecked);
+            });
+
             $('#invite_modal_main').find('.block-checkbox').click(function () {
                 var $blockCheckboxes = $(this).closest('.block-container').find('.student-checkbox');
                 var $dropdown = $(this).closest('.block-container').find('.block-dropdown');
@@ -1074,22 +1198,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-            $('#invite_modal_main').find('.block-dropdown').click(function () {
-                var $dropdown = $(this);
-                var $container = $(this).closest('.block-container').find('.student-container');
-                if ($dropdown.hasClass('fa-caret-right')) {
-                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
-                    $container.removeClass('hidden');
-                } else {
-                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
-                    $container.addClass('hidden');
-                }
-            });
 
             $('#invite_modal_main').find('.year-checkbox').click(function () {
                 var $yearCheckboxes = $(this).closest('.year').find('.student-checkbox, .block-checkbox');
                 $yearCheckboxes.prop('checked', this.checked);
             });
+
 
             $('#invite_modal_main').find('.year-dropdown').click(function () {
                 var $dropdown = $(this).closest('.year').find('.year-dropdown');
@@ -1105,9 +1219,9 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             $('#invite_modal_main').find('.program-checkbox').click(function () {
                 var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
-                var $idevent = $
                 $programCheckboxes.prop('checked', this.checked);
             });
+
 
             $('#invite_modal_main').find('.checkbox-input').on('change', function () {
                 const tile = $(this).next('.checkbox-tile');

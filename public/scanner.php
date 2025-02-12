@@ -76,7 +76,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     $events = $stmt->fetchall(PDO::FETCH_ASSOC);
                     ?>
                     <select id="event" name="event" type="number" required=""
-                        class="w-4/5 flex md:h-9 items-center pl-1 font-['mulish'] rounded-lg text-emerald-700  border border-gray-500 h-[1.65rem] focus:outline-teal-500">
+                        class="w-4/5 flex md:h-9 items-center pl-1 font-['mulish'] rounded-lg  border border-gray-500 h-[1.65rem] focus:outline-teal-500">
                         <?php
                         if ($events) {
                             foreach ($events as $event):
