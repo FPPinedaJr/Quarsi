@@ -189,10 +189,10 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
         function showDeleteModal(button) {
             const div = $(button).closest('div[data-id]');
-            
+
             const id = div.data('id');
             const name = div.data('name');
-            
+
             $('#id').val(id);
             $('#method').val('delete');
 
@@ -216,10 +216,16 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
             let program = $('#program').val().trim();
             let abbreviation = $('#abbreviation').val().trim();
 
+
+
+
             let requestData = { id, name, short_name, program, abbreviation };
 
             switch (method) {
                 case 'add':
+                    if (!name || !short_name || !program || !abbreviation) {
+                        return;
+                    }
                     showLoader('Creating Organization...');
                     $.ajax({
                         url: 'includes/crud_organization.php',
@@ -233,6 +239,9 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
                     break;
 
                 case 'edit':
+                    if (!name || !short_name || !program || !abbreviation) {
+                        return;
+                    }
                     showLoader('Saving...');
                     $.ajax({
                         url: 'includes/crud_organization.php',
@@ -273,7 +282,7 @@ $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
 
 
         $(document).ready(function () {
-
+            $('#header_title').text('Dashboard');
             $(document).on('click', function (event) {
                 if ($(event.target).is('#orgModal')) {
                     hideOrgModal();
