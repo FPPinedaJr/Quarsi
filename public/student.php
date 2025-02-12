@@ -243,7 +243,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     <p id="fullname" class="<?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
                                         echo 'text-blue-600';
                                     } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
-                                        echo 'text-violet-500';
+                                        echo 'text-orange-400';
                                     } ?> font-semibold">
                                         <?= $student['f_name'] ?>         <?= $student['l_name'] ?>
                                     </p>
@@ -285,7 +285,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             <p id="fullname" class="font-semibold text-xl <?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
                                 echo 'text-blue-600';
                             } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
-                                echo 'text-violet-500';
+                                echo 'text-orange-400';
                             } ?>">
                                 <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
                             </p>
