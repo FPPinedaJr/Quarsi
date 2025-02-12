@@ -92,20 +92,39 @@ ob_start();
 if (count($students) > 0): ?>
     <div id="students-div" class="flex flex-col items-center w-full md:hidden">
         <?php foreach ($students as $student): ?>
-            <div class="flex student-div items-center p-1 border-2 border-gray shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden">
-                <div class="flex items-center justify-center w-1/3 h-full">
-                    <img data-src="<?= 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']) ?>" class="w-16 h-16 border border-gray-200 rounded-full lozad">
-                </div>
-                <div class="flex flex-col justify-center w-2/3 h-full p-1 pl-2 text-nowrap">
-                    <p class="font-semibold text-xl <?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
+            <div id="student-<?php echo $student['iduser'] ?>" data-student_no="<?php echo $student['student_no'] ?>"
+                        data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
+                        data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
+                        data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>"
+                        data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
+                              echo "1";
+                          } else if ($student['is_superuser'] == 1) {
+                              echo "2";
+                          } else if ($student['is_admin'] == 1) {
+                              echo "3";
+                          } else {
+                              echo "0";
+                          } ?>"
+                        class="flex student-div items-center p-1 border border-teal-400 shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden"
+                        onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
+                        <div class="flex items-center justify-center w-1/3 h-full">
+                            <img data-src="data:image/jpeg;base64,<?= base64_encode($student['profile_pic']) ?>"
+                                alt="profile picture" class="w-16 h-16 border border-gray-200 rounded-full lozad">
+                        </div>
+                        <div class="flex flex-col justify-center w-2/3 h-full p-1 pl-2 text-nowrap">
+                            <p id="fullname" class="font-semibold text-xl <?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
                                 echo 'text-blue-600';
                             } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
                                 echo 'text-violet-500';
-                            } ?>"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
-                    <p class="text-gray-700"><?= $student['student_no'] ?></p>
-                    <p><?= $student['program'] ?> <?= $student['year'] ?> Block <?= $student['block'] ?></p>
-                </div>
-            </div>
+                            } ?>">
+                                <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
+                            </p>
+                            <p id="student-no" class="text-gray-700"><?php echo $student['student_no'] ?></p>
+                            <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?> Block
+                                <?php echo $student['year'] ?>
+                            </p>
+                        </div>
+                    </div>
         <?php endforeach; ?>
     </div>
 <?php else: ?>
