@@ -97,7 +97,11 @@ if (count($students) > 0): ?>
                     <img data-src="<?= 'data:image/jpeg;base64,'. base64_encode($student['profile_pic']) ?>" class="w-16 h-16 border border-gray-200 rounded-full lozad">
                 </div>
                 <div class="flex flex-col justify-center w-2/3 h-full p-1 pl-2 text-nowrap">
-                    <p class="text-xl font-semibold"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
+                    <p class="font-semibold text-xl <?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
+                                echo 'text-blue-600';
+                            } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
+                                echo 'text-violet-500';
+                            } ?>"><?= $student['f_name'] ?> <?= $student['l_name'] ?></p>
                     <p class="text-gray-700"><?= $student['student_no'] ?></p>
                     <p><?= $student['program'] ?> <?= $student['year'] ?> Block <?= $student['block'] ?></p>
                 </div>
