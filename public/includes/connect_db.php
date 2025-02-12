@@ -17,27 +17,23 @@ function loadEnv($path)
 }
 
 
-// Load the `.env` file
-loadEnv('/home/u273960544/domains/miceff.com/quarsi.env'); 
+
+
+// loadEnv('/home/u273960544/domains/miceff.com/quarsi.env');  // ----- PRODUCTION   ----- //
+loadEnv(__DIR__ . '/.env');                          // ----- DEVELOPMENT  ----- //
+
+
 
 date_default_timezone_set("Asia/Manila");
 $charset = 'utf8mb4';
 
-// ----- PRODUCTION  DATABASE ----- //
+
 $hostname = getenv('DB_HOST');
 $port = getenv('DB_PORT');
 $username = getenv('DB_USER');
 $password = getenv('DB_PASS');
 $defaultSchema = getenv('DB_NAME');
 $charset = getenv('DB_CHARSET');
-
-
-// ----- DEVELOPMENT DATABASE ----- //
-// $hostname      =  ; 
-// $port          =  ;
-// $username      =  ;
-// $password      =  ;
-// $defaultSchema =  ;
 
 $dsn = "mysql:host=$hostname;dbname=$defaultSchema;charset=$charset;port=$port";
 
