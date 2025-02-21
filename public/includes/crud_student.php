@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ");
             $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
             if ($stmt->execute()) {
-                header("Location: ../student.php");
+                // header("Location: ../student.php");
                 exit();
             } else {
                 echo "Error deleting user. Please try again.";
