@@ -88,7 +88,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
     <body class="justify-center w-screen min-h-screen mt-20 overflow-x-hidden ">
         <!-- Events List -->
-        <main class="flex flex-col justify-center w-full min-h-screen px-3 py-2 h-fit">
+        <main class="flex justify-center w-full min-h-screen px-3 py-2 h-fit">
             <!-- Add Button -->
             <div id="add_event_modal_btn" onclick="showAddEventModal()"
                 class="fixed z-40 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
