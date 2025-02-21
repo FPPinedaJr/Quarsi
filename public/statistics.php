@@ -52,7 +52,7 @@ if ($_SESSION["logged_in"] == !true) {
             year,
             CONCAT(l_name, ', ', f_name) as fullname
         FROM user 
-        WHERE (is_officer != 1 AND is_superuser != 1 AND is_admin != 1)
+        WHERE is_admin != 1
         ORDER BY year, l_name;";
 
     $stmt = $pdo->query($query);
