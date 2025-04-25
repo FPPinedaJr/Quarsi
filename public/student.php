@@ -295,7 +295,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
                                 </p>
                                 <p id="student-no" class="text-gray-700"><?php echo $student['student_no'] ?></p>
-                                <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?> Block
+                                <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['block'] ?> Block
                                     <?php echo $student['year'] ?>
                                 </p>
                             </div>
