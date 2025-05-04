@@ -87,16 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $afternoon_out = NULL;
 
             if (in_array(1, $logtime)) {
-                $morning_in = $def;
+                return;
             }
             if (in_array(2, $logtime)) {
-                $morning_out = $def;
+                return;
             }
             if (in_array(3, $logtime)) {
-                $afternoon_in = $def;
+                return;
             }
             if (in_array(4, $logtime)) {
-                $afternoon_out = $def;
+                return;
             }
 
             $query1 = "INSERT INTO attendance (event, user, morning_in, morning_out, afternoon_in, afternoon_out) VALUES ";
