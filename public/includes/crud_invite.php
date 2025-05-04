@@ -87,16 +87,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $afternoon_out = NULL;
 
             if (in_array(1, $logtime)) {
-                return;
+                $morning_in = $def;
             }
             if (in_array(2, $logtime)) {
-                return;
+                $morning_out = $def;
             }
             if (in_array(3, $logtime)) {
-                return;
+                $afternoon_in = $def;
             }
             if (in_array(4, $logtime)) {
-                return;
+                $afternoon_out = $def;
             }
 
             $query1 = "INSERT INTO attendance (event, user, morning_in, morning_out, afternoon_in, afternoon_out) VALUES ";
@@ -114,9 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $query1 .= implode(",", $values1);
                 $stmt1 = $pdo->prepare($query1);
                 $stmt1->execute($params1);
-            } else {
-                $stmt3 = $pdo->prepare("UPDATE attendance SET morning_in=?, morning_out=?, afternoon_in=?, afternoon_out=? WHERE event=?");
-                $stmt3->execute([$morning_in, $morning_out, $afternoon_in, $afternoon_out, $idevent]);
             }
 
             $query2 = "DELETE FROM attendance WHERE event=? AND user in (";
