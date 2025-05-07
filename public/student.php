@@ -672,9 +672,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             let id = $('#iduser').val();
             let data = new FormData($('#edit_student_form')[0]);
 
-            // for (let pair of data.entries()) {
-            //     console.log(pair[0] + ', ' + pair[1]);  // Debug output
-            // }            
             hideEditStudentModal();
             showLoader("Saving...");
             $('#filter').addClass('invisible');
