@@ -46,6 +46,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
     ");
     $stmt3->execute();
     $students = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt4 = $pdo->prepare("
+        SELECT idevent FROM event ORDER BY idevent DESC LIMIT 1;
+    ");
+
+    $stmt4->execute();
+    $cur_event = $stmt4->fetch();
     ?>
 
     <!DOCTYPE html>
@@ -698,6 +705,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 data: data,
                 success: function (response) {
                     location.reload();
+                    localStorage.setItem("newInvite", "true");
                 }
             })
         }
@@ -1050,6 +1058,15 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         $(document).ready(function () {
             changeHeaderTitle();
+
+            if (localStorage.getItem('newInvite') === 'true') {
+                let idevent = <?= $cur_event['idevent'] ?>;
+                $('#idevent').val(idevent);
+                localStorage.removeItem('newInvite');
+
+                showInviteModal();
+            }
+
             let invite_count = sessionStorage.getItem('invite_success');
             if (invite_count) {
                 $('#success_invite_count').text(invite_count);
