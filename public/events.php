@@ -247,7 +247,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                                 <div id="logtimeBtn" onclick="showLogtimeOptions()"
                                     class="flex items-center w-full px-2 py-1 border-b border-gray-400 rounded-t-lg cursor-pointer hover:bg-gray-200">
                                     <div class="flex items-center justify-center w-6 h-full mr-2">
-                                        <i class="fa-solid fa-user-plus"></i>
+                                        <i class="fa-solid fa-clock"></i>
                                     </div>
                                     Change Log Time
                                 </div>
@@ -413,7 +413,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     }
                     ?>
 
-                    <div class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
+                    <div id="inviteLogTime" class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
                         <div class="w-full mb-6 text-lg font-semibold text-center text-zinc-800">Log Time</div>
                         <div class="grid w-3/4 grid-cols-1 gap-2 md:grid-cols-2">
                             <label class="inline-flex items-center mb-5 cursor-pointer">
@@ -538,44 +538,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         echo '</div>';
                     }
                     ?>
-
-                    <!-- <div class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
-                        <div class="w-full mb-6 text-lg font-semibold text-center text-zinc-800">Log Time</div>
-                        <div class="grid w-3/4 grid-cols-1 gap-2 md:grid-cols-2">
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="morning_in_toggle" type="checkbox" name="logtime[]" value="1"
-                                    class="sr-only peer" onclick="showLogtimeModal('#morning_in_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Morning In</span>
-                            </label>
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="morning_out_toggle" type="checkbox" name="logtime[]" value="2"
-                                    class="sr-only peer" onclick="showLogtimeModal('#morning_out_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Morning Out</span>
-                            </label>
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="afternoon_in_toggle" type="checkbox" name="logtime[]" value="3"
-                                    class="sr-only peer" onclick="showLogtimeModal('#afternoon_in_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Afternoon In</span>
-                            </label>
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="afternoon_out_toggle" type="checkbox" name="logtime[]" value="4"
-                                    class="sr-only peer" onclick="showLogtimeModal('#afternoon_out_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Afternoon Out</span>
-                            </label>
-                        </div>
-                    </div> -->
 
                     <div class="flex items-center justify-center w-full py-3 mt-6 mb-2 bg-white h-fit">
                         <button id="edit_invite_btn" type="button" onclick="showConfirmEditInviteModal()"
@@ -768,6 +730,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 success: function (response) {
                     location.reload();
                     localStorage.setItem("newInvite", "true");
+                    $('#inviteLogTime').removeClass('hidden');
                 }
             })
         }
@@ -806,6 +769,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 $('#inviteBtn').off('click').on('click', showEditInviteModal);
             } else {
                 $('#inviteBtn').off('click').on('click', showInviteModal);
+                $('#inviteLogTime').addClass('hidden');
             }
         }
 
@@ -927,7 +891,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                 $programCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
             });
-            
+
             $('#edit_invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
             $('#edit_invite_event').val($id);
