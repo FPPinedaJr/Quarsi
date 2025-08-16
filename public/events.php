@@ -731,6 +731,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     location.reload();
                     localStorage.setItem("newInvite", "true");
                     $('#inviteLogTime').removeClass('hidden');
+                    localStorage.setItem('invited', '0');
                 }
             })
         }
@@ -1051,6 +1052,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         let count = $('input.student-checkbox:checked').length;
                         sessionStorage.setItem('invite_success', count);
                         $('#success_invite_count').text(count);
+                        localStorage.removeItem('invited');
                     } else {
                         alert('Error: ' + response);
                     }
@@ -1139,12 +1141,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#edit_invite_modal_main').length && $(event.target).closest('#edit_invite_modal').length) {
                     hideEditInviteModal();
-                }
-            });
-
-            $(document).on('click', function (event) {
-                if (!$(event.target).closest('#invite_modal_main').length && $(event.target).closest('#invite_modal').length) {
-                    hideInviteModal();
                 }
             });
 
@@ -1376,6 +1372,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     tile.removeClass('border-teal-500 shadow-lg text-teal-500');
                 }
             });
+
+            if (localStorage.getItem('invited') === '0') {
+                showInviteModal();
+            }
 
         })
     </script>
