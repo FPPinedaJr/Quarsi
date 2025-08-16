@@ -1239,6 +1239,18 @@ video {
   min-width: 10rem;
 }
 
+.min-w-\[15rem\] {
+  min-width: 15rem;
+}
+
+.min-w-60 {
+  min-width: 15rem;
+}
+
+.min-w-80 {
+  min-width: 20rem;
+}
+
 .max-w-md {
   max-width: 28rem;
 }
@@ -2941,6 +2953,10 @@ video {
 
   .md\:min-w-0 {
     min-width: 0px;
+  }
+
+  .md\:min-w-\[15rem\] {
+    min-width: 15rem;
   }
 
   .md\:max-w-lg {

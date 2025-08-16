@@ -552,7 +552,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         <div id="logtime_modal"
             class="fixed top-0 left-0 z-30 invisible flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
-            <div id="logtime_modal_main" class="w-10/12 overflow-x-hidden overflow-y-auto text-lg bg-white md:w-1/4">
+            <div id="logtime_modal_main" class="w-10/12 overflow-x-hidden overflow-y-auto text-lg bg-white md:w-1/4 min-w-80">
                 <div
                     class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
                     Change Log Time
@@ -594,11 +594,10 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         </label>
                     </div>
 
-                    <!-- <div class="flex items-center justify-center w-full py-3 mt-6 mb-2 bg-white h-fit">
-                        <button id="edit_invite_btn" type="button" onclick="showConfirmEditInviteModal()"
-                            class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Update
-                            Invite</button>
-                    </div> -->
+                    <div class="flex items-center justify-center w-full py-3 mt-6 mb-2 bg-white h-fit">
+                        <button id="close_logtime_btn" type="button" onclick="hideLogtimeModal()"
+                            class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Close</button>
+                    </div>
                 </div>
 
             </div>
@@ -618,7 +617,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     </p>
                 </div>
                 <div class="flex justify-center w-full mt-auto mb-1">
-                    <button onclick="hideLogtimeModal()" type="button"
+                    <button onclick="hideLogtimeOptions()" type="button"
                         class="px-2 py-1 text-teal-800 rounded hover:text-teal-500 hover:underline">Cancel</button>
                     <button class="px-2 py-1 ml-8 text-white bg-teal-800 rounded hover:bg-teal-500"
                         onclick="confirmLogtimeChange()">Confirm</button>
@@ -939,7 +938,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             });
         }
 
-        function hideLogtimeOptions() {
+        function hideLogtimeModal() {
             $('#logtime_modal').addClass('invisible');
             $('body').removeClass('overflow-hidden');
         }
@@ -956,7 +955,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').addClass('overflow-hidden');
         }
 
-        function hideLogtimeModal() {
+        function hideLogtimeOptions() {
             $('#switch_modal').addClass('invisible');
 
             if (pendingCheckbox) {
@@ -969,10 +968,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             const checkboxState = pendingCheckbox.is(':checked') ? 1 : 0;
             const checkbox = pendingCheckbox.val();
             var $id = $('#idevent').val();
-
-            console.log(checkboxState);
-            console.log(checkbox);
-            console.log($id);
 
             const status = pendingCheckbox.is(':checked') ? "on" : "off";
             const logText = pendingCheckbox.closest('label').find('span').text();
@@ -1045,7 +1040,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
                         let count = $('input.student-checkbox:checked').length;
@@ -1071,7 +1065,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
                     } else {
@@ -1147,13 +1140,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#logtime_modal_main').length && $(event.target).closest('#logtime_modal').length) {
-                    hideLogtimeOptions();
+                    hideLogtimeModal();
                 }
             });
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#switch_modal_main').length && $(event.target).closest('#switch_modal').length) {
-                    hideLogtimeModal();
+                    hideLogtimeOptions();
                 }
             });
 
