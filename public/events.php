@@ -52,7 +52,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
     ");
 
     $stmt4->execute();
-    $cur_event = $stmt4->fetch();
+    $cur_event = $stmt4->fetch() ?: ['idevent' => 1];
     ?>
 
     <!DOCTYPE html>
@@ -413,7 +413,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     }
                     ?>
 
-                    <div id="inviteLogTime" class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
+                    <div id="inviteLogTime"
+                        class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
                         <div class="w-full mb-6 text-lg font-semibold text-center text-zinc-800">Log Time</div>
                         <div class="grid w-3/4 grid-cols-1 gap-2 md:grid-cols-2">
                             <label class="inline-flex items-center mb-5 cursor-pointer">
@@ -552,7 +553,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         <div id="logtime_modal"
             class="fixed top-0 left-0 z-30 invisible flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
-            <div id="logtime_modal_main" class="w-10/12 overflow-x-hidden overflow-y-auto text-lg bg-white md:w-1/4 min-w-80">
+            <div id="logtime_modal_main"
+                class="w-10/12 overflow-x-hidden overflow-y-auto text-lg bg-white md:w-1/4 min-w-80">
                 <div
                     class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
                     Change Log Time
@@ -1092,8 +1094,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             changeHeaderTitle();
 
             if (localStorage.getItem('newInvite') === 'true') {
-                let idevent = <?= $cur_event['idevent'] ?>;
-                $('#idevent').val(idevent);
+                let idevent = <?= ($cur_event['idevent'])?>;
+                $('#idevent').val(idevent ?? "");
                 localStorage.setItem('invited', idevent);
 
                 localStorage.removeItem('newInvite');
