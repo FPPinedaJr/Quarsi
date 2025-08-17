@@ -1239,6 +1239,18 @@ video {
   min-width: 10rem;
 }
 
+.min-w-\[15rem\] {
+  min-width: 15rem;
+}
+
+.min-w-60 {
+  min-width: 15rem;
+}
+
+.min-w-80 {
+  min-width: 20rem;
+}
+
 .max-w-md {
   max-width: 28rem;
 }
@@ -2003,6 +2015,10 @@ video {
   padding-top: 1.25rem;
 }
 
+.pt-6 {
+  padding-top: 1.5rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -2112,14 +2128,6 @@ video {
 
 .font-semibold {
   font-weight: 600;
-}
-
-.uppercase {
-  text-transform: uppercase;
-}
-
-.lowercase {
-  text-transform: lowercase;
 }
 
 .italic {
@@ -2399,10 +2407,6 @@ video {
 
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-}
-
-.\[hostname\:port\] {
-  hostname: port;
 }
 
 .file\:h-full::file-selector-button {
@@ -2949,6 +2953,10 @@ video {
 
   .md\:min-w-0 {
     min-width: 0px;
+  }
+
+  .md\:min-w-\[15rem\] {
+    min-width: 15rem;
   }
 
   .md\:max-w-lg {
