@@ -153,6 +153,13 @@ $user = $stmt->fetch();
           <span class="font-['merriweather_sans'] ml-3">Have some fun!</span>
         </a>
 
+        <a href="grades.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+          <div class="flex justify-center w-8">
+            <i class="text-2xl fa-regular fa-file-lines"></i>
+          </div>
+          <span class="font-['merriweather_sans'] ml-3">Grades</span>
+        </a>
+
         <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <div class="flex justify-center w-8">
             <i class="text-2xl fa-solid fa-arrow-right-from-bracket"></i>
@@ -172,7 +179,8 @@ $user = $stmt->fetch();
 
 
 <!-- Alien Loader Overlay -->
-<div id="alien-loader" class="fixed inset-0 hidden flex items-center justify-center bg-black/70 backdrop-blur-lg z-[200]">
+<div id="alien-loader"
+  class="fixed inset-0 hidden flex items-center justify-center bg-black/70 backdrop-blur-lg z-[200]">
   <div class="flex flex-col items-center space-y-4">
     <div class="flex space-x-2 text-5xl">
       <span class="bounce-custom">👽</span>
