@@ -30,7 +30,7 @@ function welcomeMail($pdo, $iduser) {
                     $mail->addAddress($user['email']);   
     
                     $mail->isHTML(true);                                  
-                    $mail->Subject = 'Quarsi OTP Verification';
+                    $mail->Subject = 'Welcome to Quarsi';
                     $mail->Body    = "";
     
                 $mail->Body = '
@@ -82,7 +82,7 @@ function welcomeMail($pdo, $iduser) {
                 <body>
                     <div class="container">
                         <h1>Welcome to Quarsi, ' . htmlspecialchars($user['f_name']) . '!</h1>
-                        <p>We’re excited to have you onboard. Quarsi is the official QR attendance system of the Association of Computer Scientists.</p>
+                        <p>We’re excited to have you onboard. Quarsi is the official QR attendance system of the Association of Computer Scientists. Please go to the website and generate your QR.</p>
                         <a href="https://quarsi.miceff.com" class="btn" style="color: #fff; text-decoration: none; display: inline-block;">Visit Quarsi</a>
                     </div>
                 </body>
