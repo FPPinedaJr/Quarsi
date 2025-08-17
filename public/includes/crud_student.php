@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once "../includes/connect_db.php";
+require "./user_welcome.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action'])) {
@@ -167,6 +168,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ");
             $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $student_no, $img_content]);
             echo "success";
+
+            $newUserId = $pdo->lastInsertId();
+            welcomeMail($pdo, $newUserId);
             header("Location: ../student.php");
         }
     }
