@@ -5,6 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 if ($_SESSION["logged_in"] == !true) {
     header("Location: index.php");
 } else {
+
+    if ($_SESSION['is_admin'] == 1) {  header("Location: profile.php");}
     ?>
 
 
