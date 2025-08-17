@@ -46,6 +46,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
     ");
     $stmt3->execute();
     $students = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt4 = $pdo->prepare("
+        SELECT idevent FROM event ORDER BY idevent DESC LIMIT 1;
+    ");
+
+    $stmt4->execute();
+    $cur_event = $stmt4->fetch();
     ?>
 
     <!DOCTYPE html>
@@ -91,7 +98,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
         <main class="flex justify-center w-full min-h-screen px-3 py-2 h-fit">
             <!-- Add Button -->
             <div id="add_event_modal_btn" onclick="showAddEventModal()"
-                class="fixed z-40 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
+                class="fixed z-30 flex justify-center flex-shrink-0 w-8 h-8 bg-teal-700 border border-white rounded-md cursor-pointer top-4 right-5 md:top-3 md:w-10 md:h-10 hover:bg-teal-600/70">
                 <i class="fa-solid fa-plus font-['mulish'] text-white text-xl md:text-3xl"></i>
             </div>
 
@@ -236,6 +243,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                                         <i class="fa-solid fa-user-plus"></i>
                                     </div>
                                     Invite Students
+                                </div>
+                                <div id="logtimeBtn" onclick="showLogtimeOptions()"
+                                    class="flex items-center w-full px-2 py-1 border-b border-gray-400 rounded-t-lg cursor-pointer hover:bg-gray-200">
+                                    <div class="flex items-center justify-center w-6 h-full mr-2">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+                                    Change Log Time
                                 </div>
                                 <a id="eventAttendance" href="" class="">
                                     <div id="attendanceBtn"
@@ -399,7 +413,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     }
                     ?>
 
-                    <div class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
+                    <div id="inviteLogTime" class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
                         <div class="w-full mb-6 text-lg font-semibold text-center text-zinc-800">Log Time</div>
                         <div class="grid w-3/4 grid-cols-1 gap-2 md:grid-cols-2">
                             <label class="inline-flex items-center mb-5 cursor-pointer">
@@ -525,44 +539,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     }
                     ?>
 
-                    <div class="flex flex-col items-center justify-center w-full pt-2 mt-4 border-t-2 h-fit">
-                        <div class="w-full mb-6 text-lg font-semibold text-center text-zinc-800">Log Time</div>
-                        <div class="grid w-3/4 grid-cols-1 gap-2 md:grid-cols-2">
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="morning_in_toggle" type="checkbox" name="logtime[]" value="1"
-                                    class="sr-only peer" onclick="showLogtimeModal('#morning_in_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Morning In</span>
-                            </label>
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="morning_out_toggle" type="checkbox" name="logtime[]" value="2"
-                                    class="sr-only peer" onclick="showLogtimeModal('#morning_out_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Morning Out</span>
-                            </label>
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="afternoon_in_toggle" type="checkbox" name="logtime[]" value="3"
-                                    class="sr-only peer" onclick="showLogtimeModal('#afternoon_in_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Afternoon In</span>
-                            </label>
-                            <label class="inline-flex items-center mb-5 cursor-pointer">
-                                <input id="afternoon_out_toggle" type="checkbox" name="logtime[]" value="4"
-                                    class="sr-only peer" onclick="showLogtimeModal('#afternoon_out_toggle')">
-                                <div
-                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
-                                </div>
-                                <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Afternoon Out</span>
-                            </label>
-                        </div>
-                    </div>
-
                     <div class="flex items-center justify-center w-full py-3 mt-6 mb-2 bg-white h-fit">
                         <button id="edit_invite_btn" type="button" onclick="showConfirmEditInviteModal()"
                             class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Update
@@ -574,11 +550,65 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         </div>
 
+        <div id="logtime_modal"
+            class="fixed top-0 left-0 z-30 invisible flex items-center justify-center w-full h-full backdrop-blur-sm bg-[#2e2c2c69]">
+            <div id="logtime_modal_main" class="w-10/12 overflow-x-hidden overflow-y-auto text-lg bg-white md:w-1/4 min-w-80">
+                <div
+                    class="w-full flex items-center justify-center font-semibold text-3xl text-white h-16 bg-teal-700 text-['mulish']">
+                    Change Log Time
+                </div>
+                <div class="flex flex-col items-center justify-center w-full h-fit pt-6 p-4">
+                    <div class="grid w-3/4 grid-cols-1 gap-2 md:grid-cols-2">
+                        <!-- <input id="idevent_log" type="hidden"> -->
+                        <label class="inline-flex items-center mb-5 cursor-pointer">
+                            <input id="morning_in_toggle" type="checkbox" name="logtime[]" value="1" class="sr-only peer"
+                                onclick="showLogtimeModal('#morning_in_toggle')">
+                            <div
+                                class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                            </div>
+                            <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Morning In</span>
+                        </label>
+                        <label class="inline-flex items-center mb-5 cursor-pointer">
+                            <input id="morning_out_toggle" type="checkbox" name="logtime[]" value="2" class="sr-only peer"
+                                onclick="showLogtimeModal('#morning_out_toggle')">
+                            <div
+                                class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                            </div>
+                            <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Morning Out</span>
+                        </label>
+                        <label class="inline-flex items-center mb-5 cursor-pointer">
+                            <input id="afternoon_in_toggle" type="checkbox" name="logtime[]" value="3" class="sr-only peer"
+                                onclick="showLogtimeModal('#afternoon_in_toggle')">
+                            <div
+                                class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                            </div>
+                            <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Afternoon In</span>
+                        </label>
+                        <label class="inline-flex items-center mb-5 cursor-pointer">
+                            <input id="afternoon_out_toggle" type="checkbox" name="logtime[]" value="4" class="sr-only peer"
+                                onclick="showLogtimeModal('#afternoon_out_toggle')">
+                            <div
+                                class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600 dark:peer-checked:bg-teal-600">
+                            </div>
+                            <span class="text-sm font-medium text-gray-400 ms-3 dark:text-gray-500">Afternoon Out</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-center w-full py-3 mt-6 mb-2 bg-white h-fit">
+                        <button id="close_logtime_btn" type="button" onclick="hideLogtimeModal()"
+                            class="rounded-lg hover:bg-teal-600 w-40 p-1 text-xl font-semibold text-white font-['mulish'] bg-teal-700 cursor-pointer flex justify-center add_invite_btn">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <!-- Toggle switch alert modal -->
         <div id="switch_modal"
             class="fixed top-0 left-0 z-30 flex items-center justify-center invisible w-full h-full bg-gray-500/30 backdrop-blur-sm">
             <div id="switch_modal_main" class="rounded-lg w-3/4 md:w-1/4 h-36 flex flex-col bg-[#fbfcf8] p-2">
-                <div class="w-full pt-2 mb-2 text-lg font-semibold text-teal-800 border-b border-teal-700 h-fit">Change Log
+                <div class="w-full pt-2 mb-2 text-lg font-semibold text-teal-800 border-b border-teal-700 h-fit">Change
+                    Log
                     Time</div>
                 <div class="w-full h-auto bg-[#fbfcf8] text-teal-800 flex flex-wrap">
                     <p>
@@ -587,7 +617,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     </p>
                 </div>
                 <div class="flex justify-center w-full mt-auto mb-1">
-                    <button onclick="hideLogtimeModal()" type="button"
+                    <button onclick="hideLogtimeOptions()" type="button"
                         class="px-2 py-1 text-teal-800 rounded hover:text-teal-500 hover:underline">Cancel</button>
                     <button class="px-2 py-1 ml-8 text-white bg-teal-800 rounded hover:bg-teal-500"
                         onclick="confirmLogtimeChange()">Confirm</button>
@@ -698,6 +728,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 data: data,
                 success: function (response) {
                     location.reload();
+                    localStorage.setItem("newInvite", "true");
+                    $('#inviteLogTime').removeClass('hidden');
                 }
             })
         }
@@ -736,6 +768,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 $('#inviteBtn').off('click').on('click', showEditInviteModal);
             } else {
                 $('#inviteBtn').off('click').on('click', showInviteModal);
+                $('#inviteLogTime').addClass('hidden');
             }
         }
 
@@ -858,33 +891,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 $programCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
             });
 
-            var $morning_in = "";
-            var $morning_out = "";
-            var $afternoon_in = "";
-            var $afternoon_out = "";
-
-            if ($('#event-' + $id).data('morning_in')) {
-                $morning_in = 1;
-            }
-            if ($('#event-' + $id).data('morning_out')) {
-                $morning_out = 2;
-            }
-            if ($('#event-' + $id).data('afternoon_in')) {
-                $afternoon_in = 3;
-            }
-            if ($('#event-' + $id).data('afternoon_out')) {
-                $afternoon_out = 4;
-            }
-
-            var logs_list = [$morning_in, $morning_out, $afternoon_in, $afternoon_out];
-
-            $('#edit_invite_modal_main').find('.peer').each(function () {
-                var checkboxValue = $(this).val();
-                if (logs_list.map(String).includes(checkboxValue)) {
-                    $(this).prop('checked', true);
-                }
-            });
-
             $('#edit_invite_modal').removeClass('invisible');
             $('body').addClass('overflow-hidden');
             $('#edit_invite_event').val($id);
@@ -898,6 +904,45 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         let pendingCheckbox = null;
 
+        function showLogtimeOptions() {
+            let id = $('#idevent').val();
+            $('#logtime_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+            $('#edit_event_modal').addClass('invisible');
+
+            let morning_in = "";
+            let morning_out = "";
+            let afternoon_in = "";
+            let afternoon_out = "";
+
+            if ($('#event-' + id).data('morning_in')) {
+                morning_in = 1;
+            }
+            if ($('#event-' + id).data('morning_out')) {
+                morning_out = 2;
+            }
+            if ($('#event-' + id).data('afternoon_in')) {
+                afternoon_in = 3;
+            }
+            if ($('#event-' + id).data('afternoon_out')) {
+                afternoon_out = 4;
+            }
+
+            let logs_list = [morning_in, morning_out, afternoon_in, afternoon_out];
+
+            $('#logtime_modal_main').find('.peer').each(function () {
+                let checkboxValue = $(this).val();
+                if (logs_list.map(String).includes(checkboxValue)) {
+                    $(this).prop('checked', true);
+                }
+            });
+        }
+
+        function hideLogtimeModal() {
+            $('#logtime_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+
         function showLogtimeModal(idlog) {
             pendingCheckbox = $(idlog);
             const logText = pendingCheckbox.closest('label').find('span').text();
@@ -910,7 +955,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             $('body').addClass('overflow-hidden');
         }
 
-        function hideLogtimeModal() {
+        function hideLogtimeOptions() {
             $('#switch_modal').addClass('invisible');
 
             if (pendingCheckbox) {
@@ -923,10 +968,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             const checkboxState = pendingCheckbox.is(':checked') ? 1 : 0;
             const checkbox = pendingCheckbox.val();
             var $id = $('#idevent').val();
-
-            console.log(checkboxState);
-            console.log(checkbox);
-            console.log($id);
 
             const status = pendingCheckbox.is(':checked') ? "on" : "off";
             const logText = pendingCheckbox.closest('label').find('span').text();
@@ -999,12 +1040,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
                         let count = $('input.student-checkbox:checked').length;
                         sessionStorage.setItem('invite_success', count);
                         $('#success_invite_count').text(count);
+                        localStorage.removeItem('invited');
                     } else {
                         alert('Error: ' + response);
                     }
@@ -1024,7 +1065,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 type: 'POST',
                 data: formData,
                 success: function (response) {
-                    console.log("Response from server:", response);
                     if (response.trim() === "success") {
                         location.reload();
                     } else {
@@ -1050,6 +1090,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
         $(document).ready(function () {
             changeHeaderTitle();
+
+            if (localStorage.getItem('newInvite') === 'true') {
+                let idevent = <?= $cur_event['idevent'] ?>;
+                $('#idevent').val(idevent);
+                localStorage.setItem('invited', idevent);
+
+                localStorage.removeItem('newInvite');
+
+                showInviteModal();
+            }
+
             let invite_count = sessionStorage.getItem('invite_success');
             if (invite_count) {
                 $('#success_invite_count').text(invite_count);
@@ -1088,14 +1139,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             });
 
             $(document).on('click', function (event) {
-                if (!$(event.target).closest('#invite_modal_main').length && $(event.target).closest('#invite_modal').length) {
-                    hideInviteModal();
+                if (!$(event.target).closest('#logtime_modal_main').length && $(event.target).closest('#logtime_modal').length) {
+                    hideLogtimeModal();
                 }
             });
 
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#switch_modal_main').length && $(event.target).closest('#switch_modal').length) {
-                    hideLogtimeModal();
+                    hideLogtimeOptions();
                 }
             });
 
@@ -1247,7 +1298,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     $container.addClass('hidden');
                 }
             });
-            
+
             $('#invite_modal_main').find('.year-dropdown').click(function () {
                 var $dropdown = $(this).closest('.year').find('.year-dropdown');
                 var $container = $(this).closest('.year').find('.block-container');
@@ -1315,6 +1366,12 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     tile.removeClass('border-teal-500 shadow-lg text-teal-500');
                 }
             });
+
+            if (localStorage.getItem('invited')) {
+                idevent = localStorage.getItem('invited')
+                $('#idevent').val(idevent);
+                showInviteModal();
+            }
 
         })
     </script>
