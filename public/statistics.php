@@ -368,13 +368,16 @@ if ($_SESSION["logged_in"] == !true) {
                     return;
                 }
 
-                
+                let willIncreaseYear = $('#year_increase').is(':checked') ? 1 : 0;
 
                 showLoader('Starting a new Semester...');
                 $.ajax({
                     url: 'includes/end_sem.php',
                     method: 'POST',
-                    data: { students: selectedStudents, will_increase_year:  },
+                    data: {
+                        students: selectedStudents,
+                        will_increase_year: willIncreaseYear
+                    },
                     success: function (response) {
                         $('#success_modal').removeClass('invisible');
                         hideLoader();

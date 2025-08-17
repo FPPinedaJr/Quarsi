@@ -3,6 +3,7 @@ include_once "../includes/connect_db.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedStudents = $_POST['students'];
+    $willIncreaseYear = isset($_POST['will_increase_year']) ? intval($_POST['will_increase_year']) : 0;
 
     if (empty($selectedStudents)) {
         http_response_code(400);
@@ -13,13 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $pdo->beginTransaction();
 
-        $pdo->exec("UPDATE user SET must_set_blockyear = 0");
-
-        $updateMustSetQuery = "UPDATE user SET year = 0, block = 0, must_set_blockyear = 1 WHERE iduser IN (" . implode(',', array_fill(0, count($selectedStudents), '?')) . ")";
-        $stmt = $pdo->prepare($updateMustSetQuery);
+        $placeholders = implode(',', array_fill(0, count($selectedStudents), '?'));
+        $deleteQuery = "DELETE FROM user WHERE iduser NOT IN ($placeholders)";
+        $stmt = $pdo->prepare($deleteQuery);
         $stmt->execute($selectedStudents);
-        
-        $pdo->exec("DELETE FROM user WHERE must_set_blockyear = 0");
+
+        if ($willIncreaseYear === 1) {
+            $pdo->exec("UPDATE user SET year = year + 1 WHERE year IN (1, 2, 3)");
+        }
+
         $pdo->exec("TRUNCATE TABLE attendance");
         $pdo->exec("TRUNCATE TABLE event");
 
