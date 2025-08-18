@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->beginTransaction();
 
         $placeholders = implode(',', array_fill(0, count($selectedStudents), '?'));
-        $deleteQuery = "DELETE FROM user WHERE iduser NOT IN ($placeholders)";
+        $deleteQuery = "DELETE FROM user WHERE iduser NOT IN ($placeholders) AND is_admin = 0 AND is_officer = 0";
         $stmt = $pdo->prepare($deleteQuery);
         $stmt->execute($selectedStudents);
 
