@@ -45,10 +45,6 @@ if ($_SESSION["logged_in"] == !true) {
 
     <body class="flex flex-col min-h-screen text-gray-800 bg-white">
 
-        <script>
-            showLoader("Fetching Grades..."); 
-        </script>
-
         <?php
         function post_api($endpoint, $payload)
         {
@@ -112,17 +108,26 @@ if ($_SESSION["logged_in"] == !true) {
                     <button id="nextBtnDesktop" class="text-2xl text-teal-600"><i class="fas fa-chevron-right"></i></button>
                 </div>
 
-                <?php foreach ($gradesByTerm as $i => $entry): ?>
+                <?php
+
+                $studentNum = $user['student_number']; // e.g. 2022-8-0110
+                $entryYear = (int) substr($studentNum, 0, 4);
+
+                usort($gradesByTerm, function ($a, $b) {
+                    return strcmp($a['term']['academicyear'], $b['term']['academicyear']) ?: strcmp($a['term']['schoolterm'], $b['term']['schoolterm']);
+                });
+
+                foreach ($gradesByTerm as $i => $entry): ?>
                     <div class="term-card-desktop <?= $i === 0 ? '' : 'hidden' ?>" data-index="<?= $i ?>">
                         <?php if (count($entry['grades']) > 0): ?>
                             <div class="overflow-auto">
                                 <table class="w-full text-sm border">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th class="p-2 border">Subject Code</th>
-                                            <th class="p-2 border">Title</th>
-                                            <th class="p-2 border">Midterm</th>
-                                            <th class="p-2 border">Final</th>
+                                            <th class="p-2 border w-3/12">Subject Code</th>
+                                            <th class="p-2 border w-7/12">Title</th>
+                                            <th class="p-2 border w-1/12">Midterm</th>
+                                            <th class="p-2 border w-1/12">Final</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -130,8 +135,8 @@ if ($_SESSION["logged_in"] == !true) {
                                             <tr>
                                                 <td class="p-2 border"><?= $subject['subjectcode'] ?></td>
                                                 <td class="p-2 border"><?= $subject['subjecttitle'] ?></td>
-                                                <td class="p-2 border"><?= $subject['midterm'] ?? '' ?></td>
-                                                <td class="p-2 border"><?= $subject['final'] ?? '' ?></td>
+                                                <td class="p-2 border text-center"><?= $subject['midterm'] ?? '' ?></td>
+                                                <td class="p-2 border text-center"><?= $subject['final'] ?? '' ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -325,9 +330,6 @@ if ($_SESSION["logged_in"] == !true) {
 
         $(document).ready(function () {
             changeHeaderTitle();
-            setTimeout(function () {
-                hideLoader();
-            }, 1569);
         });
     </script>
 
