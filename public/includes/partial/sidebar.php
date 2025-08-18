@@ -9,7 +9,13 @@ SELECT
     profile_pic,
     CONCAT(f_name, ' ', l_name) AS full_name,
     student_no AS student_number,
-    CONCAT('Year ', year, ' Block ', block) AS section,
+    CASE year
+        WHEN 1 THEN '1st Year'
+        WHEN 2 THEN '2nd Year'
+        WHEN 3 THEN '3rd Year'
+        WHEN 4 THEN '4th Year'
+        ELSE CONCAT('Year', year)
+    END AS section,
     email
 FROM user
 WHERE iduser = ?;
