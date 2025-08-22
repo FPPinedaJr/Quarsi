@@ -119,8 +119,30 @@ if ($_SESSION["logged_in"] == !true) {
 
     <body class="justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
 
-        <div class="flex justify-center w-full h-full p-4">
-            <div class="w-5/6 bg-white rounded-lg shadow-md p-4">
+
+        <div class="flex justify-center w-full h-full mt-10">
+            <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md">
+                <thead class="text-white bg-teal-500">
+                    <tr>
+                        <th class="px-4 py-2 text-center">YEAR LEVEL</th>
+                        <th class="px-4 py-2 text-center">COUNT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($yearResults as $row): ?>
+                        <tr class="border-b odd:bg-teal-100/60 even:bg-teal-200/60">
+                            <td class="px-4 py-2 text-center"><?php echo htmlspecialchars($yearLabels[$row['year']]); ?></td>
+                            <td class="px-4 py-2 text-center"><?php echo htmlspecialchars($row['total']); ?> students
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="flex justify-center w-full h-full mt-10">
+            <div class="w-5/6 bg-white rounded-lg border border-teal-500 shadow-md p-4">
                 <h2 class="text-lg font-bold text-center text-teal-600 mb-4">NUMBER OF STUDENTS</h2>
                 <canvas id="yearChart"></canvas>
             </div>

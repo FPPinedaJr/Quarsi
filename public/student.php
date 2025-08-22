@@ -119,59 +119,43 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     </div>
 
                     <!-- Filter -->
-                    <div class="relative flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
+                    <div class="relative flex items-center justify-center p-1 text-teal-700 h-fit w-fit">
                         <i id="filter" onclick="toggleFilter()" class="text-xl cursor-pointer fa-solid fa-sliders"></i>
 
                         <!-- Filters -->
                         <div id="filter_dropdown"
                             class="absolute flex flex-col bg-white border rounded-sm top-[2rem] right-[0.20rem] md:-top-2 md:-right-[9.5rem] h-fit w-36 border-gray-200/50 invisible">
-                            <div
-                                class="relative group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70 text-center pr-5">
-                                <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Year<i
-                                    class="hidden text-xs fa-solid fa-angle-right md:block"></i>
-                                <div id="year_filter"
-                                    class="absolute top-0 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible right-28 md:-right-28 h-fit w-28">
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">1st Year</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-2" value="2">
-                                        <label for="year-2" class="ml-4 font-['mulish'] cursor-pointer">2nd Year</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-3" value="3">
-                                        <label for="year-3" class="ml-4 font-['mulish'] cursor-pointer">3rd Year</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-4" value="4">
-                                        <label for="year-4" class="ml-4 font-['mulish'] cursor-pointer">4th Year</label>
-                                    </div>
+
+                            <!-- Year Filter -->
+                            <div class="flex flex-col w-full text-sm font-['mulish']">
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-all" value="all" checked>
+                                    <label for="year-all" class="ml-3 cursor-pointer">All</label>
                                 </div>
-                            </div>
-                            <div
-                                class="group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5">
-                                <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Organization<i
-                                    class="hidden text-xs fa-solid fa-angle-right md:block"></i>
-                                <div id="org_filter"
-                                    class="absolute flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-14 right-28 md:-right-28 h-fit w-28">
-                                    <?php foreach ($programs as $program): ?>
-                                        <div
-                                            class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                            <input type="checkbox" name="org[]" class="org_radio"
-                                                id="org-<?= $program['idprogram'] ?>" value="<?= $program['idprogram'] ?>">
-                                            <label for="org-<?= $program['idprogram'] ?>"
-                                                class="ml-4 font-['mulish'] cursor-pointer"><?= $program['short_name'] ?></label>
-                                        </div>
-                                    <?php endforeach; ?>
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-1" value="1">
+                                    <label for="year-1" class="ml-3 cursor-pointer">1st Year</label>
+                                </div>
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-2" value="2">
+                                    <label for="year-2" class="ml-3 cursor-pointer">2nd Year</label>
+                                </div>
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-3" value="3">
+                                    <label for="year-3" class="ml-3 cursor-pointer">3rd Year</label>
+                                </div>
+                                <div class="flex w-full px-2 py-1 bg-white cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-4" value="4">
+                                    <label for="year-4" class="ml-3 cursor-pointer">4th Year</label>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -203,15 +187,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     data-l_name="<?php echo $student['l_name'] ?>"
                                     data-idprogram="<?php echo $student['idprogram_user'] ?>"
                                     data-year="<?php echo $student['year'] ?>" data-email="<?php echo $student['email'] ?>"
-                                    data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1 && $student['is_superuser'] == 0) {
-                                          echo "1";
+                                    data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_admin'] == 1) {
+                                          echo "3";
                                       } else if ($student['is_officer'] == 1 && $student['is_superuser'] == 1) {
                                           echo "2";
-                                      } else if ($student['is_admin'] == 1) {
-                                          echo "3";
+                                      } else if ($student['is_officer'] == 1) {
+                                          echo "1";
                                       } else {
                                           echo "0";
-                                      } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200"
+                                      }
+                                      ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200"
                                     onclick="showEditStudentModal(<?= $student['iduser'] ?>)">
                                     <td class="flex items-center py-2 pl-3"><img data-src="<?php if ($student['profile_pic']) {
                                         echo 'data:image/jpeg;base64,' . base64_encode($student['profile_pic']);
@@ -242,15 +227,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
                             data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
                             data-email="<?php echo $student['email'] ?>"
-                            data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
-                                  echo "1";
-                              } else if ($student['is_superuser'] == 1) {
-                                  echo "2";
-                              } else if ($student['is_admin'] == 1) {
+                            data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_admin'] == 1) {
                                   echo "3";
+                              } else if ($student['is_officer'] == 1 && $student['is_superuser'] == 1) {
+                                  echo "2";
+                              } else if ($student['is_officer'] == 1) {
+                                  echo "1";
                               } else {
                                   echo "0";
-                              } ?>"
+                              }
+                              ?>"
                             class="flex student-div items-center p-1 border border-teal-400 shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden"
                             onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
                             <div class="flex items-center justify-center w-1/3 h-full">
@@ -480,8 +466,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     </select>
                                     <label for='edit_user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
                                 </div>";
-                                            } else {
-                                                echo "
+                        } else {
+                            echo "
                                 <div class='hidden'></div>
                                 ";
                         } ?>
@@ -566,6 +552,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 contentType: false,
                 processData: false,
                 success: function (response) {
+                    // console.log(response);
                     location.reload();
                     $('#filter').removeClass('invisible')
                 }
@@ -675,7 +662,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             observer.observe();
 
             changeHeaderTitle();
-            let debounceTimer;
 
             $("#page_input").keypress(function (event) {
                 if (event.which === 13) {
@@ -725,19 +711,22 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             localStorage.removeItem('loading');
 
 
+            let debounceTimer;
             $("#search_student").on("keyup", function () {
-                $("input[name='year[]'], input[name='org[]']").prop("checked", true);
-
-                let input = $(this).val().trim();
-
-                if (input == '') {
-                    location.reload();
-                    return;
-                }
-
-
                 clearTimeout(debounceTimer);
+
+
+                let input = $(this).val().toLowerCase().trim();
+
+
+
                 debounceTimer = setTimeout(() => {
+                    // if (input === '') {
+                    //     location.reload();
+                    //     return;
+                    // }
+
+                    // Show loader
                     $("#students-table tbody").html(
                         '<tr>' +
                         '<td colspan="3" class="relative w-full h-36">' +
@@ -753,7 +742,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     );
 
                     $.ajax({
-                        url: "/includes/find.php",
+                        url: "./includes/find.php",
                         method: "POST",
                         dataType: "json",
                         data: { input: input },
@@ -766,7 +755,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 $(".total-pages").text(1);
                                 $(".results-count").text(response.results_count);
                                 $(".paginate_btn").addClass("pointer-events-none opacity-50");
+                                if (response.results_count == 50) {
+                                    $(".total-pages").text(<?= $total_pages ?>);
+                                    $(".paginate_btn").removeClass("pointer-events-none opacity-50");
+                                }
                             }
+
+                            $("#year-all").prop("checked", true);
 
                             const observer = lozad();
                             observer.observe();
@@ -777,29 +772,15 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             $("#students-table tbody").html('<p class="text-red-500">Error occurred. Please try again.</p>');
                         }
                     });
-                }, 600);
+                }, 1000); // delay in ms
             });
 
-            $("input[name='year[]'], input[name='org[]']").prop("checked", true);
 
-            $("input[name='year[]'], input[name='org[]']").on("change", function () {
-                let selectedYears = $("input[name='year[]']:checked").map(function () {
-                    return this.value;
-                }).get();
 
-                let selectedOrg = $("input[name='org[]']:checked").map(function () {
-                    return this.value;
-                }).get();
+            $("input[name='year']").on("change", function () {
+                let selectedYear = $("input[name='year']:checked").val();
 
                 let page = $(".paginate_btn").data("page") || 1;
-                console.log(page);
-
-                if (selectedYears.length === 0 || selectedOrg.length === 0) {
-                    $("#students-table tbody").html("<tr><td colspan='3' class='p-4 text-center'>No students found</td></tr>");
-                    $("#students-div").html('<p class="text-lg text-gray-500">No students found.</p>');
-                    $(".results-count").text('0');
-                    return;
-                }
 
                 $("#students-table tbody").html(
                     '<tr>' +
@@ -816,12 +797,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 );
 
                 $.ajax({
-                    url: "/includes/filter.php",
+                    url: "./includes/filter.php",
                     method: "POST",
                     dataType: "json",
                     data: {
-                        years: selectedYears,
-                        org: selectedOrg,
+                        year: selectedYear,
                         page: page
                     },
                     success: function (response) {
@@ -834,6 +814,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             $(".total-pages").text(1);
                             $(".results-count").text(response.results_count);
                             $(".paginate_btn").addClass("pointer-events-none opacity-50");
+                            if (selectedYear == 'all') {
+                                $(".total-pages").text(<?= $total_pages ?>);
+                                $(".paginate_btn").removeClass("pointer-events-none opacity-50");
+
+                            }
                         }
 
                         const observer = lozad();

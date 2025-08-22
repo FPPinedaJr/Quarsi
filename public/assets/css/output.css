@@ -1028,6 +1028,10 @@ video {
   height: 2rem;
 }
 
+.h-9 {
+  height: 2.25rem;
+}
+
 .h-\[1\.65rem\] {
   height: 1.65rem;
 }
@@ -1049,10 +1053,6 @@ video {
   height: 100vh;
 }
 
-.h-9 {
-  height: 2.25rem;
-}
-
 .min-h-16 {
   min-height: 4rem;
 }
@@ -1063,6 +1063,10 @@ video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-1\/12 {
+  width: 8.333333%;
 }
 
 .w-1\/2 {
@@ -1103,10 +1107,6 @@ video {
 
 .w-16 {
   width: 4rem;
-}
-
-.w-2\/12 {
-  width: 16.666667%;
 }
 
 .w-2\/3 {
@@ -1169,14 +1169,6 @@ video {
   width: 12rem;
 }
 
-.w-5 {
-  width: 1.25rem;
-}
-
-.w-5\/12 {
-  width: 41.666667%;
-}
-
 .w-5\/6 {
   width: 83.333333%;
 }
@@ -1187,6 +1179,10 @@ video {
 
 .w-64 {
   width: 16rem;
+}
+
+.w-7\/12 {
+  width: 58.333333%;
 }
 
 .w-8 {
@@ -1223,18 +1219,6 @@ video {
   width: 100vw;
 }
 
-.w-1\/12 {
-  width: 8.333333%;
-}
-
-.w-7\/12 {
-  width: 58.333333%;
-}
-
-.min-w-16 {
-  min-width: 4rem;
-}
-
 .min-w-40 {
   min-width: 10rem;
 }
@@ -1249,10 +1233,6 @@ video {
 
 .max-w-4xl {
   max-width: 56rem;
-}
-
-.max-w-md {
-  max-width: 28rem;
 }
 
 .max-w-sm {
@@ -1273,10 +1253,6 @@ video {
 
 .flex-grow {
   flex-grow: 1;
-}
-
-.flex-grow-0 {
-  flex-grow: 0;
 }
 
 .grow {
@@ -1779,6 +1755,11 @@ video {
   background-color: rgb(20 184 166 / var(--tw-bg-opacity));
 }
 
+.bg-teal-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(13 148 136 / var(--tw-bg-opacity));
+}
+
 .bg-teal-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(15 118 110 / var(--tw-bg-opacity));
@@ -1840,6 +1821,10 @@ video {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
 }
 
 .p-4 {
@@ -2010,10 +1995,6 @@ video {
 
 .font-\[\\\'merriweather_sans\\\'\] {
   font-family: \'merriweather sans\';
-}
-
-.font-mulish {
-  font-family: Mulish, sans-serif;
 }
 
 .text-2xl {
@@ -2260,10 +2241,6 @@ video {
 
 .opacity-50 {
   opacity: 0.5;
-}
-
-.opacity-75 {
-  opacity: 0.75;
 }
 
 .opacity-90 {
@@ -2840,6 +2817,10 @@ video {
     width: 5rem;
   }
 
+  .md\:w-24 {
+    width: 6rem;
+  }
+
   .md\:w-28 {
     width: 7rem;
   }
@@ -2850,6 +2831,10 @@ video {
 
   .md\:w-36 {
     width: 9rem;
+  }
+
+  .md\:w-40 {
+    width: 10rem;
   }
 
   .md\:w-5\/12 {
@@ -2885,10 +2870,6 @@ video {
     width: 100%;
   }
 
-  .md\:w-40 {
-    width: 10rem;
-  }
-
   .md\:max-w-lg {
     max-width: 32rem;
   }
@@ -2903,10 +2884,6 @@ video {
 
   .md\:flex-row {
     flex-direction: row;
-  }
-
-  .md\:gap-2 {
-    gap: 0.5rem;
   }
 
   .md\:gap-4 {
