@@ -94,8 +94,8 @@ if ($_SESSION["logged_in"] == !true) {
             <div class="mt-6 text-center">
                 <p class="text-gray-600"> <?= htmlspecialchars($user['student_number']) ?></p>
                 <h2 class="text-2xl font-bold"><?= htmlspecialchars($user['full_name']) ?></h2>
-                <p class="text-gray-600"><?= htmlspecialchars($user['section']) ?></p>
                 <p class="text-gray-600"><?= htmlspecialchars($user['email']) ?></p>
+                <p class="text-gray-600"><?= htmlspecialchars($user['section']) ?></p>
             </div>
 
             <div class="w-11/12 max-w-sm mt-8 md:w-full">

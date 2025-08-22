@@ -20,7 +20,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
         organization.abbreviation as 'program',
         user.organization as 'idprogram_user',
         user.year as 'year',
-        user.block as 'block',
         user.email as 'email',
         user.is_officer as 'is_officer',
         user.is_superuser as 'is_superuser',
@@ -30,7 +29,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
       INNER JOIN organization
       ON user.organization = organization.idorganization
       WHERE user.is_admin <> 1
-      ORDER BY is_superuser DESC, is_officer DESC, user.year, user.block, user.f_name
+      ORDER BY is_superuser DESC, is_officer DESC, user.year, user.l_name
       LIMIT ? OFFSET ?;
     ");
 
@@ -53,7 +52,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
     $stmt3 = $pdo->query("SELECT COUNT(*) FROM user WHERE is_admin <> 1");
     $total_students = $stmt3->fetchColumn();
     $total_pages = ceil($total_students / $limit);
-    ?>
+
+
+    $year_dict = [
+        0 => "Unknown Year",
+        1 => "1st Year",
+        2 => "2nd Year",
+        3 => "3rd Year",
+        4 => "4th Year"
+    ]
+        ?>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -111,92 +119,43 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     </div>
 
                     <!-- Filter -->
-                    <div class="relative flex items-center justify-center p-1 text-teal-700 bg-none h-fit w-fit">
+                    <div class="relative flex items-center justify-center p-1 text-teal-700 h-fit w-fit">
                         <i id="filter" onclick="toggleFilter()" class="text-xl cursor-pointer fa-solid fa-sliders"></i>
 
                         <!-- Filters -->
                         <div id="filter_dropdown"
                             class="absolute flex flex-col bg-white border rounded-sm top-[2rem] right-[0.20rem] md:-top-2 md:-right-[9.5rem] h-fit w-36 border-gray-200/50 invisible">
-                            <div
-                                class="relative group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center border-b border-gray-100/70 text-center pr-5">
-                                <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Year<i
-                                    class="hidden text-xs fa-solid fa-angle-right md:block"></i>
-                                <div id="year_filter"
-                                    class="absolute top-0 flex flex-col invisible border border-gray-200 rounded-md group-hover:visible right-28 md:-right-28 h-fit w-28">
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-1" value="1">
-                                        <label for="year-1" class="ml-4 font-['mulish'] cursor-pointer">Year 1</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-2" value="2">
-                                        <label for="year-2" class="ml-4 font-['mulish'] cursor-pointer">Year 2</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-3" value="3">
-                                        <label for="year-3" class="ml-4 font-['mulish'] cursor-pointer">Year 3</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="year[]" id="year-4" value="4">
-                                        <label for="year-4" class="ml-4 font-['mulish'] cursor-pointer">Year 4</label>
-                                    </div>
+
+                            <!-- Year Filter -->
+                            <div class="flex flex-col w-full text-sm font-['mulish']">
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-all" value="all" checked>
+                                    <label for="year-all" class="ml-3 cursor-pointer">All</label>
                                 </div>
-                            </div>
-                            <div
-                                class="group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5">
-                                <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Block<i
-                                    class="hidden text-xs fa-solid fa-angle-right md:block"></i>
-                                <div id="block_filter"
-                                    class="absolute flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-7 right-28 md:-right-28 h-fit w-28">
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="block[]" id="block-0" value="0">
-                                        <label for="block-0" class="ml-4 font-['mulish'] cursor-pointer">Block 0</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="block[]" id="block-1" value="1">
-                                        <label for="block-1" class="ml-4 font-['mulish'] cursor-pointer">Block 1</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="block[]" id="block-2" value="2">
-                                        <label for="block-2" class="ml-4 font-['mulish'] cursor-pointer">Block 2</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="block[]" id="block-3" value="3">
-                                        <label for="block-3" class="ml-4 font-['mulish'] cursor-pointer">Block 3</label>
-                                    </div>
-                                    <div
-                                        class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                        <input type="checkbox" name="block[]" id="block-4" value="4">
-                                        <label for="block-4" class="ml-4 font-['mulish'] cursor-pointer">Block 4</label>
-                                    </div>
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-1" value="1">
+                                    <label for="year-1" class="ml-3 cursor-pointer">1st Year</label>
                                 </div>
-                            </div>
-                            <div
-                                class="group w-full h-fit md:px-2 pl-2 py-1 text-sm font-['mulish'] hover:bg-gray-100 cursor-pointer flex justify-between items-center text-center pr-5">
-                                <i class="ml-2 text-xs fa-solid fa-angle-left md:hidden"></i>Organization<i
-                                    class="hidden text-xs fa-solid fa-angle-right md:block"></i>
-                                <div id="org_filter"
-                                    class="absolute flex flex-col invisible border border-gray-200 rounded-md group-hover:visible group top-14 right-28 md:-right-28 h-fit w-28">
-                                    <?php foreach ($programs as $program): ?>
-                                        <div
-                                            class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer h-fit hover:bg-gray-100">
-                                            <input type="checkbox" name="org[]" class="org_radio"
-                                                id="org-<?= $program['idprogram'] ?>" value="<?= $program['idprogram'] ?>">
-                                            <label for="org-<?= $program['idprogram'] ?>"
-                                                class="ml-4 font-['mulish'] cursor-pointer"><?= $program['short_name'] ?></label>
-                                        </div>
-                                    <?php endforeach; ?>
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-2" value="2">
+                                    <label for="year-2" class="ml-3 cursor-pointer">2nd Year</label>
+                                </div>
+                                <div
+                                    class="flex w-full px-2 py-1 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-3" value="3">
+                                    <label for="year-3" class="ml-3 cursor-pointer">3rd Year</label>
+                                </div>
+                                <div class="flex w-full px-2 py-1 bg-white cursor-pointer hover:bg-gray-100">
+                                    <input type="radio" name="year" id="year-4" value="4">
+                                    <label for="year-4" class="ml-3 cursor-pointer">4th Year</label>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -218,9 +177,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             </th>
                             <th class="w-1/4 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Student ID
                             </th>
-                            <th class="w-1/4 py-2 pl-3 text-lg font-semibold text-left text-white bg-teal-700">Program, Year
-                                &
-                                Block</th>
+                            <th class="w-1/4 py-2 pl-3 text-lg font-semibold text-center text-white bg-teal-700">Year</th>
                         </thead>
                         <tbody>
                             <?php foreach ($students as $student): ?>
@@ -229,17 +186,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     data-f_name="<?php echo $student['f_name'] ?>"
                                     data-l_name="<?php echo $student['l_name'] ?>"
                                     data-idprogram="<?php echo $student['idprogram_user'] ?>"
-                                    data-year="<?php echo $student['year'] ?>" data-block="<?php echo $student['block'] ?>"
-                                    data-email="<?php echo $student['email'] ?>"
-                                    data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1 && $student['is_superuser'] == 0) {
-                                          echo "1";
+                                    data-year="<?php echo $student['year'] ?>" data-email="<?php echo $student['email'] ?>"
+                                    data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_admin'] == 1) {
+                                          echo "3";
                                       } else if ($student['is_officer'] == 1 && $student['is_superuser'] == 1) {
                                           echo "2";
-                                      } else if ($student['is_admin'] == 1) {
-                                          echo "3";
+                                      } else if ($student['is_officer'] == 1) {
+                                          echo "1";
                                       } else {
                                           echo "0";
-                                      } ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200"
+                                      }
+                                      ?>" class="cursor-pointer hover:bg-gray-300 even:bg-[#EDF4F2] odd:bg-gray-200"
                                     onclick="showEditStudentModal(<?= $student['iduser'] ?>)">
                                     <td class="flex items-center py-2 pl-3"><img data-src="<?php if ($student['profile_pic']) {
                                         echo 'data:image/jpeg;base64,' . base64_encode($student['profile_pic']);
@@ -247,15 +204,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                         <p id="fullname" class="<?php if ($student['is_superuser'] == 0 && $student['is_officer'] == 1) {
                                             echo 'text-blue-600';
                                         } else if ($student['is_superuser'] == 1 && $student['is_officer'] == 1) {
-                                            echo 'text-orange-400';} ?> font-semibold">
+                                            echo 'text-orange-400';
+                                        } ?> font-semibold">
                                             <?= $student['f_name'] ?>         <?= $student['l_name'] ?>
                                         </p>
                                     </td>
                                     <td id="student-no" class="py-2 pl-3"><?= $student['student_no'] ?></td>
-                                    <td id="program-yr-blck" class="py-2 pl-3"><?= $student['program'] ?>
-                                        <?= $student['year'] ?>
-                                        Block
-                                        <?= $student['block'] ?>
+                                    <td id="program-yr-blck" class="py-2 pl-3 text-center">
+                                        <?= $year_dict[$student['year']] ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -270,16 +226,17 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             data-student_no="<?php echo $student['student_no'] ?>"
                             data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
                             data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
-                            data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>"
-                            data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
-                                  echo "1";
-                              } else if ($student['is_superuser'] == 1) {
-                                  echo "2";
-                              } else if ($student['is_admin'] == 1) {
+                            data-email="<?php echo $student['email'] ?>"
+                            data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_admin'] == 1) {
                                   echo "3";
+                              } else if ($student['is_officer'] == 1 && $student['is_superuser'] == 1) {
+                                  echo "2";
+                              } else if ($student['is_officer'] == 1) {
+                                  echo "1";
                               } else {
                                   echo "0";
-                              } ?>"
+                              }
+                              ?>"
                             class="flex student-div items-center p-1 border border-teal-400 shadow-md w-full h-36 rounded-md bg-[#d9f0ea] my-3 overflow-hidden"
                             onclick="showEditStudentModal(<?php echo $student['iduser'] ?>)">
                             <div class="flex items-center justify-center w-1/3 h-full">
@@ -295,9 +252,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                     <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
                                 </p>
                                 <p id="student-no" class="text-gray-700"><?php echo $student['student_no'] ?></p>
-                                <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?> Block
-                                    <?php echo $student['block'] ?>
-                                </p>
+                                <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?> </p>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -354,88 +309,73 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 </div>
 
                 <!-- fieldset -->
-                <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
-                    <form id="add_student_form" action="./includes/crud_student.php" type="button" method="POST"
-                        enctype="multipart/form-data" class="flex flex-col justify-center w-full h-full px-3">
+                <div class="w-full h-fit bg-[#fbfcf8] p-1">
+                    <form id="add_student_form" action="./includes/crud_student.php" method="POST"
+                        enctype="multipart/form-data"
+                        class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full px-3 font-['mulish'] bg-[#fbfcf8] mt-4">
                         <input type="hidden" name="action" value="add">
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mt-4">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="add_f_name" name="f_name" type="text" required
-                                    class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="f_name" class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="add_l_name" name="l_name" type="text" required
-                                    class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <input id="add_student_no" name="student_no" type="text"
-                                    pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}" placeholder="2000-1-0001" required
-                                    class="w-full flex items-center md:h-9 pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
-                            </div>
+                        <!-- First Name -->
+                        <div class="flex flex-col">
+                            <input id="add_f_name" name="f_name" type="text" required
+                                class="w-full h-9 pl-1 text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="add_f_name" class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
                         </div>
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="add_program" name="program" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <?php foreach ($programs as $program): ?>
-                                        <option value="<?= $program['idprogram'] ?>"
-                                            class="font-['mulish'] text-black text-base w-full"><?= $program['name'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                                <label for="program" class="pl-1 text-base md:text-lg text-zinc-600">Program</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="add_year" name="year" type="number" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="" disabled>Select</option>
-                                    <option value="1">First Year</option>
-                                    <option value="2">Second Year</option>
-                                    <option value="3">Third Year</option>
-                                    <option value="4">Fourth Year</option>
-                                </select>
-                                <label for="year" class="pl-1 text-base md:text-lg text-zinc-600">Year</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3 ">
-                                <select id="add_block" name="block" type="number" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="" disabled>Select</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                                <label for="block" class="pl-1 text-base md:text-lg text-zinc-600">Block</label>
-                            </div>
+                        <!-- Last Name -->
+                        <div class="flex flex-col">
+                            <input id="add_l_name" name="l_name" type="text" required
+                                class="w-full h-9 pl-1 text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="add_l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-2 mb-4">
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
-                                <input id="add_email" name="email" type="email" required autocomplete="email"
-                                    class="w-full md:h-9 flex items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500 flex-grow-0">
-                                <label for="email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
-                            </div>
-                            <div class="flex flex-col w-full my-2 h-fit md:w-1/3">
-                                <input id="add_profile_pic" name="profile_pic" type="file" class="w-full bg-white md:h-9 flex items-center font-['mulish'] text-black focus:outline-teal-500 border border-gray-500 flex-grow-0
-                                        file:h-full file:border-none file:bg-teal-700 file:text-white">
-                                <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile
-                                    Picture <em class="text-sm text-gray-600">(Optional)</em></label>
-                            </div>
-                            <div class="flex-col invisible hidden w-full my-2 md:flex h-fit md:w-1/3"></div>
-
+                        <!-- Student No -->
+                        <div class="flex flex-col">
+                            <input id="add_student_no" name="student_no" type="text"
+                                pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}" placeholder="2000-1-0001" required
+                                class="w-full h-9 pl-1 text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="add_student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
                         </div>
 
-                        <div class="flex items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
+                        <!-- Year -->
+                        <div class="flex flex-col">
+                            <select id="add_year" name="year" required
+                                class="w-full h-9 pl-1 text-black text-base border border-gray-500 focus:outline-teal-500">
+                                <option value="" disabled selected>Select</option>
+                                <option value="1">First Year</option>
+                                <option value="2">Second Year</option>
+                                <option value="3">Third Year</option>
+                                <option value="4">Fourth Year</option>
+                            </select>
+                            <label for="add_year" class="pl-1 text-base md:text-lg text-zinc-600">Year</label>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="flex flex-col">
+                            <input id="add_email" name="email" type="email" required autocomplete="email"
+                                class="w-full h-9 pl-1 text-black focus:outline-teal-500 border border-gray-500">
+                            <label for="add_email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
+                        </div>
+
+                        <!-- Profile Pic -->
+                        <div class="flex flex-col">
+                            <input id="add_profile_pic" name="profile_pic" type="file" class="w-full h-9 bg-white pl-1 text-black border border-gray-500 focus:outline-teal-500
+                file:h-full file:border-none file:bg-teal-700 file:text-white">
+                            <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">
+                                Profile Picture <em class="text-sm text-gray-600">(Optional)</em>
+                            </label>
+                        </div>
+
+                        <!-- Button (full width across 2 cols) -->
+                        <div class="col-span-1 md:col-span-2 flex justify-center my-4">
                             <button id="add_student_btn" type="button" onclick="addStudent()"
-                                class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-28">Add
+                                class="w-full md:w-40 h-10 bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg">
+                                Add
                             </button>
                         </div>
-
                     </form>
                 </div>
+
             </div>
         </div>
 
@@ -452,114 +392,100 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 </div>
 
                 <!-- fieldset -->
-                <div class="w-full h-fit flex bg-[#fbfcf8] p-1">
+                <div class="w-full h-fit bg-[#fbfcf8] p-1">
                     <form id="edit_student_form" action="./includes/crud_student.php" enctype="multipart/form-data"
-                        type="button" method="POST" class="flex flex-col justify-center w-full h-full px-3">
+                        method="POST"
+                        class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full px-3 font-['mulish'] bg-[#fbfcf8] mt-4">
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-4 mt-4">
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
-                                <input id="iduser" name="iduser" type="hidden">
-                                <input id="edit_action" name="action" type="hidden" value="update">
+                        <!-- Hidden Inputs -->
+                        <input id="iduser" name="iduser" type="hidden">
+                        <input id="edit_action" name="action" type="hidden" value="update">
 
-                                
-                                <input id="edit_f_name" name="f_name" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="edit_f_name" class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
-                            </div>
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
-                                <input id="edit_l_name" name="l_name" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="edit_l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
-                            </div>
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
-                                <input id="edit_student_no" name="student_no" type="text"
-                                    pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}" placeholder="2000-1-0001" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="edit_student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student
-                                    No.</label>
-                            </div>
+                        <!-- First Name -->
+                        <div class="flex flex-col">
+                            <input id="edit_f_name" name="f_name" type="text" required
+                                class="w-full h-9 pl-1 text-black border border-gray-500 focus:outline-teal-500">
+                            <label for="edit_f_name" class="pl-1 text-base md:text-lg text-zinc-600">First Name</label>
                         </div>
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-4">
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
-                                <select id="edit_program" name="program" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem]">
-                                    <?php foreach ($programs as $program): ?>
-                                        <option value="<?= $program['idprogram'] ?>"
-                                            class="font-['mulish'] text-black text-base w-full"><?= $program['name'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                                <label for="edit_program" class="pl-1 text-base md:text-lg text-zinc-600">Program</label>
-                            </div>
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
-                                <select id="edit_year" name="year" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="" disabled class="font-['mulish'] text-black text-base">Select</option>
-                                    <option value="1" class="font-['mulish'] text-black text-base">First Year</option>
-                                    <option value="2" class="font-['mulish'] text-black text-base">Second Year</option>
-                                    <option value="3" class="font-['mulish'] text-black text-base">Third Year</option>
-                                    <option value="4" class="font-['mulish'] text-black text-base">Fourth Year</option>
-                                </select>
-                                <label for="edit_year" class="pl-1 text-base md:text-lg text-zinc-600">Year</label>
-                            </div>
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3 ">
-                                <select id="edit_block" name="block" type="text" required
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500">
-                                    <option value="" disabled class="font-['mulish'] text-black text-base">Select</option>
-                                    <option value="1" class="font-['mulish'] text-black text-base">1</option>
-                                    <option value="2" class="font-['mulish'] text-black text-base">2</option>
-                                    <option value="3" class="font-['mulish'] text-black text-base">3</option>
-                                </select>
-                                <label for="edit_block" class="pl-1 text-base md:text-lg text-zinc-600">Block</label>
-                            </div>
+                        <!-- Last Name -->
+                        <div class="flex flex-col">
+                            <input id="edit_l_name" name="l_name" type="text" required
+                                class="w-full h-9 pl-1 text-black border border-gray-500 focus:outline-teal-500">
+                            <label for="edit_l_name" class="pl-1 text-base md:text-lg text-zinc-600">Last Name</label>
                         </div>
 
-                        <div class="flex w-full h-fit flex-col font-['mulish'] bg-[#fbfcf8] md:flex-row md:gap-4">
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
-                                <input id="edit_email" name="email" type="email" required autocomplete="email"
-                                    class="w-full flex md:h-9 items-center pl-1 font-['mulish'] text-black focus:outline-teal-500 border border-gray-500">
-                                <label for="edit_email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
-                            </div>
+                        <!-- Student No -->
+                        <div class="flex flex-col">
+                            <input id="edit_student_no" name="student_no" type="text"
+                                pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}" placeholder="2000-1-0001" required
+                                class="w-full h-9 pl-1 text-black border border-gray-500 focus:outline-teal-500">
+                            <label for="edit_student_no" class="pl-1 text-base md:text-lg text-zinc-600">Student No.</label>
+                        </div>
 
-                            <div class="flex flex-col justify-center w-full my-2 h-fit md:w-1/3">
-                                <input id="add_profile_pic" name="profile_pic" type="file"
-                                    class="flex items-center flex-grow-0 w-full text-black bg-white border border-gray-500 md:h-9 focus:outline-teal-500 file:h-full file:border-none file:bg-teal-700 file:text-white">
-                                <input id="hidden_profile" type="hidden" name="hidden_profile">
-                                <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">Profile
-                                    Picture <em class="text-sm text-gray-600">(Optional)</em></label>
-                            </div>
+                        <!-- Year -->
+                        <div class="flex flex-col">
+                            <select id="edit_year" name="year" required
+                                class="w-full h-9 pl-1 text-black text-base border border-gray-500 focus:outline-teal-500">
+                                <option value="" disabled>Select</option>
+                                <option value="1">First Year</option>
+                                <option value="2">Second Year</option>
+                                <option value="3">Third Year</option>
+                                <option value="4">Fourth Year</option>
+                            </select>
+                            <label for="edit_year" class="pl-1 text-base md:text-lg text-zinc-600">Year</label>
+                        </div>
 
-                            <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
-                                echo "
-                                <div class='flex flex-col justify-center w-full my-2 h-fit md:w-1/3'>
-                                    <select id='edit_user_type' name='user_type' type='text' required
-                                        class='w-full flex md:h-9 items-center pl-1 font-mulish text-black text-base border border-gray-500 h-[1.65rem] focus:outline-teal-500'>
-                                        <option value='' class='text-base text-black font-mulish' disabled>Select</option>
-                                        <option value='0' class='text-base text-black font-mulish'>Student</option>
-                                        <option value='1' class='text-base text-black font-mulish'>Officer</option>
-                                        <option value='2' class='text-base text-black font-mulish'>Superuser</option>
+                        <!-- Email -->
+                        <div class="flex flex-col">
+                            <input id="edit_email" name="email" type="email" required autocomplete="email"
+                                class="w-full h-9 pl-1 text-black border border-gray-500 focus:outline-teal-500">
+                            <label for="edit_email" class="pl-1 text-base md:text-lg text-zinc-600">Corp. Email</label>
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="flex flex-col">
+                            <input id="add_profile_pic" name="profile_pic" type="file" class="w-full h-9 bg-white pl-1 text-black border border-gray-500 focus:outline-teal-500
+                file:h-full file:border-none file:bg-teal-700 file:text-white">
+                            <input id="hidden_profile" type="hidden" name="hidden_profile">
+                            <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">
+                                Profile Picture <em class="text-sm text-gray-600">(Optional)</em>
+                            </label>
+                        </div>
+
+                        <!-- User Type (only if admin or superuser) -->
+                        <?php if ($_SESSION['is_admin'] == 1 || $_SESSION['is_superuser'] == 1) {
+                            echo "
+                                <div class='flex flex-col'>
+                                    <select id='edit_user_type' name='user_type' required
+                                        class='w-full h-9 pl-1 text-black text-base border border-gray-500 focus:outline-teal-500'>
+                                        <option value='' disabled>Select</option>
+                                        <option value='0'>Student</option>
+                                        <option value='1'>Officer</option>
+                                        <option value='2'>Superuser</option>
                                     </select>
-                                    <label for='user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
+                                    <label for='edit_user_type' class='pl-1 text-base md:text-lg text-zinc-600'>User Type</label>
                                 </div>";
-                            } else {
-                                echo "
-                                <div class='flex invisible w-full my-2 h-fit md:w-1/3'></div>
+                        } else {
+                            echo "
+                                <div class='hidden'></div>
                                 ";
-                            } ?>
+                        } ?>
 
-                        </div>
-
-                        <div class="flex flex-col items-center justify-center w-full gap-2 my-4 md:gap-4 md:flex-row">
+                        <!-- Buttons (span full width) -->
+                        <div class="col-span-1 md:col-span-2 flex items-center justify-center gap-4 my-4">
                             <button id="save_student_btn" type="button" onclick="editStudent()"
-                                class="w-full h-10 text-['mulish'] bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg md:w-20">Save
+                                class="w-full md:w-24 h-10 bg-teal-700 hover:bg-teal-600 text-white font-semibold rounded-lg">
+                                Save
                             </button>
                             <button id="delete_student_btn" type="button" onclick="showDeleteStudentModal()"
-                                class="w-full h-10 text-['mulish'] bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg md:w-20">Delete
+                                class="w-full md:w-24 h-10 bg-red-700 hover:bg-red-600 text-white font-semibold rounded-lg">
+                                Delete
                             </button>
                         </div>
-
                     </form>
                 </div>
+
             </div>
         </div>
 
@@ -603,10 +529,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             $('#add_iduser').val('');
             $('#add_f_name').val('');
             $('#add_l_name').val('');
-            $('#add_idprogram').val('');
             $('#add_student_no').val('');
             $('#add_year').val('');
-            $('#add_block').val('');
             $('#add_email').val('');
         }
 
@@ -628,6 +552,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 contentType: false,
                 processData: false,
                 success: function (response) {
+                    // console.log(response);
                     location.reload();
                     $('#filter').removeClass('invisible')
                 }
@@ -641,9 +566,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             var $student_no = $('#student-' + id).data('student_no');
             var $f_name = $('#student-' + id).data('f_name');
             var $l_name = $('#student-' + id).data('l_name');
-            var $idprogram = $('#student-' + id).data('idprogram');
             var $year = $('#student-' + id).data('year');
-            var $block = $('#student-' + id).data('block');
             var $email = $('#student-' + id).data('email');
             var $user_type = $('#student-' + id).data('user_type');
             var $total_points = $('#student-' + id).data('total_points');
@@ -653,10 +576,8 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             $('#iduser').val(id);
             $('#edit_f_name').val($f_name);
             $('#edit_l_name').val($l_name);
-            $('#edit_program').val($idprogram);
             $('#edit_student_no').val($student_no);
             $('#edit_year').val($year);
-            $('#edit_block').val($block);
             $('#edit_email').val($email);
             $('#edit_user_type').val($user_type);
             $('#hidden_profile').val($hidden_profile);
@@ -741,7 +662,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             observer.observe();
 
             changeHeaderTitle();
-            let debounceTimer;
 
             $("#page_input").keypress(function (event) {
                 if (event.which === 13) {
@@ -791,19 +711,22 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
             localStorage.removeItem('loading');
 
 
+            let debounceTimer;
             $("#search_student").on("keyup", function () {
-                $("input[name='year[]'], input[name='block[]'], input[name='org[]']").prop("checked", true);
-
-                let input = $(this).val().trim();
-
-                if (input == '') {
-                    location.reload();
-                    return;
-                }
-
-
                 clearTimeout(debounceTimer);
+
+
+                let input = $(this).val().toLowerCase().trim();
+
+
+
                 debounceTimer = setTimeout(() => {
+                    // if (input === '') {
+                    //     location.reload();
+                    //     return;
+                    // }
+
+                    // Show loader
                     $("#students-table tbody").html(
                         '<tr>' +
                         '<td colspan="3" class="relative w-full h-36">' +
@@ -819,7 +742,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                     );
 
                     $.ajax({
-                        url: "./find.php",
+                        url: "./includes/find.php",
                         method: "POST",
                         dataType: "json",
                         data: { input: input },
@@ -832,7 +755,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                                 $(".total-pages").text(1);
                                 $(".results-count").text(response.results_count);
                                 $(".paginate_btn").addClass("pointer-events-none opacity-50");
+                                if (response.results_count == 50) {
+                                    $(".total-pages").text(<?= $total_pages ?>);
+                                    $(".paginate_btn").removeClass("pointer-events-none opacity-50");
+                                }
                             }
+
+                            $("#year-all").prop("checked", true);
 
                             const observer = lozad();
                             observer.observe();
@@ -843,33 +772,15 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             $("#students-table tbody").html('<p class="text-red-500">Error occurred. Please try again.</p>');
                         }
                     });
-                }, 600);
+                }, 1000); // delay in ms
             });
 
-            $("input[name='year[]'], input[name='block[]'], input[name='org[]']").prop("checked", true);
 
-            $("input[name='year[]'], input[name='block[]'], input[name='org[]']").on("change", function () {
-                let selectedYears = $("input[name='year[]']:checked").map(function () {
-                    return this.value;
-                }).get();
 
-                let selectedBlocks = $("input[name='block[]']:checked").map(function () {
-                    return this.value;
-                }).get();
-
-                let selectedOrg = $("input[name='org[]']:checked").map(function () {
-                    return this.value;
-                }).get();
+            $("input[name='year']").on("change", function () {
+                let selectedYear = $("input[name='year']:checked").val();
 
                 let page = $(".paginate_btn").data("page") || 1;
-                console.log(page);
-
-                if (selectedYears.length === 0 || selectedBlocks.length === 0 || selectedOrg.length === 0) {
-                    $("#students-table tbody").html("<tr><td colspan='3' class='p-4 text-center'>No students found</td></tr>");
-                    $("#students-div").html('<p class="text-lg text-gray-500">No students found.</p>');
-                    $(".results-count").text('0');
-                    return;
-                }
 
                 $("#students-table tbody").html(
                     '<tr>' +
@@ -886,13 +797,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                 );
 
                 $.ajax({
-                    url: "./filter.php",
+                    url: "./includes/filter.php",
                     method: "POST",
                     dataType: "json",
                     data: {
-                        years: selectedYears,
-                        blocks: selectedBlocks,
-                        org: selectedOrg,
+                        year: selectedYear,
                         page: page
                     },
                     success: function (response) {
@@ -905,6 +814,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
                             $(".total-pages").text(1);
                             $(".results-count").text(response.results_count);
                             $(".paginate_btn").addClass("pointer-events-none opacity-50");
+                            if (selectedYear == 'all') {
+                                $(".total-pages").text(<?= $total_pages ?>);
+                                $(".paginate_btn").removeClass("pointer-events-none opacity-50");
+
+                            }
                         }
 
                         const observer = lozad();

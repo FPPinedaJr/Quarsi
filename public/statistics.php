@@ -46,57 +46,40 @@ if ($_SESSION["logged_in"] == !true) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-
-    $query = "SELECT 
-            iduser,
-            year,
-            CONCAT(l_name, ', ', f_name) as fullname
-        FROM user 
+    $stmt = $pdo->prepare("
+        SELECT year, COUNT(*) AS total 
+        FROM user
         WHERE is_admin != 1
-        ORDER BY year, l_name;";
-
-    $stmt = $pdo->query($query);
-    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-    $stmt = $pdo->prepare("SELECT 
-                                year, 
-                                block, 
-                                COUNT(*) AS count_per_block
-                            FROM user
-                            WHERE is_admin != 1
-                            GROUP BY year, block
-                            ORDER BY year, block");
+        GROUP BY year
+        ORDER BY year
+    ");
     $stmt->execute();
-    $yearBlockResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $yearResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $totalStmt = $pdo->prepare("SELECT COUNT(*) AS total_students FROM user WHERE is_admin != 1");
     $totalStmt->execute();
     $total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total_students'];
 
     $yearLabels = [
-        0 => 'unknown',
-        1 => '1st',
-        2 => '2nd',
-        3 => '3rd',
-        4 => '4th',
+        0 => 'Unknown',
+        1 => '1st Year',
+        2 => '2nd Year',
+        3 => '3rd Year',
+        4 => '4th Year',
     ];
 
-    $organizedData = [];
-    foreach ($yearBlockResults as $row) {
+    $chartData = [];
+    foreach ($yearResults as $row) {
         $year = $row['year'];
-        $block = $row['block'];
-        $count = $row['count_per_block'];
+        $count = $row['total'];
+        $label = $yearLabels[$year] ?? $year;
 
-        if (!isset($organizedData[$year])) {
-            $organizedData[$year] = [
-                'total' => 0,
-                'blocks' => [],
-            ];
-        }
-        $organizedData[$year]['total'] += $count;
-        $organizedData[$year]['blocks'][$block] = $count;
+        $chartData[] = [
+            'year' => $label,
+            'count' => (int) $count
+        ];
     }
+
     ?>
 
 
@@ -136,46 +119,33 @@ if ($_SESSION["logged_in"] == !true) {
 
     <body class="justify-center w-screen min-h-screen mt-24 overflow-x-hidden">
 
-        <div class="flex justify-center w-full h-full">
-            <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md ">
-                <thead class="text-sm text-white bg-teal-500 md:text-md">
+
+        <div class="flex justify-center w-full h-full mt-10">
+            <table class="w-5/6 overflow-hidden bg-white rounded-lg shadow-md">
+                <thead class="text-white bg-teal-500">
                     <tr>
-                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Year</th>
-                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Total</th>
-                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Block 1</th>
-                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Block 2</th>
-                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Block 3</th>
-                        <th class="px-1 py-1 text-center md:px-4 md:py-2">Unknown</th>
+                        <th class="px-4 py-2 text-center">YEAR LEVEL</th>
+                        <th class="px-4 py-2 text-center">COUNT</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($organizedData as $year => $data): ?>
+                    <?php foreach ($yearResults as $row): ?>
                         <tr class="border-b odd:bg-teal-100/60 even:bg-teal-200/60">
-                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
-                                <?= $yearLabels[$year] ?? $year ?>
-                            </td>
-                            <td class="px-1 py-1 text-center md:px-4 md:py-2"><?= $data['total'] ?></td>
-                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
-                                <?php echo isset($data['blocks'][1]) ? $data['blocks'][1] : '0'; ?>
-                            </td>
-                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
-                                <?php echo isset($data['blocks'][2]) ? $data['blocks'][2] : '0'; ?>
-                            </td>
-                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
-                                <?php echo isset($data['blocks'][3]) ? $data['blocks'][3] : '0'; ?>
-                            </td>
-                            <td class="px-1 py-1 text-center md:px-4 md:py-2">
-                                <?php echo isset($data['blocks'][0]) ? $data['blocks'][0] : '0'; ?>
+                            <td class="px-4 py-2 text-center"><?php echo htmlspecialchars($yearLabels[$row['year']]); ?></td>
+                            <td class="px-4 py-2 text-center"><?php echo htmlspecialchars($row['total']); ?> students
                             </td>
                         </tr>
                     <?php endforeach; ?>
-                    <tr class="text-white bg-teal-500">
-                        <td colspan="6" class="px-4 py-2 font-bold text-center">Overall Total:
-                            <?php echo htmlspecialchars($total); ?>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
+        </div>
+
+
+        <div class="flex justify-center w-full h-full mt-10">
+            <div class="w-5/6 bg-white rounded-lg border border-teal-500 shadow-md p-4">
+                <h2 class="text-lg font-bold text-center text-teal-600 mb-4">NUMBER OF STUDENTS</h2>
+                <canvas id="yearChart"></canvas>
+            </div>
         </div>
 
         <div class="flex justify-center w-full h-full mt-10">
@@ -222,7 +192,6 @@ if ($_SESSION["logged_in"] == !true) {
                     <li>Delete all past attendance</li>
                     <li>Delete all past events</li>
                     <li>Select students for the new semester (manually)</li>
-                    <li>Reset their Year and Block (students will need to update them)</li>
                     <li>Delete the students who did not enroll</li>
                 </ul>
             </div>
@@ -308,7 +277,7 @@ if ($_SESSION["logged_in"] == !true) {
         </div>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         console.log('here');
@@ -413,6 +382,49 @@ if ($_SESSION["logged_in"] == !true) {
                 showSelectModal();
             });
 
+
+
+
+            let chartData = <?php echo json_encode($chartData); ?>;
+
+            let labels = chartData.map(item => item.year);
+            let counts = chartData.map(item => item.count);
+
+            let ctx = $('#yearChart')[0].getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Students per Year',
+                        data: counts,
+                        backgroundColor: '#14b8a6',
+                        borderColor: '#14b8a6',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            color: 'black',
+                            anchor: 'end',
+                            align: 'top',
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
         });
     </script>
 

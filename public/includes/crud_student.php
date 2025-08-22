@@ -9,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $iduser = $_POST['iduser'];
             $f_name = mb_convert_case(trim($_POST['f_name']), MB_CASE_TITLE, "UTF-8");
             $l_name = mb_convert_case(trim($_POST['l_name']), MB_CASE_TITLE, "UTF-8");            
-            $organization = $_POST['program'];
+            $organization = 1;
             $student_no = trim($_POST['student_no']);
             $year = $_POST['year'];
-            $block = $_POST['block'];
+            
             $email = trim($_POST['email']);
             $user_type = $_POST['user_type'];
             $profile_pic = NULL;
@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=?, f_name=?, l_name=?, organization=?,
-                        year=?, block=?, email=?, profile_pic=?, is_officer=0, is_superuser=0, is_admin=0
+                        year=?, email=?, profile_pic=?, is_officer=0, is_superuser=0, is_admin=0
                     WHERE iduser=?
                 ");
-                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
                 echo $iduser;
                 exit();
 
@@ -63,10 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=?, f_name=?, l_name=?, organization=?,
-                        year=?, block=?, email=?, profile_pic=?, is_officer=1, is_superuser=0, is_admin=0
+                        year=?, email=?, profile_pic=?, is_officer=1, is_superuser=0, is_admin=0
                     WHERE iduser=?
                     ");
-                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
                 echo $iduser;
                 exit();
     
@@ -74,10 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=?, f_name=?, l_name=?, organization=?,
-                        year=?, block=?, email=?, profile_pic=?, is_superuser=1, is_officer=1, is_admin=0
+                        year=?, email=?, profile_pic=?, is_superuser=1, is_officer=1, is_admin=0
                     WHERE iduser=?
                     ");
-                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
                 echo $iduser;
                 exit();
 
@@ -85,10 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=?, f_name=?, l_name=?, organization=?,
-                        year=?, block=?, email=?, profile_pic=?, is_superuser=0, is_officer=0, is_admin=1
+                        year=?, email=?, profile_pic=?, is_superuser=0, is_officer=0, is_admin=1
                     WHERE iduser=?
                     ");
-                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $img_content, $iduser]);
+                $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
                 echo $iduser;
                 exit();
             }
@@ -110,10 +110,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else if ($_POST['action'] == 'add') {
             $f_name = $_POST['f_name'];
             $l_name = $_POST['l_name'];
-            $organization = $_POST['program'];
+            $organization = 1;
             $student_no = $_POST['student_no'];
             $year = $_POST['year'];
-            $block = $_POST['block'];
+            
             $email = $_POST['email'];
             $password = $_POST['student_no'];
             $profile_pic = $_FILES['profile_pic'];
@@ -163,10 +163,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
             $stmt = $pdo->prepare("
-                    INSERT INTO user (student_no, f_name, l_name, organization, year, block, email, password, profile_pic)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256), ?)
+                    INSERT INTO user (student_no, f_name, l_name, organization, year, email, password, profile_pic)
+                    VALUES (?, ?, ?, ?, ?, ?, SHA2(?, 256), ?)
                 ");
-            $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $block, $email, $student_no, $img_content]);
+            $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $student_no, $img_content]);
             echo "success";
 
             $newUserId = $pdo->lastInsertId();
