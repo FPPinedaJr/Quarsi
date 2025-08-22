@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         $idevent  = $_POST['idevent'];
         $def      = "00:00:00";
 
-        // 1) Persist event flags once
         if (in_array(1, $logtime)) {
             $stmt = $pdo->prepare("UPDATE event SET morning_in = 1 WHERE idevent = :idevent");
             $stmt->execute([':idevent' => $idevent]);
@@ -49,10 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
             $stmt->execute([':idevent' => $idevent]);
         }
 
-        // 2) Always derive defaults from the saved event flags
         $defaults = getEventDefaults($pdo, $idevent, $def);
 
-        // 3) Insert attendance
         if (!empty($students)) {
             $query = "INSERT INTO attendance (event, user, morning_in, morning_out, afternoon_in, afternoon_out) VALUES ";
             $values = [];
@@ -79,15 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
         $idevent  = $_POST['idevent'];
         $def      = "00:00:00";
 
-        // Read existing attendees
         $prev = $pdo->prepare("SELECT user FROM attendance WHERE event = :idevent");
         $prev->execute([':idevent' => $idevent]);
         $prev_students = array_column($prev->fetchAll(PDO::FETCH_ASSOC), 'user');
 
-        // Derive defaults from event flags (do NOT rely on POSTed logtime here)
         $defaults = getEventDefaults($pdo, $idevent, $def);
 
-        // Insert only newly added students
         $values1 = [];
         $params1 = [];
         foreach ($students as $student_id) {
