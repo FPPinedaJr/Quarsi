@@ -92,18 +92,22 @@ $user = $stmt->fetch();
 
       <!-- navigation -->
       <div class="flex flex-col flex-grow mb-3 space-y-1 font-semibold">
-        <a href="dashboard.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <div class="flex justify-center w-8">
-            <i class="text-2xl fa-solid fa-table-columns"></i>
-          </div>
-          <span class="font-['merriweather_sans'] ml-3">Dashboard</span>
-        </a>
-        <a href="qr.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <div class="flex justify-center w-8">
-            <i class="text-2xl fa-solid fa-qrcode"></i>
-          </div>
-          <span class="font-['merriweather_sans'] ml-3">Generate QR</span>
-        </a>
+        <?php if ($_SESSION['is_admin'] != 1) { ?>
+          <a href="dashboard.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <div class="flex justify-center w-8">
+              <i class="text-2xl fa-solid fa-table-columns"></i>
+            </div>
+            <span class="font-['merriweather_sans'] ml-3">Dashboard</span>
+          </a>
+
+          <a href="qr.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <div class="flex justify-center w-8">
+              <i class="text-2xl fa-solid fa-qrcode"></i>
+            </div>
+            <span class="font-['merriweather_sans'] ml-3">Generate QR</span>
+          </a>
+
+        <?php } ?>
 
         <?php
         if ($_SESSION['is_officer'] == 1 || $_SESSION['is_superuser'] == 1 || $_SESSION['is_admin'] == 1) {
@@ -152,12 +156,22 @@ $user = $stmt->fetch();
           <span class="font-['merriweather_sans'] ml-3">Profile</span>
         </a>
 
-        <a href="game" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
-          <div class="flex justify-center w-8">
-            <i class="text-2xl fa-solid fa-gamepad"></i>
-          </div>
-          <span class="font-['merriweather_sans'] ml-3">Have some fun!</span>
-        </a>
+        <?php if ($_SESSION['is_admin'] != 1) { ?>
+
+          <a href="game" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <div class="flex justify-center w-8">
+              <i class="text-2xl fa-solid fa-gamepad"></i>
+            </div>
+            <span class="font-['merriweather_sans'] ml-3">Have some fun!</span>
+          </a>
+
+          <a href="grades.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+            <div class="flex justify-center w-8">
+              <i class="text-2xl fa-regular fa-file-lines"></i>
+            </div>
+            <span class="font-['merriweather_sans'] ml-3">Grades</span>
+          </a>
+        <?php } ?>
 
         <a href="./includes/logout.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
           <div class="flex justify-center w-8">
@@ -178,7 +192,8 @@ $user = $stmt->fetch();
 
 
 <!-- Alien Loader Overlay -->
-<div id="alien-loader" class="fixed inset-0 hidden flex items-center justify-center bg-black/70 backdrop-blur-lg z-[200]">
+<div id="alien-loader"
+  class="fixed inset-0 hidden flex items-center justify-center bg-black/70 backdrop-blur-lg z-[200]">
   <div class="flex flex-col items-center space-y-4">
     <div class="flex space-x-2 text-5xl">
       <span class="bounce-custom">👽</span>

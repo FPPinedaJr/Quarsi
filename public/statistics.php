@@ -191,6 +191,9 @@ if ($_SESSION["logged_in"] == !true) {
 
                 <input type="checkbox" id="select_all" class="px-4 py-2 mb-4 font-semibold">
                 <label class="italic font-bold text-teal-500">Select All</label>
+                <br>
+                <input type="checkbox" id="year_increase" class="px-4 py-2 mb-4 font-semibold">
+                <label class="italic font-bold text-teal-500">Increase Year Level</label>
             </div>
             <form id="student_form">
                 <div id="student_list" class="space-y-2">
@@ -213,8 +216,19 @@ if ($_SESSION["logged_in"] == !true) {
                         <div class="flex items-center space-x-2">
                             <input type="checkbox" id="<?= $student['iduser'] ?>}" name="<?= $student['fullname'] ?>"
                                 value="<?= $student['iduser'] ?>" class="text-teal-700 student_checkbox">
-                            <label for="student_<?= $student['iduser'] ?>"
-                                class="text-gray-700"><?= $student['fullname'] ?></label>
+                            <label for="student_<?= $student['iduser'] ?>" class="text-gray-700">
+                                <?= $student['fullname'] ?>
+                                <span class="invisible text-sm italic text-teal-600 inpl-3 year-increase">
+                                    ( <?= $yearLabels[$student['year']] ?> year
+                                    to
+                                    <?php
+                                    if ($student['year'] != 4) {
+                                        echo $yearLabels[$student['year'] + 1];
+                                    } else {
+                                        echo $yearLabels[$student['year']];
+                                    }
+                                    ?> year )
+                                </span></label>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -244,6 +258,7 @@ if ($_SESSION["logged_in"] == !true) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        console.log('here');
         function changeHeaderTitle() {
             $('#header_title').text('Statistics');
         }
@@ -275,12 +290,16 @@ if ($_SESSION["logged_in"] == !true) {
         $(document).ready(function () {
             let selectAllState = false;
 
-
+            console.log($('#increase_year').val());
             changeHeaderTitle();
 
             $('#select_all').on('click', function () {
                 selectAllState = !selectAllState;
                 $('.student_checkbox').prop('checked', selectAllState);
+            });
+
+            $('#year_increase').on('click', function () {
+                $('.year-increase').toggleClass('invisible');
             });
 
             $('#student_form').on('submit', function (e) {
@@ -296,11 +315,16 @@ if ($_SESSION["logged_in"] == !true) {
                     return;
                 }
 
+                let willIncreaseYear = $('#year_increase').is(':checked') ? 1 : 0;
+
                 showLoader('Starting a new Semester...');
                 $.ajax({
                     url: 'includes/end_sem.php',
                     method: 'POST',
-                    data: { students: selectedStudents },
+                    data: {
+                        students: selectedStudents,
+                        will_increase_year: willIncreaseYear
+                    },
                     success: function (response) {
                         $('#success_modal').removeClass('invisible');
                         hideLoader();
