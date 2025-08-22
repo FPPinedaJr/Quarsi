@@ -236,11 +236,9 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             <h2 class="w-full p-4 mt-3 text-xl font-bold text-center "><span class="text-teal-600">EVENT:</span>
                             <?= $rows[0]['event_name'] ?>
 
+                            <input id="idevent" value="<?= $rows[0]['idevent'] ?>" type="hidden">
                                 <div class="relative inline-block group">
-                                    <!-- Icon -->
-                                    <i class="fa-solid fa-download ml-2 text-teal-500 hover:text-teal-700 text-lg cursor-pointer"></i>
-
-                                    <!-- Tooltip -->
+                                    <i onclick="exportEvent()" class="fa-solid fa-download ml-2 text-teal-500 hover:text-teal-700 text-lg cursor-pointer"></i>
                                     <div
                                         class="absolute left-1/2 -translate-x-1/2 w-max px-2 py-1 text-xs font-light text-gray-200 bg-gray-800 rounded-md shadow opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
                                         Download Attendance
@@ -434,6 +432,15 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
         function changeHeaderTitle() {
             $('#header_title').text('Dashboard');
+        }
+
+        function exportEvent() {
+            let idevent = $('#idevent').val();
+            if (idevent) {
+                window.location.href = 'includes/export_event.php?idevent=' + idevent;
+            } else {
+                alert("Please select an event.");
+            }
         }
 
         $(document).ready(function () {
