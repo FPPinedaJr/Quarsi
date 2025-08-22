@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once "./includes/connect_db.php";
+include_once "connect_db.php";
 
 // Enable error reporting for debugging (Remove in production)
 ini_set('display_errors', 1);
@@ -8,16 +8,20 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Get filters from POST request
-$year_filter = isset($_POST['years']) && is_array($_POST['years']) ? $_POST['years'] : [];
-$block_filter = isset($_POST['blocks']) && is_array($_POST['blocks']) ? $_POST['blocks'] : [];
-$org_filter = isset($_POST['org']) && is_array($_POST['org']) ? $_POST['org'] : [];
-
+$year_filter = isset($_POST['year']) ? $_POST['year'] : null;
+$year_dict = [
+    0 => "Unknown Year",
+    1 => "1st Year",
+    2 => "2nd Year",
+    3 => "3rd Year",
+    4 => "4th Year"
+];
 
 $query = "
     SELECT 
         user.iduser, user.student_no, user.f_name, user.l_name, 
         organization.abbreviation AS program, user.organization AS idprogram_user, 
-        user.year, user.block, user.email, user.is_officer, user.is_superuser, 
+        user.year, user.email, user.is_officer, user.is_superuser, 
         user.is_admin, user.profile_pic
     FROM user
     INNER JOIN organization ON user.organization = organization.idorganization
@@ -25,35 +29,21 @@ $query = "
 
 $params = [];
 
-// Apply Filters
-if (!empty($org_filter)) {
-    $placeholders = implode(',', array_fill(0, count($org_filter), '?'));
-    $query .= " AND user.organization IN ($placeholders)";
-    $params = array_merge($params, $org_filter);
+
+if ($year_filter && $year_filter != 'all') {
+    $query .= " AND user.year = ?";
+    $params[] = $year_filter; 
 }
 
-if (!empty($year_filter)) {
-    $placeholders = implode(',', array_fill(0, count($year_filter), '?'));
-    $query .= " AND user.year IN ($placeholders)";
-    $params = array_merge($params, $year_filter);
-}
+$query .= " ORDER BY is_superuser DESC, is_officer DESC, user.year, user.f_name";
 
-if (!empty($block_filter)) {
-    $placeholders = implode(',', array_fill(0, count($block_filter), '?'));
-    $query .= " AND user.block IN ($placeholders)";
-    $params = array_merge($params, $block_filter);
+if ($year_filter && $year_filter == 'all') {
+    $query .= " LIMIT 50";
 }
-
-$query .= " ORDER BY is_superuser DESC, is_officer DESC, user.year, user.block, user.f_name ";
 
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$count_query = "SELECT COUNT(*) FROM user WHERE is_admin <> 1";
-$stmt_count = $pdo->prepare($count_query);
-$stmt_count->execute();
-$total_students = $stmt_count->fetchColumn();
 
 header('Content-Type: application/json');
 
@@ -66,7 +56,6 @@ if (count($students) > 0) {
             data-l_name="<?= $student['l_name'] ?>" 
             data-idprogram="<?= $student['idprogram_user'] ?>" 
             data-year="<?= $student['year'] ?>" 
-            data-block="<?= $student['block'] ?>" 
             data-email="<?= $student['email'] ?>" 
             data-profile_pic="<?= base64_encode($student['profile_pic']) ?>"
             data-user_type="<?= ($student['is_officer'] ? '1' : ($student['is_superuser'] ? '2' : ($student['is_admin'] ? '3' : '0'))) ?>"
@@ -80,7 +69,7 @@ if (count($students) > 0) {
                 </p>
             </td>
             <td class="py-2 pl-3"><?= $student['student_no'] ?></td>
-            <td class="py-2 pl-3"><?= $student['program'] ?> <?= $student['year'] ?> Block <?= $student['block'] ?></td>
+            <td class="py-2 pl-3"><?= $year_dict[$student['year']] ?></td>
         </tr>
     <?php endforeach;
     $table_html = ob_get_clean();
@@ -95,7 +84,7 @@ if (count($students) > 0): ?>
             <div id="student-<?php echo $student['iduser'] ?>" data-student_no="<?php echo $student['student_no'] ?>"
                         data-f_name="<?php echo $student['f_name'] ?>" data-l_name="<?php echo $student['l_name'] ?>"
                         data-idprogram="<?php echo $student['idprogram_user'] ?>" data-year="<?php echo $student['year'] ?>"
-                        data-block="<?php echo $student['block'] ?>" data-email="<?php echo $student['email'] ?>"
+                        data-email="<?php echo $student['email'] ?>"
                         data-profile_pic="<?= base64_encode($student['profile_pic']) ?>" data-user_type="<?php if ($student['is_officer'] == 1) {
                               echo "1";
                           } else if ($student['is_superuser'] == 1) {
@@ -120,13 +109,15 @@ if (count($students) > 0): ?>
                                 <?php echo $student['f_name'] ?>         <?php echo $student['l_name'] ?>
                             </p>
                             <p id="student-no" class="text-gray-700"><?php echo $student['student_no'] ?></p>
-                            <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?> Block
-                                <?php echo $student['year'] ?>
-                            </p>
+                            <p id="program-yr-blck"><?php echo $student['program'] ?>         <?php echo $student['year'] ?></p>
                         </div>
                     </div>
         <?php endforeach; ?>
     </div>
+
+
+
+
 <?php else: ?>
     <div id="students-div" class="flex flex-col items-center w-full mt-10 md:hidden">
         <p class="text-lg text-gray-500">No students found.</p>

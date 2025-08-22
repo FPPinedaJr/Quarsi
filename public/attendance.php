@@ -225,6 +225,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                         }
                         $stmt->execute([$event, $event]);
                         $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
+                        $invited_users = count($rows);
 
 
                         if ($rows) {
@@ -237,48 +238,51 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             <h2 class="w-full p-4 mt-3 text-xl font-bold text-center "><span class="text-teal-600">EVENT:</span>
                             <?= $rows[0]['event_name'] ?>
 
-                                <input id="idevent" value="<?= $rows[0]['idevent'] ?>" type="hidden">
+                                    <input id="idevent" value="<?= $rows[0]['idevent'] ?>" type="hidden">
                                 <div class="relative inline-block group">
                                     <i onclick="exportEvent()"
+                                       
                                         class="fa-solid fa-download ml-2 text-teal-500 hover:text-teal-700 text-lg cursor-pointer"></i>
                                     <div
-                                        class="absolute left-1/2 -translate-x-1/2 w-max px-2 py-1 text-xs font-light text-gray-200 bg-gray-800 rounded-md shadow opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+                                        class="absolute left-1/2 -translate-x-1/2 w-max px-1 py-1 text-xs font-light text-gray-200 bg-gray-800 rounded-md shadow opacity-0 invisible group-hover:opacity-95 group-hover:visible transition">
                                         Download Attendance
                                     </div>
                                 </div>
                             </h2>
+                            <h3 class="w-full text-lg mb-2 -mt-2 font-bold text-center "><span class="text-teal-700"><?= $invited_users ?> Invited Users</span></h3>
 
-                            <table class="w-full mt-3 text-center border-collapse">
-                                <thead class="sticky top-0 bg-white">
 
-                                    <tr class="border border-gray-300">
+                                <table class="w-full mt-3 text-center border-collapse">
+                                    <thead class="sticky top-0 bg-white">
+
+                                        <tr class="border border-gray-300">
                                         <th class="p-2 text-left" rowspan="2">
                                             <input type="checkbox" id="select-all-students" onclick="event.stopPropagation();"
                                                 class=" w-4 h-4 text-white  accent-teal-400 border-gray-300 rounded focus:ring-teal-500">
 
                                         </th>
-                                        <th class="p-2 text-left" rowspan="2">Name</th>
-                                        <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
-                                        <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
-                                    </tr>
-                                    <tr class="border border-gray-300">
-                                        <th class="p-2 border-l border-r border-gray-300">In</th>
-                                        <th class="p-2 border-l border-r border-gray-300">Out</th>
-                                        <th class="p-2 border-l border-r border-gray-300">In</th>
-                                        <th class="p-2 border-l border-r border-gray-300">Out</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                <?php foreach ($rows as $row): ?>
-                                        <tr onclick="showEditAttendanceModal(this, <?= $row['iduser'] ?>, <?= $row['idevent'] ?>)"
-                                            id="row_ <?= $row['iduser'] ?>_<?= $row['idevent'] ?>"
-                                            class="border cursor-pointer select-none bg-gray-50 hover:bg-emerald-200"
-                                            data-student-name="<?= $row['fullname'] ?? 'null' ?>"
-                                            data-event-name="<?= $row['event_name'] ?? 'null' ?>"
-                                            data-morning-in="<?= $row['morning_in'] ?? 'null' ?>"
-                                            data-morning-out="<?= $row['morning_out'] ?? 'null' ?>"
-                                            data-afternoon-in="<?= $row['afternoon_in'] ?? 'null' ?>"
-                                            data-afternoon-out="<?= $row['afternoon_out'] ?? 'null' ?>">
+                                            <th class="p-2 text-left" rowspan="2">Name</th>
+                                            <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
+                                            <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
+                                        </tr>
+                                        <tr class="border border-gray-300">
+                                            <th class="p-2 border-l border-r border-gray-300">In</th>
+                                            <th class="p-2 border-l border-r border-gray-300">Out</th>
+                                            <th class="p-2 border-l border-r border-gray-300">In</th>
+                                            <th class="p-2 border-l border-r border-gray-300">Out</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                    <?php foreach ($rows as $row): ?>
+                                            <tr onclick="showEditAttendanceModal(this, <?= $row['iduser'] ?>, <?= $row['idevent'] ?>)"
+                                                id="row_ <?= $row['iduser'] ?>_<?= $row['idevent'] ?>"
+                                                class="border cursor-pointer select-none bg-gray-50 hover:bg-emerald-200"
+                                                data-student-name="<?= $row['fullname'] ?? 'null' ?>"
+                                                data-event-name="<?= $row['event_name'] ?? 'null' ?>"
+                                                data-morning-in="<?= $row['morning_in'] ?? 'null' ?>"
+                                                data-morning-out="<?= $row['morning_out'] ?? 'null' ?>"
+                                                data-afternoon-in="<?= $row['afternoon_in'] ?? 'null' ?>"
+                                                data-afternoon-out="<?= $row['afternoon_out'] ?? 'null' ?>">
                                             <td class="p-2 text-left">
                                                 <input type="checkbox" onclick="event.stopPropagation();"
                                                     class="student_checkbox w-4 h-4 text-white  accent-teal-400 border-gray-300 rounded focus:ring-teal-500"
@@ -286,47 +290,47 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                                             </td>
 
-                                            <td class="p-2 text-left"><?= $row['fullname'] ?></td>
+                                                <td class="p-2 text-left"><?= $row['fullname'] ?></td>
 
-                                            <?php
-
-
-                                            foreach ($fields as $field): ?>
-                                                <td class="p-2 text-center">
-                                                    <span class="relative overflow-x-hidden cursor-default select-none group">
-                                                        <?php
-                                                        if ($row[$field] === '00:00:00') {
-                                                            echo '❌';
-                                                        } elseif ($row[$field] === '23:23:23') {
-                                                            echo '🎉';
-                                                        } elseif ($row[$field]) {
-                                                            echo '✅';
-                                                        } else {
-                                                            echo '➖';
-                                                        }
-                                                        ?>
+                                                <?php
 
 
-                                                        <!-- tooltip -->
-                                                        <div
-                                                            class="select-none absolute left-0 px-2 py-1 text-[10px] text-white transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full w-max group-hover:opacity-100">
-                                                        <?= getTooltip($row[$field]) ?>
-                                                        </div>
+                                                foreach ($fields as $field): ?>
+                                                    <td class="p-2 text-center">
+                                                        <span class="relative overflow-x-hidden cursor-default select-none group">
+                                                            <?php
+                                                            if ($row[$field] === '00:00:00') {
+                                                                echo '❌';
+                                                            } elseif ($row[$field] === '23:23:23') {
+                                                                echo '🎉';
+                                                            } elseif ($row[$field]) {
+                                                                echo '✅';
+                                                            } else {
+                                                                echo '➖';
+                                                            }
+                                                            ?>
 
-                                                    </span>
-                                                </td>
+
+                                                            <!-- tooltip -->
+                                                            <div
+                                                                class="select-none absolute left-0 px-2 py-1 text-[10px] text-white transform -translate-x-1/2 bg-gray-800 rounded opacity-0 pointer-events-none bottom-full w-max group-hover:opacity-100">
+                                                            <?= getTooltip($row[$field]) ?>
+                                                            </div>
+
+                                                        </span>
+                                                    </td>
 
 
-                                        <?php endforeach; ?>
-                                        </tr>
+                                            <?php endforeach; ?>
+                                            </tr>
 
-                                <?php endforeach ?>
-                                </tbody>
-                            </table>
+                                    <?php endforeach ?>
+                                    </tbody>
+                                </table>
 
-                    <?php } else { ?>
-                            <div class="w-full h-full mt-10 text-center text-gray-500">No attendance recorded</div>
-                    <?php } ?>
+                        <?php } else { ?>
+                                <div class="w-full h-full mt-10 text-center text-gray-500">No attendance recorded</div>
+                        <?php } ?>
                     </div>
                 </main>
         <?php } ?>

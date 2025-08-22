@@ -190,71 +190,11 @@ if ($_SESSION["logged_in"] == !true) {
             </div>
         </main>
 
-        <?php if ($_SESSION['must_set_blockyear'] == 1) { ?>
-            <div id="set_blockyear_modal"
-                class="fixed top-0 left-0 right-0 z-50 flex w-full h-full bg-[#2e2c2c69] backdrop-blur-sm justify-center items-center overflow-y-auto">
-                <div id="set_blockyear_modal_main" class="relative flex flex-col w-5/6 h-fit md:w-1/5">
-                    <div class="flex items-center justify-center w-full h-12 text-center bg-teal-700 md:h-16">
-                        <p class="font-semibold text-white font-['merriweather_sans'] text-xl">Year & Block
-                        </p>
-                    </div>
-                    <form id="blockyear_form" action="includes/set_blockyear.php" method="POST"
-                        class="w-full max-w-md p-6 mx-auto bg-white shadow-lg">
-
-                        <!-- Year Selection -->
-                        <div class="mb-4">
-                            <label for="year" class="block mb-2 text-lg font-semibold text-gray-700">Year:</label>
-                            <select name="year" id="year"
-                                class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                <option selected disabled class="italic">- - - select - - -</option>
-                                <option value="1">1st Year</option>
-                                <option value="2">2nd Year</option>
-                                <option value="3">3rd Year</option>
-                                <option value="4">4th Year</option>
-                            </select>
-                        </div>
-
-                        <!-- Block Selection -->
-                        <div class="mb-6">
-                            <label for="block" class="block mb-2 text-lg font-semibold text-gray-700">Block:</label>
-                            <select name="block" id="block"
-                                class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                <option selected disabled class="italic">- - - select - - -</option>
-                                <option value="1">Block 1</option>
-                                <option value="2">Block 2</option>
-                                <option value="3">Block 3</option>
-                                <option value="4">Block 4</option>
-                            </select>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="flex justify-center">
-                            <button id="proceed_button"
-                                class="px-6 py-3 font-semibold text-white transition duration-200 bg-teal-700 rounded-md hover:bg-teal-800">
-                                Confirm
-                            </button>
-                        </div>
-
-                    </form>
-
-                </div>
-            </div>
-        <?php } ?>
 
     </body>
     <?php include_once("./includes/partial/footer.php"); ?>
 
     <script>
-
-        function showSetBlockyearModal(id) {
-            $('#set_blockyear_modal').removeClass('invisible');
-            $('body').addClass('overflow-hidden');
-        }
-
-        function hideSetBlockyearModal() {
-            $('#set_blockyear_modal').addClass('invisible');
-            $('body').removeClass('overflow-hidden');
-        }
 
         function getScorePercentage() {
             var logIn = <?= $LogIn ?? 0 ?>;
@@ -301,40 +241,6 @@ if ($_SESSION["logged_in"] == !true) {
             getScorePercentage();
 
 
-            $('#blockyear_form').on('submit', function (e) {
-                e.preventDefault();
-
-                let year = $('#year').val();
-                let block = $('#block').val();
-                let student = <?= $_SESSION['userid'] ?>;
-
-                if (!year || !block) {
-                    alert('Please set your year & block');
-                    return;
-                }
-
-                hideSetBlockyearModal();
-                $.ajax({
-                    url: 'includes/set_blockyear.php',
-                    method: 'POST',
-                    data: {
-                        student: student,
-                        year: year,
-                        block: block
-                    },
-                    dataType: 'text',
-                    success: function (response) {
-                        if (response.trim() === 'success') {
-                        } else {
-                            alert('Error: ' + response);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('AJAX Error:', status, error);
-                        alert('Something went wrong. Please try again.');
-                    }
-                });
-            });
         });
     </script>
 
