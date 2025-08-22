@@ -21,9 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindParam(':date', $date, PDO::PARAM_STR);
             $stmt->bindParam(':log_time', $log_time, PDO::PARAM_INT);
             if ($stmt->execute()) {
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+                }
                 header("Location: ../events.php");
                 exit();
-            } else {    
+            } else {
                 echo "Error updating event. Please try again.";
             }
 
@@ -54,6 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             }
 
+            if ($stmt->rowCount() !== 1) {
+                throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+            }
+
             header("Location: ../events.php");
             exit();
 
@@ -69,6 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->bindParam(':date', $date, PDO::PARAM_STR);
 
             if ($stmt->execute()) {
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+                }
                 header("Location: ../events.php");
                 exit();
             } else {

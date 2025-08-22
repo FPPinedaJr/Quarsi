@@ -8,15 +8,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_POST['action'] == 'update') {
             $iduser = $_POST['iduser'];
             $f_name = mb_convert_case(trim($_POST['f_name']), MB_CASE_TITLE, "UTF-8");
-            $l_name = mb_convert_case(trim($_POST['l_name']), MB_CASE_TITLE, "UTF-8");            
+            $l_name = mb_convert_case(trim($_POST['l_name']), MB_CASE_TITLE, "UTF-8");
             $organization = 1;
             $student_no = trim($_POST['student_no']);
             $year = $_POST['year'];
-            
+
             $email = trim($_POST['email']);
             $user_type = $_POST['user_type'];
             $profile_pic = NULL;
-            if (isset($_FILES['profile_pic'])){$profile_pic = $_FILES['profile_pic'];}
+            if (isset($_FILES['profile_pic'])) {
+                $profile_pic = $_FILES['profile_pic'];
+            }
             $user = 1;
             $img_content = "";
             $hidden_profile = $_POST['hidden_profile'];
@@ -56,6 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                 ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
+
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+                }
+
                 echo $iduser;
                 exit();
 
@@ -67,10 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                     ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
+
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+                }
+
                 echo $iduser;
                 exit();
-    
-                } else if ($user_type == 2) {
+
+            } else if ($user_type == 2) {
                 $stmt = $pdo->prepare("
                     UPDATE user
                     SET student_no=?, f_name=?, l_name=?, organization=?,
@@ -78,6 +90,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                     ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
+
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+                }
+
                 echo $iduser;
                 exit();
 
@@ -89,6 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE iduser=?
                     ");
                 $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $img_content, $iduser]);
+
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+                }
+
                 echo $iduser;
                 exit();
             }
@@ -102,6 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ");
             $stmt->bindParam(':iduser', $iduser, PDO::PARAM_INT);
             if ($stmt->execute()) {
+                if ($stmt->rowCount() !== 1) {
+                    throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+                }
                 // header("Location: ../student.php");
                 exit();
             } else {
@@ -113,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $organization = 1;
             $student_no = $_POST['student_no'];
             $year = $_POST['year'];
-            
+
             $email = $_POST['email'];
             $password = $_POST['student_no'];
             $profile_pic = $_FILES['profile_pic'];
@@ -167,6 +192,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     VALUES (?, ?, ?, ?, ?, ?, SHA2(?, 256), ?)
                 ");
             $stmt->execute([$student_no, $f_name, $l_name, $organization, $year, $email, $student_no, $img_content]);
+
+            if ($stmt->rowCount() !== 1) {
+                throw new Exception("Unexpected to affect row count: " . $stmt->rowCount());
+            }
+
+
             echo "success";
 
             $newUserId = $pdo->lastInsertId();
