@@ -66,7 +66,9 @@ if ($_SESSION["logged_in"] == !true) {
                 </div>
             </div>
 
-            <button class="mt-10 w-full p-1 rounded-lg text-white font-semibold cursor-pointer bg-teal-700 hover:bg-teal-800" onclick="exportEvent()">Export
+            <button
+                class="mt-10 w-full p-1 rounded-lg text-white font-semibold cursor-pointer bg-teal-700 hover:bg-teal-800"
+                onclick="exportEvent()">Export
                 Attendance</button>
         </div>
 
@@ -81,6 +83,14 @@ if ($_SESSION["logged_in"] == !true) {
                     alert("Please select an event.");
                 }
             }
+
+            function changeHeaderTitle() {
+                $('#header_title').text('Export Attendance');
+            }
+
+            $(document).ready( function () {
+                changeHeaderTitle();
+            })
         </script>
 
 
