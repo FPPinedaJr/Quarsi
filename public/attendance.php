@@ -235,6 +235,17 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                             <h2 class="w-full p-4 mt-3 text-xl font-bold text-center "><span class="text-teal-600">EVENT:</span>
                             <?= $rows[0]['event_name'] ?>
+
+                                <div class="relative inline-block group">
+                                    <!-- Icon -->
+                                    <i class="fa-solid fa-download ml-2 text-teal-500 hover:text-teal-700 text-lg cursor-pointer"></i>
+
+                                    <!-- Tooltip -->
+                                    <div
+                                        class="absolute left-1/2 -translate-x-1/2 w-max px-2 py-1 text-xs font-light text-gray-200 bg-gray-800 rounded-md shadow opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+                                        Download Attendance
+                                    </div>
+                                </div>
                             </h2>
 
                             <table class="w-full mt-3 text-center border-collapse">
@@ -327,7 +338,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                     <?php
                     $logs = ['morning_in', 'morning_out', 'afternoon_in', 'afternoon_out'];
                     foreach ($logs as $log) {
-                        $label = ucwords(str_replace('_', ' ', $log)); 
+                        $label = ucwords(str_replace('_', ' ', $log));
                         ?>
                         <div>
                             <label for="<?= $log ?>" class="block text-sm font-medium text-gray-700"><?= $label ?></label>
@@ -452,7 +463,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             })
 
             if (window.location.hash) {
-                let row_id = window.location.hash.substring(1); 
+                let row_id = window.location.hash.substring(1);
                 let row = document.getElementById(row_id);
 
                 if (row) {
