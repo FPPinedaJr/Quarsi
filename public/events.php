@@ -37,11 +37,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
 
     $stmt3 = $pdo->prepare("
-        SELECT o.short_name as organization, year, block, f_name, l_name, iduser
+        SELECT o.short_name as organization, year, f_name, l_name, iduser
         FROM user u
         INNER JOIN organization o ON u.organization = o.idorganization
         WHERE is_admin != 1 
-        ORDER BY organization, year, block, l_name, f_name
+        ORDER BY organization, year, l_name, f_name
 
     ");
     $stmt3->execute();
@@ -53,7 +53,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
     $stmt4->execute();
     $cur_event = $stmt4->fetch() ?: ['idevent' => 1];
-    ?>
+
+
+    $year_dict = [
+        0 => "Unknown Year",
+        1 => "1st Year",
+        2 => "2nd Year",
+        3 => "3rd Year",
+        4 => "4th Year"
+    ]
+        ?>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -351,16 +360,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <?php
                     $currentProgram = '';
                     $currentYear = '';
-                    $currentBlock = '';
 
                     foreach ($students as $student) {
                         if ($student['organization'] !== $currentProgram) {
                             if ($currentProgram !== '') {
-                                echo '</div></div></div>';
+                                echo '</div></div>';
                             }
                             $currentProgram = $student['organization'];
                             $currentYear = '';
-                            $currentBlock = '';
                             echo '<div class="m-4 program-group">';
                             echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
                             echo '<div class="ml-4">';
@@ -368,25 +375,13 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                         if ($student['year'] !== $currentYear) {
                             if ($currentYear !== '') {
-                                echo '</div></div></div></div>';
-                            }
-                            $currentYear = $student['year'];
-                            $currentBlock = '';
-                            echo '<div class="mb-2 ml-1 md:ml-4 year">';
-                            echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("Year " . $currentYear) . '</span></label>
-                            ';
-                            echo '<div class="ml-4 md:ml-8">';
-                        }
-
-                        if ($student['block'] !== $currentBlock) {
-                            if ($currentBlock !== '') {
                                 echo '</div></div>';
                             }
-                            $currentBlock = $student['block'];
-                            echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
-                            echo ' <i class="ml-2 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i><label class="relative py-1 pl-5"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("block " . $currentBlock) . '</label>
-                           ';
-                            echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
+                            $currentYear = $student['year'];
+                            echo '<div class="mb-2 ml-1 md:ml-4 year">';
+                            echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . $year_dict[$currentYear] . '</span></label>
+                            ';
+                            echo '<div class="ml-4 md:ml-8">';
                         }
 
                         echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
@@ -399,15 +394,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         echo '</div>';
                     }
 
-                    if ($currentBlock !== '') {
-                        echo '</div>';
-                    }
                     if ($currentYear !== '') {
                         echo '</div>';
                         echo '</div>';
                     }
                     if ($currentProgram !== '') {
-                        echo '</div>';
                         echo '</div>';
                         echo '</div>';
                     }
@@ -478,16 +469,14 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                     <?php
                     $currentProgram = '';
                     $currentYear = '';
-                    $currentBlock = '';
 
                     foreach ($students as $student) {
                         if ($student['organization'] !== $currentProgram) {
                             if ($currentProgram !== '') {
-                                echo '</div></div></div>';
+                                echo '</div></div>';
                             }
                             $currentProgram = $student['organization'];
                             $currentYear = '';
-                            $currentBlock = '';
                             echo '<div class="m-4 program-group">';
                             echo '<label><input type="checkbox" class="program-checkbox"> <span class="font-bold">' . strtoupper(htmlspecialchars($currentProgram)) . '</span></label>';
                             echo '<div class="ml-4">';
@@ -495,26 +484,15 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
 
                         if ($student['year'] !== $currentYear) {
                             if ($currentYear !== '') {
-                                echo '</div></div></div></div>';
+                                echo '</div></div>';
                             }
                             $currentYear = $student['year'];
-                            $currentBlock = '';
                             echo '<div class="mb-2 ml-1 md:ml-4 year">';
-                            echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . htmlspecialchars("Year " . $currentYear) . '</span></label>
+                            echo '<i class="mr-3 text-teal-700 cursor-pointer fa-solid fa-caret-right year-dropdown"></i><label><input type="checkbox" class="year-checkbox"> <span class="font-semibold">' . $year_dict[$currentYear] . '</span></label>
                                 ';
                             echo '<div class="ml-4 md:ml-8">';
                         }
 
-                        if ($student['block'] !== $currentBlock) {
-                            if ($currentBlock !== '') {
-                                echo '</div></div>';
-                            }
-                            $currentBlock = $student['block'];
-                            echo '<div class="hidden mb-1 md:hover:text-emerald-600 block-container">';
-                            echo ' <i class="ml-2 text-teal-700 cursor-pointer fa-solid fa-caret-right block-dropdown"></i><label class="relative py-1 pl-5"><input type="checkbox" class="block-checkbox"> ' . htmlspecialchars("block " . $currentBlock) . '</label>
-                            ';
-                            echo '<div class="hidden mt-2 ml-20 border-t border-gray-500 student-container">';
-                        }
 
                         echo '<div class="px-2 md:hover:bg-blue-300 md:hover:text-emerald-800 student">';
                         echo '<label>';
@@ -526,15 +504,11 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                         echo '</div>';
                     }
 
-                    if ($currentBlock !== '') {
-                        echo '</div>';
-                    }
                     if ($currentYear !== '') {
                         echo '</div>';
                         echo '</div>';
                     }
                     if ($currentProgram !== '') {
-                        echo '</div>';
                         echo '</div>';
                         echo '</div>';
                     }
@@ -863,25 +837,16 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             });
 
 
-            $('#edit_invite_modal_main').find('.block-checkbox').each(function () {
-                var $blockCheckbox = $(this);
-                var $studentCheckboxes = $blockCheckbox.closest('.block-container').find('.student-checkbox');
+            $('#edit_invite_modal_main').find('.year-checkbox').each(function () {
+                var $yearCheckbox = $(this);
+                var $studentCheckboxes = $yearCheckbox.closest('.year').find('.student-checkbox');
 
                 var totalCheckboxes = $studentCheckboxes.length;
                 var checkedCheckboxes = $studentCheckboxes.filter(':checked').length;
 
-                $blockCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
-            });
-
-            $('#edit_invite_modal_main').find('.year-checkbox').each(function () {
-                var $yearCheckbox = $(this);
-                var $blockCheckboxes = $yearCheckbox.closest('.year').find('.block-checkbox');
-
-                var totalCheckboxes = $blockCheckboxes.length;
-                var checkedCheckboxes = $blockCheckboxes.filter(':checked').length;
-
                 $yearCheckbox.prop('checked', totalCheckboxes === checkedCheckboxes);
             });
+
 
             $('#edit_invite_modal_main').find('.program-checkbox').each(function () {
                 var $programCheckbox = $(this);
@@ -1094,7 +1059,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
             changeHeaderTitle();
 
             if (localStorage.getItem('newInvite') === 'true') {
-                let idevent = <?= ($cur_event['idevent'])?>;
+                let idevent = <?= ($cur_event['idevent']) ?>;
                 $('#idevent').val(idevent ?? "");
                 localStorage.setItem('invited', idevent);
 
@@ -1170,204 +1135,6 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 }
             });
 
-            function updateParentCheckbox($parentCheckbox, $childCheckboxes) {
-                var totalCheckboxes = $childCheckboxes.length;
-                var checkedCheckboxes = $childCheckboxes.filter(':checked').length;
-
-                $parentCheckbox.prop('checked', totalCheckboxes > 0 && totalCheckboxes === checkedCheckboxes);
-            }
-
-            $('#edit_invite_modal_main').on('change', '.student-checkbox', function () {
-                var $blockContainer = $(this).closest('.block-container');
-                var $yearContainer = $(this).closest('.year');
-                var $programContainer = $(this).closest('.program-group');
-
-                var $blockCheckbox = $blockContainer.find('.block-checkbox');
-                var $yearCheckbox = $yearContainer.find('.year-checkbox');
-                var $programCheckbox = $programContainer.find('.program-checkbox');
-
-                updateParentCheckbox($blockCheckbox, $blockContainer.find('.student-checkbox'));
-                updateParentCheckbox($yearCheckbox, $yearContainer.find('.block-checkbox, .student-checkbox'));
-                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
-            });
-
-            $('#edit_invite_modal_main').on('change', '.block-checkbox', function () {
-                var $yearContainer = $(this).closest('.year');
-                var $programContainer = $(this).closest('.program-group');
-
-                var $yearCheckbox = $yearContainer.find('.year-checkbox');
-                var $programCheckbox = $programContainer.find('.program-checkbox');
-
-                updateParentCheckbox($yearCheckbox, $yearContainer.find('.block-checkbox, .student-checkbox'));
-                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
-            });
-
-            $('#edit_invite_modal_main').on('change', '.year-checkbox', function () {
-                var $programContainer = $(this).closest('.program-group');
-                var $programCheckbox = $programContainer.find('.program-checkbox');
-
-                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
-            });
-
-            $('#edit_invite_modal_main').on('change', '.program-checkbox, .year-checkbox, .block-checkbox', function () {
-                var isChecked = $(this).prop('checked');
-                var $childCheckboxes = $(this).closest('div').find('.block-checkbox, .student-checkbox, .year-checkbox');
-
-                $childCheckboxes.prop('checked', isChecked);
-            });
-
-            $('#invite_modal_main').on('change', '.student-checkbox', function () {
-                var $blockContainer = $(this).closest('.block-container');
-                var $yearContainer = $(this).closest('.year');
-                var $programContainer = $(this).closest('.program-group');
-
-                var $blockCheckbox = $blockContainer.find('.block-checkbox');
-                var $yearCheckbox = $yearContainer.find('.year-checkbox');
-                var $programCheckbox = $programContainer.find('.program-checkbox');
-
-                updateParentCheckbox($blockCheckbox, $blockContainer.find('.student-checkbox'));
-                updateParentCheckbox($yearCheckbox, $yearContainer.find('.block-checkbox, .student-checkbox'));
-                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
-            });
-
-            $('#invite_modal_main').on('change', '.block-checkbox', function () {
-                var $yearContainer = $(this).closest('.year');
-                var $programContainer = $(this).closest('.program-group');
-
-                var $yearCheckbox = $yearContainer.find('.year-checkbox');
-                var $programCheckbox = $programContainer.find('.program-checkbox');
-
-                updateParentCheckbox($yearCheckbox, $yearContainer.find('.block-checkbox, .student-checkbox'));
-                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
-            });
-
-            $('#invite_modal_main').on('change', '.year-checkbox', function () {
-                var $programContainer = $(this).closest('.program-group');
-                var $programCheckbox = $programContainer.find('.program-checkbox');
-
-                updateParentCheckbox($programCheckbox, $programContainer.find('.year-checkbox, .block-checkbox, .student-checkbox'));
-            });
-
-            $('#invite_modal_main').on('change', '.program-checkbox, .year-checkbox, .block-checkbox', function () {
-                var isChecked = $(this).prop('checked');
-                var $childCheckboxes = $(this).closest('div').find('.block-checkbox, .student-checkbox, .year-checkbox');
-
-                $childCheckboxes.prop('checked', isChecked);
-            });
-
-
-            $('#invite_modal_main').find('.year-checkbox').click(function () {
-                var $yearCheckboxes = $(this).closest('.year').find('.student-checkbox, .block-checkbox');
-                $yearCheckboxes.prop('checked', this.checked);
-            });
-
-
-            $('#invite_modal_main').find('.program-checkbox').click(function () {
-                var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
-                $programCheckboxes.prop('checked', this.checked);
-            });
-
-
-            $('#invite_modal_main').find('.checkbox-input').on('change', function () {
-                const tile = $(this).next('.checkbox-tile');
-
-                if (this.checked) {
-                    tile.addClass('border-teal-500 shadow-lg text-teal-500');
-                } else {
-                    tile.removeClass('border-teal-500 shadow-lg text-teal-500');
-                }
-            });
-
-            $('#invite_modal_main').find('.block-checkbox').click(function () {
-                var $blockCheckboxes = $(this).closest('.block-container').find('.student-checkbox');
-                var $dropdown = $(this).closest('.block-container').find('.block-dropdown');
-                var $container = $(this).closest('.block-container').find('.student-container');
-                $blockCheckboxes.prop('checked', this.checked);
-                if ($dropdown.hasClass('fa-caret-right')) {
-                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
-                    $container.removeClass('hidden');
-                }
-            });
-
-            $('#invite_modal_main').find('.block-dropdown').click(function () {
-                var $dropdown = $(this);
-                var $container = $(this).closest('.block-container').find('.student-container');
-                if ($dropdown.hasClass('fa-caret-right')) {
-                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
-                    $container.removeClass('hidden');
-                } else {
-                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
-                    $container.addClass('hidden');
-                }
-            });
-
-            $('#invite_modal_main').find('.year-dropdown').click(function () {
-                var $dropdown = $(this).closest('.year').find('.year-dropdown');
-                var $container = $(this).closest('.year').find('.block-container');
-                if ($dropdown.hasClass('fa-caret-right')) {
-                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
-                    $container.removeClass('hidden');
-                } else {
-                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
-                    $container.addClass('hidden');
-                }
-            });
-
-
-            $('#edit_invite_modal_main').find('.block-checkbox').click(function () {
-                var $blockCheckboxes = $(this).closest('.block-container').find('.student-checkbox');
-                var $dropdown = $(this).closest('.block-container').find('.block-dropdown');
-                var $container = $(this).closest('.block-container').find('.student-container');
-                $blockCheckboxes.prop('checked', this.checked);
-                if ($dropdown.hasClass('fa-caret-right')) {
-                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
-                    $container.removeClass('hidden');
-                }
-            });
-
-            $('#edit_invite_modal_main').find('.block-dropdown').click(function () {
-                var $dropdown = $(this);
-                var $container = $(this).closest('.block-container').find('.student-container');
-                if ($dropdown.hasClass('fa-caret-right')) {
-                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
-                    $container.removeClass('hidden');
-                } else {
-                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
-                    $container.addClass('hidden');
-                }
-            });
-
-            $('#edit_invite_modal_main').find('.year-checkbox').click(function () {
-                var $yearCheckboxes = $(this).closest('.year').find('.student-checkbox, .block-checkbox');
-                $yearCheckboxes.prop('checked', this.checked);
-            });
-
-            $('#edit_invite_modal_main').find('.year-dropdown').click(function () {
-                var $dropdown = $(this).closest('.year').find('.year-dropdown');
-                var $container = $(this).closest('.year').find('.block-container');
-                if ($dropdown.hasClass('fa-caret-right')) {
-                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
-                    $container.removeClass('hidden');
-                } else {
-                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
-                    $container.addClass('hidden');
-                }
-            });
-
-            $('#edit_invite_modal_main').find('.program-checkbox').click(function () {
-                var $programCheckboxes = $(this).closest('.program-group').find('.student-checkbox, .block-checkbox, .year-checkbox');
-                var $idevent = $programCheckboxes.prop('checked', this.checked);
-            });
-
-            $('#edit_invite_modal_main').find('.checkbox-input').on('change', function () {
-                const tile = $(this).next('.checkbox-tile');
-
-                if (this.checked) {
-                    tile.addClass('border-teal-500 shadow-lg text-teal-500');
-                } else {
-                    tile.removeClass('border-teal-500 shadow-lg text-teal-500');
-                }
-            });
 
             if (localStorage.getItem('invited')) {
                 idevent = localStorage.getItem('invited')
@@ -1375,6 +1142,68 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_superuser'] == 1 || $_SESSION['is
                 showInviteModal();
             }
 
+
         })
+
+
+
+
+        function setupInviteModal(modalSelector) {
+            // Collapse all years by default
+            var $dropdowns = $(modalSelector + ' .year-dropdown');
+            $dropdowns.each(function () {
+                var $container = $(this).closest('.year').find('> div');
+                $(this).removeClass('fa-caret-down').addClass('fa-caret-right');
+                $container.addClass('hidden');
+            });
+
+            // Toggle year dropdown
+            $(modalSelector).on('click', '.year-dropdown', function () {
+                var $dropdown = $(this);
+                var $container = $dropdown.closest('.year').find('> div'); // student container
+
+                if ($dropdown.hasClass('fa-caret-right')) {
+                    $dropdown.removeClass('fa-caret-right').addClass('fa-caret-down');
+                    $container.removeClass('hidden');
+                } else {
+                    $dropdown.removeClass('fa-caret-down').addClass('fa-caret-right');
+                    $container.addClass('hidden');
+                }
+            });
+
+            // Toggle program checkbox → select/deselect all years + students
+            $(modalSelector).on('change', '.program-checkbox', function () {
+                var $program = $(this).closest('.program-group');
+                var $years = $program.find('.year-checkbox');
+                var $students = $program.find('.student-checkbox');
+
+                $years.prop('checked', this.checked);
+                $students.prop('checked', this.checked);
+            });
+
+            // Toggle year checkbox → select/deselect all students
+            $(modalSelector).on('change', '.year-checkbox', function () {
+                var $year = $(this).closest('.year');
+                var $students = $year.find('.student-checkbox');
+                $students.prop('checked', this.checked);
+            });
+
+            // When a student is clicked → update year checkbox
+            $(modalSelector).on('change', '.student-checkbox', function () {
+                var $year = $(this).closest('.year');
+                var $students = $year.find('.student-checkbox');
+                var $yearCheckbox = $year.find('.year-checkbox');
+
+                var total = $students.length;
+                var checked = $students.filter(':checked').length;
+
+                $yearCheckbox.prop('checked', total === checked);
+            });
+        }
+
+        $(document).ready(function () {
+            setupInviteModal('#invite_modal_main');
+            setupInviteModal('#edit_invite_modal_main');
+        });
     </script>
 <?php } ?>

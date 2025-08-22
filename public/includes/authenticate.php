@@ -26,8 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 u.password, 
                 u.is_officer, 
                 u.is_superuser, 
-                u.is_admin,
-                u.must_set_blockyear
+                u.is_admin
             FROM 
                 user u
             WHERE 
@@ -44,9 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['is_officer'] = 0;
         $_SESSION['is_superuser'] = 0;
         $_SESSION['is_admin'] = 0;
-        
-        $_SESSION['must_set_blockyear'] = $row['must_set_blockyear'];
-
         
         if ($row['is_officer'] == 1) {
             $_SESSION['is_officer'] = 1;

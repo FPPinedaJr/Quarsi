@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $stmt = $pdo->prepare(
         "SELECT 
             user.iduser AS user_id,
+            user.student_no AS student_no,
             user.l_name AS l_name,
             user.f_name AS f_name,
             user.year AS year,
@@ -36,11 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         $output = fopen('php://output', 'w');
 
-        // Write column headers
         fputcsv($output, array_keys($rows[0]));
 
-        // Write rows
         foreach ($rows as $row) {
+            foreach (['morning_in', 'morning_out', 'afternoon_in', 'afternoon_out'] as $field) {
+                if (is_null($row[$field])) {
+                    $row[$field] = 'No Log';
+                } elseif ($row[$field] === '23:23:23') {
+                    $row[$field] = 'EXCUSED';
+                }
+            }
             fputcsv($output, $row);
         }
 
