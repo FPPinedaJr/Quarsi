@@ -15,9 +15,10 @@
     <?php if (($_SERVER['REQUEST_METHOD'] == 'GET') && (isset($_GET['student']))) { ?>
         <div id="search " class="flex items-center justify-end w-64 gap-3 mr-2 md:r-10">
             <form id="search_form">
-                <input type="text" name="search_input" id="search_input" placeholder="Search..."
+                <input type="text" name="search_input" id="search_input" placeholder="Search... (20xx-x-xxxx)"
                     value="<?= (isset($_GET['student']) && strpos($_GET['student'], '-') !== false) ? htmlspecialchars($_GET['student']) : '' ?>"
-                    class="w-24 px-1 py-1 text-xs text-white bg-teal-700 border border-teal-300 rounded-lg shadow-sm md:text-sm placeholder:text-xs md:w-36 placeholder:text-white focus:ring-2 focus:ring-teal-400/0 focus:outline-none" autocomplete="off" pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}">
+                    class="w-24 px-1 py-1 text-xs text-white bg-teal-700 border border-teal-300 rounded-lg shadow-sm md:text-sm placeholder:text-xs md:w-36 placeholder:text-white focus:ring-2 focus:ring-teal-400/0 focus:outline-none"
+                    autocomplete="off" pattern="\d{4}-\d{1,2}-\d{4}[\dA-Za-z]{0,2}">
                 <button
                     class="px-2 py-1 text-xs font-semibold text-white transition bg-teal-700 border border-teal-300 rounded-lg md:text-sm hover:bg-teal-600">
                     Go
@@ -25,4 +26,18 @@
             </form>
         </div>
     <?php } ?>
+
+    <!-- excuse button -->
+    <!-- excuse -->
+    <?php if (($_SERVER['REQUEST_METHOD'] == 'GET') && (isset($_GET['event']))) { ?>
+        <div id="search " class="flex items-center justify-end w-64 gap-3 mr-2 md:r-10">
+            <button id="excuse-btn" onclick="showBatchExcuseModal()"
+                class=" px-2 py-1 h-fit text-xs font-bold text-gray-500 rounded-lg shadow cursor-not-allowed bg-teal-900"
+                disabled>
+                Excuse <span class="md:inline-block hidden">Selected</span> Students
+            </button>
+        </div>
+    <?php } ?>
+
+
 </header>

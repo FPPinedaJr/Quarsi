@@ -71,6 +71,8 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                 <div class="w-full overflow-x-hidden overflow-y-auto md:max-w-lg mt-36">
                     <?php
+                    $LogIn = 0;
+                    $TotalLog = 0;
                     $stmt = $pdo->prepare("
                     SELECT 
                             user.iduser,
@@ -106,8 +108,7 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
 
                     if ($rows) {
-                        $LogIn = 0;
-                        $TotalLog = 0;
+
 
 
                         ?>
@@ -237,9 +238,10 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                             <h2 class="w-full p-4 mt-3 text-xl font-bold text-center "><span class="text-teal-600">EVENT:</span>
                             <?= $rows[0]['event_name'] ?>
 
-                                <input id="idevent" value="<?= $rows[0]['idevent'] ?>" type="hidden">
+                                    <input id="idevent" value="<?= $rows[0]['idevent'] ?>" type="hidden">
                                 <div class="relative inline-block group">
                                     <i onclick="exportEvent()"
+                                       
                                         class="fa-solid fa-download ml-2 text-teal-500 hover:text-teal-700 text-lg cursor-pointer"></i>
                                     <div
                                         class="absolute left-1/2 -translate-x-1/2 w-max px-1 py-1 text-xs font-light text-gray-200 bg-gray-800 rounded-md shadow opacity-0 invisible group-hover:opacity-95 group-hover:visible transition">
@@ -254,6 +256,11 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                     <thead class="sticky top-0 bg-white">
 
                                         <tr class="border border-gray-300">
+                                        <th class="p-2 text-left" rowspan="2">
+                                            <input type="checkbox" id="select-all-students" onclick="event.stopPropagation();"
+                                                class=" w-4 h-4 text-white  accent-teal-400 border-gray-300 rounded focus:ring-teal-500">
+
+                                        </th>
                                             <th class="p-2 text-left" rowspan="2">Name</th>
                                             <th class="p-2 border-l border-r border-gray-300" colspan="2">Morning</th>
                                             <th class="p-2 border-l border-r border-gray-300" colspan="2">Afternoon</th>
@@ -276,6 +283,13 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                                                 data-morning-out="<?= $row['morning_out'] ?? 'null' ?>"
                                                 data-afternoon-in="<?= $row['afternoon_in'] ?? 'null' ?>"
                                                 data-afternoon-out="<?= $row['afternoon_out'] ?? 'null' ?>">
+                                            <td class="p-2 text-left">
+                                                <input type="checkbox" onclick="event.stopPropagation();"
+                                                    class="student_checkbox w-4 h-4 text-white  accent-teal-400 border-gray-300 rounded focus:ring-teal-500"
+                                                    name="student_checkbox" data-name="<?= $row['fullname'] ?>"    value="<?= $row['iduser'] ?>" >
+
+                                            </td>
+
                                                 <td class="p-2 text-left"><?= $row['fullname'] ?></td>
 
                                                 <?php
@@ -368,6 +382,39 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             </div>
         </div>
 
+        <div id="batch_excuse_modal"
+            class="fixed inset-0 z-50 flex items-center justify-center invisible bg-black bg-opacity-50 backdrop-blur-md">
+            <div id="batch_excuse_modal_main" class="w-11/12 max-w-xl bg-white rounded-lg shadow-lg md:w-full">
+
+                <div class="flex items-center justify-between px-6 py-4 bg-teal-700 rounded-t-lg">
+                    <p class="text-2xl font-semibold text-white">Excuse Students</p>
+                    <button onclick="hideBatchExcuseModal()" id="close_modal"
+                        class="text-2xl text-white hover:text-gray-200">
+                        &times;
+                    </button>
+                </div>
+
+                <!-- Dynamic Student List -->
+                <div class="p-6  overflow-y-auto max-h-[70vh]">
+                    <p class="mb-3 font-semibold">The following students will be excused:</p>
+                    <ul id="excuse_list" class="list-disc list-inside space-y-1 text-gray-700">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
+                <div class="flex justify-end p-4 rounded-b-lg">
+                    <button onclick="excuseSelectedStudents()"
+                        class="px-6 py-2 font-semibold text-white bg-teal-700 rounded-md hover:bg-teal-800 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                        Proceed
+                    </button>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
 
 
     </body>
@@ -419,11 +466,43 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             $('body').removeClass('overflow-hidden');
         }
 
-        function getScorePercentage() {
-            var logIn = <?= $LogIn ?>;
-            var totalLog = <?= $TotalLog ?>;
 
-            var totalPoints = (logIn / totalLog * 100).toFixed(2);
+
+        function showBatchExcuseModal() {
+            let selectedStudents = [];
+
+            $('input[name="student_checkbox"]:checked').each(function () {
+                selectedStudents.push($(this).data('name'));
+            });
+
+            let listEl = $('#excuse_list');
+            listEl.empty();
+            if (selectedStudents.length > 0) {
+                selectedStudents.forEach(name => {
+                    listEl.append(`<li>${name}</li>`);
+                });
+            } else {
+                listEl.append(`<li class="text-red-500">No students selected</li>`);
+            }
+
+            // Show modal
+            $('#batch_excuse_modal').removeClass('invisible');
+            $('body').addClass('overflow-hidden');
+        }
+
+
+        function hideBatchExcuseModal() {
+            $('#batch_excuse_modal').addClass('invisible');
+            $('body').removeClass('overflow-hidden');
+        }
+        function getScorePercentage() {
+            var logIn = <?= $LogIn ?? 0 ?>;
+            var totalLog = <?= $TotalLog ?? 0 ?>;
+
+            var totalPoints = totalLog > 0
+                ? (logIn / totalLog * 100).toFixed(2)
+                : 0;
+
 
             $("#totalPoints").text(totalPoints);
 
@@ -446,6 +525,40 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
                 alert("Please select an event.");
             }
         }
+
+        function excuseSelectedStudents() {
+            showLoader('Excusing Students...');
+
+            let selected = [];
+            $('input.student_checkbox:checked').each(function () {
+                selected.push($(this).val());
+            });
+
+            if (selected.length === 0) {
+                alert("No students selected.");
+                return;
+            }
+
+            $.ajax({
+                url: "includes/excuse.php",
+                type: "POST",
+                data: { 
+                    students: selected,
+                    event_id: $('#idevent').val()
+                },
+                success: function (response) {
+                    console.log(response);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Error updating attendance.");
+                }
+            });
+        }
+
+
+
+
 
         $(document).ready(function () {
             changeHeaderTitle();
@@ -470,6 +583,12 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#edit_attendance_modal_main').length && $(event.target).closest('#edit_attendance_modal').length) {
                     hideEditAttendanceModal();
+                }
+            })
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#batch_excuse_modal_main').length && $(event.target).closest('#batch_excuse_modal').length) {
+                    hideBatchExcuseModal();
                 }
             })
 
@@ -515,7 +634,55 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                 });
             });
+
+
+
         });
+
+
+        $('input[type="checkbox"]').on('change', function () {
+            if ($('input[type="checkbox"]:checked').length > 0) {
+                $('#excuse-btn')
+                    .removeClass('bg-teal-900 text-gray-500 cursor-not-allowed')
+                    .addClass('bg-teal-500  text-white hover:bg-teal-600')
+                    .prop('disabled', false);
+            } else {
+                $('#excuse-btn')
+                    .removeClass('bg-teal-500 text-white hover:bg-teal-600')
+                    .addClass('bg-teal-900  text-gray-500 cursor-not-allowed')
+                    .prop('disabled', true);
+            }
+        });
+
+        $('#select-all-students').on('change', function () {
+            let isChecked = $(this).is(':checked');
+            if (isChecked) {
+                $('#excuse-btn')
+                    .removeClass('bg-teal-900 text-gray-500 cursor-not-allowed')
+                    .addClass('bg-teal-500  text-white hover:bg-teal-600')
+                    .prop('disabled', false);
+            } else {
+                $('#excuse-btn')
+                    .removeClass('bg-teal-500 text-white hover:bg-teal-600')
+                    .addClass('bg-teal-900  text-gray-500 cursor-not-allowed')
+                    .prop('disabled', true);
+            }
+            $('.student_checkbox').prop('checked', isChecked);
+        });
+
+
+        $(document).on('change', '.student_checkbox', function () {
+            if (!$(this).is(':checked')) {
+                $('#select-all-students').prop('checked', false);
+            } else if ($('.student_checkbox:checked').length === $('.student_checkbox').length) {
+                $('#select-all-students').prop('checked', true);
+            }
+        });
+
+
+
+
+
     </script>
 
 
