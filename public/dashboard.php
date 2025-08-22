@@ -6,7 +6,9 @@ if ($_SESSION["logged_in"] == !true) {
     header("Location: index.php");
 } else {
 
-    if ($_SESSION['is_admin'] == 1) {  header("Location: profile.php");}
+    if ($_SESSION['is_admin'] == 1) {
+        header("Location: profile.php");
+    }
     ?>
 
 
@@ -255,10 +257,12 @@ if ($_SESSION["logged_in"] == !true) {
         }
 
         function getScorePercentage() {
-            var logIn = <?= $LogIn ?>;
-            var totalLog = <?= $TotalLog ?>;
+            var logIn = <?= $LogIn ?? 0 ?>;
+            var totalLog = <?= $TotalLog ?? 0 ?>;
 
-            var totalPoints = (logIn / totalLog * 100).toFixed(2);
+            var totalPoints = totalLog > 0
+                ? (logIn / totalLog * 100).toFixed(2)
+                : 100;
 
 
             var userId = <?= json_encode($user['student_number']) ?>;

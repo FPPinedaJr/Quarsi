@@ -71,8 +71,6 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
                 <div class="w-full overflow-x-hidden overflow-y-auto md:max-w-lg mt-36">
                     <?php
-                    $LogIn = 0;
-                    $TotalLog = 0;
                     $stmt = $pdo->prepare("
                     SELECT 
                             user.iduser,
@@ -108,7 +106,8 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
 
 
                     if ($rows) {
-
+                        $LogIn = 0;
+                        $TotalLog = 0;
 
 
                         ?>
@@ -424,7 +423,6 @@ if ($_SESSION["logged_in"] == !true || !($_SESSION['is_officer'] == 1 || $_SESSI
             var totalPoints = totalLog > 0
                 ? (logIn / totalLog * 100).toFixed(2)
                 : 0;
-
 
             $("#totalPoints").text(totalPoints);
 
