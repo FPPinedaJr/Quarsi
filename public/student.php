@@ -359,7 +359,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
                         <!-- Profile Pic -->
                         <div class="flex flex-col">
-                            <input id="add_profile_pic" name="profile_pic" type="file" class="w-full h-9 bg-white pl-1 text-black border border-gray-500 focus:outline-teal-500
+                            <input id="add_profile_pic" name="profile_pic" type="file" class="w-full h-9 bg-white text-black border border-gray-500 focus:outline-teal-500
                 file:h-full file:border-none file:bg-teal-700 file:text-white">
                             <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">
                                 Profile Picture <em class="text-sm text-gray-600">(Optional)</em>
@@ -445,7 +445,7 @@ if (!$_SESSION["logged_in"] || !($_SESSION['is_officer'] == 1 || $_SESSION['is_s
 
                         <!-- Profile Picture -->
                         <div class="flex flex-col">
-                            <input id="add_profile_pic" name="profile_pic" type="file" class="w-full h-9 bg-white pl-1 text-black border border-gray-500 focus:outline-teal-500
+                            <input id="add_profile_pic" name="profile_pic" type="file" class="w-full h-9 bg-white text-black border border-gray-500 focus:outline-teal-500
                 file:h-full file:border-none file:bg-teal-700 file:text-white">
                             <input id="hidden_profile" type="hidden" name="hidden_profile">
                             <label for="add_profile_pic" class="pl-1 text-base md:text-lg text-zinc-600">
