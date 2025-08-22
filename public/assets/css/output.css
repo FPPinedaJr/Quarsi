@@ -664,10 +664,6 @@ video {
   right: 0px;
 }
 
-.right-28 {
-  right: 7rem;
-}
-
 .right-3 {
   right: 0.75rem;
 }
@@ -682,10 +678,6 @@ video {
 
 .top-0 {
   top: 0px;
-}
-
-.top-14 {
-  top: 3.5rem;
 }
 
 .top-2 {
@@ -1125,10 +1117,6 @@ video {
   width: 6rem;
 }
 
-.w-28 {
-  width: 7rem;
-}
-
 .w-3\/12 {
   width: 25%;
 }
@@ -1500,6 +1488,10 @@ video {
   border-right-width: 1px;
 }
 
+.border-t {
+  border-top-width: 1px;
+}
+
 .border-t-2 {
   border-top-width: 2px;
 }
@@ -1517,10 +1509,6 @@ video {
 .border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
-}
-
-.border-gray-100\/70 {
-  border-color: rgb(243 244 246 / 0.7);
 }
 
 .border-gray-200 {
@@ -1580,6 +1568,10 @@ video {
 .border-teal-500 {
   --tw-border-opacity: 1;
   border-color: rgb(20 184 166 / var(--tw-border-opacity));
+}
+
+.border-teal-500\/40 {
+  border-color: rgb(20 184 166 / 0.4);
 }
 
 .border-teal-600 {
@@ -1945,10 +1937,6 @@ video {
   padding-right: 3rem;
 }
 
-.pr-5 {
-  padding-right: 1.25rem;
-}
-
 .pt-2 {
   padding-top: 0.5rem;
 }
@@ -2121,6 +2109,11 @@ video {
   color: rgb(217 70 239 / var(--tw-text-opacity));
 }
 
+.text-gray-200 {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -2269,6 +2262,11 @@ video {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-teal-800\/40 {
+  --tw-shadow-color: rgb(17 94 89 / 0.4);
+  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .outline-none {
@@ -2601,6 +2599,11 @@ video {
   color: rgb(20 184 166 / var(--tw-text-opacity));
 }
 
+.hover\:text-teal-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(15 118 110 / var(--tw-text-opacity));
+}
+
 .hover\:text-white:hover {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -2702,10 +2705,6 @@ video {
 @media (min-width: 768px) {
   .md\:absolute {
     position: absolute;
-  }
-
-  .md\:-right-28 {
-    right: -7rem;
   }
 
   .md\:-right-\[9\.5rem\] {
@@ -2897,11 +2896,6 @@ video {
 
   .md\:bg-gradient-to-tr {
     background-image: linear-gradient(to top right, var(--tw-gradient-stops));
-  }
-
-  .md\:px-2 {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
   }
 
   .md\:px-4 {
