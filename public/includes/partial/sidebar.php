@@ -139,7 +139,14 @@ $user = $stmt->fetch();
                 <i class="text-2xl fa-solid fa-chart-column"></i>
               </div>
               <span class="font-[\'merriweather_sans\'] ml-3">Statistics</span>
-            </a>';
+            </a>
+            <a href="export.php" class="hover:bg-[#d8d8d8] cursor-pointer flex items-center px-5 py-3">
+              <div class="flex justify-center w-8">
+                <i class="text-2xl fa-solid fa-file-export"></i>
+              </div>
+              <span class="font-[\'merriweather_sans\'] ml-3">Export</span>
+            </a>
+            ';
         }
         ?>
 
